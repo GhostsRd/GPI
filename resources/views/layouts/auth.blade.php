@@ -33,8 +33,8 @@
             <div class="container">
               {{-- <img id="logo" src="images/ee.png" alt=""> --}}
                 {{-- <a class="navbar-brand" href="{{ url('/') }}" style="color:#012970;font-family:Geneva;"> --}}
-                <img class="shadow-sm rounded-2 " width="30" src="{{asset('/images/logo.png')}}" alt="">
-                <a  class="fw-bold  navbar-brand" href="{{ url('/home') }}"  style="font-family: cursive; font-size:1.2rem;color: #55dd24;"> 
+                <img class="shadow-sm rounded-2 " width="30" src="{{asset('o.png')}}" alt="">
+                <a  class="fw-bold  navbar-brand" href="{{ url('/home') }}"  style="font-family: cursive; font-size:1.2rem;color: #000000ff;"> 
                   {{-- style="color:#012970;font-family:Geneva;" --}}
                   {{ config('app.name', 'Laravel') }}
                   {{-- <img class="shadow-sm rounded-2 " width="50" src="{{asset('/images/logo.png')}}" alt=""> --}}

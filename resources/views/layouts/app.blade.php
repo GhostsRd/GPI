@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     @livewireStyles
 </head>
-<body style="background: #00000058">
+<body style="background: #cccaca58">
     <div id="app">
         <nav class=" shadow-sm navbar navbar-expand-md navbar-light bg-white  rounded-lg-2">
             <div class="container">
