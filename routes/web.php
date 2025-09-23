@@ -24,11 +24,14 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\Acceuil\Acceuil::class, 'index'])->name('home');
 
-Route::get('/regisseur', [App\Http\Controllers\Regisseur\Regisseur::class, 'index'])->name('admin');
 Route::get('/ticket', [App\Http\Controllers\ticket\Ticket::class, 'index'])->name('ticket');
 
+Route::get('/utilisateur', [App\Http\Controllers\Utilisateur\Utilisateur::class, 'index'])->name('utilisateur');
+Route::get('/utilisateur-service', [App\Http\Controllers\Utilisateur\UtilisateurService::class, 'index'])->name('utilisateurService');
+Route::get('/utilisateur-ticket', [App\Http\Controllers\Utilisateur\UtilisateurTicket::class, 'index'])->name('utilisateurTicket');
 
-Route::get('/login/utilisateur', [App\Http\Controllers\login\utilisateur::class, 'index'])->name('qr');
+
+
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
 
 

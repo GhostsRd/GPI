@@ -81,15 +81,6 @@ class Acceuil extends Component
     public function render()
     {
       
-        return view('livewire.acceuil.acceuil',[        
-            "transactions"=> collecte::orderby('id','desc')->limit(10)->get(),
-            "regisseurs"=> User::all(),
-            "collecteurs"=> collecteur::all(),
-            "produits" => Produit::all(),
-            "states" => Acceuil::statistiques(),
-            "couleur" => Acceuil::randomTextColor(),
-
-
-        ]);
+        return view('livewire.acceuil.acceuil');
     }
 }

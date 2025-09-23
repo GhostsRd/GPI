@@ -15,7 +15,7 @@ class SidebarProvider extends ServiceProvider
     public function register()
     {
         Blade::component('layouts.app', 'adminlayout');
-     
+        Blade::component('layouts.user', 'userlayout');
     }
 
     /**

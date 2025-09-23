@@ -77,54 +77,7 @@
              
                        
                   
-                    <script>
-                      document.addEventListener("DOMContentLoaded", () => {
-                        new Chart(document.querySelector('#stakedBarChart'), {
-                          type: 'bar',
-                          data: {
-                            labels: [ 'Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai'],
-                            datasets: [{
-                                label: 'Agricole',
-                                data: [{{$states['agricole']}}, 0.2, 0, -0.1, 0],
-                                backgroundColor: 'rgb(255, 99, 132)',
-                              },
-                              {
-                                label: 'Peche',
-                                data: [{{$states['peche']}}, 0.2, 0, 0, 0],
-                                backgroundColor: 'rgb(75, 192, 192)',
-                              },
-                              {
-                                label: 'Forestiaire',
-                                data: [{{$states['forestier']}}, 0.2, 0, 0, 0],
-                                backgroundColor:  'rgb(255, 205, 86)',
-                              },
-                              {
-                                label: 'Elevage',
-                                data: [{{$states['elevage']}}, 0.2, -0.2, 0, 0],
-                                backgroundColor: 'rgb(201, 203, 207)',
-                              },
-                            ]
-                          },
-                          options: {
-                            plugins: {
-                              title: {
-                                display: true,
-                                text: 'Diagramme '
-                              },
-                            },
-                            responsive: true,
-                            scales: {
-                              x: {
-                                stacked: true,
-                              },
-                              y: {
-                                stacked: true
-                              }
-                            }
-                          }
-                        });
-                      });
-                    </script>
+              
                     <!-- End Stacked Bar Chart -->
       
                   </div>
@@ -151,7 +104,7 @@
                             ],
                             datasets: [{
                               label: 'Totale',
-                              data: [{{$states['agricole']}}, {{$states['peche']}}, {{$states['forestier']}}, {{$states['elevage']}}],
+                              data: ,
                               backgroundColor: [
                                 'rgb(255, 99, 132)',
                                 'rgb(75, 192, 192)',
@@ -221,76 +174,10 @@
         <tbody class="p-2 border-0 ">
             
 
-            @foreach ($transactions as $collect )             
+    
             
-            <tr class="mt-2">
-            
-              {{-- <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                  wire:click="previsualiser('{{$collect->url_img}}')">
-                  <img width="40" class="rounded-5 shadow-sm" src="{{asset('storage/'.$collect->url_img)}}"
-                      alt="">
-              </td> --}}
-              <td class="text-muted bg-white p-1 border-0" id="tdanim1">{{$collect->quantite}}</td>
-
-
-              <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="400">
-                  <span>{{$collect->unite}}</span>
-                  </td>
-              
-              {{-- <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="700">{{$collect->image_quitance}}</td> --}}
-              <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="600">{{$collect->ristourne_calculee}}</td>
-              <td class="text-muted bg-white p-1 border-0"  id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="500">
-                  @foreach ($collecteurs as $collecteur)
-                      @if($collecteur->id == $collect->collecteur_id)
-                        {{$collecteur->nom }} {{$collecteur->prenom }}
-                      @endif
-                  @endforeach
-
-              </td>
-               <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="400">
-                  @foreach ($produits as $reg)
-                    @if($reg->id == $collect->produit_id)
-                      {{$reg->nature }}
-                    @endif
-                @endforeach
-              </td>
-              <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="500">
- 
-                  @foreach ($regisseurs as $reg)
-                  @if($reg->id == $collect->regisseur_id)
-                    {{$reg->name }}
-                  @endif
-              @endforeach
-              </td>
-              <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="400">
-             
-                  <span class="badge " style="background:#24c1dd">{{$collect->commune}}</span>
-              </td>
-              <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="400">
-                  {{$collect->numero_quitance}}
-              </td>
-              <td class=" bg-white p-1 border-0 " id="tdanim1"  data-aos="fade-left"
-                  data-aos-duration="600">
-                   {{
-                      $ee = strftime(" %d %b %Y %Hh:%m",$collect->created_at->getTimestamp());
-                     }}</td>
-             
-              {{-- <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                  data-aos-duration="400">
-                  <a href="{{url('/find',$collect->numero_quitance)}}" class="nav-link">afficher</a>
-              </td> --}}
-             
-          </tr>
         
-          @endforeach
+    
                     
                     
                     
