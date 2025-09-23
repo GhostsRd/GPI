@@ -1,57 +1,54 @@
 <div>
-    <section class="features_area section_gap_top">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 text-center">
-                    <div class="main_title">
-                        <h4>Workflow de votre ticket </h4>
-                        <p>
-                            Votre ticket est en cour de traitement par Tantely
-                            
-                                                      </p>
-                                  
-                                              <a class="primary_btn mt-4"  href="{{route("utilisateurService")}}"><span> <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
-                              </svg>
-
-                                        Retour
-                                        </span>
-                                        </a>
-							
-				
-                    </div>
-                </div>
-               
-            </div>
-          
-       <section>
-
-    <div class="steps">
-                  <div class="step active">
-                    <div class="circle"><svg xmlns="http://www.w3.org/2000/svg" width="15" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-              </div>
-                    <div class="label">Creation</div>
-                  </div>
-                  <div class="step active " style="background: none;">
-                    <div class="circle">
-                      <img src="Ely.png" style="border-radius: 50%;" width="50px" alt="">
-              </div>
-                    <div class="label">Ely Tantely</div>
-                  </div>
-                  <div class="step">
-                    <div class="circle" ><svg  xmlns="http://www.w3.org/2000/svg" width="15" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg></div>
-                    <div class="label">Traitement</div>
-                  </div>
-                  <div class="step">
-                    <div title="Votre demande a ete refuser cause du non conforme materiel" class="circle" style="background-color: red;"><svg width="15" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
-          </div>
-      <div class="label">Decision</div>
+  <section class=" section_gap_top">
+  <div class="stepper">
+  <div class="hero">
+    <div class="hero-content">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" style="color:#5bc4bf" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+												<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+												</svg>
+      <h2 class="">Creation ticket</h2>
+      <p>Complète ces quelques informations pour créer le ticket.</p>
     </div>
   </div>
+  <div class="form-area mt-4">
+    <form id="multiForm" novalidate>
+      <!-- Step 1 -->
+      <div class="step active" data-step="1">
+        <h4>Sujet</h4>
+      
+        <div class="mb-3">
+          <!-- <label class="form-label">Sujet</label> -->
+          <textarea class="form-control" style="height: 40px;" name="sujet">
+          </textarea>
+        </div>
+       <h4> Details</h4>
+         <div class="mb-3">
+          <!-- <label class="form-label">Sujet</label> -->
+          <textarea class="form-control" style="height: 99px;" name="sujet">
+          </textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Categorie</label>
+          <input class="form-control"  name="equipement">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Equipement</label>
+          <input class="form-control"  name="status">
+        </div>
+      </div>
+      <!-- Step 2 -->
+   
+
+      <!-- Step 3 -->
+    
+
+      <div class="controls text-center">
+      <a class="primary_btn tr-bg" href="#"><span>Creer</span></a>
+        </div>
+    </form>
+      {{-- <div class="progress-line mt-5"><i id="progressBar"></i></div> --}}
+  </div>
+</div>
+</section>
+  
 </div>

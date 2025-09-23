@@ -29,6 +29,7 @@ Route::get('/ticket', [App\Http\Controllers\ticket\Ticket::class, 'index'])->nam
 Route::get('/utilisateur', [App\Http\Controllers\Utilisateur\Utilisateur::class, 'index'])->name('utilisateur');
 Route::get('/utilisateur-service', [App\Http\Controllers\Utilisateur\UtilisateurService::class, 'index'])->name('utilisateurService');
 Route::get('/utilisateur-ticket', [App\Http\Controllers\Utilisateur\UtilisateurTicket::class, 'index'])->name('utilisateurTicket');
+Route::get('/utilisateur-workflow', [App\Http\Controllers\Utilisateur\Utilisateurworkflow::class, 'index'])->name('utilisateurWorkflow');
 
 
 
