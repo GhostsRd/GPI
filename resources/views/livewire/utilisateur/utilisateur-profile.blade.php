@@ -3,11 +3,11 @@
         <div class="profile-container">
     <div class="profile-header">
       <div class="profile-avatar">
-        <img src="https://via.placeholder.com/150" alt="Photo de profil">
+        <img src="{{asset('/images/avtar_1.png')}}" alt="Photo de profil">
       </div>
       <div class="profile-info">
-        <h2>Jean Dupont</h2>
-        <p>Développeur Full‑Stack · Paris, France</p>
+        <h2>Ely Tantely</h2>
+        <p>Responsable Administrateur systeme · Pivot, Ranomafana</p>
         <div class="profile-stats">
           <div>
             <span>120</span>
