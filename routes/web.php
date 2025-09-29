@@ -1,8 +1,7 @@
 <?php
-
+use App\Http\Controllers\User\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Profiles;
-use App\Http\Livewire\User\User;
 
 
 /*
@@ -23,9 +22,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\Acceuil\Acceuil::class, 'index'])->name('home');
-
 Route::get('/ticket', [App\Http\Controllers\ticket\Ticket::class, 'index'])->name('ticket');
-
 Route::get('/utilisateur', [App\Http\Controllers\Utilisateur\Utilisateur::class, 'index'])->name('utilisateur');
 Route::get('/utilisateur-service', [App\Http\Controllers\Utilisateur\UtilisateurService::class, 'index'])->name('utilisateurService');
 Route::get('/utilisateur-ticket', [App\Http\Controllers\Utilisateur\UtilisateurTicket::class, 'index'])->name('utilisateurTicket');
@@ -40,4 +37,7 @@ Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 
 
 Route::get('/history/transaction', [App\Http\Controllers\transaction\transaction::class, 'index'])->name('transaction');
+
+
+Route::get('/utilisateur', [App\Http\Controllers\User\User::class, 'utilisateur'])->name('utilisateur');
 

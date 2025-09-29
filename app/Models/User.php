@@ -11,30 +11,32 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role', 'status', 'last_login_at'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
+
+    // Méthodes utilitaires
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isActive()
+    {
+        return $this->status === 'active';
+    }
+
+    public function getLastLoginFormatted()
+    {
+        return $this->last_login_at ? $this->last_login_at->format('Y-m-d H:i') : 'Jamais';
+    }
 }

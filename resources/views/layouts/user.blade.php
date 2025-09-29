@@ -44,7 +44,7 @@
 <body >
     <div id="app">
         
-<header class="header_area">
+<header class="">
 		<div class="main_menu">
 			<nav class="navbar navbar-expand-md navbar-light">
 				<div class="container">

@@ -1,5 +1,5 @@
 <div>
-	<aside class="chat-popup {{state}}"  role="dialog" aria-modal="true" aria-label="Fenêtre de chat">
+	<aside class="chat-popup "  role="dialog" aria-modal="true" aria-label="Fenêtre de chat">
     <header class="chat-header">
       <div class="chat-avatar">GPIS</div>
       <div class="chat-title">

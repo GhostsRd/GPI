@@ -11,10 +11,10 @@ use Illuminate\Http\Request;
 class Acceuil extends Controller
 {
     public function index(){
-   
+
         // dd($trans);
         return view("acceuil.acceuil");
     }
-    
+
 }
 

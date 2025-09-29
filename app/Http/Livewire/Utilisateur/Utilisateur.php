@@ -9,6 +9,6 @@ class Utilisateur extends Component
 {
     public function render()
     {
-        return view('livewire.utilisateur.utilisateur',["chats"=> chat::all()]);
+        return view('livewire.utilisateur.utilisateur');
     }
 }

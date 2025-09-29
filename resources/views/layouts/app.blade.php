@@ -12,7 +12,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('/monjs.js') }}"></script>
-    
+
 
     <!-- Fonts -->
     {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
@@ -38,9 +38,9 @@
             <div class="container">
               {{-- <img id="logo" src="images/ee.png" alt=""> --}}
               <img class="shadow-sm rounded-2 " width="35" src="{{asset('/images/o.png')}}" alt="">
-                <a  class="fw-bold  navbar-brand" href="{{ url('/home') }}"  style="font-family: cursive; font-size:1.2rem;color: #020005ff;"> 
+                <a  class="fw-bold  navbar-brand" href="{{ url('/home') }}"  style="font-family: cursive; font-size:1.2rem;color: #020005ff;">
                   {{-- style="color:#012970;font-family:Geneva;" --}}
-                  {{ config('app.name', 'Laravel') }}
+                  {{ config('app.name', 'GPI') }}
                   {{-- <img class="shadow-sm rounded-2 " width="50" src="{{asset('/images/logo.png')}}" alt=""> --}}
                 </a>
                 <button id="side" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -50,13 +50,13 @@
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav offset-6 me-auto">
-                      
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav  offset-lg-4">
                         <!-- Authentication Links -->
-                        
+
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -74,7 +74,7 @@
                           <svg data-aos="fade-rigth" xmlns="http://www.w3.org/2000/svg" class="text-warning " fill="none" width="30"  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                           </svg>
-                          
+
                       </li> --}}
 
                             <li class="nav-item dropdown shadow-sm rounded-5 btn-sm">
@@ -115,7 +115,7 @@
                     <aside  class="sidebar shadow-sm   rounded-2 col-2" id="sidebar" style="font-family:Geneva;" >
                       <div class="text-center">
 
-                       
+
                       </div>
                         <ul class="sidebar-nav mt-2" id="sidebar-nav">
                           <!-- <li class="nav-item ">
@@ -128,7 +128,7 @@
                               <span style="color: ; " class="fw-bold">Tableau de bord</span>
                             </a>
                           </li> -->
-                      
+
                           <li class="nav-item ">
                             <a class="nav-link " data-bs-target="#transaction" data-bs-toggle="collapse" href="#">
                               <i><svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-20">
@@ -140,21 +140,21 @@
                               <span style="color: " class="fw-bold">Menu</span>
                             </a>
                           </li><!-- End Dashboard Nav -->
-                        
-                      
+
+
 
 
 <!-- deb menu -->
                           <li class="nav-heading">Visualisation</li>
                           <li class="nav-items">
-                            <a class="nav-link collapsed dropdown-toggle " 
+                            <a class="nav-link collapsed dropdown-toggle "
                             data-bs-target="#bord" data-bs-toggle="collapse" href="#">
                               <i class="bi bi-menu-button-wide">
                               <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-20">
                                 <path opacity="0.4" d="M16.0756 2H19.4616C20.8639 2 22.0001 3.14585 22.0001 4.55996V7.97452C22.0001 9.38864 20.8639 10.5345 19.4616 10.5345H16.0756C14.6734 10.5345 13.5371 9.38864 13.5371 7.97452V4.55996C13.5371 3.14585 14.6734 2 16.0756 2Z" fill="currentColor"></path>
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M4.53852 2H7.92449C9.32676 2 10.463 3.14585 10.463 4.55996V7.97452C10.463 9.38864 9.32676 10.5345 7.92449 10.5345H4.53852C3.13626 10.5345 2 9.38864 2 7.97452V4.55996C2 3.14585 3.13626 2 4.53852 2ZM4.53852 13.4655H7.92449C9.32676 13.4655 10.463 14.6114 10.463 16.0255V19.44C10.463 20.8532 9.32676 22 7.92449 22H4.53852C3.13626 22 2 20.8532 2 19.44V16.0255C2 14.6114 3.13626 13.4655 4.53852 13.4655ZM19.4615 13.4655H16.0755C14.6732 13.4655 13.537 14.6114 13.537 16.0255V19.44C13.537 20.8532 14.6732 22 16.0755 22H19.4615C20.8637 22 22 20.8532 22 19.44V16.0255C22 14.6114 20.8637 13.4655 19.4615 13.4655Z" fill="currentColor"></path>
                             </svg>
-                                
+
                             </i><span>{{__('tableau de bord')}}</span><i class="bi bi-chevron-down ms-auto"></i>
                             </a>
                           </li>
@@ -166,90 +166,90 @@
                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                   </svg>
-                                  
+
                                   </i><span>{{__('Rapport ')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 
                           <ul id="bord" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                              <a href="{{url('/regisseur')}}" class="bg-white nav-link">
+                              <a href="{{url('/utilisateur')}}" class="bg-white nav-link">
                                 <i class="bi bi-circle">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                   </svg>
-                                  
+
                                    </i><span>{{__('Statistique')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 <!-- fin menu 2 -->
 
 
                           <li class="nav-items">
-                            <a class="nav-link collapsed dropdown-toggle " 
+                            <a class="nav-link collapsed dropdown-toggle "
                             data-bs-target="#parc" data-bs-toggle="collapse" href="#">
                               <i class="bi bi-menu-button-wide">
                               <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
                               </svg>
 
-                                
+
                             </i><span>{{__('Parc Informatique')}}</span><i class="bi bi-chevron-down ms-auto"></i>
                             </a>
                           </li>
 
-                          
+
                           <ul id="parc" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                              <a href="{{url('/regisseur')}}" class="bg-white nav-link">
+                              <a href="{{url('/utilisateur')}}" class="bg-white nav-link">
                                 <i class="bi bi-circle">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                   </svg>
-                                  
+
                                    </i><span>{{__('??')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 
 
 <!-- fin 3 -->
                               <li class="nav-items">
-                            <a class="nav-link collapsed dropdown-toggle " 
+                            <a class="nav-link collapsed dropdown-toggle "
                             data-bs-target="#user" data-bs-toggle="collapse" href="#">
                               <i class="bi bi-menu-button-wide">
                               <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                 </svg>
 
-                                
-                            </i><span>{{__('Utilisateur')}}</span><i class="bi bi-chevron-down ms-auto"></i>
+
+                            </i><span>{{__('utilisateur')}}</span><i class="bi bi-chevron-down ms-auto"></i>
                             </a>
                           </li>
 
-                          
+
                           <ul id="user" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                              <a href="{{url('/regisseur')}}" class="bg-white nav-link">
+                              <a href="{{url('/utilisateur')}}" class="bg-white nav-link">
                                 <i class="bi bi-circle">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                   </svg>
-                                  
+
                                    </i><span>{{__('??')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 <!-- fin 4 -->
 
                                 <li class="nav-items">
-                            <a class="nav-link collapsed dropdown-toggle " 
+                            <a class="nav-link collapsed dropdown-toggle "
                             data-bs-target="#ticket" data-bs-toggle="collapse" href="#">
                               <i class="bi bi-menu-button-wide">
                               <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -257,12 +257,12 @@
                               </svg>
 
 
-                                
+
                             </i><span>{{__('Ticket et support')}}</span><i class="bi bi-chevron-down ms-auto"></i>
                             </a>
                           </li>
 
-                          
+
                           <ul id="ticket" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
                               <a href="{{url('/ticket')}}" class="bg-white nav-link">
@@ -270,18 +270,18 @@
                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                   </svg>
-                                  
+
                                    </i><span>{{__('??')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 
 
 <!-- fin 5 -->
 
                                   <li class="nav-items">
-                            <a class="nav-link collapsed dropdown-toggle " 
+                            <a class="nav-link collapsed dropdown-toggle "
                             data-bs-target="#check" data-bs-toggle="collapse" href="#">
                               <i class="bi bi-menu-button-wide">
                               <svg xmlns="http://www.w3.org/2000/svg"  width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -289,30 +289,30 @@
                             </svg>
 
 
-                                
+
                             </i><span>{{__('Check-Out/In')}}</span><i class="bi bi-chevron-down ms-auto"></i>
                             </a>
                           </li>
 
-                          
+
                           <ul id="check" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                             <li>
-                              <a href="{{url('/regisseur')}}" class="bg-white nav-link">
+                              <a href="{{url('/checkout')}}" class="bg-white nav-link">
                                 <i class="bi bi-circle">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                   </svg>
-                                  
+
                                    </i><span>{{__('??')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 <!-- fin 6 -->
 
                           <li class="nav-heading">Page parametre</li>
                           <li class="nav-items">
-                            <a class="nav-link collapsed dropdown-toggle " 
+                            <a class="nav-link collapsed dropdown-toggle "
                             data-bs-target="#produit" data-bs-toggle="collapse" href="#">
                               <i class="bi bi-menu-button-wide">
                                 {{-- <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -322,7 +322,7 @@
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
                                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
-                                                     
+
                             </i><span>{{__('parametre')}}</span><i class="bi bi-chevron-down ms-auto"></i>
                             </a>
                           </li>
@@ -337,7 +337,7 @@
                                   </i><span>{{__('Produit')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 
                           <ul id="produit" class="nav-content collapse " data-bs-parent="#sidebar-nav">
@@ -350,12 +350,12 @@
                                   </i><span>{{__('A propos?')}}</span>
                               </a>
                             </li>
-                           
+
                           </ul>
 
-                         
-                    
-                    
+
+
+
                     </aside>
                 </div>
                 <div class="col-lg-10">
@@ -378,10 +378,8 @@
       mirror: false,
       useClassNames: false, // if true, will add content of `data-aos` as classes on scroll
       disableMutationObserver: false,
-      disable: false, 
+      disable: false,
     });
   </script>
-   
-    
 </body>
 </html>
