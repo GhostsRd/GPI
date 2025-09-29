@@ -17,8 +17,10 @@ class CreateTicketsTable extends Migration
             $table->id()->autoIncrement();
             $table->integer('utilisateur_id')->nullable();
             $table->integer('responsable_it')->nullable();
-            $table->integer('equipement')->nullable();
+            $table->string('equipement')->nullable();
+            $table->string('categorie')->nullable();
             $table->string('sujet')->nullable();
+            $table->string('details')->nullable();
             $table->boolean('priorite')->default(false);
             $table->string('status')->nullable();
             $table->string('quantite')->nullable();

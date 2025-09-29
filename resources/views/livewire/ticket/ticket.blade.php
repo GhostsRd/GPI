@@ -57,6 +57,7 @@
                 <th class="fw-bold p-2 border-0" >Reference </th>
                 <th class="fw-bold p-2 border-0" >Sujet</th>
                 <th class="fw-bold p-2 border-0" >Priorite</th>
+                <th class="fw-bold p-2 border-0" >categorie</th>
                 <th class="fw-bold p-2 border-0" >Status</th>
                 <th class="fw-bold p-2 border-0" >Creer par</th>
                 <th class="fw-bold p-2 border-0" >Assigne a </th>
@@ -72,214 +73,36 @@
                 
             </thead>
         <tbody class="p-2 border-0">
+          @foreach ($tickets as $ticket )
             <tr class="mt-2">
                             <td class="bg-white p-2 border-0" >
                                 <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
                             </td>
                                         <td class="bg-white p-2 border-0" >
-                               0011
+                               {{$ticket->sujet}}
                             </td>
                              <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
+                                data-aos-duration="400">{{$ticket->priorite}}</td>
 
                                 <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
                                 data-aos-duration="400">True</td>   
 
                             <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
+                                data-aos-duration="700" >{{$ticket->categorie}}</td>  
+                                 <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
+                                data-aos-duration="700" >{{$ticket->status}}</td>  
                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
+                                data-aos-duration="400">{{$ticket->utilisateur_id}}</td>
                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
+                                data-aos-duration="400">{{$ticket->utilisateur_id}}</td>
                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
+                                data-aos-duration="400">{{$ticket->equipement}}</td>
                                 <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400"> click me </td>
-            </tr>
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               0011
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">True</td>   
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
+                                data-aos-duration="400">{{$ticket->created_at}}</td>
                                 <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
                                 data-aos-duration="400"> click me </td>
             </tr>
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               0011
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">True</td>   
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400"> click me </td>
-            </tr>
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               0011
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">True</td>   
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400"> click me </td>
-            </tr>
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               0011
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">True</td>   
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400"> click me </td>
-            </tr>
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               0011
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">True</td>   
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400"> click me </td>
-            </tr>
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               0011
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">True</td>   
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400"> click me </td>
-            </tr>
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               0011
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">tSy mandeha le PC</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">True</td>   
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="700" >En coursP</td>  
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Tojo AF</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">Leonce</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">LAPTOP1001</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400">18 sept 2025</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" data-aos="fade-left"
-                                data-aos-duration="400"> click me </td>
-            </tr>
+    @endforeach
 
 
             {{-- @foreach ($users as $user )                           

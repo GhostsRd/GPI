@@ -11,29 +11,36 @@
     </div>
   </div>
   <div class="form-area mt-4">
-    <form id="multiForm" novalidate>
+    <form id="multiForm" novalidate method="POST" wire:submit.prevent="store">
       <!-- Step 1 -->
       <div class="step active" data-step="1">
         <h4>Sujet</h4>
       
         <div class="mb-3">
           <!-- <label class="form-label">Sujet</label> -->
-          <textarea class="form-control" style="height: 40px;" name="sujet">
+          <textarea wire:model="sujet" class="form-control" style="height: 40px;" name="sujet">
           </textarea>
         </div>
        <h4> Details</h4>
          <div class="mb-3">
           <!-- <label class="form-label">Sujet</label> -->
-          <textarea class="form-control" style="height: 99px;" name="sujet">
+          <textarea class="form-control" wire:model="details" style="height: 99px;" name="details">
           </textarea>
         </div>
         <div class="mb-3">
-          <label class="form-label">Categorie</label>
-          <input class="form-control"  name="equipement">
+          <h4 class="form-label">Categorie</h4>
+          <select class="w-100" wire:model="categorie">
+            <option value="">Selectionner une categorie</option>
+            <option value="reseau">Reseau</option>
+            <option value="support">support</option>
+            <option value="assistance">Assistance</option>
+          </select>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Equipement</label>
-          <input class="form-control"  name="status">
+         <br>
+        <div class="mt-3">
+       
+          <h4 class="form-label">Equipement</h4>
+          <input class="form-control" wire:model="equipement"  name="status">
         </div>
       </div>
       <!-- Step 2 -->
@@ -43,7 +50,8 @@
     
 
       <div class="controls text-center">
-      <a class="primary_btn tr-bg" href="#"><span>Creer</span></a>
+      <button class="primary_btn tr-bg bg-none" type="submit" >Creer</button>
+     
         </div>
     </form>
       {{-- <div class="progress-line mt-5"><i id="progressBar"></i></div> --}}

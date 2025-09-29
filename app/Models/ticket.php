@@ -10,5 +10,5 @@ class ticket extends Model
     use HasFactory;
     protected $table = "tickets";
 
-    protected $fillable = ["id","utilisateur_id","responsable_it","equipement","sujet","priorite","status,quantite"];
+    protected $fillable = ["id","utilisateur_id","responsable_it","categorie","equipement","sujet","priorite","details","status,quantite"];
 }
