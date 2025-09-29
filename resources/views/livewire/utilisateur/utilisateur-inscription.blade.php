@@ -613,7 +613,11 @@
                             </div>
                             @error('name')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -627,7 +631,11 @@
                             </div>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -643,7 +651,11 @@
                             </div>
                             @error('phone')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -657,7 +669,11 @@
                             </div>
                             @error('matricule')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -673,7 +689,11 @@
                             </div>
                             @error('poste')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -692,7 +712,11 @@
                             </div>
                             @error('departement')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -708,7 +732,11 @@
                             </div>
                             @error('lieu_travail')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -722,7 +750,11 @@
                             </div>
                             @error('date_embauche')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>
@@ -739,7 +771,11 @@
                             </div>
                             @error('password')
                             <span class="invalid-feedback" role="alert">
+<<<<<<< HEAD
                                 <strong></strong>
+=======
+                                <strong>{{ $message }}</strong>
+>>>>>>> 2aaed1243a15cf4561c63c339466fce6213357f7
                             </span>
                             @enderror
                         </div>

@@ -1,3 +1,3 @@
-<x-userlayout >
+<x-adminlayout >
     @livewire('utilisateur.utilisateur')
-</x-userlayout>
+</x-adimlayout>

@@ -26,6 +26,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 
     {{-- aos --}}
 
@@ -370,6 +374,136 @@
     @livewireScripts
     {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script> --}}
     <script> </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // User Activity Chart
+        const activityCtx = document.getElementById('userActivityChart').getContext('2d');
+        new Chart(activityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                datasets: [{
+                    label: 'Nouveaux utilisateurs',
+                    data: [12, 19, 15, 25, 22, 30, 28],
+                    borderColor: '#2c5aa0',
+                    backgroundColor: 'rgba(44, 90, 160, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Animation du titre
+        const pageTitle = document.querySelector('.page-title');
+        setTimeout(() => {
+            pageTitle.classList.add('animated');
+        }, 300);
+
+        // Système de notifications
+        const notificationContainer = document.getElementById('notificationContainer');
+
+        // Fonction pour créer une notification
+        function createNotification(type, title, message, duration = 5000) {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+
+            const icons = {
+                success: 'bi-check-circle-fill',
+                info: 'bi-info-circle-fill',
+                warning: 'bi-exclamation-triangle-fill',
+                error: 'bi-x-circle-fill'
+            };
+
+            notification.innerHTML = `
+                <div class="notification-icon">
+                    <i class="bi ${icons[type]}"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <p class="notification-message">${message}</p>
+                </div>
+                <button class="notification-close">
+                    <i class="bi bi-x"></i>
+                </button>
+            `;
+
+            notificationContainer.appendChild(notification);
+
+            // Animation d'entrée
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+
+            // Fermeture automatique
+            let timeoutId;
+            if (duration > 0) {
+                timeoutId = setTimeout(() => {
+                    closeNotification(notification);
+                }, duration);
+            }
+
+            // Fermeture manuelle
+            const closeBtn = notification.querySelector('.notification-close');
+            closeBtn.addEventListener('click', () => {
+                clearTimeout(timeoutId);
+                closeNotification(notification);
+            });
+
+            return notification;
+        }
+
+        function closeNotification(notification) {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 400);
+        }
+
+        // Bouton de test de notification
+        document.getElementById('testNotificationBtn').addEventListener('click', function() {
+            const types = ['success', 'info', 'warning', 'error'];
+            const type = types[Math.floor(Math.random() * types.length)];
+
+            const messages = {
+                success: { title: 'Succès', message: 'L\'opération s\'est terminée avec succès.' },
+                info: { title: 'Information', message: 'Nouvelle mise à jour disponible.' },
+                warning: { title: 'Attention', message: 'Veuillez vérifier vos paramètres.' },
+                error: { title: 'Erreur', message: 'Une erreur s\'est produite lors du traitement.' }
+            };
+
+            createNotification(type, messages[type].title, messages[type].message);
+        });
+
+        // Exemple de notification automatique au chargement
+        setTimeout(() => {
+            createNotification('success', 'Bienvenue', 'Le tableau de bord a été chargé avec succès.', 3000);
+        }, 1000);
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>

@@ -31,7 +31,7 @@ Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\Utilisa
 Route::get('/utilisateur-profile', [App\Http\Controllers\Utilisateur\UtilisateurProfile::class, 'index'])->name('utilisateurProfile');
 
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
-
+Route::get('/checkout', [App\Http\Controllers\checkout\Checkout::class, 'index'])->name('checkout');
 
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 
