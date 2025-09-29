@@ -30,7 +30,7 @@ Route::get('/utilisateur', [App\Http\Controllers\Utilisateur\Utilisateur::class,
 Route::get('/utilisateur-service', [App\Http\Controllers\Utilisateur\UtilisateurService::class, 'index'])->name('utilisateurService');
 Route::get('/utilisateur-ticket', [App\Http\Controllers\Utilisateur\UtilisateurTicket::class, 'index'])->name('utilisateurTicket');
 Route::get('/utilisateur-workflow', [App\Http\Controllers\Utilisateur\Utilisateurworkflow::class, 'index'])->name('utilisateurWorkflow');
-
+Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'index'])->name('utilisateurInscription');
 
 
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
