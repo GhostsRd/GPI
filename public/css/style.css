@@ -25,6 +25,83 @@ Author E-mail: naimlasker@gmail.com
 /* Wide Mobile Layout: 480px */
 /*---------------------------------------------------- */
 /*----------------------------------------------------*/
+
+    .profile-container{max-width:800px;margin:40px auto;padding:20px;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+
+    .profile-header{display:flex;align-items:center;gap:20px;padding-bottom:20px;border-bottom:1px solid #e2e8f0}
+    .profile-avatar{width:100px;height:100px;border-radius:50%;background:#cbd5e1;overflow:hidden;flex-shrink:0}
+    .profile-avatar img{width:100%;height:100%;object-fit:cover}
+
+    .profile-info h2{font-size:22px;margin-bottom:6px}
+    .profile-info p{color:#475569;font-size:15px}
+
+    .profile-stats{display:flex;gap:30px;margin-top:14px}
+    .profile-stats div{display:flex;flex-direction:column;align-items:center}
+    .profile-stats span{font-weight:600;font-size:18px;color:#0b84ff}
+    .profile-stats small{font-size:13px;color:#64748b}
+
+    .profile-bio{margin:20px 0;padding:14px 0;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;font-size:15px;color:#334155}
+
+    .profile-actions{display:flex;gap:12px;margin-top:10px}
+    .btn{padding:10px 18px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none}
+    .btn-primary{background:#0b84ff;color:#fff}
+    .btn-outline{background:#fff;color:#0b84ff;border:1px solid #0b84ff}
+
+    .profile-details{margin-top:20px}
+    .profile-details h3{font-size:18px;margin-bottom:10px;color:#0f172a}
+    .profile-details ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .profile-details li{background:#f8fafc;padding:12px;border-radius:8px;font-size:14px;color:#334155}
+    .profile-details li strong{display:block;color:#0f172a;font-size:13px;margin-bottom:4px}
+
+    @media(max-width:600px){
+      .profile-details ul{grid-template-columns:1fr}
+      .profile-header{flex-direction:column;align-items:flex-start}
+      .profile-stats{gap:20px}
+    }
+
+/* fin profile */
+   *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#f3f4f6}
+
+    /* Floating button */
+    .chat-toggle{
+     }
+
+    /* Popup container */
+    .chat-popup{
+      position:fixed;right:24px;bottom:92px;z-index:1000;width:360px;max-width:92vw;height:520px;max-height:80vh;
+      display:flex;flex-direction:column;border-radius:14px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.2);overflow:hidden;
+      transform:translateY(20px);opacity:0;pointer-events:none;transition:all .26s cubic-bezier(.2,.9,.3,1);
+    }
+    .chat-popup.open{transform:translateY(0);opacity:1;pointer-events:auto}
+
+    /* Header */
+    .chat-header{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #eef2f7;background:linear-gradient(90deg,#f8fafc,#fff)}
+    .chat-avatar{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#5fa493 ,#0047b3);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .chat-title{flex:1}
+    .chat-title h4{font-size:15px;margin-bottom:2px}
+    .chat-title p{font-size:12px;color:#64748b}
+    .chat-close{background:transparent;border:none;font-size:20px;cursor:pointer;color:#64748b}
+
+    /* Messages area */
+    .chat-messages{flex:1;padding:12px;overflow:auto;display:flex;flex-direction:column;gap:10px;background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%)}
+    .msg{max-width:78%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.35}
+    .msg.agent{align-self:flex-start;background:#f1f5f9;color:#0f172a;border-bottom-left-radius:4px}
+    .msg.user{align-self:flex-end;background:#5fa493 ;color:#fff;border-bottom-right-radius:4px}
+    .msg small{display:block;margin-top:6px;font-size:11px;opacity:.75}
+
+    /* Composer */
+    .chat-composer{padding:10px;border-top:1px solid #eef2f7;display:flex;gap:8px;align-items:center}
+    .chat-input{flex:1;background:#f8fafc;border:1px solid #e6eef9;padding:10px 12px;border-radius:10px;min-height:40px;resize:none}
+    .btn-send{background:#5fa493 ;color:#fff;border:none;padding:10px 12px;border-radius:10px;cursor:pointer}
+
+    /* Tiny responsive tweak */
+    @media (max-width:420px){
+      .chat-popup{right:12px;left:12px;width:calc(100% - 24px);bottom:80px}
+      .chat-toggle{right:12px;bottom:12px}
+    }
+
 body {
   line-height: 26px;
   font-size: 15px;
@@ -262,28 +339,28 @@ button:focus {
 /* Start Gradient Area css
 ============================================================================================ */
 .gradient-bg, .header_area .navbar .nav .nav-item.submenu ul .nav-item:hover .nav-link, .blog_right_sidebar .widget_title, .blog_right_sidebar .newsletter_widget .bbtns, .blog_right_sidebar .tag_cloud_widget ul li a:hover, .blog-pagination .page-item.active .page-link, .blog-pagination .page-link:hover, .comments-area .btn-reply:hover {
-  background: -webkit-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: -moz-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: -o-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: linear-gradient(90deg, #4458dc 0%, #92E3A9 100%); }
+  background: -webkit-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: -moz-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: -o-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: linear-gradient(90deg, #4458dc 0%, #5fa493 100%); }
 
 .border-gradient {
-  border-image: -webkit-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  border-image: -moz-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  border-image: -o-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  border-image: linear-gradient(90deg, #4458dc 0%, #92E3A9 100%); }
+  border-image: -webkit-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  border-image: -moz-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  border-image: -o-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  border-image: linear-gradient(90deg, #4458dc 0%, #5fa493 100%); }
 
 .gradient-bg2 {
-  background: -webkit-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: -moz-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: -o-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: linear-gradient(90deg, #4458dc 0%, #92E3A9 100%); }
+  background: -webkit-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: -moz-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: -o-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: linear-gradient(90deg, #4458dc 0%, #5fa493 100%); }
 
 .gradient-color, .contact_info .info_item i {
-  background: -webkit-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: -moz-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: -o-linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
-  background: linear-gradient(90deg, #4458dc 0%, #92E3A9 100%);
+  background: -webkit-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: -moz-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: -o-linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
+  background: linear-gradient(90deg, #4458dc 0%, #5fa493 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; }
 
@@ -304,24 +381,24 @@ button:focus {
   border-radius: 5px;
   background-origin: border-box;
   background-clip: content-box, border-box;
-  background-image: linear-gradient(to right, #4458dc 0%, #92E3A9 100%), radial-gradient(circle at top left, #4458dc, #92E3A9);
+  background-image: linear-gradient(to right, #4458dc 0%, #5fa493 100%), radial-gradient(circle at top left, #4458dc, #5fa493);
   border: double 2px transparent;
   box-shadow: 0px 10px 30px rgba(118, 85, 225, 0.3); }
   .primary_btn span {
     padding: 0 42px; }
   .primary_btn.tr-bg {
-    background-image: linear-gradient(#ffffff, #ffffff), radial-gradient(circle at top left, #4458dc, #92E3A9);
+    background-image: linear-gradient(#ffffff, #ffffff), radial-gradient(circle at top left, #4458dc, #5fa493);
     border: 2px solid transparent;
     color: #222222;
     box-shadow: none; }
     .primary_btn.tr-bg:hover {
-      background-image: linear-gradient(to right, #4458dc 0%, #92E3A9 100%), radial-gradient(circle at top left, #4458dc, #92E3A9);
+      background-image: linear-gradient(to right, #4458dc 0%, #5fa493 100%), radial-gradient(circle at top left, #4458dc, #5fa493);
       border: double 2px transparent;
       color: #ffffff;
       box-shadow: 0px 10px 30px rgba(118, 85, 225, 0.3); }
   .primary_btn:hover {
-    background-image: linear-gradient(#ffffff, #ffffff), radial-gradient(circle at top left, #4458dc, #92E3A9);
-    border: 2px solid #92E3A9;
+    background-image: linear-gradient(#ffffff, #ffffff), radial-gradient(circle at top left, #4458dc, #5fa493);
+    border: 2px solid #5fa493;
     color: #222222;
     box-shadow: none;
     background-clip: border-box; }
@@ -543,7 +620,7 @@ button:focus {
         min-height: 350px; } }
     @media (max-width: 991px) {
       .banner_area .banner_inner {
-        background: #92E3A9;
+        background: #5fa493;
         width: 100%; } }
     .banner_area .banner_inner .banner_content {
       margin-left: 50px;
@@ -865,11 +942,11 @@ button:focus {
     border-radius: 45px;
     z-index: 0;
     border: double 2px transparent;
-    background-image: linear-gradient(white, white), radial-gradient(circle at top left, #4458dc, #92E3A9);
-    background-image: -webkit-linear-gradient(white, white), -webkit-radial-gradient(circle at top left, #4458dc, #92E3A9);
-    background-image: -moz-linear-gradient(white, white), -moz-radial-gradient(circle at top left, #4458dc, #92E3A9);
-    background-image: -ms-linear-gradient(white, white), -ms-radial-gradient(circle at top left, #4458dc, #92E3A9);
-    background-image: -o-linear-gradient(white, white), -o-radial-gradient(circle at top left, #4458dc, #92E3A9);
+    background-image: linear-gradient(white, white), radial-gradient(circle at top left, #4458dc, #5fa493);
+    background-image: -webkit-linear-gradient(white, white), -webkit-radial-gradient(circle at top left, #4458dc, #5fa493);
+    background-image: -moz-linear-gradient(white, white), -moz-radial-gradient(circle at top left, #4458dc, #5fa493);
+    background-image: -ms-linear-gradient(white, white), -ms-radial-gradient(circle at top left, #4458dc, #5fa493);
+    background-image: -o-linear-gradient(white, white), -o-radial-gradient(circle at top left, #4458dc, #5fa493);
     background-origin: border-box;
     background-clip: content-box, border-box;
     padding: 0;
@@ -2693,7 +2770,7 @@ h6 {
       -ms-flex-align: center;
       align-items: center; } }
   .client-info .lage {
-    color: #92E3A9;
+    color: #5fa493;
     font-family: "Rubik", sans-serif;
     font-size: 100px;
     font-weight: 700;
@@ -2718,7 +2795,7 @@ h6 {
     .call-now h3 {
       font-size: 17px; } }
   .call-now p {
-    color: #92E3A9;
+    color: #5fa493;
     font-size: 16px;
     text-transform: uppercase;
     margin-bottom: 5px; }
@@ -2755,7 +2832,7 @@ h6 {
       -o-transition: all 0.4s ease 0s;
       transition: all 0.4s ease 0s; }
       .portfolio_area .filters ul li:hover, .portfolio_area .filters ul li.active {
-        color: #92E3A9; }
+        color: #5fa493; }
       @media (max-width: 767px) {
         .portfolio_area .filters ul li {
           margin-right: 20px; } }
@@ -2872,7 +2949,7 @@ h6 {
     .testimonial_area .owl-carousel .owl-dots .owl-dot.active {
       height: 12px;
       width: 12px;
-      background: #92E3A9; }
+      background: #5fa493; }
   @media (max-width: 991px) {
     .testimonial_area .owl-carousel .owl-dots {
       display: none !important; } }
@@ -3415,13 +3492,13 @@ h6 {
           .footer_area .footer_social a i {
             font-size: 25px; } }
         .footer_area .footer_social a i:hover {
-          color: #92E3A9; }
+          color: #5fa493; }
   .footer_area .footer_bottom {
     text-align: center; }
     .footer_area .footer_bottom p {
       margin-bottom: 0; }
     .footer_area .footer_bottom a {
-      color: #92E3A9; }
+      color: #5fa493; }
 
 /* End Footer Area css
 ============================================================================================ */

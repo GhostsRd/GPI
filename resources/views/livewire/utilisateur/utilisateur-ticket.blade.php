@@ -1,4 +1,33 @@
 <div>
+	<aside class="chat-popup" id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
+    <header class="chat-header">
+      <div class="chat-avatar">GPIS</div>
+      <div class="chat-title">
+        <h4>GPISupport — Chat</h4>
+        <p>Général · habituellement réponse sous 1h</p>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Fermer">✕</button>
+    </header>
+
+    <div class="chat-messages" id="messages" aria-live="polite">
+      <!-- sample messages -->
+
+      @foreach($chats as $chat)
+            @if($chat->sendeur_id == 2 && $chat->targetmsg_id == 1 && $chat->type == "user")
+                    <div class="msg user">Bonjour {{$chat->message}}<small>Support · {{$chat->created_at}}</small></div>
+            @else
+                 <div class="msg agent">Bonjour {{$chat->message}}<small>Support · {{$chat->created_at}}</small></div>
+            @endif
+      @endforeach
+
+    </div>
+
+    <form class="chat-composer" id="composer" onsubmit="return false;">
+      <textarea id="input" class="chat-input" rows="1" placeholder="Écris un message..."></textarea>
+      <button id="sendBtn" class="btn-send">Envoyer</button>
+    </form>
+  </aside>
+
   <section class=" section_gap_top">
   <div class="stepper">
   <div class="hero">

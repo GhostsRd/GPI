@@ -62,15 +62,15 @@
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav justify-content-end">
 							<li class="nav-item active"><a class="nav-link" href="{{route('utilisateur')}}"><svg width="25" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-</svg>
-</a></li>
-							<li class="nav-item"><a class="nav-link" href="#contact"><svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+					</svg>
+					</a></li>
+							{{-- <li class="nav-item"><a class="nav-link" href="#contact"><svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 												<path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
 												</svg>
-												</a></li>
-							<li class="nav-item"><a class="nav-link" href="">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" width="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+												</a></li> --}}
+							<li class="nav-item nav-link"><a class="nav-link" href="#">
+							<svg xmlns="http://www.w3.org/2000/svg" class="chat-toggle" aria-label="Ouvrir le chat" id="chatToggle" fill="none" width="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 									<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
 									</svg>
 							</a></li>
@@ -111,6 +111,8 @@
         </div>
 
     </div>
+
+
 
 
 
@@ -163,6 +165,54 @@
 	<script src="{{asset('js/theme.js')}}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script> --}}
     <script> </script>
+	<script>
+    const toggle = document.getElementById('chatToggle');
+    const popup = document.getElementById('chatPopup');
+    const closeBtn = document.getElementById('chatClose');
+    const messages = document.getElementById('messages');
+    const input = document.getElementById('input');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function openChat(){popup.classList.add('open');toggle.style.display='none';input.focus();scrollToBottom()}
+    function closeChat(){popup.classList.remove('open');toggle.style.display='flex'}
+
+    toggle.addEventListener('click',openChat);
+    closeBtn.addEventListener('click',closeChat);
+
+    // send message
+    function appendMessage(text,who){
+      const el = document.createElement('div');
+      el.className = 'msg ' + (who === 'user' ? 'user' : 'agent');
+      const now = new Date();
+      const hh = now.getHours().toString().padStart(2,'0');
+      const mm = now.getMinutes().toString().padStart(2,'0');
+      el.innerHTML = text + '<small>' + (who === 'user' ? 'Vous' : 'Support') + ' · ' + hh + ':' + mm + '</small>';
+      messages.appendChild(el);
+      scrollToBottom();
+    }
+
+    function scrollToBottom(){messages.scrollTop = messages.scrollHeight}
+
+    sendBtn.addEventListener('click', ()=>{
+      const v = input.value.trim();
+      if(!v) return;
+      appendMessage(escapeHtml(v),'user');
+      input.value = '';
+      // simulate reply
+      setTimeout(()=>{appendMessage('Merci, nous regardons ça et revenons vers vous.', 'agent')}, 800);
+    });
+
+    // simple escape to avoid injection when inserting HTML
+    function escapeHtml(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;")}
+
+    // allow enter to send (shift+enter for newline)
+    input.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' && !e.shiftKey){e.preventDefault();sendBtn.click();}
+    });
+
+    // accessibility: close with escape
+    document.addEventListener('keydown', (e)=>{if(e.key === 'Escape' && popup.classList.contains('open')) closeChat();});
+  </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>

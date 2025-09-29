@@ -1,4 +1,35 @@
 <div>
+	<aside class="chat-popup {{state}}"  role="dialog" aria-modal="true" aria-label="Fenêtre de chat">
+    <header class="chat-header">
+      <div class="chat-avatar">GPIS</div>
+      <div class="chat-title">
+        <h4>GPISupport — Chat</h4>
+        <p>Général · habituellement réponse sous 1h</p>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Fermer">✕</button>
+    </header>
+
+    <div class="chat-messages" id="messages" aria-live="polite">
+      <!-- sample messages -->
+
+       @foreach($chats as $chat)
+         
+
+            @if( $chat->type == "utilisateur")
+                    <div class="msg user"> {{$chat->message}}<small>Support · {{$chat->created_at}}</small></div>
+            @else
+                 <div class="msg agent">Bonjour {{$chat->message}}<small>Support · {{$chat->created_at}}</small></div>
+            @endif
+      @endforeach
+
+    </div>
+
+    <form class="chat-composer" wire:submit.prevent="storechat" >
+      <textarea id="input" class="chat-input" wire:model="message" rows="1" placeholder="Écris un message..."></textarea>
+      <button id="sendBtn" type="submit" class="btn-send">Envoyer</button>
+    </form>
+  </aside>
+
   <section class="features_area section_gap_top">
         <div class="container">
             <div class="row justify-content-center">
@@ -29,84 +60,56 @@
        <section>
          <table class="container-fluid table  border-none  shadow-sm background-white rounded" style="background-color: white;">
             <thead class="bg-white" >
-                <tr class="border-none bg-white ">
-                <th scope="col">#</th>
-                <th scope="col">Reference</th>
-                <th scope="col">Sujet</th>
-                <th scope="col">Priorite</th>
-                <th scope="col">Status</th>
-                <th scope="col">Creer par</th>
-                <th scope="col">Assiger a </th>
-                <th scope="col">Equipement concerner</th>
-                <th scope="col">Date de creation</th>
-                <th scope="col">Action</th>
-
+                <th class="border-0"><input type="checkbox" ></th>
+                
+                <th class="fw-bold p-2 border-0" >Reference </th>
+                <th class="fw-bold p-2 border-0" >Sujet</th>
+                <th class="fw-bold p-2 border-0" >Priorite</th>
+                <th class="fw-bold p-2 border-0" >categorie</th>
+                <th class="fw-bold p-2 border-0" >Status</th>
+                <th class="fw-bold p-2 border-0" >Creer par</th>
+                <th class="fw-bold p-2 border-0" >Assigne a </th>
+                <th class="fw-bold p-2 border-0" >Equipement concerner</th>
+                <th class="fw-bold p-2 border-0" >Date de creation</th>
+                <th class="fw-bold p-2 border-0" >Action</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>
-                    <a href="{{route("utilisateurWorkflow")}}">
-                        <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                            </svg>
-                    </a>
+               @foreach ($tickets as $ticket )
+            <tr class="mt-2">
+                            <td class="bg-white p-2 border-0" >
+                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
+                            </td>
+                                        <td class="bg-white p-2 border-0" >
+                               {{$ticket->sujet}}
+                            </td>
+                             <td class="text-muted bg-white p-1 border-0" id="tdanim1" 
+                                >{{$ticket->priorite}}</td>
 
-                </td>   
-                
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@fat</td>
-                <td>@fat</td>
-                <td>@fat</td>
-                <td>@fat</td>
-                <td>@fat</td>
-                <td>
-                    <a href="{{route("utilisateurWorkflow")}}">
-                        <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                            </svg>
-                    </a>
-                </td>
+                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" 
+                           >True</td>   
 
-
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td><a href="{{route('utilisateurWorkflow')}}">
-                        <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                            </svg>
-                    </a>
-</td>
-    
-               
-                </tr>
+                            <td class="text-primary bg-white p-1 border-0" id="tdanim1" 
+                            >{{$ticket->categorie}}</td>  
+                                 <td class="text-primary bg-white p-1 border-0" id="tdanim1" 
+                                >{{$ticket->status}}</td>  
+                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" 
+                                >{{$ticket->utilisateur_id}}</td>
+                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" 
+                              >{{$ticket->utilisateur_id}}</td>
+                            <td class="text-muted bg-white p-1 border-0" id="tdanim1" 
+                              >{{$ticket->equipement}}</td>
+                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" 
+                                >{{$ticket->created_at}}</td>
+                                <td class="text-muted bg-white p-1 border-0" id="tdanim1" 
+                               > <a href="{{ route('utilisateurWorkflow') }}">click me</a> </td>
+            </tr>
+    @endforeach
             </tbody>
             </table>    
        </section>
-        <button class="btn btn-outline-primary btn-sm ">suivant</button>
+         <div class="mt-4">
+          {{$tickets->links()}}
         </div>
     </section>
 </div>
