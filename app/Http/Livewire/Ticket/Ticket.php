@@ -3,19 +3,31 @@
 namespace App\Http\Livewire\Ticket;
 
 use Livewire\Component;
-use App\Models\ticket as ticketmodel;
+use Livewire\WithPagination;
+use App\Models\Ticket as TicketModel;
 
 class Ticket extends Component
 {
+    use WithPagination;
+
     public $checkData = [];
-    public $recherche;
+    public $selectedTickets = [];
+    public $recherche = '';
     public $disabled = "disabled";
+
     public function render()
     {
-        return view('livewire.ticket.ticket',[
-            "tickets"=> ticketmodel::where("id","like","%".$this->recherche."%")
-        
-        ->paginate(8),
-           ]);
+        $tickets = TicketModel::when($this->recherche, function ($query) {
+            $query->where("reference", "like", "%" . $this->recherche . "%")
+                ->orWhere("sujet", "like", "%" . $this->recherche . "%");
+        })->paginate(8);
+
+        return view('livewire.ticket.ticket', [
+            "tickets" => $tickets,
+            "totalTickets" => TicketModel::count(),
+            "inProgressTickets" => TicketModel::where("status", "En cours")->count(),
+            "pendingTickets" => TicketModel::where("status", "En attente")->count(),
+            "resolvedTickets" => TicketModel::where("status", "Résolu")->count(),
+        ]);
     }
 }
