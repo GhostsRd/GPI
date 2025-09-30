@@ -25,7 +25,7 @@ class UtilisateurService extends Component
     {
         return view('livewire.utilisateur.utilisateur-service',[
             "tickets"=> ticketmodel::where("id","like","%".$this->recherche."%")
-        ->paginate(1),
+        ->paginate(5),
          "chats"=> chat::all(),
            ]);
     }

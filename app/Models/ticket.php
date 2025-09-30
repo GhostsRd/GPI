@@ -11,4 +11,13 @@ class ticket extends Model
     protected $table = "tickets";
 
     protected $fillable = ["id","utilisateur_id","responsable_it","categorie","equipement","sujet","priorite","details","status,quantite"];
+
+    public function utilisateur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+    }
+    public function responsableIT()
+    {
+        return $this->belongsTo(ResponsableIT::class, 'responsable_it');
+    }
 }

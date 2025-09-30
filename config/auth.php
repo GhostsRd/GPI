@@ -18,6 +18,8 @@ return [
         'passwords' => 'users',
     ],
 
+
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -40,6 +42,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'utilisateur' => [ // pour les clients
+        'driver' => 'session',
+        'provider' => 'utilisateurs',
+    ],
 
         'api' => [
             'driver' => 'token',
@@ -70,6 +77,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+
+    'utilisateurs' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\utilisateur::class, // client
+    ],
 
         // 'users' => [
         //     'driver' => 'database',
