@@ -45,3 +45,4 @@ Route::post('/userinscription', [App\Http\Controllers\Utilisateur\UtilisateurIns
 Route::post('/checklogin', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'login'])->name('verifierlogin');
 //Route::get('/utilisateur', [App\Http\Controllers\User\User::class, 'utilisateur'])->name('utilisateur');-
 
+Route::get('/admin/ticket-view', [App\Http\Controllers\admin\ticket\Ticketview::class, 'index'])->name('adminTicketview');
