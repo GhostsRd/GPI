@@ -86,8 +86,16 @@
                                 <div class="col-lg-4 col-4">
                                   <img src="{{asset('/images/avtar_1.png')}}" class="rounded-5" width="40" height="40" alt="" data-aos="fade-left" ata-aos-duration="600">
 
+<<<<<<< HEAD
                                 </div>
                                 <div class="col-lg-2 col-2">
+=======
+    <!-- Modern Sidebar -->
+    <aside class="sidebar-modern shadow-sm" id="sidebarModern">
+        <div class="sidebar-header">
+            <h6 class="sidebar-title">Navigation Menu</h6>
+        </div>
+>>>>>>> 3091b45 (ajouter historique des activite)
 
                                   <a id="navbarDropdown" class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                       {{ Auth::user()->name }}
