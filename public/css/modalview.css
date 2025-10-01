@@ -6,8 +6,58 @@
       --radius: 10px;
       --shadow: 0 6px 18px rgba(0, 0, 0, .08);
     }
+    /* animation loading */
+
+    .loader:active {
+    border: 2px solid rgba(255, 255, 255, 0.3); /* couleur du cercle */
+    border-top-color: #ffffff;                  /* couleur de l’élément en rotation */
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 4s linear infinite;
+    display: inline-block;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 
 
+
+    .custom-textarea {
+    width: 80%;
+    height: 80px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    color: #0f172a;
+    resize: vertical;
+    transition: all 0.25s ease;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+
+    /* Effet hover */
+    .custom-textarea:hover {
+        border-color: #a5a5a5;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* Effet focus/active */
+    .custom-textarea:focus {
+        outline: none;
+        border-color: #a5a5a5;
+        box-shadow: 0 0 6px rgba(79, 81, 83, 0.3);
+        background-color: #ffffff;
+    }
+
+    /* Placeholder plus lisible */
+    .custom-textarea::placeholder {
+        color: #9ca3af;
+        font-style: italic;
+    }
 
     .steps {
       display: flex;
@@ -62,9 +112,36 @@
       bottom: 0;
       background: var(--accent);
       border-radius: 6px;
-      width: 0%;
+
       transition: width .3s
     }
+     .fill_20 {
+
+      width: 20%;
+
+    }
+    .fill_40 {
+  
+      width: 40%;
+ 
+    }
+
+    .fill_60 {
+   
+      width: 60%;
+
+    }
+    .fill_80 {
+   
+      width: 80%;
+ 
+    }
+
+    .fill_100 {
+      width: 100%;
+     
+    }
+    
 
     :root {
       --bg: #f6f8fb;

@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class TicketView extends Controller
 {
+    public function ticketview($id)
+    {
+        return view('admin.ticket.ticket-view', compact('id'));
+    }
     public function index()
     {
         return view('admin.ticket.ticket-view');
