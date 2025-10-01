@@ -16,7 +16,9 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->integer('utilisateur_id')->nullable();
-            $table->integer('responsable_it')->nullable();
+            $table->integer('responsable_id')->nullable();
+            $table->integer('commentaire_id')->nullable();
+            $table->integer("state")->default(1);
             $table->string('equipement')->nullable();
             $table->string('categorie')->nullable();
             $table->string('sujet')->nullable();

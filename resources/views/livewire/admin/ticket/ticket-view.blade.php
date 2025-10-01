@@ -8,9 +8,16 @@
     <div class="row h-100">
     
       <div class="col-lg-9  mb-md-2 mb-sm-2">
-        <div class="container shadow- bg-white mt-0 pt-3 p-4 rounded-3">
+        <div class="container shadow-sm bg-white mt-0 pt-3 p-4 rounded-3">
            <label class="fw-bold  mb-1 mt-0 pt-0" >Ticket #<span id="ticketId">{{$ticketId}}</span> — {{$ticketvals->sujet}}</label>
-            <div class="meta mt-2">Créé par <strong>Jean</strong> • <span id="createdAt">{{ \Carbon\Carbon::parse($ticketvals->created_at)->translatedFormat('d M Y') }}</span> • <span id="statusBadge" class="badge open">Nouveau</span> • <span id="statusBadge" class="badge closed">Bloque</span></div>
+            <div class="meta mt-2">Créé par <strong>Jean</strong> • <span id="createdAt">{{ \Carbon\Carbon::parse($ticketvals->created_at)->translatedFormat('d M Y') }}</span> • 
+            @if($ticketvals->state == 1) <span class="badge open">Nouveau</span> @endif
+            @if($ticketvals->state == 2) <span class="badge open" style="background:#fff7ed;color:var(--warn)">Assigné</span> @endif
+            @if($ticketvals->state == 3) <span class="badge open" style="background:#eefbf7;color:var(--ok)">En cours</span> @endif
+            @if($ticketvals->state == 4) <span class="badge open" style="background:#f0f9ff;color:#0369a1">Résolu</span> @endif
+            @if($ticketvals->state == 5) <span class="badge closed">Fermé</span> @endif
+        
+           </div>
 
           <div class="row  p-3 fond-bg rounded-3">
             <div class="steps-container row" style="display:flex;align-items:center;">
@@ -60,29 +67,31 @@
             <p>{{$ticketvals->details}}</p>
           </div>
           <div class="container-fluid">
+          <form wire:submit.prevent="postCommentaire">
             <h5 style="margin:14px 0 8px">Ajouter un commentaire pour la transition</h5>
-            <textarea  class="custom-textarea" 
+            <textarea wire:model="comments"  class="custom-textarea" 
              name="message" 
             id="message"  ></textarea>
-          </div>
-          <div class="container-fluid mt-3">
-            <div class="row ">
-              <div class="col-lg-3">
-                      {{-- <button 
-                          wire:click="submitForm" id="nextBtn"
-                          class="btn btn-sm btn-primary border fw-bold relative flex items-center justify-center gap-2 px-3 py-2 rounded-md font-semibold"
-                            >
-                          <!-- Spinner : visible uniquement pendant le loading -->
-                          <span wire:loading wire:target="submitForm" class="loader"></span>
+               </div>
+              <div class="container-fluid mt-3">
+                <div class="row ">
+                  <div class="col-lg-3">
+                          {{-- <button 
+                              wire:click="submitForm" id="nextBtn"
+                              class="btn btn-sm btn-primary border fw-bold relative flex items-center justify-center gap-2 px-3 py-2 rounded-md font-semibold"
+                                >
+                              <!-- Spinner : visible uniquement pendant le loading -->
+                              <span wire:loading wire:target="submitForm" class="loader"></span>
 
-                          <!-- Texte du bouton : caché pendant le loading -->
-                          <span wire:loading.remove wire:target="submitForm">Envoyer</span>
-                      </button> --}}
+                              <!-- Texte du bouton : caché pendant le loading -->
+                              <span wire:loading.remove wire:target="submitForm">Envoyer</span>
+                          </button> --}}
 
-              <button id="prevBtn" wire:click="previousStep" class="btn btn-sm btn-outline-primary border-0 fw-bold">Reculer</button>  
-              <button  wire:click="nextStep" class="btn btn-sm btn-primary border fw-bold"><span  class="loader"></span> Passer</button>
-              </div>
-            </div>
+                        <button id="prevBtn" wire:click="previousStep" class="btn btn-sm btn-outline-primary border-0 fw-bold">Reculer</button>  
+                        <button type="submit"  wire:click="nextStep" class="btn btn-sm btn-primary border fw-bold"><span  class="loader"></span> Passer</button>
+                    </div>
+                </div>
+            </form>
           </div>
             <hr>
             <div class="container-fluid mt-4 mb-2">
@@ -92,41 +101,28 @@
 
 
                         <!-- Item 1 -->
-                        <div class="timeline-item ">
-                            <div class="timeline-icon">
-                            <span class="icon-wrap" title="Assign">
-                                <!-- user assign icon -->
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zM4 20c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5v1H4v-1z" fill="var(--accent)"/>
-                                </svg>
-                            </span>
-                            </div>
-                            <div class="timeline-content">
-                            <div class="timeline-date">
+                           @foreach($commentaires as $comment)
+                              <div class="timeline-item ">
+                                  <div class="timeline-icon">
+                                  <span class="icon-wrap" title="Assign">
+                                      <!-- user assign icon -->
+                                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zM4 20c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5v1H4v-1z" fill="var(--accent)"/>
+                                      </svg>
+                                  </span>
+                                  </div>
+                                  <div class="timeline-content">
+                                  <div class="timeline-date">
+                                  
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v5l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> 
                             
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v5l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> 30/09/2025 14:05:12  
-                            • <strong>Admin</strong> a assigné le ticket à <strong>Tech Support</strong>.</div>
-                          
-                            </div>
-                        </div>
-
-                        <!-- Item 2 -->
-                      <div class="timeline-item ">
-                            <div class="timeline-icon">
-                            <span class="icon-wrap" title="Assign">
-                                <!-- user assign icon -->
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zM4 20c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5v1H4v-1z" fill="var(--accent)"/>
-                                </svg>
-                            </span>
-                            </div>
-                            <div class="timeline-content">
-                            <div class="timeline-date"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v5l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> 30/09/2025 14:05:12  • <strong>Admin</strong> a assigné le ticket à <strong>Tech Support</strong>.</div>
-                          
-                            </div>
-                        </div>
-
-                       
+                                  {{$comment->created_at}}
+                                  • <strong> @if($comment->utilisateur_id == 2) Utilisateur @endif</strong>  {{$comment->commentaire}} <strong>Tech Support</strong>.</div>
+                                      
+                                  </div>
+                              </div>
+                           @endforeach
+  
             </div>
 
           </div>

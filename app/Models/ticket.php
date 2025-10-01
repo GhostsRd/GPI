@@ -10,7 +10,7 @@ class ticket extends Model
     use HasFactory;
     protected $table = "tickets";
 
-    protected $fillable = ["id","utilisateur_id","responsable_it","categorie","equipement","sujet","priorite","details","status,quantite"];
+    protected $fillable = ["id","utilisateur_id","responsable_it","commentaire_id","categorie","state","equipement","sujet","priorite","details","status,quantite"];
 
     public function utilisateur()
     {
@@ -19,5 +19,9 @@ class ticket extends Model
     public function responsableIT()
     {
         return $this->belongsTo(ResponsableIT::class, 'responsable_it');
+    }
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class, 'ticket_id');
     }
 }
