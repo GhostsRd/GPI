@@ -4,7 +4,7 @@
 /* Modern Ticket Table Styles - Soft Version */
 .ticket-dashboard {
     background: var(--main-bg);
-    min-height: 100vh;
+    min-height: 80vh;
     padding: 2rem;
     position: relative;
 }
@@ -179,7 +179,7 @@
 }
 
 .btn-modern.secondary {
-    background: transparent;
+    background: top;
     color: var(--primary);
     border: 1px solid var(--primary-light);
     box-shadow: none;
