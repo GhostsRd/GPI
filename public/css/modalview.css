@@ -82,12 +82,15 @@
       --gap: 14px;
       --shadow: 0 10px 30px rgba(2, 6, 23, .08);
       --step-size: 44px;
+<<<<<<< HEAD
         --line: #e6e6e6;         /* couleur ligne timeline */
         --accent: #0366d6;       /* bleu GitHub-like */
         --success: #059669;      /* vert "ok" */
         --card-bg: #fbfdff;
         --text: #0f172a;
         --glass: rgba(2,6,23,0.03);
+=======
+>>>>>>> 9d93728ac6e13ae4b251d8760b0eb7d94bcb2105
     }
 
     * {
@@ -306,6 +309,7 @@
     }
     .fond-bg {
       background: linear-gradient(90deg, #eef5f9, #f1f5f4);
+<<<<<<< HEAD
     }
       /* Timeline */
   .timeline{
@@ -443,3 +447,6 @@
     .timeline-icon{ width: 36px; height: 36px; left: 0; top: 6px }
     .timeline-icon .icon-wrap{ width: 32px; height: 32px; border-radius: 8px }
   }
+=======
+    }
+>>>>>>> 9d93728ac6e13ae4b251d8760b0eb7d94bcb2105
