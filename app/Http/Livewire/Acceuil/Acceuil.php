@@ -25,27 +25,27 @@ class Acceuil extends Component
             if($produit->categorie == "Agricole"){
                 foreach($collectes as $collect){
                     if($produit->id == $collect->produit_id){
-                        $totalagricole++; 
+                        $totalagricole++;
                     }
                 }}
             if($produit->categorie == "Peche"){
                         foreach($collectes as $collect){
                             if($produit->id == $collect->produit_id){
-                                $totalpeche++; 
+                                $totalpeche++;
                             }
                         }
                     }
             if($produit->categorie == "Forestier"){
                                 foreach($collectes as $collect){
                                     if($produit->id == $collect->produit_id){
-                                        $totalforestiare++; 
+                                        $totalforestiare++;
                                     }
                                 }
                             }
             if($produit->categorie == "Elevage"){
                     foreach($collectes as $collect){
                             if($produit->id == $collect->produit_id){
-                                      $totalelevage++; 
+                                      $totalelevage++;
                                             }
         }
         }
@@ -80,7 +80,7 @@ class Acceuil extends Component
 
     public function render()
     {
-      
+
         return view('livewire.acceuil.acceuil');
     }
 }
