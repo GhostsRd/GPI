@@ -32,6 +32,7 @@
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleuser.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modalview.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
@@ -106,9 +107,8 @@
 
     <!-- Modern Sidebar -->
     <aside class="sidebar-modern" id="sidebarModern">
-        <div class="sidebar-header">
-            <h6 class="sidebar-title">Navigation Menu</h6>
-        </div>
+
+
 
         <nav class="sidebar-nav-modern">
             <h6 class="nav-heading-modern">Visualisation</h6>
@@ -179,6 +179,27 @@
                         <a href="{{ url('/ticket/create') }}" class="submenu-item">
                             <i class="bi bi-circle"></i>
                             Nouveau Ticket
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Utilisateurs -->
+            <div class="nav-item-modern">
+                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#checkoutcollaps">
+                    <i class="nav-icon bi bi-arrow-left-right"></i>
+                    <span>Check-in / Check-out</span>
+                    <i class="nav-chevron bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse" id="checkoutcollaps">
+                    <div class="nav-submenu">
+                        <a href="{{ route('checkout') }}" class="submenu-item">
+                            <i class=" bi bi-box-arrow-in-right"></i>
+                            Check-in
+                        </a>
+                        <a href="{{ url('??') }}" class="submenu-item">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Check-out
                         </a>
                     </div>
                 </div>
