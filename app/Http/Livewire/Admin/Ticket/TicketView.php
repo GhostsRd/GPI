@@ -30,6 +30,7 @@ class TicketView extends Component
 
             $commentaire->ticket_id = $this->ticketId;
             $commentaire->utilisateur_id = 2;
+            $commentaire->etat = $this->currentStep;
             $commentaire->commentaire = $this->comments;
             $commentaire->save();
 

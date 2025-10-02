@@ -11,6 +11,7 @@ class Commentaire extends Model
     protected $fillable = [
         'ticket_id',
         'utilisateur_id', 
+        "etat",
         'commentaire',
     ];
 

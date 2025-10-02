@@ -89,6 +89,8 @@
 
                         <button id="prevBtn" wire:click="previousStep" class="btn btn-sm btn-outline-primary border-0 fw-bold">Reculer</button>  
                         <button type="submit"  wire:click="nextStep" class="btn btn-sm btn-primary border fw-bold"><span  class="loader"></span> Passer</button>
+                        <button class="btn btn-sm btn-outline-primary border fw-bold"><span  class="loader"></span> Affecter</button>
+
                     </div>
                 </div>
             </form>
@@ -116,8 +118,16 @@
                                   
                                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 7v5l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> 
                             
-                                  {{$comment->created_at}}
-                                  • <strong> @if($comment->utilisateur_id == 2) Utilisateur @endif</strong>  {{$comment->commentaire}} <strong>Tech Support</strong>.</div>
+
+                                  {{ \Carbon\Carbon::parse($comment->created_at)->translatedFormat('d M Y H:i') }}
+                                  •      @if($comment->etat == 1) <span class="badge open">Nouveau</span> @endif
+                                          @if($comment->etat == 2) <span class="badge open" style="background:#fff7ed;color:var(--warn)">Assigné</span> @endif
+                                          @if($comment->etat == 3) <span class="badge open" style="background:#eefbf7;color:var(--ok)">En cours</span> @endif
+                                          @if($comment->etat == 4) <span class="badge open" style="background:#f0f9ff;color:#0369a1">Résolu</span> @endif
+                                          @if($comment->etat == 5) <span class="badge closed">Fermé</span> @endif
+                                      
+                                  
+                                    •   <strong> @if($comment->utilisateur_id == 2) Utilisateur @endif</strong>  {{$comment->commentaire}} <strong>Tech Support</strong>.</div>
                                       
                                   </div>
                               </div>
