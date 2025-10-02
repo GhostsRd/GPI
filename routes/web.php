@@ -40,6 +40,7 @@ Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\Utilisa
 
 Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
 Route::get('/checkout', [App\Http\Controllers\checkout\Checkout::class, 'index'])->name('checkout');
+Route::get('/equipement', [App\Http\Controllers\equipement\equipementController::class, 'index'])->name('equipement');
 
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');

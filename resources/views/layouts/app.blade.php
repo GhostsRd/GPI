@@ -130,8 +130,8 @@
                 </a>
                 <div class="collapse" id="parcCollapse">
                     <div class="nav-submenu">
-                        <a href="{{ url('/equipements') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
+                        <a href="{{ url('/equipement') }}" class="submenu-item">
+                            <i class="bi bi-phone"></i>
                             Équipements
                         </a>
                         <a href="{{ url('/inventaire') }}" class="submenu-item">

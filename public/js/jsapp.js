@@ -3,6 +3,7 @@ class ModernSidebar {
     constructor() {
         this.theme = localStorage.getItem('theme') || 'light';
         this.sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        this.currentPageTitle = document.title;
         this.init();
     }
 
@@ -10,6 +11,7 @@ class ModernSidebar {
         this.applyTheme();
         this.setupEventListeners();
         this.setupSidebar();
+        this.setupPageTitles();
     }
 
     setupEventListeners() {
@@ -28,7 +30,9 @@ class ModernSidebar {
             const toggleBtn = document.getElementById('mobileMenuToggle');
 
             if (window.innerWidth <= 768 &&
+                sidebar &&
                 !sidebar.contains(e.target) &&
+                toggleBtn &&
                 !toggleBtn.contains(e.target)) {
                 this.closeMobileMenu();
             }
@@ -48,8 +52,122 @@ class ModernSidebar {
             });
         });
 
-        // Active link highlighting
+        // Active link highlighting and page title update
+        this.setupNavigationLinks();
+    }
+
+    setupNavigationLinks() {
+        const navLinks = document.querySelectorAll('.nav-link-modern');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                this.handleNavigationClick(link, e);
+            });
+        });
+
         this.highlightActiveLink();
+    }
+
+    handleNavigationClick(link, event) {
+        // Update page title based on clicked menu
+        this.updatePageTitle(link);
+
+        // Highlight active link
+        this.setActiveLink(link);
+
+        // Close mobile menu after click on mobile
+        if (window.innerWidth <= 768) {
+            this.closeMobileMenu();
+        }
+    }
+
+    updatePageTitle(clickedLink) {
+        const linkText = clickedLink.querySelector('.nav-text')?.textContent?.trim();
+        const iconElement = clickedLink.querySelector('.nav-icon');
+        const iconClass = Array.from(iconElement?.classList || []).find(cls => cls.startsWith('bi-'));
+
+        if (linkText) {
+            let themeEmoji = this.theme === 'dark' ? '🌙' : '☀️';
+            let iconEmoji = this.getIconEmoji(iconClass);
+
+            // Update document title
+            document.title = `${iconEmoji} ${linkText} | ${this.getAppName()}`;
+
+            // Update page title in content area if exists
+            this.updateContentTitle(linkText, iconEmoji);
+
+            // Save current page title
+            this.currentPageTitle = document.title;
+
+            console.log(`Page title updated to: ${linkText} (Theme: ${this.theme})`);
+        }
+    }
+
+    getIconEmoji(iconClass) {
+        const iconMap = {
+            'bi-house': '🏠',
+            'bi-speedometer2': '📊',
+            'bi-person': '👤',
+            'bi-people': '👥',
+            'bi-envelope': '✉️',
+            'bi-bell': '🔔',
+            'bi-gear': '⚙️',
+            'bi-grid': '🔲',
+            'bi-file-text': '📄',
+            'bi-bar-chart': '📈',
+            'bi-cart': '🛒',
+            'bi-wallet': '💰',
+            'bi-shield': '🛡️',
+            'bi-help-circle': '❓'
+        };
+
+        return iconMap[iconClass] || '📄';
+    }
+
+    getAppName() {
+        return document.querySelector('.app-name')?.textContent || 'Mon Application';
+    }
+
+    updateContentTitle(title, emoji) {
+        // Update main page title if exists
+        const pageTitle = document.querySelector('h1.page-title, .page-header h1, main h1');
+        if (pageTitle) {
+            pageTitle.innerHTML = `${emoji} ${title}`;
+        }
+
+        // Update breadcrumb if exists
+        const breadcrumb = document.querySelector('.breadcrumb-current, .current-page');
+        if (breadcrumb) {
+            breadcrumb.textContent = title;
+        }
+    }
+
+    setActiveLink(clickedLink) {
+        // Remove active class from all links
+        document.querySelectorAll('.nav-link-modern').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        // Add active class to clicked link
+        clickedLink.classList.add('active');
+
+        // Also activate parent if in submenu
+        this.activateParentMenu(clickedLink);
+    }
+
+    activateParentMenu(clickedLink) {
+        const parentMenu = clickedLink.closest('.nav-collapse-modern')?.previousElementSibling;
+        if (parentMenu && parentMenu.classList.contains('nav-link-modern')) {
+            parentMenu.classList.add('active');
+        }
+    }
+
+    setupPageTitles() {
+        // Set initial page title based on active link or current page
+        const activeLink = document.querySelector('.nav-link-modern.active');
+        if (activeLink) {
+            this.updatePageTitle(activeLink);
+        }
     }
 
     setupSidebar() {
@@ -67,6 +185,12 @@ class ModernSidebar {
         this.applyTheme();
         localStorage.setItem('theme', this.theme);
 
+        // Update page title with new theme
+        const activeLink = document.querySelector('.nav-link-modern.active');
+        if (activeLink) {
+            this.updatePageTitle(activeLink);
+        }
+
         // Dispatch event for Livewire components
         window.dispatchEvent(new CustomEvent('themeChanged', { detail: this.theme }));
     }
@@ -77,6 +201,16 @@ class ModernSidebar {
         const themeIcon = document.getElementById('themeIcon');
         if (themeIcon) {
             themeIcon.className = this.theme === 'light' ? 'bi bi-moon' : 'bi bi-sun';
+        }
+
+        // Update theme in UI
+        this.updateThemeUI();
+    }
+
+    updateThemeUI() {
+        const themeBadge = document.querySelector('.theme-badge');
+        if (themeBadge) {
+            themeBadge.textContent = this.theme === 'light' ? 'Mode Clair' : 'Mode Sombre';
         }
     }
 
@@ -122,6 +256,13 @@ class ModernSidebar {
             badge.style.display = count > 0 ? 'flex' : 'none';
         }
     }
+
+    // Method to manually set page title
+    setPageTitle(title, emoji = '📄') {
+        document.title = `${emoji} ${title} | ${this.getAppName()}`;
+        this.updateContentTitle(title, emoji);
+        this.currentPageTitle = document.title;
+    }
 }
 
 // Initialize when DOM is loaded
@@ -144,7 +285,24 @@ document.addEventListener('livewire:load', function() {
             window.modernSidebar.updateNotificationBadge(count);
         }
     });
+
+    // Update page title when Livewire navigation occurs
+    Livewire.hook('navigate', (event) => {
+        setTimeout(() => {
+            const activeLink = document.querySelector('.nav-link-modern.active');
+            if (activeLink && window.modernSidebar) {
+                window.modernSidebar.updatePageTitle(activeLink);
+            }
+        }, 100);
+    });
 });
 
 // Export for global access
 window.ModernSidebar = ModernSidebar;
+
+// Utility function to manually update page title from anywhere
+window.updatePageTitle = function(title, emoji = '📄') {
+    if (window.modernSidebar) {
+        window.modernSidebar.setPageTitle(title, emoji);
+    }
+};
