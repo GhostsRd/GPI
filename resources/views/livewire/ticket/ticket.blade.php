@@ -56,8 +56,8 @@
 
                 </div>
 
-            <div class="table-wrapper">
-                <table class="modern-table">
+            <div class="table-wrapper w-100">
+                <table class="modern-table ">
                     <thead>
                     <tr>
                         <th>
@@ -76,7 +76,9 @@
                     </thead>
                     <tbody>
                     @foreach($tickets as $ticket)
-                        <tr wire:key="ticket-{{ $ticket->id }}">
+                    
+                        
+                        <tr>
                             <td>
                                 <input type="checkbox"
                                        wire:model="selectedTickets"
@@ -99,8 +101,9 @@
                             <td>{{ $ticket->created_at->format('d M Y') }}</td>
                             <td>
                                 <div class="action-buttons">
-                                    <button wire:click="$dispatch('viewTicket', {id: {{ $ticket->id }}})"
+                                    <button 
                                             class="btn-action btn-view">
+                                            <a class="" href="{{ url('/admin/ticket-view-'.$ticket->id) }}">view</a>
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     <button wire:click="$dispatch('editTicket', {id: {{ $ticket->id }}})"
@@ -115,16 +118,17 @@
                                 </div>
                             </td>
                         </tr>
+               
                     @endforeach
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination -->
-            <div class="p-4">
-                {{ $tickets->links() }}
-            </div>
         </div>
+            <div class="mt-4 container">
+                {{$tickets->links()}}
+            </div>
     </div>
 
     <!-- Flash Messages -->

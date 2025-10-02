@@ -7,6 +7,7 @@ use App\Models\ticket;
 use App\Models\chat;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UtilisateurTicket extends Component
 {
@@ -21,10 +22,11 @@ class UtilisateurTicket extends Component
   
 
     public function store(ticket $ticket,chat $chat,Commentaire $commentaire){
-       
+        $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
 
         $ticket->sujet = $this->sujet;
         $ticket->details = $this->details;
+        $ticket->utilisateur_id = $utlisateurConnecter ;
         $ticket->equipement = $this->equipement;
         $ticket->categorie = $this->categorie;
         $ticket->state = 2;
@@ -33,15 +35,18 @@ class UtilisateurTicket extends Component
         $ticket->save();
 
 
+
         $findTicket = ticket::latest()->first();
 
+       
+
         $commentaire->ticket_id = $findTicket->id;
-        $commentaire->utilisateur_id = 2;
+        $commentaire->utilisateur_id = $utlisateurConnecter ;
         $commentaire->commentaire = "Ticket creer avec succes";
         $commentaire->save();
         
 
-        $chat->utilisateur_id = 2;
+        $chat->utilisateur_id = $utlisateurConnecter ;
         $chat->targetmsg_id = 1;
         $chat->type = "agent";
         $chat->message = "Ticket creer avec succes";
@@ -58,6 +63,7 @@ class UtilisateurTicket extends Component
             "tickets"=> ticket::where("id","like","%".$this->recherche."%")->paginate(8),
    
             "chats"=> chat::all(),
+            
            ]);
     }
     

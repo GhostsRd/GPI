@@ -127,7 +127,7 @@
                                           @if($comment->etat == 5) <span class="badge closed">Fermé</span> @endif
                                       
                                   
-                                    •   <strong> @if($comment->utilisateur_id == 2) Utilisateur @endif</strong>  {{$comment->commentaire}} <strong>Tech Support</strong>.</div>
+                                    •   <strong class="text-capitalize"> {{$utilisateurs->nom}}</strong>  {{$comment->commentaire}} <strong>Tech Support</strong>.</div>
                                       
                                   </div>
                               </div>

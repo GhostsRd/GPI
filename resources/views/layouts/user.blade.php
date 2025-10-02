@@ -93,17 +93,34 @@
 
         <!-- Profile -->
         <li class="nav-item ms-3">
-          <a class="nav-link d-flex align-items-center" href="{{ route('utilisateurProfile') }}" title="Profil">
+        <div class="dropdown">
+       
+        <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle shadow-sm rounded-5" width="40"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+        </svg> <span class="text-capitalize">{{ Auth::guard('utilisateur')->user()->nom }}</span>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{{ route('utilisateurProfile') }}">Modifier</a>
+          <a class="dropdown-item" href="{{ route('logout') }}"
+                                      onclick="event.preventDefault();
+                                      document.getElementById('logout-form').submit();">Deconnecter</a>
+          <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
+                                        @csrf
+          </form>
+        </div>
+      </div>
+      
+          {{-- <a class="nav-link d-flex align-items-center" href="{{ route('utilisateurProfile') }}" title="Profil">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
             </svg>
-          </a>
+            <span class="ms-2">{{ Auth::guard('utilisateur')->user()->nom }}</span>
+          </a> --}}
         </li>
 
         <!-- Dark/Light mode toggle -->
-        <li class="nav-item ms-3">
+        {{-- <li class="nav-item ms-3">
           <button class="btn btn-sm btn-outline-secondary" id="modeToggle">🌙</button>
-        </li>
+        </li> --}}
       </ul>
     </div>
   </div>

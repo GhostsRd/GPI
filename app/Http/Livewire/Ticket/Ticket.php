@@ -8,12 +8,27 @@ use App\Models\Ticket as TicketModel;
 
 class Ticket extends Component
 {
-    use WithPagination;
+
 
     public $checkData = [];
     public $selectedTickets = [];
     public $recherche = '';
     public $disabled = "disabled";
+
+
+    public function deleteSelected()
+    {
+        if (empty($this->selectedTickets)) {
+            return; // sécurité au cas où
+        }
+
+        TicketModel::whereIn('id', $this->selectedTickets)->delete();
+
+        // Réinitialiser la sélection
+        $this->selectedTickets = [];
+
+        session()->flash('message', 'Tickets supprimés avec succès.');
+    }
 
     public function render()
     {

@@ -274,7 +274,7 @@
                         <i class="fas fa-user-plus"></i> Créer mon compte utilisateur
                     </button>
 
-                    <a href="{{ route('login') }}" class="login-link">
+                    <a href="{{ route('utilisateurLogin') }}" class="login-link">
                         Déjà un compte ? Connectez-vous ici
                     </a>
                 </form>

@@ -51,7 +51,10 @@ class TicketView extends Component
         $progress = 'fill_'.$prog;
         $this->progress = $progress;
 
-        for($i=1; $i<=5; $i++){
+        if($this->currentStep == 6){
+
+        }else{
+            for($i=1; $i<=6; $i++){
             if($i < $this->currentStep){
                 $this->current[$i] = "past";
             }elseif($i == $this->currentStep){
@@ -60,6 +63,10 @@ class TicketView extends Component
                 $this->current[$i] = "future";
             }
         }
+
+        }
+
+      
     }
     public function nextStep()
     {
@@ -71,7 +78,7 @@ class TicketView extends Component
     public function previousStep()
     {
         
-        for($i=5; $i>=1; $i--){
+        for($i=6; $i>=1; $i--){
             if($this->current[$this->currentStep] == "current" && $i > 1){
                 $this->current[$this->currentStep] = "future";
                 $this->current[$this->currentStep-1] = "current";
@@ -136,6 +143,7 @@ class TicketView extends Component
         $this->modelstep(Ticket::find($this->ticketId));
         return view('livewire.admin.ticket.ticket-view',[
             "tickets" => ticket::all(),
+            "utilisateurs" => ticket::find($this->ticketId)->utilisateur,
             "commentaires" => $this->commentaires,
         ]);
     }
