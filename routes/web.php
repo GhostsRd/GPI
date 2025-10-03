@@ -40,6 +40,16 @@ Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\Utilisa
 
 Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
 Route::get('/checkout', [App\Http\Controllers\checkout\Checkout::class, 'index'])->name('checkout');
+Route::get('/equipementSeeder/create', [App\Http\Controllers\equipement\equipement::class, 'create'])->name('equipementSeeder.create');
+Route::post('/equipementSeeder', [App\Http\Controllers\equipement\equipement::class, 'store'])->name('equipementSeeder.store');
+Route::get('/equipementSeeder/{equipementSeeder}', [App\Http\Controllers\equipement\equipement::class, 'show'])->name('equipementSeeder.show');
+Route::get('/equipementSeeder/edit', [App\Http\Controllers\equipement\equipement::class, 'edit'])->name('equipementSeeder.edit');
+Route::put('/equipementSeeder/{equipementSeeder}', [App\Http\Controllers\equipement\equipement::class, 'update'])->name('equipementSeeder.update');
+Route::patch('/equipementSeeder/{equipementSeeder}', [App\Http\Controllers\equipement\equipement::class, 'update']); // Alternative pour PATCH
+Route::delete('/equipementSeeder/{equipementSeeder}', [App\Http\Controllers\equipement\equipement::class, 'destroy'])->name('equipementSeeder.destroy');
+Route::get('/equipementSeeder', [App\Http\Controllers\equipement\equipement::class, 'index'])->name('equipementSeeder');
+Route::post('/equipementSeeder/import', [App\Http\Controllers\equipement\equipement::class, 'import'])->name('equipementSeeder.import');
+Route::get('/equipementSeeder/export', [App\Http\Controllers\equipement\equipement::class, 'export'])->name('equipementSeeder.export');
 
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');

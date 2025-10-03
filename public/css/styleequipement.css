@@ -1,0 +1,445 @@
+/* Styles spécifiques pour le composant Livewire d'inventaire */
+.compact-mode {
+    background: var(--main-bg);
+    color: var(--dark);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+/* En-tête avec statistiques */
+.compact-mode h1 {
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Cartes de statistiques */
+.stats-widget {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+}
+
+.stats-widget::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stats-widget:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px var(--shadow-lg);
+    border-color: var(--primary);
+}
+
+.stats-widget:hover::before {
+    transform: scaleX(1);
+}
+
+.stats-number {
+    font-weight: 800;
+    font-size: 1.8rem !important;
+    margin-bottom: 0.25rem;
+}
+
+.stats-label {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    font-weight: 600;
+}
+
+.avatar-sm {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+}
+
+/* Barre de recherche et filtres */
+.compact-mode .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.compact-mode .form-label {
+    color: var(--dark);
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.compact-mode .form-control,
+.compact-mode .form-select {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--dark);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.compact-mode .form-control:focus,
+.compact-mode .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    background: var(--card-bg);
+    color: var(--dark);
+}
+
+.compact-mode .input-group-text {
+    background: var(--sidebar-hover);
+    border: 1px solid var(--border);
+    color: var(--gray-500);
+}
+
+/* Boutons */
+.compact-mode .btn {
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.compact-mode .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.compact-mode .btn:hover::before {
+    left: 100%;
+}
+
+.compact-mode .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+}
+
+.compact-mode .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+}
+
+.compact-mode .btn-outline-primary {
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    background: transparent;
+}
+
+.compact-mode .btn-outline-primary:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+}
+
+.compact-mode .btn-outline-success {
+    border: 1px solid var(--success);
+    color: var(--success);
+}
+
+.compact-mode .btn-outline-success:hover {
+    background: var(--success);
+    color: white;
+}
+
+/* Tableau */
+.compact-mode .table {
+    color: var(--dark);
+    font-size: 0.8rem;
+    margin-bottom: 0;
+}
+
+.compact-mode .table thead {
+    background: var(--gradient-light);
+    border-bottom: 2px solid var(--border);
+}
+
+.compact-mode .table th {
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.compact-mode .table td {
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.compact-mode .table tbody tr {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.compact-mode .table tbody tr:hover {
+    background: var(--sidebar-hover);
+    border-left-color: var(--primary);
+    transform: translateX(2px);
+}
+
+/* Badges */
+.compact-mode .badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.bg-primary {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+}
+
+.bg-success {
+    background: var(--success) !important;
+    color: white !important;
+}
+
+.bg-warning {
+    background: var(--warning) !important;
+    color: white !important;
+}
+
+.bg-danger {
+    background: var(--error) !important;
+    color: white !important;
+}
+
+.bg-dark {
+    background: var(--gray-800) !important;
+    color: white !important;
+}
+
+.bg-secondary {
+    background: var(--gray-500) !important;
+    color: white !important;
+}
+
+/* Badges avec opacité */
+.bg-primary.bg-opacity-10 {
+    background: rgba(6, 182, 212, 0.1) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+.bg-success.bg-opacity-10 {
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: var(--success) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.bg-warning.bg-opacity-10 {
+    background: rgba(245, 158, 11, 0.1) !important;
+    color: var(--warning) !important;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.bg-secondary.bg-opacity-10 {
+    background: rgba(100, 116, 139, 0.1) !important;
+    color: var(--gray-600) !important;
+    border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+/* Alertes */
+.compact-mode .alert {
+    border: none;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    border-left: 4px solid transparent;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border-left-color: var(--success);
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+    border-left-color: var(--error);
+}
+
+.alert-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--info);
+    border-left-color: var(--info);
+}
+
+/* Pagination */
+.compact-mode .pagination {
+    font-size: 0.8rem;
+}
+
+.compact-mode .page-link {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--dark);
+    border-radius: 8px;
+    margin: 0 0.2rem;
+    transition: all 0.3s ease;
+}
+
+.compact-mode .page-link:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.compact-mode .page-item.active .page-link {
+    background: var(--gradient-primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* Modal */
+.compact-mode .modal-content {
+    background: var(--card-bg);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px var(--shadow-lg);
+}
+
+.compact-mode .modal-header {
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+}
+
+.compact-mode .modal-title {
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.compact-mode .modal-body {
+    padding: 1.5rem;
+}
+
+.compact-mode .modal-footer {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+}
+
+.compact-mode .btn-close {
+    filter: invert(0.5);
+}
+
+[data-theme="dark"] .compact-mode .btn-close {
+    filter: invert(0.8);
+}
+
+/* Icônes */
+.compact-mode .fas,
+.compact-mode .fa {
+    transition: transform 0.3s ease;
+}
+
+.compact-mode .btn:hover .fas,
+.compact-mode .btn:hover .fa {
+    transform: scale(1.1);
+}
+
+/* État vide */
+.compact-mode .text-muted {
+    color: var(--gray-500) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .compact-mode {
+        padding: 0.75rem;
+    }
+
+    .compact-mode h1 {
+        font-size: 1.3rem !important;
+    }
+
+    .stats-number {
+        font-size: 1.5rem !important;
+    }
+
+    .compact-mode .table-responsive {
+        border-radius: 8px;
+        border: 1px solid var(--border);
+    }
+}
+
+@media (max-width: 576px) {
+    .compact-mode {
+        padding: 0.5rem;
+    }
+
+    .compact-mode .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .compact-mode .btn-group .btn {
+        border-radius: 6px;
+        margin: 0;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.compact-mode .card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.compact-mode .stats-widget {
+    animation: fadeInUp 0.5s ease-out 0.1s both;
+}
+
+.compact-mode .table {
+    animation: fadeInUp 0.5s ease-out 0.2s both;
+}
+
+/* Focus pour accessibilité */
+.compact-mode .btn:focus,
+.compact-mode .form-control:focus,
+.compact-mode .form-select:focus,
+.compact-mode .page-link:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
