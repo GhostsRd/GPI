@@ -82,7 +82,7 @@
                         <div class="user-dropdown" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <div class="d-flex align-items-center">
                                 <img src="{{ asset('/images/avtar_1.png') }}" class="user-avatar" width="40" height="40" alt="">
-                                <span class="ms-2 fw-bold text-dark">{{ Auth::user()->name ?? 'Guest' }}</span>
+                                <span class="ms-2 fw-bold text-dark">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</span>
                             </div>
                         </div>
 

@@ -29,6 +29,7 @@ class UtilisateurTicket extends Component
         $ticket->utilisateur_id = $utlisateurConnecter ;
         $ticket->equipement = $this->equipement;
         $ticket->categorie = $this->categorie;
+        $ticket->impact = $this->impact;
         $ticket->state = 2;
         $ticket->status = "en attente";
         $ticket->priorite = false;

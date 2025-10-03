@@ -21,11 +21,13 @@ class CreateTicketsTable extends Migration
             $table->integer("state")->default(1);
             $table->string('equipement')->nullable();
             $table->string('categorie')->nullable();
+            $table->string("impact");
             $table->string('sujet')->nullable();
             $table->string('details')->nullable();
             $table->boolean('priorite')->default(false);
             $table->string('status')->nullable();
             $table->string('quantite')->nullable();
+            $table->boolean("archive")->default(false);
             $table->timestamps();
         });
     }

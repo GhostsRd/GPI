@@ -67,7 +67,6 @@
         </div>
          <br>
         <div class="mt-3">
-       
           <h4 class="form-label">Equipement</h4>
           <input class="form-control" wire:model="equipement"  name="status">
         </div>
