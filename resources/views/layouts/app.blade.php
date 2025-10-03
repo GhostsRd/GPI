@@ -82,7 +82,7 @@
                         <div class="user-dropdown" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <div class="d-flex align-items-center">
                                 <img src="{{ asset('/images/avtar_1.png') }}" class="user-avatar" width="40" height="40" alt="">
-                                <span class="ms-2 fw-bold text-dark">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</span>
+                                <span class="ms-2 fw-bold text-dark">{{ Auth::user()->name ?? 'Guest' }}</span>
                             </div>
                         </div>
 
@@ -237,6 +237,18 @@
 </div>
 
 @livewireScripts
+
+<script>
+    window.addEventListener('openAffectationModal', () => {
+        let modal = new bootstrap.Modal(document.getElementById('affectationModal'));
+        modal.show();
+    });
+
+    window.addEventListener('closeAffectationModal', () => {
+        let modal = bootstrap.Modal.getInstance(document.getElementById('affectationModal'));
+        modal.hide();
+    });
+</script>
 <script src="{{ asset('js/modalview.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

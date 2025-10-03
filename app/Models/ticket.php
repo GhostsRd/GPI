@@ -18,10 +18,14 @@ class ticket extends Model
     }
     public function responsableIT()
     {
-        return $this->belongsTo(ResponsableIT::class, 'responsable_it');
+        return $this->belongsTo(User::class, 'id');
     }
     public function commentaires()
     {
         return $this->hasMany(Commentaire::class, 'ticket_id');
+    }
+    public function responsable()
+    {
+        return $this->hasMany(User::class, 'id');
     }
 }

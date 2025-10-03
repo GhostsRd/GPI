@@ -19,7 +19,8 @@ class UtilisateurService extends Component
     public $priorite;
     public $equipement;
     public $impact;
-
+    public $responsable_id = 2;
+    
     protected $rules = [
         'sujet'      => 'required|string|min:5',
         'details'    => 'required|string|min:5',
@@ -39,10 +40,14 @@ class UtilisateurService extends Component
 
         public function store(ticket $ticket,chat $chat,Commentaire $commentaire){
         $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
+        if($this->categorie == "Réseau"){
+            $this->responsable_id= 1;
+        }
 
         $ticket->sujet = $this->sujet;
         $ticket->details = $this->details;
         $ticket->utilisateur_id = $utlisateurConnecter ;
+        $ticket->responsable_id = $this->responsable_id;
         $ticket->equipement = $this->equipement;
         $ticket->categorie = $this->categorie;
         $ticket->impact = $this->impact;

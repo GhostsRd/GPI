@@ -8,9 +8,9 @@
     <div class="row h-100">
     
       <div class="col-lg-9  mb-md-2 mb-sm-2">
-        <div class="container shadow-sm bg-white mt-0 pt-3 p-4 rounded-3">
+        <div class="container bg-white mt-0 pt-3 p-4 rounded-3 shadow_{{$ticketvals->priorite}} ">
            <label class="fw-bold  mb-1 mt-0 pt-0" >Ticket #<span id="ticketId">{{$ticketId}}</span> — {{$ticketvals->sujet}}</label>
-            <div class="meta mt-2">Créé par <strong>Jean</strong> • <span id="createdAt">{{ \Carbon\Carbon::parse($ticketvals->created_at)->translatedFormat('d M Y') }}</span> • 
+            <div class="meta mt-2">Créé par <strong>{{$utilisateurs->nom}}</strong> • <span id="createdAt">{{ \Carbon\Carbon::parse($ticketvals->created_at)->translatedFormat('d M Y') }}</span> • 
             @if($ticketvals->state == 1) <span class="badge open">Nouveau</span> @endif
             @if($ticketvals->state == 2) <span class="badge open" style="background:#fff7ed;color:var(--warn)">Assigné</span> @endif
             @if($ticketvals->state == 3) <span class="badge open" style="background:#eefbf7;color:var(--ok)">En cours</span> @endif
@@ -89,8 +89,10 @@
 
                         <button id="prevBtn" wire:click="previousStep" class="btn btn-sm btn-outline-primary border-0 fw-bold">Reculer</button>  
                         <button type="submit"  wire:click="nextStep" class="btn btn-sm btn-primary border fw-bold"><span  class="loader"></span> Passer</button>
-                        <button class="btn btn-sm btn-outline-primary border fw-bold"><span  class="loader"></span> Affecter</button>
-
+                        <button class="btn btn-sm btn-primary" 
+                                wire:click="openAffectationModal">
+                            Affecter
+                        </button>
                     </div>
                 </div>
             </form>
@@ -127,7 +129,13 @@
                                           @if($comment->etat == 5) <span class="badge closed">Fermé</span> @endif
                                       
                                   
-                                    •   <strong class="text-capitalize"> {{$utilisateurs->nom}}</strong>  {{$comment->commentaire}} <strong>Tech Support</strong>.</div>
+                                    •   <strong class="text-capitalize"> 
+                                    @foreach($responsables as $resp)
+                                      @if($comment->utilisateur_id == $resp->id)
+                                              {{$resp->name}}
+                                      @endif
+                                    @endforeach
+                                    </strong>  {{$comment->commentaire}} <strong>{{$ticketvals->categorie}}</strong>.</div>
                                       
                                   </div>
                               </div>
@@ -144,7 +152,7 @@
         <aside class="shadow-sm p-4 bg-white rounded-2 h-100 side ">
           <div>
             <label class="fw-bold" style="margin:0 0 8px">Résumé</label>
-            <div class="info"><span class="text-muted fw-bold" style="font-size: 0.8rem;">Priorité:</span> @if($ticketvals->priorite == 0) Haute @endif</div>
+            <div class="info"><span class="text-muted fw-bold" style="font-size: 0.8rem;">Priorité:</span> @if($ticketvals->priorite == 0) Eleve @endif</div>
             <div class="info"><span class="text-muted fw-bold" style="font-size: 0.8rem;">Assigné à:</span> Tech Support</div>
             <div class="info" style="margin-top:6px"><span class="text-muted fw-bold" style="font-size: 0.8rem;">Dernière mise à jour:</span> <span
                 id="lastUpdate">{{ \Carbon\Carbon::parse($ticketvals->updated_at)->translatedFormat('d M Y') }}
@@ -172,5 +180,37 @@
         </aside>
       </div>
 </div>
+
+<div class="modal fade" id="affectationModal" tabindex="-1" aria-hidden="true" wire:ignore.self>
+  <div class="modal-dialog modal-dialog-centered"> <!-- 👈 centré verticalement -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Affecter un ticket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        <label for="assigned_to" class="form-label">Choisir un technicien</label>
+        <select class="form-select" id="assigned_to" wire:model="assigned_to">
+            <option value="">-- Sélectionner --</option>
+            @foreach($responsables as $user)
+                <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->poste }})</option>
+            @endforeach
+        </select>
+        @error('assigned_to') 
+            <div class="text-danger">{{ $message }}</div> 
+        @enderror
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-success" wire:click="affecter">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 </div>

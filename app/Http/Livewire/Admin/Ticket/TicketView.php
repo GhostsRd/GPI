@@ -4,6 +4,9 @@ namespace App\Http\Livewire\Admin\Ticket;
 
 use Livewire\Component;
 use App\Models\ticket;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\Commentaire;
 
 class TicketView extends Component
@@ -23,13 +26,40 @@ class TicketView extends Component
     ];
     public $progress;
 
+    public $selectedTicket;
+public $assigned_to;
+public $techniciens;
+
+
+public function openAffectationModal()
+{
+  
+    $this->assigned_to = null; // reset
+     $this->dispatchBrowserEvent('openAffectationModal');
+}
+
+public function affecter()
+{
+    $this->validate([
+        'assigned_to' => 'required|exists:utilisateurs,id',
+    ]);
+
+    $ticket = ticket::findOrFail($this->ticketId);
+    $ticket->responsable_id = $this->assigned_to;
+    $ticket->save();
+
+    $this->dispatchBrowserEvent('closeAffectationModal'); // fermer le modal côté JS
+    session()->flash('message', 'Ticket affecté avec succès ✅');
+    return redirect('/ticket');
+}
+
     public function postCommentaire(Commentaire $commentaire){
         if(!$this->comments){
           
         }else{
 
             $commentaire->ticket_id = $this->ticketId;
-            $commentaire->utilisateur_id = 2;
+            $commentaire->utilisateur_id = Auth::user()->id ;
             $commentaire->etat = $this->currentStep;
             $commentaire->commentaire = $this->comments;
             $commentaire->save();
@@ -51,7 +81,7 @@ class TicketView extends Component
         $progress = 'fill_'.$prog;
         $this->progress = $progress;
 
-        if($this->currentStep == 6){
+        if($this->currentStep == 5){
 
         }else{
             for($i=1; $i<=6; $i++){
@@ -128,13 +158,13 @@ class TicketView extends Component
         $this->ticketId = $id;
         $this->current;
         $this->progress;
+        $this->techniciens = \App\Models\Utilisateur::where('role', 'technicien')->get();
         // Exemple si tu veux charger directement ton modèle
         $this->ticketvals = Ticket::findOrFail($this->ticketId);
         $this->commentaires = $this->ticketvals
                 ->commentaires()
                 ->orderBy('created_at', 'desc')
                 ->get();
-
     }         
 
   
@@ -142,8 +172,10 @@ class TicketView extends Component
     {   
         $this->modelstep(Ticket::find($this->ticketId));
         return view('livewire.admin.ticket.ticket-view',[
-            "tickets" => ticket::all(),
+
             "utilisateurs" => ticket::find($this->ticketId)->utilisateur,
+            "responsables" => User::get(),
+
             "commentaires" => $this->commentaires,
         ]);
     }

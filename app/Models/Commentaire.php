@@ -23,4 +23,8 @@ class Commentaire extends Model
     {
         return $this->belongsTo(utilisateur::class);
     }
+    public function responsable()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

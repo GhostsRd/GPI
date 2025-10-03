@@ -12,7 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'status', 'last_login_at'
+        'name','commentaire_id', 'email', 'password', 'role', 'status', 'last_login_at'
     ];
 
     protected $hidden = [
@@ -39,4 +39,5 @@ class User extends Authenticatable
     {
         return $this->last_login_at ? $this->last_login_at->format('Y-m-d H:i') : 'Jamais';
     }
+   
 }

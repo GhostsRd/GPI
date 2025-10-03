@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Ticket;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Ticket as TicketModel;
+use Illuminate\Support\Facades\Auth;
 
 class Ticket extends Component
 {
@@ -32,10 +33,16 @@ class Ticket extends Component
 
     public function render()
     {
-        $tickets = TicketModel::when($this->recherche, function ($query) {
-            $query->where("reference", "like", "%" . $this->recherche . "%")
+            $tickets = TicketModel::where("responsable_id", Auth::user()->id)
+        ->when($this->recherche, function ($query) {
+            $query->where(function ($q) {
+                $q->where("reference", "like", "%" . $this->recherche . "%")
                 ->orWhere("sujet", "like", "%" . $this->recherche . "%");
-        })->paginate(8);
+            });
+        })
+        ->orderBy("priorite", "asc")   // d'abord par priorité
+        ->orderBy("created_at", "desc") // puis par date de création (les plus récents en premier)
+        ->paginate(10);
 
         return view('livewire.ticket.ticket', [
             "tickets" => $tickets,

@@ -66,6 +66,7 @@
                         <th>Référence</th>
                         <th>Sujet</th>
                         <th>Priorité</th>
+                        <th>Categorie</th>
                         <th>Statut</th>
                         <th>Créé par</th>
                         <th>Assigné à</th>
@@ -78,47 +79,52 @@
                     @foreach($tickets as $ticket)
                     
                         
-                        <tr>
-                            <td>
-                                <input type="checkbox"
-                                       wire:model="selectedTickets"
-                                       value="{{ $ticket->id }}"
-                                       class="checkbox-modern">
-                            </td>
-                            <td>{{ $ticket->reference }}</td>
-                            <td>{{ $ticket->sujet }}</td>
-                            <td class="priority-{{ $ticket->priorite }}">
-                                {{ ucfirst($ticket->priorite) }}
-                            </td>
-                            <td>
-                                <span class="status-badge status-{{ strtolower($ticket->status) }}">
-                                    {{ $ticket->status }}
-                                </span>
-                            </td>
-                            <td>{{ $ticket->created_by }}</td>
-                            <td>{{ $ticket->assigned_to }}</td>
-                            <td>{{ $ticket->equipment }}</td>
-                            <td>{{ $ticket->created_at->format('d M Y') }}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button 
-                                            class="btn-action btn-view">
-                                            <a class="" href="{{ url('/admin/ticket-view-'.$ticket->id) }}">view</a>
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button wire:click="$dispatch('editTicket', {id: {{ $ticket->id }}})"
-                                            class="btn-action btn-edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button wire:click="deleteTicket({{ $ticket->id }})"
-                                            class="btn-action btn-delete"
-                                            onclick="return confirm('Supprimer ce ticket ?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-               
+
+                            <tr class="priorite_{{$ticket->priorite}}">
+                                <td>
+                                    <input type="checkbox"
+                                        wire:model="selectedTickets"
+                                        value="{{ $ticket->id }}"
+                                        class="checkbox-modern">
+                                </td>
+                                <td>{{ $ticket->reference }}</td>
+                                <td>{{ $ticket->sujet }}</td>
+                                <td class="priority-{{ $ticket->priorite }}">
+                                    {{ ucfirst($ticket->priorite) }}
+                                </td>
+                                <td >
+                                    {{ $ticket->categorie }}
+                                </td>
+                                <td>
+                                    <span class="status-badge status-{{ strtolower($ticket->status) }}">
+                                        {{ $ticket->status }}
+                                    </span>
+                                </td>
+                                <td>{{ $ticket->created_by }}</td>
+                                <td>{{ $ticket->assigned_to }}</td>
+                                <td>{{ $ticket->equipment }}</td>
+                                <td>{{ $ticket->created_at->format('d M Y H:i') }}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button 
+                                                class="btn-action btn-view">
+                                                <a class="" href="{{ url('/admin/ticket-view-'.$ticket->id) }}">view</a>
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button wire:click="$dispatch('editTicket', {id: {{ $ticket->id }}})"
+                                                class="btn-action btn-edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button wire:click="deleteTicket({{ $ticket->id }})"
+                                                class="btn-action btn-delete"
+                                                onclick="return confirm('Supprimer ce ticket ?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                
+                   
                     @endforeach
                     </tbody>
                 </table>
