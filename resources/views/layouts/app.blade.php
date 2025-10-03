@@ -15,6 +15,7 @@
     <script src="{{ asset('js/jsapp.js') }}" ></script>
     <script src="{{ asset('js/jsuser.js') }}" ></script>
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/equipementSeeder.js') }}"></script>
     <script src="{{ asset('/monjs.js') }}"></script>
 
 
@@ -34,6 +35,7 @@
     <link href="{{ asset('css/modalview.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styleequipement.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -130,7 +132,7 @@
                 </a>
                 <div class="collapse" id="parcCollapse">
                     <div class="nav-submenu">
-                        <a href="{{ url('/equipement') }}" class="submenu-item">
+                        <a href="{{ url('/equipementSeeder') }}" class="submenu-item">
                             <i class="bi bi-phone"></i>
                             Équipements
                         </a>

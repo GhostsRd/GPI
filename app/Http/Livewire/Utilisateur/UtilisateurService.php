@@ -24,7 +24,7 @@ class UtilisateurService extends Component
         'sujet'      => 'required|string|min:5',
         'details'    => 'required|string|min:5',
         'priorite'   => 'required|string',
-        'equipement' => 'required|string',
+        'equipementSeeder' => 'required|string',
         'categorie'  => 'required|string',
         'impact'     => 'required|string',
     ];
@@ -35,7 +35,7 @@ class UtilisateurService extends Component
         $this->validateOnly($propertyName);
     }
 
-   
+
 
         public function store(ticket $ticket,chat $chat,Commentaire $commentaire){
         $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
@@ -55,13 +55,13 @@ class UtilisateurService extends Component
 
         $findTicket = ticket::latest()->first();
 
-       
+
 
         $commentaire->ticket_id = $findTicket->id;
         $commentaire->utilisateur_id = $utlisateurConnecter ;
         $commentaire->commentaire = "Ticket creer avec succes";
         $commentaire->save();
-        
+
 
         $chat->utilisateur_id = $utlisateurConnecter ;
         $chat->targetmsg_id = 1;
