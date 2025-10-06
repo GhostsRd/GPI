@@ -1,18 +1,18 @@
 <div class="ticket-dashboard">
     <div class="dashboard-container">
-        <!-- Stats Header -->
+        <!-- Stats Header (reste inchangé) -->
         <div class="stats-header fade-in-up">
-            <div class="row"> <!-- Ajout d'une div row manquante -->
+            <div class="row">
                 <div class="col-xl-3 col-md-6">
-                    <div class="card stats-widget border-0 shadow-sm">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-primary">{{ $totalTickets }}</h3>
-                                    <p class="stats-label text-muted mb-0">Totals tickets</p>
+                                    <p class="stats-label text-light mb-0">Totals tickets</p>
                                 </div>
                                 <div class="flex-shrink-0">
-                                    <div class="avatar-sm rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center">
+                                    <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
                                         <i class="fas fa-boxes fa-lg"></i>
                                     </div>
                                 </div>
@@ -22,15 +22,15 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6">
-                    <div class="card stats-widget border-0 shadow-sm">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-success">{{ $inProgressTickets }}</h3>
-                                    <p class="stats-label text-muted mb-0">En cours</p>
+                                    <p class="stats-label text-light mb-0">En cours</p>
                                 </div>
                                 <div class="flex-shrink-0">
-                                    <div class="avatar-sm rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center">
+                                    <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
                                         <i class="fas fa-warehouse fa-lg"></i>
                                     </div>
                                 </div>
@@ -40,15 +40,15 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6">
-                    <div class="card stats-widget border-0 shadow-sm">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-warning">{{ $pendingTickets }}</h3>
-                                    <p class="stats-label text-muted mb-0">En Prêt</p>
+                                    <p class="stats-label text-light mb-0">En Prêt</p>
                                 </div>
                                 <div class="flex-shrink-0">
-                                    <div class="avatar-sm rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center">
+                                    <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
                                         <i class="fas fa-hand-holding fa-lg"></i>
                                     </div>
                                 </div>
@@ -58,20 +58,77 @@
                 </div>
 
                 <div class="col-xl-3 col-md-6">
-                    <div class="card stats-widget border-0 shadow-sm">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-danger">{{ $resolvedTickets }}</h3>
-                                    <p class="stats-label text-muted mb-0">Résolus</p>
+                                    <p class="stats-label text-light mb-0">Résolus</p>
                                 </div>
                                 <div class="flex-shrink-0">
-                                    <div class="avatar-sm rounded-circle bg-danger bg-opacity-10 text-danger d-flex align-items-center justify-content-center">
+                                    <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
                                         <i class="fas fa-tools fa-lg"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Container -->
+        <!-- Barre de recherche et filtres -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Recherche</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-transparent">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" wire:model.live="search"
+                                   class="form-control" placeholder="Référence, Sujet, Créé par...">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Statut</label>
+                        <select wire:model.live="statut" class="form-select form-select-sm">
+                            <option value="">Tous les statuts</option>
+                            <option value="ouvert">Ouvert</option>
+                            <option value="en_cours">En Cours</option>
+                            <option value="en_attente">En Attente</option>
+                            <option value="résolu">Résolu</option>
+                            <option value="fermé">Fermé</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Priorité</label>
+                        <select wire:model.live="priorite" class="form-select form-select-sm">
+                            <option value="">Toutes les priorités</option>
+                            <option value="basse">Basse</option>
+                            <option value="moyenne">Moyenne</option>
+                            <option value="haute">Haute</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Catégorie</label>
+                        <select wire:model.live="categorie" class="form-select form-select-sm">
+                            <option value="">Toutes les catégories</option>
+                            <option value="Réseau">Réseau</option>
+                            <option value="Logiciel">Logiciel</option>
+                            <option value="Matériel">Matériel</option>
+                            <option value="Sécurité">Sécurité</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" wire:click="$set(['search' => '', 'statut' => '', 'priorite' => '', 'categorie' => '', 'assigned_to' => ''])"
+                                class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
+                            <i class="fa fa-times"></i> Réinitialiser les filtres
+                        </button>
                     </div>
                 </div>
             </div>
@@ -85,10 +142,6 @@
                     Liste des Tickets
                 </div>
                 <div class="table-actions">
-                    <div class="search-box">
-                        <input type="text" wire:model.debounce.500ms="search" placeholder="Rechercher...">
-                        <i class="fas fa-search search-icon"></i>
-                    </div>
                     <button wire:click="$dispatch('openCreateModal')" class="btn-modern">
                         <i class="fas fa-plus"></i>
                         Nouveau Ticket
@@ -98,21 +151,11 @@
                         <i class="fas fa-trash"></i>
                         Supprimer ({{ count($selectedTickets) }})
                     </button>
-                    <select id="categorie"
-                            class="btn-modern secondary @error('categorie') is-invalid @enderror"
-                            wire:model="categorie">
-                        <option value="">-- Filtrer par une catégorie --</option>
-                        <option value="Réseau">Réseau</option>
-                        <option value="Logiciel">Logiciel</option>
-                        <option value="Matériel">Matériel</option>
-                        <option value="Sécurité">Sécurité</option>
-                        <option value="Autre">Autre</option>
-                    </select>
                 </div>
             </div>
 
-            <div class="table-wrapper w-100">
-                <table class="modern-table">
+            <div class="table-wrapper w-100 compact-mode">
+                <table class="modern-table table">
                     <thead>
                     <tr>
                         <th>
@@ -121,7 +164,7 @@
                         <th>Référence</th>
                         <th>Sujet</th>
                         <th>Priorité</th>
-                        <th>Categorie</th>
+                        <th>Catégorie</th>
                         <th>Statut</th>
                         <th>Créé par</th>
                         <th>Assigné à</th>
@@ -185,8 +228,9 @@
             </div>
         </div>
     </div>
+    </div>
 
-
+    <!-- Flash Messages -->
     @if (session()->has('message'))
         <div class="mynotif active">
             <div class="d-flex align-items-center">

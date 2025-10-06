@@ -1,9 +1,43 @@
 /* Import de la police */
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 
-/* Héritage du thème principal cyan */
-:root, [data-theme="dark"] {
-    /* Toutes les variables CSS du thème principal sont déjà disponibles */
+[data-theme="dark"] {
+    /* Dark Theme - Cyan */
+    --primary: #22d3ee;
+    --primary-light: #67e8f9;
+    --primary-dark: #06b6d4;
+    --primary-50: #0c4a6e;
+    --primary-100: #155e75;
+    --primary-200: #0e7490;
+    --primary-300: #0891b2;
+    --primary-400: #06b6d4;
+    --secondary: #a78bfa;
+    --success: #34d399;
+    --warning: #fbbf24;
+    --error: #f87171;
+    --info: #60a5fa;
+    --dark: #f1f5f9;
+    --light: #0f172a;
+    --gray-50: #1e293b;
+    --gray-100: #334155;
+    --gray-200: #475569;
+    --gray-300: #64748b;
+    --gray-400: #94a3b8;
+    --gray-500: #cbd5e1;
+    --gray-600: #e2e8f0;
+    --gray-700: #f1f5f9;
+    --gray-800: #f8fafc;
+    --gray-900: #ffffff;
+    --border: #334155;
+    --sidebar-bg: #1e293b;
+    --sidebar-text: #f1f5f9;
+    --sidebar-hover: #334155;
+    --nav-bg: #1e293b;
+    --nav-text: #f1f5f9;
+    --main-bg: #0f172a;
+    --card-bg: #1e293b;
+    --shadow: rgba(0, 0, 0, 0.25);
+    --shadow-lg: rgba(0, 0, 0, 0.4);
 }
 
 /* Application de la taille de police réduite */
@@ -112,7 +146,7 @@
 }
 
 .stat-label {
-    color: var(--gray-500);
+    color: var(--gray-900);
     font-size: 0.8rem; /* Réduit de 0.9rem */
     font-weight: 600;
     text-transform: uppercase;
@@ -130,7 +164,7 @@
     z-index: 1;
 }
 
-.table-header {
+.table- {
     padding: 1.25rem 1.5rem; /* Réduit de 1.5rem 2rem */
     display: flex;
     justify-content: space-between;
@@ -653,4 +687,81 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
 }
+
+:root {
+    --dark: #2d3748;
+    --border: #e2e8f0;
+    --primary: #3b82f6;
+    --sidebar-hover: #f7fafc;
+    --gradient-light: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+/* Styles pour le mode compact */
+.compact-mode .table {
+    color: var(--dark);
+    font-size: 0.8rem;
+    margin-bottom: 0;
+}
+
+.compact-mode .table thead {
+    background: var(--gradient-light);
+    border-bottom: 2px solid var(--border);
+}
+
+.compact-mode .table th {
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.compact-mode .table td {
+    padding: 0.6rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.compact-mode .table tbody tr {
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.compact-mode .table tbody tr:hover {
+    background: var(--sidebar-hover);
+    border-left-color: var(--primary);
+    transform: translateX(2px);
+}
+
+/* Adaptation des badges de statut pour le mode compact */
+.compact-mode .status-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Adaptation des boutons d'action pour le mode compact */
+.compact-mode .action-buttons {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.compact-mode .btn-action {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+/* Adaptation des checkboxes pour le mode compact */
+.compact-mode .checkbox-modern {
+    width: 16px;
+    height: 16px;
+}
+
+
 
