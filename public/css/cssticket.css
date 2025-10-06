@@ -302,22 +302,22 @@
 
 
 .shadow_0 {
-    box-shadow: 0 4px 10px #ad14148e, 
+    box-shadow: 0 4px 10px #ad14148e,
                 0 2px 10px #ad14568e !important;
     border-radius: 8px !important; /* arrondir légèrement */
 }
 .shadow_1 {
-    box-shadow: 0 4px 10px rgba(255, 166, 0, 0.647), 
+    box-shadow: 0 4px 10px rgba(255, 166, 0, 0.647),
                 0 2px 10px rgba(255, 166, 0, 0.647) !important;
     border-radius: 8px !important; /* arrondir légèrement */
 }
 .shadow_2 {
-    box-shadow: 0 4px 10px rgba(255, 255, 0, 0.788), 
+    box-shadow: 0 4px 10px rgba(255, 255, 0, 0.788),
                 0 2px 10px rgba(255, 255, 0, 0.788) !important;
     border-radius: 8px !important; /* arrondir légèrement */
 }
 .shadow_3 {
-    box-shadow: 0 4px 10px rgba(89, 149, 89, 0.666), 
+    box-shadow: 0 4px 10px rgba(89, 149, 89, 0.666),
                 0 2px 10px rgba(91, 172, 91, 0.666) !important;
     border-radius: 8px !important; /* arrondir légèrement */
 }
@@ -653,3 +653,4 @@
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
 }
+

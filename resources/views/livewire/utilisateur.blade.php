@@ -96,17 +96,17 @@
             <div class="dashboard-card p-4">
                 <h5 class="fw-bold mb-4">Utilisateurs Récents</h5>
                 <div class="recent-users">
-                    @foreach($recentUsers as $user)
+                    @foreach($recentUsers as $utilisateur)
                         <div class="d-flex align-items-center mb-3">
                             <div class="user-avatar me-3">
-                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                                {{ strtoupper(substr($utilisateur->name, 0, 1)) }}
                             </div>
                             <div class="flex-grow-1">
-                                <p class="mb-0 fw-medium">{{ $user->name }}</p>
-                                <small class="text-muted">{{ $user->email }}</small>
+                                <p class="mb-0 fw-medium">{{ $utilisateur->name }}</p>
+                                <small class="text-muted">{{ $utilisateur->email }}</small>
                             </div>
-                            <span class="badge {{ $user->is_active ? 'badge-active' : 'badge-inactive' }}">
-                                    {{ $user->is_active ? 'Actif' : 'Inactif' }}
+                            <span class="badge {{ $utilisateur->is_active ? 'badge-active' : 'badge-inactive' }}">
+                                    {{ $utilisateur->is_active ? 'Actif' : 'Inactif' }}
                                 </span>
                         </div>
                     @endforeach
@@ -143,40 +143,40 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($recentUsers as $user)
+                        @foreach($recentUsers as $utilisateur)
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="user-avatar me-3">
-                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                            {{ strtoupper(substr($utilisateur->name, 0, 1)) }}
                                         </div>
                                         <div>
-                                            <p class="mb-0 fw-medium">{{ $user->name }}</p>
-                                            <small class="text-muted">ID: {{ $user->id }}</small>
+                                            <p class="mb-0 fw-medium">{{ $utilisateur->name }}</p>
+                                            <small class="text-muted">ID: {{ $utilisateur->id }}</small>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ $user->email }}</td>
+                                <td>{{ $utilisateur->email }}</td>
                                 <td>
-                                        <span class="badge {{ $user->role === 'admin' ? 'badge-admin' : 'badge-user' }}">
-                                            {{ $user->role === 'admin' ? 'Administrateur' : 'Utilisateur' }}
+                                        <span class="badge {{ $utilisateur->role === 'admin' ? 'badge-admin' : 'badge-user' }}">
+                                            {{ $utilisateur->role === 'admin' ? 'Administrateur' : 'Utilisateur' }}
                                         </span>
                                 </td>
                                 <td>
-                                        <span class="badge {{ $user->is_active ? 'badge-active' : 'badge-inactive' }}">
-                                            {{ $user->is_active ? 'Actif' : 'Inactif' }}
+                                        <span class="badge {{ $utilisateur->is_active ? 'badge-active' : 'badge-inactive' }}">
+                                            {{ $utilisateur->is_active ? 'Actif' : 'Inactif' }}
                                         </span>
                                 </td>
-                                <td>{{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'Jamais' }}</td>
-                                <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $utilisateur->last_login_at ? $utilisateur->last_login_at->diffForHumans() : 'Jamais' }}</td>
+                                <td>{{ $utilisateur->created_at->format('d/m/Y') }}</td>
                                 <td>
-                                    <button class="action-btn btn-view" wire:click="viewUser({{ $user->id }})">
+                                    <button class="action-btn btn-view" wire:click="viewUser({{ $utilisateur->id }})">
                                         <i class="bi bi-eye"></i>
                                     </button>
-                                    <button class="action-btn btn-edit" wire:click="editUser({{ $user->id }})">
+                                    <button class="action-btn btn-edit" wire:click="editUser({{ $utilisateur->id }})">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <button class="action-btn btn-delete" wire:click="deleteUser({{ $user->id }})">
+                                    <button class="action-btn btn-delete" wire:click="deleteUser({{ $utilisateur->id }})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
