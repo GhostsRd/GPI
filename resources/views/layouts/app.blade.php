@@ -14,8 +14,7 @@
     <script src="{{ asset('js/jsticket.js') }}" ></script>
     <script src="{{ asset('js/jsapp.js') }}" ></script>
     <script src="{{ asset('js/jsuser.js') }}" ></script>
-    <script src="{{ asset('js/dashboard.js') }}"></script>
-    <script src="{{ asset('js/equipementSeeder.js') }}"></script>
+    <script src="{{ asset('js/equipement.js') }}"></script>
     <script src="{{ asset('/monjs.js') }}"></script>
 
 
@@ -34,7 +33,6 @@
     <link href="{{ asset('css/styleuser.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modalview.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleequipement.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
