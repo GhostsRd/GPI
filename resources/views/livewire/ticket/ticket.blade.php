@@ -108,7 +108,7 @@
                         <option value="Sécurité">Sécurité</option>
                         <option value="Autre">Autre</option>
                     </select>
-                </div> 
+                </div>
             </div>
 
             <div class="table-wrapper w-100">
