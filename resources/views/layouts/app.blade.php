@@ -132,7 +132,7 @@
                 </a>
                 <div class="collapse" id="parcCollapse">
                     <div class="nav-submenu">
-                        <a href="{{ url('/equipementSeeder') }}" class="submenu-item">
+                        <a href="{{ url('/equipement') }}" class="submenu-item">
                             <i class="bi bi-phone"></i>
                             Équipements
                         </a>
