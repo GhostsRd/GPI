@@ -35,6 +35,7 @@ Route::middleware(['LoginUser'])->group(function () {
 });
 Route::get('/utilisateur-login', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'index'])->name('LoginUser');
 Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'index'])->name('utilisateurInscription');
+Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');
 
 
 
@@ -52,7 +53,6 @@ Route::post('/equipementSeeder/import', [App\Http\Controllers\equipement\equipem
 Route::get('/equipementSeeder/export', [App\Http\Controllers\equipement\equipement::class, 'export'])->name('equipementSeeder.export');
 
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
-Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');
 
 
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);

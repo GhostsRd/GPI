@@ -97,7 +97,7 @@
        
         <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle shadow-sm rounded-5" width="40"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-        </svg> <span class="text-capitalize">{{ Auth::guard('utilisateur')->user()->nom }}</span>
+        </svg> <span class="text-capitalize">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}</span>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="{{ route('utilisateurProfile') }}">Modifier</a>
           <a class="dropdown-item" href="{{ route('logout') }}"

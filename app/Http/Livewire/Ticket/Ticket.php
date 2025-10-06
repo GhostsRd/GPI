@@ -15,6 +15,7 @@ class Ticket extends Component
     public $selectedTickets = [];
     public $recherche = '';
     public $disabled = "disabled";
+    public $categorie = "";
 
 
     public function deleteSelected()
@@ -34,9 +35,11 @@ class Ticket extends Component
     public function render()
     {
             $tickets = TicketModel::where("responsable_id", Auth::user()->id)
+            ->where("categorie","like", "%" .  $this->categorie . "%" )
         ->when($this->recherche, function ($query) {
             $query->where(function ($q) {
                 $q->where("reference", "like", "%" . $this->recherche . "%")
+                
                 ->orWhere("sujet", "like", "%" . $this->recherche . "%");
             });
         })

@@ -9,7 +9,21 @@
     
       <div class="col-lg-9  mb-md-2 mb-sm-2">
         <div class="container bg-white mt-0 pt-3 p-4 rounded-3 shadow_{{$ticketvals->priorite}} ">
-           <label class="fw-bold  mb-1 mt-0 pt-0" >Ticket #<span id="ticketId">{{$ticketId}}</span> — {{$ticketvals->sujet}}</label>
+          <div class="row">
+            <div class="col-lg-11 col-md-10 col-sm-10">
+             <label class="fw-bold  mb-1 mt-0 pt-0" >Ticket #<span id="ticketId">{{$ticketId}}</span> — {{$ticketvals->sujet}}</label> 
+
+             </div>
+             <div class="col-lg-1 col-mg-1 col-sm-1">
+                <svg wire:click="openAffectationModal"  width="30"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+             </div>
+          </div>
+          
+        
+
+</span>
             <div class="meta mt-2">Créé par <strong>{{$utilisateurs->nom}}</strong> • <span id="createdAt">{{ \Carbon\Carbon::parse($ticketvals->created_at)->translatedFormat('d M Y') }}</span> • 
             @if($ticketvals->state == 1) <span class="badge open">Nouveau</span> @endif
             @if($ticketvals->state == 2) <span class="badge open" style="background:#fff7ed;color:var(--warn)">Assigné</span> @endif
@@ -71,7 +85,7 @@
             <h5 style="margin:14px 0 8px">Ajouter un commentaire pour la transition</h5>
             <textarea wire:model="comments"  class="custom-textarea" 
              name="message" 
-            id="message"  ></textarea>
+            id="message" placeholder="Ex: Prise en main du ticket" ></textarea>
                </div>
               <div class="container-fluid mt-3">
                 <div class="row ">
@@ -89,10 +103,7 @@
 
                         <button id="prevBtn" wire:click="previousStep" class="btn btn-sm btn-outline-primary border-0 fw-bold">Reculer</button>  
                         <button type="submit"  wire:click="nextStep" class="btn btn-sm btn-primary border fw-bold"><span  class="loader"></span> Passer</button>
-                        <button class="btn btn-sm btn-primary" 
-                                wire:click="openAffectationModal">
-                            Affecter
-                        </button>
+                      
                     </div>
                 </div>
             </form>

@@ -19,7 +19,7 @@ class CreateTicketsTable extends Migration
             $table->integer('responsable_id')->nullable();
             $table->integer('commentaire_id')->nullable();
             $table->integer("state")->default(1);
-            $table->string('equipementSeeder')->nullable();
+            $table->string('equipement')->nullable();
             $table->string('categorie')->nullable();
             $table->string("impact");
             $table->string('sujet')->nullable();

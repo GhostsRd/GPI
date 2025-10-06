@@ -611,8 +611,9 @@ button:focus {
 ============================================================================================ */
 .home_banner_area {
   z-index: 1;
-  /* background: url('/images/home-banner.png') no-repeat top center; */
+  background: url('/images/home-banner.jpg') no-repeat top center .5;
   background-position: center;
+  /* opacity: 0.2; */
   background-size: cover; }
   .home_banner_area .banner_inner {
     width: 100%; }

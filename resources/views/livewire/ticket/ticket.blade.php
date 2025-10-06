@@ -53,6 +53,16 @@
                         <i class="fas fa-trash"></i>
                         Supprimer ({{ count($selectedTickets) }})
                     </button>
+                    <select id="categorie"
+                        class=" btn-modern secondary @error('categorie') is-invalid @enderror"
+                        wire:model="categorie">
+                        <option value="">-- Filtrer par une catégorie --</option>
+                        <option value="Réseau">Réseau</option>
+                        <option value="Logiciel">Logiciel</option>
+                        <option value="Matériel">Matériel</option>
+                        <option value="Sécurité">Sécurité</option>
+                        <option value="Autre">Autre</option>
+                    </select>
 
                 </div>
 

@@ -10,7 +10,7 @@ use App\Models\Commentaire;
 
 class UtilisateurService extends Component
 {
-    public $recherche;
+    public $recherche = "";
     public $message;
     public $total;
     public $sujet;
@@ -19,8 +19,9 @@ class UtilisateurService extends Component
     public $priorite;
     public $equipement;
     public $impact;
+    public $equipementSeeder;
     public $responsable_id = 2;
-    
+ 
     protected $rules = [
         'sujet'      => 'required|string|min:5',
         'details'    => 'required|string|min:5',
@@ -95,9 +96,12 @@ class UtilisateurService extends Component
 
     public function render()
     {
+        $user_ID =  Auth::guard('utilisateur')->user()->id;
+        
         return view('livewire.utilisateur.utilisateur-service',[
-            "tickets"=> ticket::where("id","like","%".$this->recherche."%")
-        ->paginate(5),
+            "tickets"=> ticket::where("sujet","like","%".$this->recherche."%")
+                ->where("utilisateur_id",$user_ID)
+                ->paginate(5),
          "chats"=> chat::all(),
            ]);
     }

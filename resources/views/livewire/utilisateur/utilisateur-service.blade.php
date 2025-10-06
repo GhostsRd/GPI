@@ -40,7 +40,7 @@
                             Is give may shall likeness made yielding spirit a itself togeth created
                             after sea <br> is in beast beginning signs open god you're gathering ithe
                         </p>
-								<a class="primary_btn mt-4" data-bs-toggle="modal" data-bs-target="#ticketModal"><span>Creer <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="fill" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+								<a class="primary_btn text-white mt-4" data-bs-toggle="modal" data-bs-target="#ticketModal"><span>Creer <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="fill" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                         </svg>
                                         </span>
@@ -53,57 +53,59 @@
             </div>
              <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-light p-0 m-0">
 				<div class="container-fluid p-0 m-0">
-					<input type="text" class=" border-0 p-3 " placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
+					<input type="text" class=" border-0 p-3 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
 				</div>
 
 			</nav>
        <section>
          <table class="container-fluid table  border-none  shadow-sm background-white rounded" style="background-color: white;">
             <thead class="bg-white" >
-                <th class="border-0"><input type="checkbox" ></th>
-
-                <th class="fw-bold p-2 border-0" >Reference </th>
-                <th class="fw-bold p-2 border-0" >Sujet</th>
-                <th class="fw-bold p-2 border-0" >Priorite</th>
-                <th class="fw-bold p-2 border-0" >categorie</th>
-                <th class="fw-bold p-2 border-0" >Status</th>
-                <th class="fw-bold p-2 border-0" >Creer par</th>
-                <th class="fw-bold p-2 border-0" >Assigne a </th>
-                <th class="fw-bold p-2 border-0" >Equipement concerner</th>
-                <th class="fw-bold p-2 border-0" >Date de creation</th>
-                <th class="fw-bold p-2 border-0" >Action</th>
-                </tr>
+               <tr>
+                       
+                        <th>Référence</th>
+                        <th>Sujet</th>
+                        <th>Priorité</th>
+                        <th>Categorie</th>
+                        <th>Statut</th>
+                        <th>Créé par</th>
+                        <th>Assigné à</th>
+                        <th>Équipement</th>
+                        <th>Date création</th>
+                        {{-- <th>Actions</th> --}}
+                    </tr>
             </thead>
             <tbody class="bg-white">
                @foreach ($tickets as $ticket )
-            <tr class="mt-2">
-                            <td class="bg-white p-2 border-0" >
-                                <input type="checkbox" wire:model="checkData" value="sfsef"  class="border-0">
-                            </td>
-                                        <td class="bg-white p-2 border-0" >
-                               {{$ticket->sujet}}
-                            </td>
-                             <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                                >{{$ticket->priorite}}</td>
-
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                           >True</td>
-
-                            <td class="text-primary bg-white p-1 border-0" id="tdanim1"
-                            >{{$ticket->categorie}}</td>
-                                 <td class="text-primary bg-white p-1 border-0" id="tdanim1"
-                                >{{$ticket->status}}</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                                >{{$ticket->utilisateur_id}}</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                              >{{$ticket->utilisateur_id}}</td>
-                            <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                              >{{$ticket->equipement}}</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                                >{{$ticket->created_at}}</td>
-                                <td class="text-muted bg-white p-1 border-0" id="tdanim1"
-                               > <a href="{{ route('utilisateurWorkflow') }}">click me</a> </td>
-            </tr>
+             <tr class="priorite_{{$ticket->priorite}}">
+                               
+                                <td>{{ $ticket->id }}</td>
+                                <td>{{ $ticket->sujet }}</td>
+                                <td class="priority-{{ $ticket->priorite }}">
+                                    {{ ucfirst($ticket->priorite) }}
+                                </td>
+                                <td >
+                                    {{ $ticket->categorie }}
+                                </td>
+                                <td>
+                                    <span class="status-badge status-{{ strtolower($ticket->status) }}">
+                                        {{ $ticket->status }}
+                                    </span>
+                                </td>
+                                <td>{{ $ticket->created_by }}</td>
+                                <td>{{ $ticket->assigned_to }}</td>
+                                <td>{{ $ticket->equipment }}</td>
+                                <td>{{ $ticket->created_at->format('d M Y H:i') }}</td>
+                                <td>
+                                    {{-- <div class="action-buttons">
+                                        <button 
+                                                class="btn-action btn-view">
+                                                <a class="" href="{{ url('/admin/ticket-view-'.$ticket->id) }}">view</a>
+                                            
+                                        </button>
+                                  
+                                    </div> --}}
+                                </td>
+                            </tr>
     @endforeach
             </tbody>
             </table>
@@ -133,7 +135,7 @@
         <div class="modal-body">
           <!-- Sujet -->
           <div class="mb-3">
-            <label for="sujet" class="form-label">Sujet</label>
+            <label for="sujet" class="form-label">Sujet <span class="text-danger">*</span></label>
             <input type="text" class="form-control @error('sujet') is-invalid @enderror"
                   id="sujet" wire:model.debounce.500ms="sujet">
             @error('sujet')
@@ -219,6 +221,9 @@
           <div class="invalid-feedback">{{ $message }}</div>
         @enderror
       </div>
+
+   
+      
               </div>
 
         <!-- Footer -->
