@@ -127,7 +127,7 @@
                     <div class="col-md-1">
                         <button type="button" wire:click="$set(['search' => '', 'statut' => '', 'priorite' => '', 'categorie' => '', 'assigned_to' => ''])"
                                 class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
-                            <i class="fa fa-times"></i> Réinitialiser les filtres
+                            <i class="fa fa-times"></i> filtrer
                         </button>
                     </div>
                 </div>

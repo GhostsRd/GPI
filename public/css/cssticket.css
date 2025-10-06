@@ -1,7 +1,8 @@
 /* Import de la police */
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 
-[data-theme="dark"] {
+[data-theme="dark"]
+{
     /* Dark Theme - Cyan */
     --primary: #22d3ee;
     --primary-light: #67e8f9;
@@ -763,5 +764,25 @@
     height: 16px;
 }
 
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* optionnel : pour les petits écrans */
+    gap: 1rem;
+}
+
+.table-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 
 
