@@ -23,7 +23,7 @@
           
         
 
-</span>
+          </span>
             <div class="meta mt-2">Créé par <strong>{{$utilisateurs->nom}}</strong> • <span id="createdAt">{{ \Carbon\Carbon::parse($ticketvals->created_at)->translatedFormat('d M Y') }}</span> • 
             @if($ticketvals->state == 1) <span class="badge open">Nouveau</span> @endif
             @if($ticketvals->state == 2) <span class="badge open" style="background:#fff7ed;color:var(--warn)">Assigné</span> @endif
@@ -167,29 +167,29 @@
             <div class="info"><span class="text-muted fw-bold" style="font-size: 0.8rem;">Assigné à:</span> Tech Support</div>
             <div class="info" style="margin-top:6px"><span class="text-muted fw-bold" style="font-size: 0.8rem;">Dernière mise à jour:</span> <span
                 id="lastUpdate">{{ \Carbon\Carbon::parse($ticketvals->updated_at)->translatedFormat('d M Y') }}
-</span></div>
-          </div>
+    </span></div>
+              </div>
 
-          <div>
-            <label style="margin:0 0 8px" class="fw-bold">Actions rapides</label>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <button class="btn-ghost" id="markResolved">Marquer comme Résolu</button>
-              <button class="btn-ghost" id="markClosed">Fermer ticket</button>
-            </div>
-          </div>
+              <div>
+                <label style="margin:0 0 8px" class="fw-bold">Actions rapides</label>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <button class="btn-ghost" id="markResolved">Marquer comme Résolu</button>
+                  <button class="btn-ghost" id="markClosed">Fermer ticket</button>
+                </div>
+              </div>
 
-          <div>
-            <h4 style="margin:0 0 8px">États actuels</h4>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <span class="badge open">Nouveau</span>
-              <span class="badge open" style="background:#fff7ed;color:var(--warn)">Assigné</span>
-              <span class="badge open" style="background:#eefbf7;color:var(--ok)">En cours</span>
-              <span class="badge" style="background:#f0f9ff;color:#0369a1">Résolu</span>
-              <span class="badge closed">Fermé</span>
-            </div>
+              <div>
+                <h4 style="margin:0 0 8px">États actuels</h4>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <span class="badge open">Nouveau</span>
+                  <span class="badge open" style="background:#fff7ed;color:var(--warn)">Assigné</span>
+                  <span class="badge open" style="background:#eefbf7;color:var(--ok)">En cours</span>
+                  <span class="badge" style="background:#f0f9ff;color:#0369a1">Résolu</span>
+                  <span class="badge closed">Fermé</span>
+                </div>
+              </div>
+            </aside>
           </div>
-        </aside>
-      </div>
 </div>
 
 <div class="modal fade" id="affectationModal" tabindex="-1" aria-hidden="true" wire:ignore.self>

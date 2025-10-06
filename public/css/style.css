@@ -609,6 +609,51 @@ button:focus {
 /*----------------------------------------------------*/
 /* Home Banner Area css
 ============================================================================================ */
+/* Parallaxe + overlay */
+.parallax-animated {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0dfdd5ff, #10f2ccff);
+}
+
+/* Overlay sombre pour contraste texte */
+.parallax-animated::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 0;
+}
+
+/* Texte et illustration */
+.parallax-animated .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Animation douce de l'image */
+.floating-image {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Canvas pour particules animées */
+.parallax-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+
 .home_banner_area {
   z-index: 1;
   background: url('/images/home-banner.jpg') no-repeat top center .5;

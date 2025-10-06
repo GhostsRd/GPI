@@ -9,6 +9,8 @@
       <button class="chat-close" id="chatClose" aria-label="Fermer">✕</button>
     </header>
 
+    
+
     <div class="chat-messages" id="messages" aria-live="polite">
       <!-- sample messages -->
 
@@ -30,6 +32,8 @@
     </form>
   </aside>
 
+ 
+
   <section class="features_area section_gap_top">
         <div class="container">
             <div class="row justify-content-center">
@@ -37,10 +41,10 @@
                     <div class="main_title">
                         <h2>Gerer vos ticket </h2>
                         <p>
-                            Is give may shall likeness made yielding spirit a itself togeth created
-                            after sea <br> is in beast beginning signs open god you're gathering ithe
-                        </p>
-								<a class="primary_btn text-white mt-4" data-bs-toggle="modal" data-bs-target="#ticketModal"><span>Creer <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="fill" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                          Accédez à l’ensemble des tickets, suivez leur statut et assurez une résolution rapide des problèmes. 
+                          Simplifiez la gestion du support grâce à une interface claire et intuitive.
+                      </p>
+								<a class="primary_btn text- mt-4" data-bs-toggle="modal" data-bs-target="#ticketModal"><span>Creer <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="fill" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                         </svg>
                                         </span>
@@ -52,25 +56,25 @@
 
             </div>
              <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-light p-0 m-0">
-				<div class="container-fluid p-0 m-0">
-					<input type="text" class=" border-0 p-3 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
+				<div class="container-fluid  p-0 m-0">
+					<input type="text" class="input-recherche border-0 p-4 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
 				</div>
 
 			</nav>
        <section>
-         <table class="container-fluid table  border-none  shadow-sm background-white rounded" style="background-color: white;">
-            <thead class="bg-white" >
-               <tr>
+         <table class="container-fluid table  border-0  shadow-sm background-white rounded " style="background-color: white;">
+            <thead class="bg-white "  >
+               <tr >
                        
-                        <th>Référence</th>
-                        <th>Sujet</th>
-                        <th>Priorité</th>
-                        <th>Categorie</th>
-                        <th>Statut</th>
-                        <th>Créé par</th>
-                        <th>Assigné à</th>
-                        <th>Équipement</th>
-                        <th>Date création</th>
+                        <th class="bg-white">Référence</th>
+                        <th class="bg-white">Sujet</th>
+                        <th class="bg-white">Priorité</th>
+                        <th class="bg-white">Categorie</th>
+                        <th class="bg-white">Statut</th>
+                        <th class="bg-white">Créé par</th>
+                        <th class="bg-white">Assigné à</th>
+                        <th class="bg-white">Équipement</th>
+                        <th class="bg-white">Date création</th>
                         {{-- <th>Actions</th> --}}
                     </tr>
             </thead>
@@ -145,7 +149,7 @@
 
           <!-- Détails -->
           <div class="mb-3">
-            <label for="details" class="form-label">Détails</label>
+            <label for="details" class="form-label">Détails <span class="text-danger">*</span></label>
             <textarea class="form-control @error('details') is-invalid @enderror"
                       id="details" wire:model.debounce.500ms="details" rows="4"></textarea>
             @error('details')
@@ -154,7 +158,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="categorie" class="form-label">Catégorie</label>
+            <label for="categorie" class="form-label">Catégorie <span class="text-danger">*</span></label>
             <select id="categorie"
                     class="form-select @error('categorie') is-invalid @enderror"
                     wire:model="categorie">
@@ -171,7 +175,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="impact" class="form-label">Impact</label>
+            <label for="impact" class="form-label">Impact <span class="text-danger">*</span></label>
             <select id="impact"
                     class="form-select @error('impact') is-invalid @enderror"
                     wire:model="impact">
@@ -206,7 +210,7 @@
           </div>
 
         <div class="mb-3">
-        <label for="equipement" class="form-label">Équipement</label>
+        <label for="equipement" class="form-label">Équipement <span class="text-danger">*</span></label>
         <select id="equipement"
                 class="form-select @error('equipementSeeder') is-invalid @enderror"
                 wire:model="equipement">
@@ -222,14 +226,13 @@
         @enderror
       </div>
 
-   
       
               </div>
 
         <!-- Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" class="primary_btn px-4">Envoyer</button>
+          <button type="submit" class="btn btn-sm btn-primary">Envoyer</button>
         </div>
       </form>
     </div>

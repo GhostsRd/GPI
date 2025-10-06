@@ -26,7 +26,15 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
-    <link href="/css/app.css" rel="stylesheet">
+
+    <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styleuser.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modalview.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styleequipement.css') }}" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
 	<link rel="stylesheet" href="vendors/linericon/style.css">
@@ -51,25 +59,72 @@
     <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" href="{{ route('utilisateur') }}">
       <img id="logoPivot" src="{{ asset('images/logoPivot.png') }}" alt="Pivot ONG">
-      <span class="fw-bold">Pivot ONG</span>
+      <span class="fw-bold">GPI client</span>
     </a>
 
+    <div class="collapse navbar-collapse">
+
+     <ul class="navbar-nav align-items-center offset-lg-1 " >
+        <!-- Home -->
+        <li class="nav-item ms-3">
+          <a class="nav-link" href="{{ route('utilisateur') }}" title="Accueil">
+            Home
+          </a>
+        </li>
+
+        <!-- Chat -->
+        <li class="nav-item ms-3">
+          <a class="nav-link" href="#" id="chatToggle" title="Ouvrir le chat">
+            Ticket
+           
+          </a>
+        </li>
+        <li class="nav-item ms-3">
+          <a class="nav-link" href="#" id="chatToggle" title="Ouvrir le chat">
+            Checkout
+           
+          </a>
+        </li>
+        <li class="nav-item ms-3">
+          <a class="nav-link" href="#" id="chatToggle" title="Ouvrir le chat">
+            Equipement
+           
+          </a>
+        </li>
+         <li class="nav-item ms-3">
+          <a class="nav-link" href="#" id="chatToggle" title="Ouvrir le chat">
+            Documentation
+           
+          </a>
+        </li>
+        </ul>
+    </div>
+
     <!-- Toggle button for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <a class="navbar-toggler" data-bs-toggle="collapse" >
+        <div class="col-lg-1 col-mg-1 col-sm-1">
+                <span class=" " data-bs-toggle="offcanvas" data-bs-target="#infoTicket" ><svg width="30" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        </span>
+        </div>
+    </a>
+
+    
+
+    
 
     <!-- Navbar links -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav align-items-center">
         <!-- Home -->
-        <li class="nav-item ms-3">
+        {{-- <li class="nav-item ms-3">
           <a class="nav-link" href="{{ route('utilisateur') }}" title="Accueil">
             <svg width="25" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12 8.954 3.045c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
             </svg>
           </a>
-        </li>
+        </li> --}}
 
         <!-- Chat -->
         <li class="nav-item ms-3">
@@ -82,20 +137,20 @@
         </li>
 
         {{-- Membre --}}
-          <li class="nav-item ms-3">
+          {{-- <li class="nav-item ms-3">
           <a class="nav-link" href="{{route('utilisateurMembre')}}"  title="Membres">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
             </svg>
 
             </a>
-            </li>
+            </li> --}}
 
         <!-- Profile -->
         <li class="nav-item ms-3">
         <div class="dropdown">
        
-        <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle shadow-sm rounded-5" width="40"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle shadow-sm rounded-5" width="30"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
         </svg> <span class="text-capitalize">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}</span>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -129,8 +184,10 @@
 		</div>
 	</header>
 
-
   
+
+
+ 
 
         <div class="container-fluid">
                 <div >
@@ -141,9 +198,112 @@
             </div>
         </div>
 
+
+         <aside class="chat-popup" id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
+    <header class="chat-header">
+      <div class="chat-avatar">GPIS</div>
+      <div class="chat-title">
+        <h4>GPISupport — Chat</h4>
+        <p>Général · habituellement réponse sous 1h</p>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Fermer">✕</button>
+    </header>
+
+    <div class="chat-messages" id="messages" aria-live="polite">
+      <!-- sample messages -->
+
+      @foreach($chats as $chat)
+
+            @if($chat->sendeur_id == 2 && $chat->targetmsg_id == 1 && $chat->type == "user")
+                    <div class="msg user">Bonjour {{$chat->message}}<small>Support · {{$chat->created_at}}</small></div>
+            @else
+                 <div class="msg agent">Bonjour {{$chat->message}}<small>Support · {{$chat->created_at}}</small></div>
+            @endif
+      @endforeach
+
     </div>
 
+    <form class="chat-composer" wire:submit.prevent="storechat" id="composer" onsubmit="return false;">
+      <textarea id="input" class="chat-input" wire:model="message" rows="1" placeholder="Écris un message..."></textarea>
+      <button id="sendBtn" type="submit" class="btn-send">Envoyer</button>
+    </form>
+  </aside>
 
+    </div>
+
+    <div class="offcanvas offcanvas-end shadow-lg" tabindex="-1" id="infoTicket" aria-labelledby="infoTicketLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title fw-bold" id="infoTicketLabel">
+        <i class="bi bi-person-workspace me-2 text-primary"></i> GPI Client Menu
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+
+    <div class="offcanvas-body">
+      <nav class="nav flex-column">
+        <a href="#" class="nav-link text-dark">
+          <i class="bi bi-house-door me-2 text-primary"></i> Accueil
+        </a>
+        <a href="#services" class="nav-link text-dark">
+          <i class="bi bi-gear me-2 text-primary"></i> Ticket
+        </a>
+
+        <a href="#services" class="nav-link text-dark">
+          <i class="bi bi-gear me-2 text-primary"></i> Checkout
+        </a>
+
+        <a href="#" class="nav-link text-dark">
+          <i class="bi bi-clock-history me-2 text-primary"></i> Equipement
+        </a>
+        <a href="#" class="nav-link text-dark">
+          <i class="bi bi-clock-history me-2 text-primary"></i> Documentation
+        </a>
+
+         <a href="#" class="nav-link text-dark">
+      <div class="dropdown border">
+       
+        <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle shadow-sm rounded-5" width="30"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+        </svg> <span class="text-capitalize">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}</span>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{{ route('utilisateurProfile') }}">Modifier</a>
+          <a class="dropdown-item" href="{{ route('logout') }}"
+                                      onclick="event.preventDefault();
+                                      document.getElementById('logout-form').submit();">Deconnecter</a>
+          <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
+                                        @csrf
+          </form>
+            </div>
+          </div>
+            </a>
+            <hr>
+      </nav>
+  </div>
+  <footer class="footer_area p-2">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-12">
+					<div class="footer_top flex-column">
+						<div class="footer_logo">
+							<a href="#">
+								<h1>GPI</h1>
+								<!-- <img src="img/logo.png" alt=""> -->
+							</a>
+							<h4>Follow Me</h4>
+						</div>
+						<div class="footer_social">
+							<a href="#"><i class="fa fa-facebook"></i></a>
+							<a href="#"><i class="fa fa-twitter"></i></a>
+							<a href="#"><i class="fa fa-dribbble"></i></a>
+							<a href="#"><i class="fa fa-behance"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+	</footer>
+</div>
 
 
 
@@ -177,6 +337,11 @@
 		</div>
 	</footer>
     @livewireScripts
+<script src="{{ asset('js/modalview.js') }}"></script>
+<script>
+
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // Dark / Light mode
