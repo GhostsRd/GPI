@@ -37,6 +37,10 @@
 
     <!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
+	<link rel="stylesheet" href="{{asset('css/push.css')}}">
+	<link rel="stylesheet" href="{{asset('css/fluxticket.css')}}">
+
+
 	<link rel="stylesheet" href="vendors/linericon/style.css">
 	<link rel="stylesheet" href="{{asset('css/font-awesome.min.css')}}">
 	<link rel="stylesheet" href="{{asset('vendors/owl-carousel/owl.carousel.min.css')}}">
@@ -54,7 +58,7 @@
     <div id="app">
         
 <header class="">
-	<nav class="navbar success navbar-expand-md navbar-light bg-light shadow-sm ">
+	<nav class="navbar success navbar-expand-md navbar-light bg-white shadow-sm ">
   <div class="container">
     <!-- Logo -->
     <a class="navbar-brand d-flex align-items-center" href="{{ route('utilisateur') }}">
@@ -150,14 +154,26 @@
         <li class="nav-item ms-3">
         <div class="dropdown">
        
-        <svg xmlns="http://www.w3.org/2000/svg" class="dropdown-toggle shadow-sm rounded-5" width="30"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-        </svg> <span class="text-capitalize">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}</span>
+        <img class="dropdown-toggle rounded-pill" data-toggle="dropdown" src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}" alt="Profil" width="40" height="40" class="rounded-circle me-2"><span class="text-capitalize">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}</span>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="{{ route('utilisateurProfile') }}">Modifier</a>
+          <a class="dropdown-item" href="{{ route('utilisateurProfile') }}">
+          <svg xmlns="http://www.w3.org/2000/svg"  width="25"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="rounded-circle shadow-sm">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+        </svg> 
+          
+          Profile</a>
+
+          
+
           <a class="dropdown-item" href="{{ route('logout') }}"
+
                                       onclick="event.preventDefault();
-                                      document.getElementById('logout-form').submit();">Deconnecter</a>
+                                      document.getElementById('logout-form').submit();">
+                                      
+                                      <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                  </svg>
+                                      Deconnecter</a>
           <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
                                         @csrf
           </form>
@@ -311,10 +327,23 @@
     @livewireScripts
 <script src="{{ asset('js/modalview.js') }}"></script>
 <script>
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const closeBtn = document.getElementById('closeSidebar');
+    const sidebar = document.getElementById('sidebar');
 
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      document.body.classList.toggle('sidebar-open');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+      document.body.classList.remove('sidebar-open');
+    });
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 // Dark / Light mode
 const modeBtn = document.getElementById('modeToggle');

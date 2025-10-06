@@ -83,7 +83,10 @@ class UtilisateurService extends Component
         //session()->flash('message','Ticket creer avec succes');
         //return redirect()->to('/utilisateur-ticket');
     }
-
+    public function visualiser($id){
+        
+        return redirect("/utilisateur-ticket");
+    }
     public function storechat()
     {
         $chat = new chat();
@@ -101,7 +104,7 @@ class UtilisateurService extends Component
         return view('livewire.utilisateur.utilisateur-service',[
             "tickets"=> ticket::where("sujet","like","%".$this->recherche."%")
                 ->where("utilisateur_id",$user_ID)
-                ->paginate(5),
+                ->paginate(8),
          "chats"=> chat::all(),
            ]);
     }

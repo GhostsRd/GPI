@@ -1,0 +1,138 @@
+ :root {
+      /* === 🎨 Personnalisation facile === */
+      --timeline-color: #007bff;          /* Couleur principale de progression */
+      --timeline-gradient: linear-gradient(90deg, #007bff, #00c6ff);
+      --step-active-color: #007bff;       /* Couleur des étapes actives */
+      --step-complete-color: #00b894;     /* Couleur des étapes complètes */
+      --timeline-bg: #f5f7fa;             /* Fond de la page */
+      --text-color: #333;
+    }
+
+    body {
+      background: var(--timeline-bg);
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-color);
+      overflow-x: hidden;
+    }
+
+    /* === TIMELINE PRINCIPALE === */
+    .timeline {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 50px auto;
+      padding: 30px;
+      max-width: 1100px;
+      flex-wrap: wrap;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 40px;
+      left: 10%;
+      right: 10%;
+      height: 4px;
+      background: var(--timeline-gradient);
+      border-radius: 10px;
+      z-index: 0;
+      transition: width 1s ease-in-out;
+    }
+
+    /* === ÉTAPES === */
+    .timeline-step {
+      position: relative;
+      text-align: center;
+      width: 20%;
+      min-width: 160px;
+      z-index: 2;
+      margin-bottom: 60px;
+      cursor: pointer;
+    }
+
+    .timeline-step .circle {
+      width: 45px;
+      height: 45px;
+      margin: 0 auto;
+      background: #fff;
+      border: 5px solid var(--timeline-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--timeline-color);
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .timeline-step.active .circle {
+      background: var(--step-active-color);
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .timeline-step.complete .circle {
+      background: var(--step-complete-color);
+      color: #fff;
+      border-color: var(--step-complete-color);
+    }
+
+    .timeline-step h6 {
+      margin-top: 12px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .comment-box {
+      background: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 18px;
+      font-size: 14px;
+      text-align: left;
+      color: #333;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s;
+    }
+
+    .timeline-step:hover .comment-box {
+      transform: translateY(-5px);
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .timeline {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .timeline::before {
+        width: 4px;
+        height: 85%;
+        left: 50%;
+        top: 8%;
+        background: var(--timeline-gradient);
+      }
+
+      .timeline-step {
+        width: 100%;
+        text-align: center;
+      }
+
+      .timeline-step .circle {
+        margin: 0 auto 10px;
+      }
+    }
+
+    /* === Animation de progression automatique === */
+    @keyframes progressLine {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .animate-progress::before {
+      animation: progressLine 3s linear forwards;
+    }

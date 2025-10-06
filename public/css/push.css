@@ -1,0 +1,179 @@
+    .content-flex {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+     
+      transition: all 0.6s ease;
+      display: flex;
+      flex-direction: row;
+    }
+
+    /* === SIDEBAR FORM (LEFT 70%) === */
+    .sidebar {
+      position: fixed;
+    
+      left: -70%;
+      width: 50%;
+      /* background: linear-gradient(135deg, rgb(5, 67, 54), rgb(5, 99, 57)); */
+      color: white;
+      padding: 2rem;
+      transition: left 0.6s ease;
+      z-index: 100;
+      overflow-y: auto;
+      /* box-shadow: 5px 0 20px rgba(0,0,0,0.3); */
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+
+    /* === MAIN CONTENT (RIGHT 100% → 30%) === */
+    .main-content {
+      flex: 1;
+      min-height: 100vh;
+      padding: 3rem;
+
+      transition: all 0.6s ease;
+      /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); */
+      z-index: 500;
+    }
+
+    body.sidebar-open .main-content {
+      width: 60%;
+      transform: translateX(50%);
+      filter: blur(0px);
+    }
+
+    @media (max-width: 991px) {
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+
+  .sidebar.active {
+    left: 0;
+    z-index: 1000;
+  }
+
+  body.sidebar-open .main-content {
+    width: 100%;
+    transform: translateX(0);
+    filter: none;
+  }
+
+
+}
+
+    /* === BUTTON === */
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+
+    /* === Workflow Container === */
+.workflow-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* === Step Elements === */
+.workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #adb5bd;
+  font-size: 0.85rem;
+  text-align: center;
+  position: relative;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.workflow-step span {
+  margin-top: 0.4rem;
+  letter-spacing: 0.4px;
+}
+
+/* === Active Step === */
+.workflow-step.active {
+ 
+  font-weight: 600;
+}
+
+.workflow-step.active .icon-wrap {
+
+  color: rgb(29, 149, 73);
+
+  transform: scale(1.1);
+}
+
+/* === Icons === */
+.icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #6c757d;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+/* === Connecting Lines === */
+.workflow-line {
+  flex: 0.5;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(13,110,253,0.8), rgba(102,16,242,0.8));
+  border-radius: 3px;
+  opacity: 0.3;
+}
+
+/* === Animation Neon Pulse Active Step === */
+.workflow-step.active .icon-wrap::after {
+  content: '';
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(rgba(13,110,253,0.3), transparent 70%);
+  animation: pulse 1.8s infinite ease-in-out;
+  z-index: -1;
+}
+
+/* @keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+} */
+
+/* === Hover Effect === */
+.workflow-step:hover .icon-wrap {
+  border-color: #0d6efd;
+  color: #0d6efd;
+  transform: scale(1.05);
+}
+
+
+
+
+

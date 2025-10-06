@@ -73,4 +73,18 @@ animate();
       updateSteps();
 
 
-      
+
+    // 🎬 Animation : progression auto du ticket
+    const stepss = document.querySelectorAll(".timeline-step");
+    let current = 0;
+
+    function nextStep() {
+      if (current < stepss.length) {
+        stepss[current].classList.add("complete");
+        if (stepss[current + 1]) stepss[current + 1].classList.add("active");
+        current++;
+      }
+    }
+
+    // Simulation automatique (tu peux relier ça à ton backend plus tard)
+    setInterval(nextStep, 4000);
