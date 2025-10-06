@@ -44,12 +44,11 @@
                           Accédez à l’ensemble des tickets, suivez leur statut et assurez une résolution rapide des problèmes. 
                           Simplifiez la gestion du support grâce à une interface claire et intuitive.
                       </p>
-								<a class="primary_btn text- mt-4" data-bs-toggle="modal" data-bs-target="#ticketModal"><span>Creer <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="fill" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+								              <a class="btn btn-outline-success border p-2 px-4 mt-4 btn-lg rounded-pill shadow" data-bs-toggle="modal" data-bs-target="#ticketModal"><span>Creer <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="fill" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                         </svg>
                                         </span>
                                         </a>
-
 
                     </div>
                 </div>
@@ -62,7 +61,7 @@
 
 			</nav>
        <section>
-         <table class="container-fluid table  border-0  shadow-sm background-white rounded " style="background-color: white;">
+         <table class="container-fluid table-responsive table  border-0  shadow-sm background-white rounded " style="background-color: white;">
             <thead class="bg-white "  >
                <tr >
                        
