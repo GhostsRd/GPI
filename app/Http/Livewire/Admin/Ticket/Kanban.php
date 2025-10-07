@@ -12,6 +12,12 @@ class Kanban extends Component
     
 
     public $steps;
+    public $categorie ;
+    public $priorite ;
+    public $state ;
+    public $recherche;
+
+
     public $ticketIds;
 
     protected $listeners = ['moveTicket']; // écoute l'événement JS
@@ -83,7 +89,7 @@ class Kanban extends Component
     public function render()
     {
         // récupère les tickets depuis la DB (ou adapte selon ton modèle)
-        $tickets = ticket::where("responsable_id",Auth::user()->id)->orderBy('id')->get();
+        $tickets = ticket::where("sujet","like", "%" .  $this->recherche . "%")->where("state","like", "%" .  $this->state . "%")->where("priorite","like", "%" .  $this->priorite . "%")->where("categorie","like", "%" .  $this->categorie . "%")->where("responsable_id",Auth::user()->id)->orderBy('id')->get();
         return view('livewire.admin.ticket.kanban', [
             'tickets' => $tickets,
         ]);

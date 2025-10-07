@@ -1,5 +1,81 @@
 <div>
-<div class="card border-0 shadow-sm mb-4">
+
+            <div class="stats-header fade-in-up">
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card stats-widget border-0 shadow-sm dark-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h3 class="stats-number text-primary"></h3>
+                                                <p class="stats-label text-light mb-0">Totals tickets</p>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-boxes fa-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card stats-widget border-0 shadow-sm dark-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h3 class="stats-number text-success"></h3>
+                                                <p class="stats-label text-light mb-0">En cours</p>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-warehouse fa-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card stats-widget border-0 shadow-sm dark-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h3 class="stats-number text-warning"></h3>
+                                                <p class="stats-label text-light mb-0">En Prêt</p>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-hand-holding fa-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card stats-widget border-0 shadow-sm dark-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h3 class="stats-number text-danger"></h3>
+                                                <p class="stats-label text-light mb-0">Résolus</p>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-tools fa-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
@@ -8,29 +84,29 @@
                             <span class="input-group-text bg-transparent">
                                 <i class="fas fa-search text-muted"></i>
                             </span>
-                            <input type="text" wire:model.live="search"
+                            <input type="text" wire:model.live="recherche"
                                    class="form-control" placeholder="Référence, Sujet, Créé par...">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <label class="form-label small fw-bold">Statut</label>
-                        <select wire:model.live="statut" class="form-select form-select-sm">
+                        <select wire:model.live="state" class="form-select form-select-sm">
                             <option value="">Tous les statuts</option>
-                            <option value="ouvert">Ouvert</option>
-                            <option value="en_cours">En Cours</option>
-                            <option value="en_attente">En Attente</option>
-                            <option value="résolu">Résolu</option>
-                            <option value="fermé">Fermé</option>
+                            <option value="1">Creation</option>
+                            <option value="2">Assigner</option>
+                            <option value="3">En traitement</option>
+                            <option value="4">Résolution</option>
+                            <option value="5">Fermé</option>
                         </select>
                     </div>
                     <div class="col-md-2">
                         <label class="form-label small fw-bold">Priorité</label>
                         <select wire:model.live="priorite" class="form-select form-select-sm">
                             <option value="">Toutes les priorités</option>
-                            <option value="basse">Basse</option>
-                            <option value="moyenne">Moyenne</option>
-                            <option value="haute">Haute</option>
-                            <option value="urgente">Urgente</option>
+                            <option value="3">Basse</option>
+                            <option value="2">Moyenne</option>
+                            <option value="1">Haute</option>
+                            <option value="0">Urgente</option>
                         </select>
                     </div>
                     <div class="col-md-2">
