@@ -8,7 +8,9 @@
     <div class="row h-100">
     
       <div class="col-lg-9  mb-md-2 mb-sm-2">
-        <div class="container bg-white mt-0 pt-3 p-4 rounded-3 shadow_{{$ticketvals->priorite}} ">
+        {{-- <div class="container bg-white mt-0 pt-3 p-4 rounded-3 shadow_{{$ticketvals->priorite}} "> --}}
+        
+        <div class="container bg-white mt-0 pt-3 p-4 rounded-3 shadow-lg">
           <div class="row">
             <div class="col-lg-11 col-md-10 col-sm-10">
              <label class="fw-bold  mb-1 mt-0 pt-0" >Ticket #<span id="ticketId">{{$ticketId}}</span> — {{$ticketvals->sujet}}</label> 
@@ -151,6 +153,10 @@
                                   </div>
                               </div>
                            @endforeach
+
+                           <div class="mt-4 container " style="font-size:0.8rem">
+                              {{ $commentaires->links() }}
+                                     </div>
   
             </div>
 

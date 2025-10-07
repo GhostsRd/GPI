@@ -14,7 +14,7 @@ class TicketView extends Component
     public $ticketId;
     public $ticketvals;
     public $table = [1,2,3,4,5];
-    public $commentaires;
+    //public $commentaires;
     public $comments;
     public $currentStep;
     public $current = [
@@ -60,6 +60,8 @@ public function affecter()
 
             $commentaire->ticket_id = $this->ticketId;
             $commentaire->utilisateur_id = Auth::user()->id ;
+            //$commentaire->responsable_id = Auth::user()->id ;
+
             $commentaire->etat = $this->currentStep;
             $commentaire->commentaire = $this->comments;
             $commentaire->save();
@@ -161,10 +163,7 @@ public function affecter()
         $this->techniciens = \App\Models\Utilisateur::where('role', 'technicien')->get();
         // Exemple si tu veux charger directement ton modèle
         $this->ticketvals = Ticket::findOrFail($this->ticketId);
-        $this->commentaires = $this->ticketvals
-                ->commentaires()
-                ->orderBy('created_at', 'desc')
-                ->get();
+       
     }         
 
   
@@ -176,7 +175,10 @@ public function affecter()
             "utilisateurs" => ticket::find($this->ticketId)->utilisateur,
             "responsables" => User::get(),
 
-            "commentaires" => $this->commentaires,
+            "commentaires" => $this->ticketvals
+                ->commentaires()
+                ->orderBy('created_at', 'desc')
+                ->paginate(2)
         ]);
     }
 }

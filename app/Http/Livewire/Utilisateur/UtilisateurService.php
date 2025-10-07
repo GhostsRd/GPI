@@ -18,10 +18,10 @@ class UtilisateurService extends Component
     public $details;
     public $priorite;
     public $equipement;
-    public $impact;
+    public $impact = "";
     public $equipementSeeder;
     public $responsable_id = 2;
- 
+    public $step2 = "";
     protected $rules = [
         'sujet'      => 'required|string|min:5',
         'details'    => 'required|string|min:5',
@@ -43,6 +43,8 @@ class UtilisateurService extends Component
         $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
         if($this->categorie == "Réseau"){
             $this->responsable_id= 1;
+        }elseif($this->categorie == "Logiciel"){
+            $this->responsable_id= 2;
         }
 
         $ticket->sujet = $this->sujet;
@@ -78,14 +80,24 @@ class UtilisateurService extends Component
         $this->reset(['sujet', 'details', 'priorite']);
 
         // Event JS (ex: fermer modal)
-        $this->dispatchBrowserEvent('ticket-saved');
-
+        //$this->dispatchBrowserEvent('ticket-saved');
+        
         //session()->flash('message','Ticket creer avec succes');
-        //return redirect()->to('/utilisateur-ticket');
+        return redirect()->to('/utilisateur-ticket-'.$findTicket->id);
     }
     public function visualiser($id){
         
-        return redirect("/utilisateur-ticket");
+        return redirect("/utilisateur-ticket-".$id);
+       //return view('Utilisateur.utilisateur-ticket',compact('id'));
+    }
+    public function mount(){
+        
+         if($this->impact =! ""){
+            $this->step2 = "active";
+         }
+         else{
+            $this->step2 = "";
+         }
     }
     public function storechat()
     {

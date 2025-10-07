@@ -239,6 +239,10 @@
 @livewireScripts
 
 <script>
+
+</script>
+
+<script>
     window.addEventListener('openAffectationModal', () => {
         let modal = new bootstrap.Modal(document.getElementById('affectationModal'));
         modal.show();

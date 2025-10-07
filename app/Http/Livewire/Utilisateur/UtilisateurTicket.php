@@ -8,6 +8,8 @@ use App\Models\chat;
 use App\Models\Commentaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\utilisateur;
+use App\Models\User;
 
 class UtilisateurTicket extends Component
 {
@@ -19,7 +21,25 @@ class UtilisateurTicket extends Component
     public $details;
     public $recherche;
     public $equipement;
-  
+    public $ticketId;
+    public $commentaires;
+
+
+
+     public function mount($id)
+    {
+        $this->ticketId = $id;
+        //$this->current;
+        //$this->progress;
+       // $this->techniciens = \App\Models\Utilisateur::where('role', 'technicien')->get();
+        // Exemple si tu veux charger directement ton modèle
+        $this->ticketvals = Ticket::findOrFail($this->ticketId);
+        $this->commentaires = $this->ticketvals
+                ->commentaires()
+                ->orderBy('created_at', 'desc')
+                ->get();
+       ;
+    }      
 
     public function store(ticket $ticket,chat $chat,Commentaire $commentaire){
         $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
@@ -59,12 +79,12 @@ class UtilisateurTicket extends Component
 
     public function render()
     {
+        
   
         return view('livewire.utilisateur.utilisateur-ticket',[
-            "tickets"=> ticket::where("id","like","%".$this->recherche."%")->paginate(8),
-   
+            "tickets"=> ticket::where("id","like","%".$this->recherche."%")->paginate(8),        
             "chats"=> chat::all(),
-            
+            "responsables" =>User::all(),
            ]);
     }
     

@@ -43,13 +43,14 @@ class Ticket extends Component
                 ->orWhere("sujet", "like", "%" . $this->recherche . "%");
             });
         })
+
         ->orderBy("priorite", "asc")   // d'abord par priorité
         ->orderBy("created_at", "desc") // puis par date de création (les plus récents en premier)
-        ->paginate(10);
-
+        ->paginate(10); 
+            $ticketcs = TicketModel::where("responsable_id", Auth::user()->id)->count();
         return view('livewire.ticket.ticket', [
             "tickets" => $tickets,
-            "totalTickets" => TicketModel::count(),
+            "totalTickets" => $ticketcs,
             "inProgressTickets" => TicketModel::where("status", "En cours")->count(),
             "pendingTickets" => TicketModel::where("status", "En attente")->count(),
             "resolvedTickets" => TicketModel::where("status", "Résolu")->count(),

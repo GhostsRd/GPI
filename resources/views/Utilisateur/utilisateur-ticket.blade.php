@@ -1,3 +1,3 @@
 <x-userlayout >
-    @livewire('utilisateur.utilisateur-ticket')
+    @livewire('utilisateur.utilisateur-ticket', ['id' => $id])
 </x-userlayout>

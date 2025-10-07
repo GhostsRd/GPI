@@ -522,6 +522,24 @@
     .timeline-icon .icon-wrap{ width: 32px; height: 32px; border-radius: 8px }
   }
 
+.step-column {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.draggable-card {
+    cursor: grab;
+    transition: transform 0.1s ease-in-out;
+}
+.draggable-card:active {
+    cursor: grabbing;
+    transform: scale(1.02);
+}
+
+.step-column:hover {
+    background-color: #e9ecef;
+}
 
 
   

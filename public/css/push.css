@@ -111,15 +111,16 @@
 
 /* === Active Step === */
 .workflow-step.active {
- 
+  
   font-weight: 600;
 }
 
 .workflow-step.active .icon-wrap {
 
-  color: rgb(29, 149, 73);
-
+  color: rgb(255, 255, 255);
+background-color: rgb(29, 149, 73);
   transform: scale(1.1);
+  
 }
 
 /* === Icons === */
@@ -168,8 +169,8 @@
 
 /* === Hover Effect === */
 .workflow-step:hover .icon-wrap {
-  border-color: #0d6efd;
-  color: #0d6efd;
+  border-color: rgb(29, 149, 73);
+  color: rgb(29, 149, 73);
   transform: scale(1.05);
 }
 

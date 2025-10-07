@@ -1,8 +1,8 @@
  :root {
       /* === 🎨 Personnalisation facile === */
-      --timeline-color: #007bff;          /* Couleur principale de progression */
-      --timeline-gradient: linear-gradient(90deg, #007bff, #00c6ff);
-      --step-active-color: #007bff;       /* Couleur des étapes actives */
+      --timeline-color: #0bcc99;          /* Couleur principale de progression */
+      --timeline-gradient: linear-gradient(90deg, #00b894, #00b893b9);
+      --step-active-color: #0bcc99;       /* Couleur des étapes actives */
       --step-complete-color: #00b894;     /* Couleur des étapes complètes */
       --timeline-bg: #f5f7fa;             /* Fond de la page */
       --text-color: #333;
@@ -13,6 +13,9 @@
       font-family: 'Poppins', sans-serif;
       color: var(--text-color);
       overflow-x: hidden;
+    }
+    .cursor-pointer {
+      cursor: pointer;
     }
 
     /* === TIMELINE PRINCIPALE === */

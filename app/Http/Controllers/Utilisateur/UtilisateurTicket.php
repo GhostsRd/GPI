@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 class UtilisateurTicket extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        return view('Utilisateur.utilisateur-ticket');
+        return view('Utilisateur.utilisateur-ticket',compact("id"));
     }
 }
