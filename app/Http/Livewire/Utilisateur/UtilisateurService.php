@@ -7,6 +7,8 @@ use App\Models\ticket;
 use App\Models\chat;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Commentaire;
+use App\Models\User;
+
 
 class UtilisateurService extends Component
 {
@@ -18,10 +20,14 @@ class UtilisateurService extends Component
     public $details;
     public $priorite;
     public $equipement;
-    public $impact = "";
+    public $impact ;
     public $equipementSeeder;
     public $responsable_id = 2;
     public $step2 = "";
+    
+    public function steps2(){
+        $this->step2 = "active";
+    }
     protected $rules = [
         'sujet'      => 'required|string|min:5',
         'details'    => 'required|string|min:5',
@@ -92,12 +98,8 @@ class UtilisateurService extends Component
     }
     public function mount(){
         
-         if($this->impact =! ""){
-            $this->step2 = "active";
-         }
-         else{
-            $this->step2 = "";
-         }
+        $this->step2;
+        $this->dispatchBrowserEvent('ticket-saved');
     }
     public function storechat()
     {
@@ -118,6 +120,7 @@ class UtilisateurService extends Component
                 ->where("utilisateur_id",$user_ID)
                 ->paginate(8),
          "chats"=> chat::all(),
+         "responsables" => User::all(),
            ]);
     }
 }

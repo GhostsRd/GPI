@@ -21,8 +21,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\Acceuil\Acceuil::class, 'index'])->name('home');
-Route::get('/ticket', [App\Http\Controllers\ticket\Ticket::class, 'index'])->name('ticket');
+
 
 Route::middleware(['LoginUser'])->group(function () {
     //Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -63,7 +62,11 @@ Route::post('/userinscription', [App\Http\Controllers\Utilisateur\UtilisateurIns
 Route::post('/checklogin', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'login'])->name('verifierlogin');
 //Route::get('/utilisateur', [App\Http\Controllers\User\User::class, 'utilisateur'])->name('utilisateur');-
 
-Route::get('/admin/ticket-view', [App\Http\Controllers\admin\ticket\Ticketview::class, 'index'])->name('adminTicketview');
-Route::get('/admin/ticket-kanban', [App\Http\Controllers\admin\ticket\Kanban::class, 'index'])->name('adminTicketkanban');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\Acceuil\Acceuil::class, 'index'])->name('home');
+    Route::get('/ticket', [App\Http\Controllers\ticket\Ticket::class, 'index'])->name('ticket');
+    Route::get('/admin/ticket-view', [App\Http\Controllers\admin\ticket\Ticketview::class, 'index'])->name('adminTicketview');
+    Route::get('/admin/ticket-kanban', [App\Http\Controllers\admin\ticket\Kanban::class, 'index'])->name('adminTicketkanban');
+    Route::get('/admin/ticket-view-{id}', [App\Http\Controllers\admin\ticket\Ticketview::class, 'ticketview'])->name('checkTicketview');
 
-Route::get('/admin/ticket-view-{id}', [App\Http\Controllers\admin\ticket\Ticketview::class, 'ticketview'])->name('checkTicketview');
+});

@@ -32,6 +32,10 @@ class Ticket extends Component
         session()->flash('message', 'Tickets supprimés avec succès.');
     }
 
+    public function changerVue(){
+        return redirect()->to("/admin/ticket-kanban");
+    }
+
     public function render()
     {
             $tickets = TicketModel::where("responsable_id", Auth::user()->id)

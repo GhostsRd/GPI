@@ -104,6 +104,7 @@ public function affecter()
     {
         $this->modelstep(Ticket::find($this->ticketId));
         Ticket::where('id', $this->ticketId)->update(['state' => $this->currentStep + 1]);    
+        return redirect()->to('/admin/ticket-view-'.$this->ticketId);
 
     }
 

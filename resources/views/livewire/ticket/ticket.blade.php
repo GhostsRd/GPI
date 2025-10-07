@@ -124,6 +124,13 @@
                             <option value="Autre">Autre</option>
                         </select>
                     </div>
+                      <div class="col-md-2">
+                        <label class="form-label small fw-bold">Vue</label>
+                        <select wire:change="changerVue" class="form-select form-select-sm">
+                            <option value="tableau">Tableau</option>
+                            <option value="kanban">Kanban</option>
+                        </select>
+                    </div>
                     <div class="col-md-1">
                         <button type="button" wire:click="$set(['search' => '', 'statut' => '', 'priorite' => '', 'categorie' => '', 'assigned_to' => ''])"
                                 class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">

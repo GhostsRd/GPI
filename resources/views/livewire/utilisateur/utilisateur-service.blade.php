@@ -57,7 +57,7 @@
           <span>Création</span>
         </div>
         <div class="workflow-line "></div>
-        <div class="workflow-step {{$step2}}">
+        <div class="workflow-step {{$step2 }}">
           <div class="icon-wrap">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="currentColor" class="size-6">
         <path d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z" />
@@ -109,7 +109,7 @@
                 <label for="categorie" class="form-label">Catégorie <span class="text-danger">*</span></label>
                 <select id="categorie"
                         class="input-recherche text-muted border @error('categorie') is-invalid @enderror"
-                        wire:model="categorie">
+                        wire:model="categorie" wire:change="steps2">
                     <option value="" class="text-mutted">-- Sélectionner une catégorie --</option>
                     <option value="Réseau" class="text-mutted">Réseau</option>
                     <option value="Logiciel" class="text-mutted">Logiciel</option>
@@ -247,9 +247,14 @@
                                         {{ $ticket->status }}
                                     </span>
                                 </td>
-                                <td>{{ $ticket->created_by }}</td>
-                                <td>{{ $ticket->assigned_to }}</td>
-                                <td>{{ $ticket->equipment }}</td>
+                                <td>{{ $ticket->impact }}</td>
+                                <td>@foreach($responsables as $resp)
+                                      @if($ticket->responsable_id == $resp->id)
+                                              {{$resp->name}}
+                                      @endif
+                                      @endforeach              
+                                      </td>
+                                <td>{{ $ticket->equipement }}</td>
                                 <td>{{ $ticket->created_at->format('d M Y H:i') }}</td>
                                 <td>
                                     {{-- <div class="action-buttons">
