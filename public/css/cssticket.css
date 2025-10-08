@@ -784,5 +784,26 @@
     align-items: center;
     gap: 0.5rem;
 }
-
+.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+.sortable:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+.btn-modern {
+    background: linear-gradient(45deg, #3b82f6, #1e40af);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(45deg, #1e40af, #1e3a8a);
+}
 

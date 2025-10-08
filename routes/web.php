@@ -51,9 +51,9 @@ Route::get('/equipement', [App\Http\Controllers\equipement\equipement::class, 'i
 Route::get('/equipement/export', [App\Http\Controllers\equipement::class, 'export'])
     ->name('equipement.export');
 Route::get('/equipement/export', [App\Http\Controllers\equipement\equipement::class, 'export'])->name('equipement.export');
-
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 
+Route::get('/equipement-i-t-controller', [App\Http\Controllers\EquipementITController::class, 'index'])->name('equipement-i-t-controller');
 
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
 

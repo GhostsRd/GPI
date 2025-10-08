@@ -1,7 +1,16 @@
 <div class="ticket-dashboard">
     <div class="dashboard-container">
-        <!-- Stats Header (reste inchangé) -->
+        <!-- Stats Header -->
         <div class="stats-header fade-in-up">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div></div> <!-- Espace vide pour pousser le bouton à droite -->
+                <button wire:click="$dispatch('openCreateModal')" class="btn-modern">
+                    <i class="fas fa-plus"></i>
+                    Nouveau Ticket
+                </button>
+            </div>
+        </div>
+
             <div class="row">
                 <div class="col-xl-3 col-md-6">
                     <div class="card stats-widget border-0 shadow-sm dark-card">
@@ -132,9 +141,22 @@
                         </select>
                     </div>
                     <div class="col-md-1">
-                        <button type="button" wire:click="$set(['search' => '', 'statut' => '', 'priorite' => '', 'categorie' => '', 'assigned_to' => ''])"
+                        <button type="button" wire:click="resetFilters"
                                 class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
-                            <i class="fa fa-times"></i> filtrer
+                            <i class="fa fa-times"></i> Reset
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les tickets sélectionnés"
+                            {{ empty($selectedTickets) ? 'disabled' : '' }}>
+                            <i class="fas fa-trash"></i>
+                            Supprimer ({{ count($selectedTickets) }})
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button wire:click="exportTickets" class="btn btn-success btn-sm w-100" title="Exporter les tickets">
+                            <i class="fas fa-download"></i>
+                            Exporter
                         </button>
                     </div>
                 </div>
@@ -148,17 +170,6 @@
                     <i class="fas fa-list"></i>
                     Liste des Tickets
                 </div>
-                <div class="table-actions">
-                    <button wire:click="$dispatch('openCreateModal')" class="btn-modern">
-                        <i class="fas fa-plus"></i>
-                        Nouveau Ticket
-                    </button>
-                    <button wire:click="deleteSelected" class="btn-modern secondary"
-                        {{ empty($selectedTickets) ? 'disabled' : '' }}>
-                        <i class="fas fa-trash"></i>
-                        Supprimer ({{ count($selectedTickets) }})
-                    </button>
-                </div>
             </div>
 
             <div class="table-wrapper w-100 compact-mode">
@@ -168,15 +179,50 @@
                         <th>
                             <input type="checkbox" wire:model="selectAll" class="checkbox-modern">
                         </th>
-                        <th>Référence</th>
-                        <th>Sujet</th>
-                        <th>Priorité</th>
+                        <th wire:click="sortBy('reference')" class="sortable">
+                            Référence
+                            @if($sortField === 'reference')
+                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                            @else
+                                <i class="fas fa-sort"></i>
+                            @endif
+                        </th>
+                        <th wire:click="sortBy('sujet')" class="sortable">
+                            Sujet
+                            @if($sortField === 'sujet')
+                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                            @else
+                                <i class="fas fa-sort"></i>
+                            @endif
+                        </th>
+                        <th wire:click="sortBy('priorite')" class="sortable">
+                            Priorité
+                            @if($sortField === 'priorite')
+                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                            @else
+                                <i class="fas fa-sort"></i>
+                            @endif
+                        </th>
                         <th>Catégorie</th>
-                        <th>Statut</th>
+                        <th wire:click="sortBy('status')" class="sortable">
+                            Statut
+                            @if($sortField === 'status')
+                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                            @else
+                                <i class="fas fa-sort"></i>
+                            @endif
+                        </th>
                         <th>Créé par</th>
                         <th>Assigné à</th>
                         <th>Équipement</th>
-                        <th>Date création</th>
+                        <th wire:click="sortBy('created_at')" class="sortable">
+                            Date création
+                            @if($sortField === 'created_at')
+                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                            @else
+                                <i class="fas fa-sort"></i>
+                            @endif
+                        </th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -209,16 +255,16 @@
                             <td>
                                 <div class="action-buttons">
                                     <button class="btn-action btn-view">
-                                        <a class="" href="{{ url('/admin/ticket-view-'.$ticket->id) }}">view</a>
-                                        <i class="fas fa-eye"></i>
+                                        <a href="{{ url('/admin/ticket-view-'.$ticket->id) }}">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                     </button>
                                     <button wire:click="$dispatch('editTicket', {id: {{ $ticket->id }}})"
                                             class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button wire:click="deleteTicket({{ $ticket->id }})"
-                                            class="btn-action btn-delete"
-                                            onclick="return confirm('Supprimer ce ticket ?')">
+                                    <button wire:click="confirmDelete({{ $ticket->id }})"
+                                            class="btn-action btn-delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -235,7 +281,6 @@
             </div>
         </div>
     </div>
-    </div>
 
     <!-- Flash Messages -->
     @if (session()->has('message'))
@@ -243,6 +288,20 @@
             <div class="d-flex align-items-center">
                 <i class="fas fa-check-circle text-success me-2"></i>
                 <span>{{ session('message') }}</span>
+            </div>
+        </div>
+    @endif
+
+    <!-- Confirmation Modal -->
+    @if($showDeleteModal)
+        <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);">
+            <div class="modal-dialog">
+                <div class="modal-content p-3">
+                    <h5>Confirmer la suppression</h5>
+                    <p>Voulez-vous vraiment supprimer les tickets sélectionnés ?</p>
+                    <button wire:click="deleteSelected" class="btn btn-danger">Oui, supprimer</button>
+                    <button wire:click="closeDeleteModal" class="btn btn-secondary">Annuler</button>
+                </div>
             </div>
         </div>
     @endif
