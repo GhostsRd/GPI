@@ -25,7 +25,7 @@ class Kanban extends Component
     public function mount()
     {
         $this->steps = [
-            ['id' => 1, 'name' => 'Création'],
+            ['id' => 1, 'name' => 'Ouvert'],
             ['id' => 2, 'name' => 'Assignation'],
             ['id' => 3, 'name' => 'Traitement'],
             ['id' => 4, 'name' => 'Résolution'],
@@ -89,7 +89,11 @@ class Kanban extends Component
     public function render()
     {
         // récupère les tickets depuis la DB (ou adapte selon ton modèle)
-        $tickets = ticket::where("sujet","like", "%" .  $this->recherche . "%")->where("state","like", "%" .  $this->state . "%")->where("priorite","like", "%" .  $this->priorite . "%")->where("categorie","like", "%" .  $this->categorie . "%")->where("responsable_id",Auth::user()->id)->orderBy('id')->get();
+        $tickets = ticket::where("sujet","like", "%" .  $this->recherche . "%")->where("state","like", "%" .  $this->state . "%")->where("priorite","like", "%" .  $this->priorite . "%")->where("categorie","like", "%" .  $this->categorie . "%")->where("responsable_id",Auth::user()->id)
+        
+        ->orderBy("priorite", "asc")   // d'abord par priorité
+        ->orderBy("created_at", "desc") 
+        ->get();
         return view('livewire.admin.ticket.kanban', [
             'tickets' => $tickets,
         ]);

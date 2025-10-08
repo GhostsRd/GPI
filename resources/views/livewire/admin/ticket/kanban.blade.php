@@ -136,42 +136,101 @@
                 </div>
             </div>
         </div>
-    <div class="container-fluid mt-4">
-        <div class="row g-3">
-            @foreach($steps as $step)
-                <div class="col-md-2">
-                    <div class=" step-column border  step-{{ $step['id'] }}"
-                         ondragover="event.preventDefault()"
-                         ondrop="handleDrop(event, {{ $step['id'] }})">
-                        <div class="card-header text-center">
-                            
-                            <label class="fw-bold  mb-1 mt-0 pt-0">{{ $step['name'] }}</label>
-                            <hr>
-                        </div>
+ <div class="kanban-board shadow-sm bg-white rounded container-fluid mt-3 px-2">
+    <div class="d-flex flex-nowrap overflow-auto">
+        @foreach($steps as $step)
+            <div class="kanban-column flex-shrink-0 mx-1"
+                 ondragover="event.preventDefault()"
+                 ondrop="handleDrop(event, {{ $step['id'] }})">
 
-                        <div class="card-body tickets" data-step="{{ $step['id'] }}" style="min-height:200px;">
-                            @foreach($tickets->where('state', $step['id']) as $ticket)
-                                <div wire:click="Visualiser({{$ticket->id}})" class="card border-0 mb-2 draggable-card  {{$ticket->priorite == 1 ? 'bg-warning' : 'bg-secondary'}}"
-                                     draggable="true"
-                                     ondragstart="handleDragStart(event, {{ $ticket->id }})"
-                                     wire:key="ticket-{{ $ticket->id }}"
-                                     data-ticket="{{ $ticket->id }}">
-                                    <div class="card-body p-2">
-                                        {{ $ticket->sujet }}
-
-                                    <p>• {{$ticket->utilisateur_id}}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
+                <!-- En-tête -->
+                <div class="kanban-header border-0 text-center py-2 rounded-top text-white fw-semibold"
+                     style="background-color: #6c757d;">
+                    {{ $step['name'] }}
                 </div>
-            @endforeach
-        </div>
+
+                <!-- Corps -->
+                <div class="kanban-body  border-top-0 rounded-bottom bg-light p-2"
+                     data-step="{{ $step['id'] }}"
+                     style="min-height: 300px;">
+
+                    @foreach($tickets->where('state', $step['id']) as $ticket)
+                        <div wire:click="Visualiser({{ $ticket->id }})"
+                             class="kanban-item card  shadow-sm mb-2 draggable-card  {{ $ticket->priorite == 1 ? 'border border-warning text-dark' : 'border border-success text-dark' }}"
+                             draggable="true"
+                             ondragstart="handleDragStart(event, {{ $ticket->id }})"
+                             ondragend="handleDragEnd(event)"
+                             wire:key="ticket-{{ $ticket->id }}"
+                             data-ticket="{{ $ticket->id }}">
+
+                            <div class="card-body p-2 small text-truncate">
+                                <div class="fw-bold text-muted">{{ $ticket->sujet }}</div>
+                                <p class="small mb-0">• Utilisateur : {{ $ticket->utilisateur->nom }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
     </div>
+</div>
+
+
 
     {{-- petit style --}}
     <style>
+    /* --- Structure générale --- */
+.kanban-board {
+  padding: 0;
+  
+}
+
+.kanban-column {
+  width: 227px;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* --- Header colonne --- */
+.kanban-header {
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+/* --- Corps de colonne --- */
+.kanban-body {
+  overflow-y: auto;
+  min-height: 300px;
+  max-height: 75vh;
+  padding: 8px;
+}
+
+/* --- Cartes --- */
+.kanban-item {
+  cursor: grab;
+  transition: all 0.25s ease-in-out;
+  border-radius: 10px;
+  transform-origin: center;
+  scale: 0.95;
+}
+
+.kanban-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* --- Effet pendant le drag --- */
+.kanban-item.dragging {
+  opacity: 0.6;
+  transform: rotate(3deg) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.kanban-body.drag-over {
+  background-color: #e9ecef;
+  border: 2px dashed #adb5bd;
+  transition: background-color 0.2s ease;
+}
+
         .step-column { background: #ffffffff;  }
         .step-column.drag-over { outline:2px dashed rgba(13,110,253,0.35); background:#eef7ff; }
         .draggable-card { cursor:grab; }

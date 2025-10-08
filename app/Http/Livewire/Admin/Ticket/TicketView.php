@@ -166,6 +166,10 @@ public function affecter()
         $this->ticketvals = Ticket::findOrFail($this->ticketId);
        
     }         
+    public function destroyComment($id){
+        Commentaire::destroy($id);
+        
+    }
 
   
     public function render()

@@ -27,7 +27,7 @@
 
     <!-- Styles -->
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
     <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleuser.css') }}" rel="stylesheet">
@@ -35,8 +35,8 @@
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleequipement.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
-    <link href="/css/app.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{-- <link href="/css/app.css" rel="stylesheet"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -237,11 +237,8 @@
 </div>
 
 @livewireScripts
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{{-- <script src="{{ asset('js/modalview.js') }}"></script> --}}
 <script>
     window.addEventListener('openAffectationModal', () => {
         let modal = new bootstrap.Modal(document.getElementById('affectationModal'));
@@ -253,7 +250,6 @@
         modal.hide();
     });
 </script>
-<script src="{{ asset('js/modalview.js') }}"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 </body>
 </html>

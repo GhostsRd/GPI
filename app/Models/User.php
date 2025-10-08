@@ -29,7 +29,10 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
-
+    public function tickets()
+    {
+    return $this->hasMany(Ticket::class, 'responsable_id');
+    }
     public function isActive()
     {
         return $this->status === 'active';

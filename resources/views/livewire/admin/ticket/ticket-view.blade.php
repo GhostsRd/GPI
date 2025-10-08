@@ -20,6 +20,31 @@
                 <svg wire:click="openAffectationModal"  width="30"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
             </svg>
+              <div class="dropdown">
+  <button class="btn btn-outline-danger btn-sm dropdown-toggle d-flex align-items-center" 
+          type="button" 
+          id="dropdownMenuButtonExit" 
+          data-bs-toggle="dropdown" 
+          aria-expanded="false">
+
+    <!-- Icône Exit -->
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         width="20" 
+         fill="none" 
+         viewBox="0 0 24 24" 
+         stroke-width="1.5" 
+         stroke="currentColor" 
+         class="me-2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+    </svg>
+    Exit
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonExit">
+    <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+    <li><a class="dropdown-item" href="#">Fermer la session</a></li>
+  </ul>
+</div>
 
             
              </div>
@@ -152,7 +177,15 @@
                                     @endforeach
                                     </strong>  {{$comment->commentaire}} <strong>{{$ticketvals->categorie}}</strong>.</div>
                                       
+                                  <button wire:click="destroyComment({{$comment->id}})" type="button" class="btn border-0 p-0 btn-outline-danger btn-sm mx-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                    </svg>
+                                  </button>
+
                                   </div>
+
+
                               </div>
                            @endforeach
 

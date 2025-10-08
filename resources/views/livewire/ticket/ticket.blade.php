@@ -189,7 +189,7 @@
                                        value="{{ $ticket->id }}"
                                        class="checkbox-modern">
                             </td>
-                            <td>{{ $ticket->reference }}</td>
+                            <td>{{ $ticket->id }}</td>
                             <td>{{ $ticket->sujet }}</td>
                             <td class="priority-{{ $ticket->priorite }}">
                                 {{ ucfirst($ticket->priorite) }}
@@ -202,9 +202,9 @@
                                         {{ $ticket->status }}
                                     </span>
                             </td>
-                            <td>{{ $ticket->created_by }}</td>
-                            <td>{{ $ticket->assigned_to }}</td>
-                            <td>{{ $ticket->equipment }}</td>
+                            <td>{{ $ticket->utilisateur->nom }}</td>
+                            <td>{{ $ticket->responsable->name }}</td>
+                            <td>{{ $ticket->equipement }}</td>
                             <td>{{ $ticket->created_at->format('d M Y H:i') }}</td>
                             <td>
                                 <div class="action-buttons">
