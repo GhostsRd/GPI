@@ -182,7 +182,7 @@
                     </thead>
                     <tbody>
                     @foreach($tickets as $ticket)
-                        <tr class="priorite_{{$ticket->priorite}}">
+                        <tr class="priorite_{{$ticket->priorite}}" wire:click="Visualiser({{ $ticket->id }})">
                             <td>
                                 <input type="checkbox"
                                        wire:model="selectedTickets"

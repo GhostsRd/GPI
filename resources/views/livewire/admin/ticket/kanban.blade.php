@@ -1,80 +1,6 @@
 <div>
 
-            <div class="stats-header fade-in-up">
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card stats-widget border-0 shadow-sm dark-card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <h3 class="stats-number text-primary"></h3>
-                                                <p class="stats-label text-light mb-0">Totals tickets</p>
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
-                                                    <i class="fas fa-boxes fa-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card stats-widget border-0 shadow-sm dark-card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <h3 class="stats-number text-success"></h3>
-                                                <p class="stats-label text-light mb-0">En cours</p>
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
-                                                    <i class="fas fa-warehouse fa-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card stats-widget border-0 shadow-sm dark-card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <h3 class="stats-number text-warning"></h3>
-                                                <p class="stats-label text-light mb-0">En Prêt</p>
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
-                                                    <i class="fas fa-hand-holding fa-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card stats-widget border-0 shadow-sm dark-card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <h3 class="stats-number text-danger"></h3>
-                                                <p class="stats-label text-light mb-0">Résolus</p>
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
-                                                    <i class="fas fa-tools fa-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
@@ -145,8 +71,8 @@
 
                 <!-- En-tête -->
                 <div class="kanban-header border-0 text-center py-2 rounded-top text-white fw-semibold"
-                     style="background-color: #6c757d;">
-                    {{ $step['name'] }}
+                     style="background-color: #84b0b4ff;">
+                    {{ $step['name'] }} <span class="">({{count($tickets->where('state', $step['id']))}})</span>
                 </div>
 
                 <!-- Corps -->
@@ -163,10 +89,27 @@
                              wire:key="ticket-{{ $ticket->id }}"
                              data-ticket="{{ $ticket->id }}">
 
-                            <div class="card-body p-2 small text-truncate">
+                            <div class="card-body p-1 small d-flex flex-column justify-content-between" style="min-height: 60px;">
                                 <div class="fw-bold text-muted">{{ $ticket->sujet }}</div>
-                                <p class="small mb-0">• Utilisateur : {{ $ticket->utilisateur->nom }}</p>
+                                <div class="d-flex justify-content-center mt-1">
+                                    <span title="commentaire" class="rounded-pill border px-2 bg-secondary border-secondary">{{count($ticket->commentaires)}}</span>
+                                    <img class="dropdown-toggle rounded-pill"
+                                        data-toggle="dropdown"
+                                        src="https://ui-avatars.com/api/?name={{ $ticket->utilisateur->nom }}"
+                                        alt="Profil" 
+                                        width="25" 
+                                        height="25"
+                                        title="Utilisateur : {{ $ticket->utilisateur->nom }}">
+                                        <img class="dropdown-toggle rounded-pill border border-success"
+                                        data-toggle="dropdown"
+                                        src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name }}"
+                                        alt="Profil" 
+                                        width="25" 
+                                        height="25"
+                                        title="Responsable : {{ $ticket->responsable->name }}">
+                                </div>
                             </div>
+
                         </div>
                     @endforeach
                 </div>

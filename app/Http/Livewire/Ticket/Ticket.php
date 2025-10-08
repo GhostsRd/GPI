@@ -35,6 +35,9 @@ class Ticket extends Component
     public function changerVue(){
         return redirect()->to("/admin/ticket-kanban");
     }
+    public function Visualiser($id){
+            return redirect()->to("/admin/ticket-view-".$id);
+    }
 
     public function render()
     {
