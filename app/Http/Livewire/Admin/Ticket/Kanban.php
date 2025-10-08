@@ -57,6 +57,9 @@ class Kanban extends Component
             return; // rien à faire
         }
 
+        if($newStepId == 5){
+                $ticket->priorite = 3;
+            }
         $ticket->state = $newStepId;
         $ticket->save();
 

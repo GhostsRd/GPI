@@ -70,8 +70,9 @@
                  ondrop="handleDrop(event, {{ $step['id'] }})">
 
                 <!-- En-tête -->
-                <div class="kanban-header border-0 text-center py-2 rounded-top text-white fw-semibold"
-                     style="background-color: #84b0b4ff;">
+                <div class="kanban-header border-0 text-center py-2 rounded-1 text-white fw-semibold"
+                     style="background-color: #84b0b4c4;"
+                     >
                     {{ $step['name'] }} <span class="">({{count($tickets->where('state', $step['id']))}})</span>
                 </div>
 
@@ -82,7 +83,7 @@
 
                     @foreach($tickets->where('state', $step['id']) as $ticket)
                         <div wire:click="Visualiser({{ $ticket->id }})"
-                             class="kanban-item card  shadow-sm mb-2 draggable-card  {{ $ticket->priorite == 1 ? 'border border-warning text-dark' : 'border border-success text-dark' }}"
+                             class="kanban-item p-1   mb-2 draggable-card {{ $ticket->priorite == 0 ? 'priority_0' : ($ticket->priorite == 1 ? 'priority_1' : 'border border-success') }}"
                              draggable="true"
                              ondragstart="handleDragStart(event, {{ $ticket->id }})"
                              ondragend="handleDragEnd(event)"
@@ -91,8 +92,11 @@
 
                             <div class="card-body p-1 small d-flex flex-column justify-content-between" style="min-height: 60px;">
                                 <div class="fw-bold text-muted">{{ $ticket->sujet }}</div>
-                                <div class="d-flex justify-content-center mt-1">
-                                    <span title="commentaire" class="rounded-pill border px-2 bg-secondary border-secondary">{{count($ticket->commentaires)}}</span>
+                                    <div class="d-flex justify-content-start mt-1">
+                                    </div>
+                                    
+                                <div class="d-flex justify-content-end mt-1">
+                                        {{-- <span title="commentaire" class="rounded-pill border px-2  border-secondary">{{count($ticket->commentaires)}}</span> --}}
                                     <img class="dropdown-toggle rounded-pill"
                                         data-toggle="dropdown"
                                         src="https://ui-avatars.com/api/?name={{ $ticket->utilisateur->nom }}"
@@ -126,6 +130,18 @@
 .kanban-board {
   padding: 0;
   
+}
+.priority_0{
+    background: hsla(0, 93%, 73%, 0.69);
+}
+.priority_1{
+    background: rgba(240, 176, 81, 0.69);
+}
+.priority_3{
+    background: rgba(254, 254, 147, 0.69);
+}
+.priority_2{
+    background: rgba(147, 249, 254, 0.69);
 }
 
 .kanban-column {

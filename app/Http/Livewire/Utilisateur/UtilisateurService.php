@@ -19,6 +19,7 @@ class UtilisateurService extends Component
     public $categorie;
     public $details;
     public $priorite;
+    public $priorite_impact;
     public $equipement;
     public $impact ;
     public $equipementSeeder;
@@ -47,12 +48,22 @@ class UtilisateurService extends Component
 
         public function store(ticket $ticket,chat $chat,Commentaire $commentaire){
         $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
+        //$responsable = User::where("poste",);
+
+
         if($this->categorie == "Réseau"){
             $this->responsable_id= 1;
         }elseif($this->categorie == "Logiciel"){
             $this->responsable_id= 2;
         }
-
+        if($this->impact == "Utilisateur"){
+            $this->priorite_impact= 1;
+        }elseif($this->impact == "Organisation" || $this->impact ==  "Service"){
+            $this->priorite_impact= 0;
+        }
+        elseif($this->impact == "Autre"){
+            $this->priorite_impact= 2;
+        }
         $ticket->sujet = $this->sujet;
         $ticket->details = $this->details;
         $ticket->utilisateur_id = $utlisateurConnecter ;
@@ -62,7 +73,7 @@ class UtilisateurService extends Component
         $ticket->impact = $this->impact;
         $ticket->state = 2;
         $ticket->status = "en attente";
-        $ticket->priorite = false;
+        $ticket->priorite = $this->priorite_impact;
         $ticket->save();
 
 

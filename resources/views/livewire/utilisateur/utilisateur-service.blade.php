@@ -131,7 +131,7 @@
                     <option value="Utilisateur">Un utilisateur ou un groupe</option>
                     <option value="Service">Un service ou département</option>
                     <option value="Organisation">Toute l’organisation</option>
-                    <option value="Organisation">Autre</option>
+                    <option value="Autre">Autre</option>
 
                 </select>
                 @error('impact')
@@ -149,7 +149,7 @@
                     <option value="">-- Sélectionner --</option>
                     <option value="Basse">Basse</option>
                     <option value="Normale">Normale</option>
-                    <option value="Haute">Haute</option>
+                    <option value="Haute">Urgent</option>
                     <option value="Critique">Critique</option>
                   </select>
                   @error('priorite')
@@ -168,6 +168,8 @@
                   <option value="Routeur">Routeur</option>
                   <option value="Switch">Switch</option>
                   <option value="Serveur">Serveur</option>
+                  <option value="autre">Autre</option>
+
               </select>
               @error('equipementSeeder')
                 <div class="invalid-feedback">{{ $message }}</div>
