@@ -156,7 +156,7 @@
         </div>
 
         <!-- Table Container -->
-        <div class="table-container  fade-in-up">
+        <div class="table-container border-0  fade-in-up">
             <div class="table-header">
                 <div class="table-title">
                     

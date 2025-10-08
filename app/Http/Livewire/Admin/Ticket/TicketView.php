@@ -27,9 +27,15 @@ class TicketView extends Component
     public $progress;
 
     public $selectedTicket;
-public $assigned_to;
-public $techniciens;
+    public $assigned_to;
+    public $techniciens;
 
+public function FermerTicket($id){
+    $ticket = Ticket::find($id);
+    $ticket->state = 5;
+    $ticket->priorite = 3;
+    $ticket->save();
+}
 
 public function openAffectationModal()
 {
@@ -84,7 +90,9 @@ public function affecter()
         $this->progress = $progress;
 
         if($this->currentStep == 5){
-
+            for($i=1; $i<5; $i++){
+                    $this->current[$i] = "past";
+            }
         }else{
             for($i=1; $i<=6; $i++){
             if($i < $this->currentStep){
@@ -103,23 +111,31 @@ public function affecter()
     public function nextStep()
     {
         $this->modelstep(Ticket::find($this->ticketId));
-        Ticket::where('id', $this->ticketId)->update(['state' => $this->currentStep + 1]);    
-        return redirect()->to('/admin/ticket-view-'.$this->ticketId);
+        if($this->currentStep == 5){
+            return;
+        }elseif($this->currentStep < 5){
+            Ticket::where('id', $this->ticketId)->update(['state' => $this->currentStep + 1]);    
+            return redirect()->to('/admin/ticket-view-'.$this->ticketId);
+        }
 
     }
 
     public function previousStep()
     {
-        
-        for($i=6; $i>=1; $i--){
-            if($this->current[$this->currentStep] == "current" && $i > 1){
-                $this->current[$this->currentStep] = "future";
-                $this->current[$this->currentStep-1] = "current";
-                $prog = ($i-1)*20; 
-                $progress = 'fill_'.$prog;
-                $this->progress = $progress;
-                break;
-            }
+        if($this->currentStep == 1){
+            return;
+        }else{
+            for($i=6; $i>=1; $i--){
+                if($this->current[$this->currentStep] == "current" && $i > 1){
+                    $this->current[$this->currentStep] = "future";
+                    $this->current[$this->currentStep-1] = "current";
+                    $prog = ($i-1)*20; 
+                    $progress = 'fill_'.$prog;
+                    $this->progress = $progress;
+                    break;
+                }
+                return redirect()->to('/admin/ticket-view-'.$this->ticketId);
+        }
         }
         Ticket::where('id', $this->ticketId)->update(['state' => $this->currentStep - 1]);
        // dd($this->current);

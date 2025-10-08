@@ -191,7 +191,7 @@
                 <label style="margin:0 0 8px" class="fw-bold">Actions rapides</label>
                 <div style="display:flex;flex-direction:column;gap:8px">
                   <button class="btn-ghost" id="markResolved">Marquer comme Résolu</button>
-                  <button class="btn-ghost" id="markClosed">Fermer ticket</button>
+                  <button class="btn-ghost" id="markClosed" wire:click="FermerTicket({{$ticketvals->id}})">Fermer ticket</button>
                 </div>
               </div>
 
