@@ -132,14 +132,15 @@
                         @foreach($recentUsers as $user)
                             <tr>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-avatar me-3">
-                                            {{ strtoupper(substr($user->name, 0, 1)) }}
-                                        </div>
-                                        <div>
-                                            <p class="mb-0 fw-medium">{{ $user->name }}</p>
-                                            <small class="text-muted">ID: {{ $user->id }}</small>
-                                        </div>
+                                    <div class=" align-items-center">
+                                     <img class="dropdown-toggle rounded-pill"
+                                        data-toggle="dropdown"
+                                        src="https://ui-avatars.com/api/?name={{ $user->name }}"
+                                        alt="Profil" 
+                                        width="25" 
+                                        height="25"
+                                        title=" {{  $user->name  }}">
+                                        {{ $user->name }}
                                     </div>
                                 </td>
                                 <td>{{ $user->email }}</td>

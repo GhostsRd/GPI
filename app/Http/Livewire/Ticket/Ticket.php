@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Ticket extends Component
 {
-    use WithPagination;
+    //use WithPagination;
 
     public $checkData = [];
     public $selectedTickets = [];

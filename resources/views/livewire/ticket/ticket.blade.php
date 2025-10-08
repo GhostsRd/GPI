@@ -101,7 +101,7 @@
                                    class="form-control" placeholder="Référence, Sujet, Créé par...">
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <label class="form-label small fw-bold">Statut</label>
                         <select wire:model.live="statut" class="form-select form-select-sm">
                             <option value="">Tous les statuts</option>
@@ -122,7 +122,7 @@
                             <option value="urgente">Urgente</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <label class="form-label small fw-bold">Catégorie</label>
                         <select wire:model.live="categorie" class="form-select form-select-sm">
                             <option value="">Toutes les catégories</option>
@@ -133,7 +133,7 @@
                             <option value="Autre">Autre</option>
                         </select>
                     </div>
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <label class="form-label small fw-bold">Vue</label>
                         <select wire:change="changerVue" class="form-select form-select-sm">
                             <option value="tableau">Tableau</option>
@@ -146,7 +146,7 @@
                             <i class="fa fa-times"></i> Reset
                         </button>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les tickets sélectionnés"
                             {{ empty($selectedTickets) ? 'disabled' : '' }}>
                             <i class="fas fa-trash"></i>
@@ -164,16 +164,17 @@
         </div>
 
         <!-- Table Container -->
-        <div class="table-container fade-in-up">
+        <div class="table-container  fade-in-up">
             <div class="table-header">
                 <div class="table-title">
-                    <i class="fas fa-list"></i>
+                    
                     Liste des Tickets
                 </div>
             </div>
 
-            <div class="table-wrapper w-100 compact-mode">
-                <table class="modern-table table">
+            <div class="table-wrapper p-0 border-0 w-100 compact-mode">
+         
+                <table class="table border-0 shadow-sm">
                     <thead>
                     <tr>
                         <th>
@@ -228,7 +229,7 @@
                     </thead>
                     <tbody>
                     @foreach($tickets as $ticket)
-                        <tr class="priorite_{{$ticket->priorite}}" wire:click="Visualiser({{ $ticket->id }})">
+                        <tr class="priorite_{{$ticket->priorite}}" style="cursor:pointer" wire:click="Visualiser({{ $ticket->id }})">
                             <td>
                                 <input type="checkbox"
                                        wire:model="selectedTickets"

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class Ordinateur extends Component
 {
-    use WithPagination;
+    
 
     public $search = '';
     public $statut = '';
@@ -62,13 +62,13 @@ class Ordinateur extends Component
 
     public function mount()
     {
-        $this->resetPage();
+        //$this->resetPage();
     }
 
     public function updated($propertyName)
     {
         if (in_array($propertyName, ['search', 'statut', 'entite', 'perPage'])) {
-            $this->resetPage();
+          //  $this->resetPage();
         }
     }
 
