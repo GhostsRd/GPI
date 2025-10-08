@@ -2,26 +2,109 @@
     <div class="container-fluid">
         <!-- En-tête -->
         <div class="row mb-4">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <h1 class="h3">Gestion des Ordinateurs</h1>
                 <p class="text-muted">Gérez votre parc informatique</p>
             </div>
-            <div class="col-md-6 text-end">
-                <button wire:click="create" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Nouvel Ordinateur
-                </button>
+            <div class="col-md-7 text-end">
+                 <div class="row">
+                <div class="col-xl-3 col-md-3">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    {{-- <h3 class="stats-number text-primary">{{ $totalTickets }}</h3> --}}
+                                    <p class="stats-label text-light mb-0">Totals tickets</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-boxes fa-lg"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-3">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    {{-- <h3 class="stats-number text-success">{{ $inProgressTickets }}</h3> --}}
+                                    <p class="stats-label text-light mb-0">En cours</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-warehouse fa-lg"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-3">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    {{-- <h3 class="stats-number text-warning">{{ $pendingTickets }}</h3> --}}
+                                    <p class="stats-label text-light mb-0">En Prêt</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-hand-holding fa-lg"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-3">
+                    <div class="card stats-widget border-0 shadow-sm dark-card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    {{-- <h3 class="stats-number text-danger">{{ $resolvedTickets }}</h3> --}}
+                                    <p class="stats-label text-light mb-0">Résolus</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-tools fa-lg"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
 
-        <!-- Filtres -->
-        <div class="card mb-4">
+  <!-- Barre de recherche et filtres -->
+        <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
-                <div class="row g-3">
+                <div class="row g-3 align-items-end">
                     <div class="col-md-3">
-                        <input type="text" wire:model.live="search" class="form-control"
-                               placeholder="Rechercher...">
+                        <label class="form-label small fw-bold">Recherche</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-transparent">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" wire:model.live="search"
+                                   class="form-control" placeholder="Référence, Sujet, Créé par...">
+                        </div>
                     </div>
+
                     <div class="col-md-2">
+                        <label class="form-label small fw-bold">Priorité</label>
+                        <input type="text" wire:model.live="entite" class="form-control"
+                               placeholder="Entité...">
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label small fw-bold">Statut</label>
                         <select wire:model.live="statut" class="form-select">
                             <option value="">Tous les statuts</option>
                             @foreach($statuts as $statut)
@@ -29,28 +112,42 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <input type="text" wire:model.live="entite" class="form-control"
-                               placeholder="Entité...">
-                    </div>
-                    <div class="col-md-2">
+                      <div class="col-md-2">
+                        <label class="form-label small fw-bold">Page</label>
+                         
                         <select wire:model.live="perPage" class="form-select">
                             <option value="10">10 par page</option>
                             <option value="20">20 par page</option>
                             <option value="50">50 par page</option>
                             <option value="100">100 par page</option>
                         </select>
+                
                     </div>
-                    <div class="col-md-3">
-                        <div class="d-flex gap-2">
-                            <span class="text-muted mt-2">
-                                {{ $ordinateurs->total() }} résultat(s)
-                            </span>
-                        </div>
+                    <div class="col-md-1">
+                        <button wire:click="create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nouveau
+                </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les tickets sélectionnés"
+                            {{ empty($selectedTickets) ? 'disabled' : '' }}>
+                            <i class="fas fa-trash"></i>
+                            Supprimer
+                            {{-- Supprimer ({{ count($selectedTickets) }}) --}}
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button wire:click="exportTickets" class="btn btn-success btn-sm w-100" title="Exporter les tickets">
+                            <i class="fas fa-download"></i>
+                            Exporter
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Filtres -->
+        
+       
 
         <!-- Messages flash -->
         @if (session()->has('message'))
@@ -68,12 +165,20 @@
         @endif
 
         <!-- Tableau -->
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-dark">
-                        <tr>
+        <!-- Table Container -->
+        <div class="table-container border-0   fade-in-up">
+            <div class="table-header">
+                <div class="table-title">
+                    
+                    Liste des ordinateurs
+                </div>
+            </div>
+
+            <div class="table-wrapper p-0 border-0 w-100 compact-mode">
+                <table class="table border-0 shadow-sm">
+         
+                    <thead>
+                    <tr>
                             <th>Nom</th>
                             <th>Entité</th>
                             <th>Statut</th>
@@ -84,10 +189,10 @@
                             <th>IP</th>
                             <th>OS</th>
                             <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse($ordinateurs as $ordinateur)
+                    </tr>
+                    </thead>
+                    <tbody>
+                     @forelse($ordinateurs as $ordinateur)
                             <tr>
                                 <td>
                                     <strong>{{ $ordinateur->nom }}</strong>
@@ -161,42 +266,15 @@
                                 </td>
                             </tr>
                         @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
 
-                <!-- Pagination -->
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $ordinateurs->links() }}
-                </div>
+            <!-- Pagination -->
+            <div class="mt-4 container">
+                {{ $ordinateurs->links() }}
             </div>
         </div>
-
-        <!-- Statistiques rapides -->
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-chart-bar me-2"></i>Statistiques rapides
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            @foreach($stats as $statut => $count)
-                                <div class="col-md-3">
-                                    <div class="border rounded p-3">
-                                        <h4 class="text-primary">{{ $count }}</h4>
-                                        <small class="text-muted">{{ $statut }}</small>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Modal -->
     @if($showModal)

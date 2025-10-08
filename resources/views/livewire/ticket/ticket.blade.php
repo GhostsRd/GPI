@@ -1,15 +1,7 @@
 <div class="ticket-dashboard">
     <div class="dashboard-container">
         <!-- Stats Header -->
-        <div class="stats-header fade-in-up">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div></div> <!-- Espace vide pour pousser le bouton à droite -->
-                <button wire:click="$dispatch('openCreateModal')" class="btn-modern">
-                    <i class="fas fa-plus"></i>
-                    Nouveau Ticket
-                </button>
-            </div>
-        </div>
+     
 
             <div class="row">
                 <div class="col-xl-3 col-md-6">
