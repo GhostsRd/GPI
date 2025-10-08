@@ -47,7 +47,8 @@ Route::get('/equipement/edit', [App\Http\Controllers\equipement\equipement::clas
 Route::put('/equipement/{equipement}', [App\Http\Controllers\equipement\equipement::class, 'update'])->name('equipement.update');
 Route::patch('/equipement/{equipement}', [App\Http\Controllers\equipement\equipement::class, 'update']); // Alternative pour PATCH
 Route::delete('/equipement/{equipement}', [App\Http\Controllers\equipement\equipement::class, 'destroy'])->name('equipement.destroy');
-Route::get('/equipement', [App\Http\Controllers\equipement\equipement::class, 'index'])->name('equipement');
+
+Route::get('/ordinateur', [App\Http\Controllers\equipement\ordinateur::class, 'index'])->name('ordinateur');
 Route::get('/equipement/export', [App\Http\Controllers\equipement::class, 'export'])
     ->name('equipement.export');
 Route::get('/equipement/export', [App\Http\Controllers\equipement\equipement::class, 'export'])->name('equipement.export');
