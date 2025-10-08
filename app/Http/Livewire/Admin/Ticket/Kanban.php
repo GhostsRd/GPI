@@ -86,6 +86,7 @@ class Kanban extends Component
 
         // rafraîchir les données si nécessaire (ici on ne garde pas de cache)
         $this->emitSelf('refreshComponent'); // optional
+        $this->emitTo('Utilisateur.utilisateur-ticket', 'refreshComponent');
         $this->dispatchBrowserEvent('notify', ['type' => 'success', 'message' => 'Ticket déplacé']);
     }
 

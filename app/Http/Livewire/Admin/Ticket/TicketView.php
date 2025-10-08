@@ -72,7 +72,8 @@ public function affecter()
             $commentaire->commentaire = $this->comments;
             $commentaire->save();
 
-            return redirect()->to('/admin/ticket-view-'.$this->ticketId);
+            $this->comments = "";
+            $this->emitSelf('refreshComponent');
         }
 
        // session()->flash('message','Commentaire ajouter avec succes');
@@ -115,7 +116,7 @@ public function affecter()
             return;
         }elseif($this->currentStep < 5){
             Ticket::where('id', $this->ticketId)->update(['state' => $this->currentStep + 1]);    
-            return redirect()->to('/admin/ticket-view-'.$this->ticketId);
+            $this->emitSelf('refreshComponent');
         }
 
     }
@@ -134,7 +135,7 @@ public function affecter()
                     $this->progress = $progress;
                     break;
                 }
-                return redirect()->to('/admin/ticket-view-'.$this->ticketId);
+                 $this->emitSelf('refreshComponent');
         }
         }
         Ticket::where('id', $this->ticketId)->update(['state' => $this->currentStep - 1]);

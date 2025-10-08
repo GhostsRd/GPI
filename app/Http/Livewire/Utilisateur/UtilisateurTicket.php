@@ -38,7 +38,7 @@ class UtilisateurTicket extends Component
                 ->commentaires()
                 ->orderBy('created_at', 'desc')
                 ->get();
-       ;
+       
     }      
 
     public function store(ticket $ticket,chat $chat,Commentaire $commentaire){
