@@ -21,6 +21,12 @@ class Kanban extends Component
     public $ticketIds;
 
     protected $listeners = ['moveTicket']; // écoute l'événement JS
+    public $archive = false;
+
+
+    public function archiveActive(){
+        $this->archive = !$this->archive;
+    }
 
     public function mount()
     {
@@ -30,6 +36,7 @@ class Kanban extends Component
             ['id' => 3, 'name' => 'Traitement'],
             ['id' => 4, 'name' => 'Résolution'],
             ['id' => 5, 'name' => 'Clôture'],
+            ['id' => 6, 'name' => 'Archive'],
 
         ];
    
@@ -60,6 +67,13 @@ class Kanban extends Component
         if($newStepId == 5){
                 $ticket->priorite = 3;
             }
+        elseif($newStepId == 6){
+            $ticket->priorite = 3;
+            $ticket->archive = true;
+
+            }else{
+                $ticket->archive = false;
+            }
         $ticket->state = $newStepId;
         $ticket->save();
 
@@ -86,7 +100,7 @@ class Kanban extends Component
 
         // rafraîchir les données si nécessaire (ici on ne garde pas de cache)
         $this->emitSelf('refreshComponent'); // optional
-        $this->emitTo('Utilisateur.utilisateur-ticket', 'refreshComponent');
+        $this->emitTo('livewire.utilisateur.utilisateur-ticket', 'refreshComponent');
         $this->dispatchBrowserEvent('notify', ['type' => 'success', 'message' => 'Ticket déplacé']);
     }
 
@@ -94,7 +108,7 @@ class Kanban extends Component
     {
         // récupère les tickets depuis la DB (ou adapte selon ton modèle)
         $tickets = ticket::where("sujet","like", "%" .  $this->recherche . "%")->where("state","like", "%" .  $this->state . "%")->where("priorite","like", "%" .  $this->priorite . "%")->where("categorie","like", "%" .  $this->categorie . "%")->where("responsable_id",Auth::user()->id)
-        
+        ->where("archive", "like", "%" . $this->archive . "%")
         ->orderBy("priorite", "asc")   // d'abord par priorité
         ->orderBy("created_at", "desc") 
         ->get();

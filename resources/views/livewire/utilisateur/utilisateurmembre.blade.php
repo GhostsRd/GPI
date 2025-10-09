@@ -17,7 +17,12 @@
     </div>
 
     <div class="profile-bio p-0">
-        <input type="text" class="input-recherche" wire:model.debounce.500="recherche" placeholder="Entrer le nom...">
+        <input type="text" list="noms" class="input-recherche" wire:model.debounce.500="recherche" placeholder="Entrer le nom...">
+        <datalist id="noms" >
+               @foreach($utilisateurs->sortby("nom") as $utilisateur)
+                <option value="{{$utilisateur->nom }}">
+               @endforeach
+          </datalist>
     </div>
 
     <div class="">

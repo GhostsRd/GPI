@@ -23,6 +23,8 @@ class UtilisateurTicket extends Component
     public $equipement;
     public $ticketId;
     public $commentaires;
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
 
 
 
@@ -38,6 +40,7 @@ class UtilisateurTicket extends Component
                 ->commentaires()
                 ->orderBy('created_at', 'desc')
                 ->get();
+        $this->listeners;
        
     }      
 

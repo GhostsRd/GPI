@@ -4,7 +4,7 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label small fw-bold">Recherche</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-transparent">
@@ -46,6 +46,13 @@
                             <option value="Autre">Autre</option>
                         </select>
                     </div>
+                     <div class="col-md-1">
+                        <label class="form-label small fw-bold">Archiver</label>
+                        <select wire:change="archiveActive" class="form-select form-select-sm">
+                            <option value="false">Non active</option>
+                            <option value="true">Active</option>
+                        </select>
+                    </div>
                     <div class="col-md-2">
                         <label class="form-label small fw-bold">Vue</label>
                         <select wire:change="changerVue" class="form-select form-select-sm">
@@ -65,32 +72,39 @@
  <div class="kanban-board shadow-sm bg-white rounded container-fluid mt-3 px-2">
     <div class="d-flex flex-nowrap overflow-auto">
         @foreach($steps as $step)
+ 
             <div class="kanban-column flex-shrink-0 mx-1"
                  ondragover="event.preventDefault()"
                  ondrop="handleDrop(event, {{ $step['id'] }})">
 
                 <!-- En-tête -->
                 <div class="kanban-header border-0 text-center py-2 rounded-1 text-white fw-semibold"
-                     style="background-color: #84b0b4c4;"
+                     style="background-color: #84b0b4c4;" 
                      >
-                    {{ $step['name'] }} <span class="">({{count($tickets->where('state', $step['id']))}})</span>
+                    {{ $step['name'] }} <span class="">({{count($tickets->where('state', $step['id']))}})</span> 
+                        
+
                 </div>
 
                 <!-- Corps -->
-                <div class="kanban-body  border-top-0 rounded-bottom bg-light p-2"
-                     data-step="{{ $step['id'] }}"
+                <div class="kanban-body  border-top-0 rounded-bottom  bg-light p-2" 
+                    data-step="{{ $step['id'] }}"
                      style="min-height: 300px;">
 
                     @foreach($tickets->where('state', $step['id']) as $ticket)
+                        
                         <div wire:click="Visualiser({{ $ticket->id }})"
-                             class="kanban-item p-1   mb-2 draggable-card {{ $ticket->priorite == 0 ? 'priority_0' : ($ticket->priorite == 1 ? 'priority_1' : 'border border-success') }}"
+                             class="kanban-item    mb-2 draggable-card {{ $ticket->priorite == 0 ? 'priority_0' : ($ticket->priorite == 1 ? 'priority_1' : 'border border-success') }}"
                              draggable="true"
                              ondragstart="handleDragStart(event, {{ $ticket->id }})"
                              ondragend="handleDragEnd(event)"
                              wire:key="ticket-{{ $ticket->id }}"
                              data-ticket="{{ $ticket->id }}">
+                            
 
-                            <div class="card-body p-1 small d-flex flex-column justify-content-between" style="min-height: 60px;">
+                  
+                       
+                            <div  class="card-body  px-2 small d-flex flex-column justify-content-between" style="min-height: 60px;">
                                 <div class="fw-bold text-muted">{{ $ticket->sujet }}</div>
                                     <div class="d-flex justify-content-start mt-1">
                                     </div>
@@ -113,11 +127,13 @@
                                         title="Responsable : {{ $ticket->responsable->name }}">
                                 </div>
                             </div>
-
+                    
                         </div>
                     @endforeach
                 </div>
             </div>
+
+           
         @endforeach
     </div>
 </div>

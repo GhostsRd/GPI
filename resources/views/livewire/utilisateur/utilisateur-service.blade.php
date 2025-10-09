@@ -213,15 +213,20 @@
             </div>
              <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-light p-0 m-0">
 				<div class="container-fluid  p-0 m-0">
-					<input type="text" class="input-recherche border-0 p-4 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
-				</div>
+					<input type="text" list="sujets" class="input-recherche border-0 p-4 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
+				
+              <datalist id="sujets" >
+               @foreach ($tickets as $ticket )
+                <option value="{{ $ticket->sujet }}">
+               @endforeach
+          </datalist>
+        </div>
 
 			</nav>
        <section>
          <table class="container-fluid table-responsive table  border-0  shadow-sm background-white rounded " style="background-color: white;">
             <thead class="bg-white "  >
                <tr >
-                       
                         <th class="bg-white">Référence</th>
                         <th class="bg-white">Sujet</th>
 

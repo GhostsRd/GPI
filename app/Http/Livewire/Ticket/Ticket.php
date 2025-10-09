@@ -20,6 +20,12 @@ class Ticket extends Component
     public $ticketToDelete = null; // 🟢 Add this missing property
     public $sortField = 'id';
     public $sortDirection = 'asc';
+    public $archive = false;
+
+
+    public function archiveActive(){
+        $this->archive = !$this->archive;
+    }
 
     public function confirmDelete($ticketId)
     {
@@ -78,6 +84,7 @@ class Ticket extends Component
     {
         $tickets = TicketModel::where("responsable_id", Auth::user()->id)
             ->where("categorie", "like", "%" . $this->categorie . "%")
+            ->where("archive", "like", "%" . $this->archive . "%")
             ->when($this->recherche, function ($query) {
                 $query->where(function ($q) {
                     $q->where("reference", "like", "%" . $this->recherche . "%")

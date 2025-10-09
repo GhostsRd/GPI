@@ -17,6 +17,8 @@ class TicketView extends Component
     //public $commentaires;
     public $comments;
     public $currentStep;
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
     public $current = [
         1 => 'current',
         2 => 'future',
@@ -30,12 +32,31 @@ class TicketView extends Component
     public $assigned_to;
     public $techniciens;
 
-public function FermerTicket($id){
-    $ticket = Ticket::find($id);
-    $ticket->state = 5;
-    $ticket->priorite = 3;
-    $ticket->save();
-}
+    public function changerVue(){
+        return redirect()->to("/admin/ticket-kanban");
+    }
+
+    public function archiveTicket($id){
+        $ticket = Ticket::find($id);
+
+        $ticket->priorite = 2;
+        if($ticket->archive == true){
+            $ticket->state = 5;
+        }else{
+            $ticket->state = 6;
+        }
+        $ticket->archive = !$ticket->archive;
+        $ticket->save();
+         $this->emitSelf('refreshComponent');
+    }
+    public function FermerTicket($id){
+        $ticket = Ticket::find($id);
+        $ticket->state = 5;
+        //$ticket->archive = true;
+        $ticket->priorite = 3;
+        $ticket->save();
+        $this->emitSelf('refreshComponent');
+    }
 
 public function openAffectationModal()
 {
@@ -74,6 +95,7 @@ public function affecter()
 
             $this->comments = "";
             $this->emitSelf('refreshComponent');
+            $this->emitTo('Utilisateur.utilisateur-ticket', 'refreshComponent');
         }
 
        // session()->flash('message','Commentaire ajouter avec succes');
