@@ -239,24 +239,24 @@
                                        value="{{ $ticket->id }}"
                                        class="checkbox-modern">
                             </td>
-                            <td>{{ $ticket->id }}</td>
-                            <td>{{ $ticket->sujet }}</td>
-                            <td class="priority-{{ $ticket->priorite }}">
+                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->id }}</td>
+                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->sujet }}</td>
+                            <td wire:click="Visualiser({{ $ticket->id }})" class="priority-{{ $ticket->priorite }}">
                                 {{ ucfirst($ticket->priorite) }}
                             </td>
-                            <td>
+                            <td wire:click="Visualiser({{ $ticket->id }})">
                                 {{ $ticket->categorie }}
                             </td>
-                            <td>
+                            <td wire:click="Visualiser({{ $ticket->id }})">
                                     <span class="status-badge status-{{ strtolower($ticket->status) }}">
                                         {{ $ticket->status }}
                                     </span>
                             </td>
-                            <td>{{ $ticket->utilisateur->nom }}</td>
-                            <td>{{ $ticket->responsable->name }}</td>
-                            <td>{{ $ticket->equipement }}</td>
-                            <td>{{ $ticket->created_at->format('d M Y H:i') }}</td>
-                            <td>
+                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->utilisateur->nom }}</td>
+                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->responsable->name }}</td>
+                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->equipement }}</td>
+                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->created_at->format('d M Y H:i') }}</td>
+                            <td >
                                 <div class="action-buttons">
                                     <button class="btn-action btn-view">
                                         <a href="{{ url('/admin/ticket-view-'.$ticket->id) }}">

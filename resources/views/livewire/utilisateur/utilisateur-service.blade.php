@@ -191,10 +191,9 @@
   </div>
  
 
-  <section  class="main-content features_area section_gap_top">
-        <div class="container">
+        <div class="container mt-xs-4 main-content">
             <div class="row justify-content-center">
-                <div class="col-lg-8 text-center">
+                <div class="col-lg-8 col-sm-8 col-xs-8 text-center">
                     <div class="main_title">
                         <h2 class="text-success">Gerer vos ticket </h2>
                         <p>
@@ -211,9 +210,10 @@
                 </div>
 
             </div>
-             <nav class="navbar navbar-expand-lg bg-white shadow-sm navbar-light p-0 m-0">
-				<div class="container-fluid  p-0 m-0">
-					<input type="text" list="sujets" class="input-recherche border-0 p-4 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
+  <section  >
+             <nav class=" shadow-sm col-lg-12 navbar-light p-0 m-0">
+				<div class=" cold  p-0 m-0">
+					<input type="text" list="sujets" class="input-recherche rounded border-0 p-4 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
 				
               <datalist id="sujets" >
                @foreach ($tickets as $ticket )
@@ -223,10 +223,10 @@
         </div>
 
 			</nav>
-       <section>
-         <table class="container-fluid table-responsive table  border-0  shadow-sm background-white rounded " style="background-color: white;">
+      
+         <table class=" rounded-3 col-lg-12 table-responsive table  border-0  shadow background-white rounded " style="background-color: white;">
             <thead class="bg-white "  >
-               <tr >
+               <tr class="border-bottom-0 ">
                         <th class="bg-white">Référence</th>
                         <th class="bg-white">Sujet</th>
 
@@ -277,7 +277,7 @@
               @endforeach
             </tbody>
             </table>
-       </section>
+    
          <div class="mt-4">
           {{$tickets->links()}}
         </div>

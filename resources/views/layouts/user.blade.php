@@ -132,7 +132,7 @@
 
         <!-- Chat -->
         <li class="nav-item ms-3">
-          <a class="nav-link" href="#" id="chatToggle" title="Ouvrir le chat">
+          <a class="nav-link" href="#" id="openChatBtn">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/>
             </svg>
@@ -201,7 +201,61 @@
 	</header>
 
   
+{{-- chatbot --}}
 
+<!-- Fenêtre de chat -->
+<aside id="chatPopup"
+       class="card position-fixed bottom-0 end-0 m-4 shadow-sm border-0"
+       style="width: 350px; height: 450px; display: none; z-index: 1055;">
+
+  <!-- En-tête -->
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <div class="bg-light text-primary fw-bold rounded-circle d-flex justify-content-center align-items-center me-2"
+           style="width: 30px; height: 30px;">
+        GP
+      </div>
+      <div>
+        <h6 class="mb-0">GPISupport — Chat</h6>
+        <small>Général · réponse sous 1h</small>
+      </div>
+    </div>
+    <button type="button" id="closeChatBtn" class="btn btn-light btn-sm" aria-label="Fermer">✕</button>
+  </div>
+
+  <!-- Messages -->
+  <div class="card-body bg-light overflow-auto" id="messages">
+    {{-- Exemple de messages --}}
+    {{-- @foreach($chats as $chat)
+        @if($chat->type == "utilisateur")
+            <div class="d-flex justify-content-end mb-3">
+                <div class="bg-primary text-white p-2 rounded-3" style="max-width: 75%;">
+                    {{$chat->message}}
+                    <div class="text-end"><small>{{$chat->created_at}}</small></div>
+                </div>
+            </div>
+        @else
+            <div class="d-flex justify-content-start mb-3">
+                <div class="bg-white border p-2 rounded-3" style="max-width: 75%;">
+                    Bonjour {{$chat->message}}
+                    <div><small>Support · {{$chat->created_at}}</small></div>
+                </div>
+            </div>
+        @endif
+    @endforeach --}}
+  </div>
+
+  <!-- Pied -->
+  <div class="card-footer bg-white">
+    <form class="d-flex w-100" wire:submit.prevent="storechat">
+      <textarea class="form-control me-2" wire:model="message" rows="1" placeholder="Écris un message..."></textarea>
+      <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+  </div>
+
+</aside>
+
+{{-- fin chatmsg --}}
 
  
 
@@ -326,6 +380,21 @@
 	</footer>
     @livewireScripts
 <script src="{{ asset('js/modalview.js') }}"></script>
+<script>
+  const openChatBtn = document.getElementById('openChatBtn');
+  const closeChatBtn = document.getElementById('closeChatBtn');
+  const chatPopup = document.getElementById('chatPopup');
+
+  openChatBtn.addEventListener('click', () => {
+    chatPopup.style.display = 'block';
+    openChatBtn.style.display = 'none';
+  });
+
+  closeChatBtn.addEventListener('click', () => {
+    chatPopup.style.display = 'none';
+    openChatBtn.style.display = 'block';
+  });
+</script>
 <script>
     const toggleBtn = document.getElementById('toggleSidebar');
     const closeBtn = document.getElementById('closeSidebar');
