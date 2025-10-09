@@ -158,7 +158,7 @@
                     </div>
                     <div class="col-md-1">
                         <button wire:click="exportTickets" class="btn btn-success btn-sm w-100" title="Exporter les tickets">
-                            <i class="fas fa-download"></i>
+                            <i class="bi bi-box-arrow-up-right"></i>
                             Exporter
                         </button>
                     </div>
@@ -232,7 +232,7 @@
                     </thead>
                     <tbody>
                     @foreach($tickets as $ticket)
-                        <tr class="priorite_{{$ticket->priorite}}" style="cursor:pointer" wire:click="Visualiser({{ $ticket->id }})">
+                        <tr class="priorite_{{$ticket->priorite}} bg-dark" style="cursor:pointer" >
                             <td>
                                 <input type="checkbox"
                                        wire:model="selectedTickets"

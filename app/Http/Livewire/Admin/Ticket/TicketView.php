@@ -57,6 +57,19 @@ class TicketView extends Component
         $ticket->save();
         $this->emitSelf('refreshComponent');
     }
+    public function markResolved(){
+        $ticket = Ticket::find($this->ticketId);
+
+        $ticket->priorite = 2;
+        if($ticket->archive == true){
+            $ticket->state = 5;
+        }else{
+            $ticket->state = 6;
+        }
+        $ticket->archive = !$ticket->archive;
+        $ticket->save();
+         $this->emitSelf('refreshComponent');
+    }
 
 public function openAffectationModal()
 {
@@ -204,11 +217,17 @@ public function affecter()
         // Exemple si tu veux charger directement ton modèle
         $this->ticketvals = Ticket::findOrFail($this->ticketId);
        
-    }         
+    }    
+     public function Removeticket($id){
+        ticket::destroy($id);
+        return redirect("/ticket");
+
+    }     
     public function destroyComment($id){
         Commentaire::destroy($id);
         
     }
+   
 
   
     public function render()
