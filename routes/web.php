@@ -35,27 +35,12 @@ Route::middleware(['LoginUser'])->group(function () {
 Route::get('/utilisateur-login', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'index'])->name('LoginUser');
 Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'index'])->name('utilisateurInscription');
 Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');
-
-
-
 Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
 Route::get('/checkout', [App\Http\Controllers\checkout\Checkout::class, 'index'])->name('checkout');
-Route::get('/equipement/create', [App\Http\Controllers\equipement\equipement::class, 'create'])->name('equipement.create');
-Route::post('/equipement', [App\Http\Controllers\equipement\equipement::class, 'store'])->name('equipement.store');
-Route::get('/equipement/{equipement}', [App\Http\Controllers\equipement\equipement::class, 'show'])->name('equipement.show');
-Route::get('/equipement/edit', [App\Http\Controllers\equipement\equipement::class, 'edit'])->name('equipement.edit');
-Route::put('/equipement/{equipement}', [App\Http\Controllers\equipement\equipement::class, 'update'])->name('equipement.update');
-Route::patch('/equipement/{equipement}', [App\Http\Controllers\equipement\equipement::class, 'update']); // Alternative pour PATCH
-Route::delete('/equipement/{equipement}', [App\Http\Controllers\equipement\equipement::class, 'destroy'])->name('equipement.destroy');
-
+Route::get('/moniteur', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');
+Route::get('/logiciel', [App\Http\Controllers\equipement\logiciel::class, 'index'])->name('logiciel');
 Route::get('/ordinateur', [App\Http\Controllers\equipement\ordinateur::class, 'index'])->name('ordinateur');
-Route::get('/equipement/export', [App\Http\Controllers\equipement::class, 'export'])
-    ->name('equipement.export');
-Route::get('/equipement/export', [App\Http\Controllers\equipement\equipement::class, 'export'])->name('equipement.export');
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
-
-Route::get('/equipement-i-t-controller', [App\Http\Controllers\EquipementITController::class, 'index'])->name('equipement-i-t-controller');
-
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
 
 

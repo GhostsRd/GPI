@@ -12,6 +12,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class, // Si vous avez un seeder pour les users
             OrdinateurSeeder::class,
+            MoniteurSeeder::class,
+            logicielSeeder::class,
+
         ]);
     }
 }
