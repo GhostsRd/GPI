@@ -7,5 +7,7 @@ use Illuminate\Http\Request;
 
 class logiciel extends Controller
 {
-    //
+    public function index(){
+        return view('equipement.logiciel');
+    }
 }

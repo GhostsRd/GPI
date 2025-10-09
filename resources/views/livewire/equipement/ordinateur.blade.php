@@ -270,11 +270,36 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
-            <div class="mt-4 container">
-                {{ $ordinateurs->links() }}
+                <!-- Pagination -->
+
+
+
+
+        <!-- Statistiques rapides -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-bar me-2"></i>Statistiques rapides
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            @foreach($stats as $statut => $count)
+                                <div class="col-md-3">
+                                    <div class="border rounded p-3">
+                                        <h4 class="text-primary">{{ $count }}</h4>
+                                        <small class="text-muted">{{ $statut }}</small>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
     <!-- Modal -->
     @if($showModal)

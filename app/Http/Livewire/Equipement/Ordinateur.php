@@ -121,8 +121,10 @@ class Ordinateur extends Component
 
     public function edit($id)
     {
-        $ordinateur = Ordinateur::findOrFail($id);
+        // ✅ Utiliser le modèle aliasé
+        $ordinateur = OrdinateurModel::findOrFail($id);
 
+        // Remplir les propriétés Livewire avec les données du modèle
         $this->ordinateurId = $ordinateur->id;
         $this->nom = $ordinateur->nom;
         $this->entite_form = $ordinateur->entite;
@@ -133,18 +135,24 @@ class Ordinateur extends Component
         $this->numero_serie = $ordinateur->numero_serie;
         $this->utilisateur_id = $ordinateur->utilisateur_id;
         $this->usager_id = $ordinateur->usager_id;
-        $this->date_dernier_inventaire = $ordinateur->date_dernier_inventaire ? $ordinateur->date_dernier_inventaire->format('Y-m-d') : null;
+        $this->date_dernier_inventaire = $ordinateur->date_dernier_inventaire
+            ? $ordinateur->date_dernier_inventaire->format('Y-m-d')
+            : null;
         $this->reseau_ip = $ordinateur->reseau_ip;
         $this->disque_dur = $ordinateur->disque_dur;
         $this->os_version = $ordinateur->os_version;
         $this->os_noyau = $ordinateur->os_noyau;
-        $this->derniere_date_demarrage = $ordinateur->derniere_date_demarrage ? $ordinateur->derniere_date_demarrage->format('Y-m-d\TH:i') : null;
+        $this->derniere_date_demarrage = $ordinateur->derniere_date_demarrage
+            ? $ordinateur->derniere_date_demarrage->format('Y-m-d\TH:i')
+            : null;
         $this->notes = $ordinateur->notes;
 
+        // Préparer la modale
         $this->modalTitle = 'Modifier l\'ordinateur';
         $this->editMode = true;
         $this->showModal = true;
     }
+
 
     public function save()
     {
