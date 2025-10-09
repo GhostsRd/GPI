@@ -44,6 +44,11 @@ Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
 
 
+Route::get('/test', [App\Http\Controllers\equipement\logiciel::class, 'index'])->name('test');
+
+
+
+
 Route::post('/userinscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'store'])->name('userinscription');
 Route::post('/checklogin', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'login'])->name('verifierlogin');
 //Route::get('/utilisateur', [App\Http\Controllers\User\User::class, 'utilisateur'])->name('utilisateur');-
