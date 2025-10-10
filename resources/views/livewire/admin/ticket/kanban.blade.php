@@ -69,8 +69,8 @@
                 </div>
             </div>
         </div>
- <div class="kanban-board shadow-sm bg-white rounded container-fluid mt-3 px-2">
-    <div class="d-flex flex-nowrap overflow-auto">
+ <div class="shadow-sm bg-white col-lg-12 rounded  mt-3 ">
+    <div class="d-flex flex-nowrap overflow-auto p-1">
         @foreach($steps as $step)
  
             <div class="kanban-column flex-shrink-0 mx-1"
@@ -78,23 +78,30 @@
                  ondrop="handleDrop(event, {{ $step['id'] }})">
 
                 <!-- En-tête -->
-                <div class="kanban-header border-0 text-center py-2 rounded-1 text-white fw-semibold"
-                     style="background-color: #84b0b4c4;" 
+                <div class="kanban-header  border-0 px-2 text-left py-2 rounded-1  fw-semibold"
+                     {{-- style="background-color: #84b0b4c4;"  --}}
                      >
-                    {{ $step['name'] }} <span class="">({{count($tickets->where('state', $step['id']))}})</span> 
+                     <div class="progress mb-1 " style="height: 2px;">
+                        <div class="progress-bar {{$step['id'] == 2 ? 'bg-warning' : ($step['id'] == 3 ? 'bg-success' :  ($step['id'] == 4 ? 'bg-danger' :  ($step['id'] == 5 ? 'bg-primary' :  'bg-info'  )  )  )}}" role="progressbar" aria-valuenow="100" style="width: 100%;" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                     <span class="text-muted mt-2">Status</span><br>
+                     <span class="fw-bold ">{{ $step['name'] }} </span>
+                    <span class="">({{count($tickets->where('state', $step['id']))}})</span> 
                         
 
                 </div>
 
                 <!-- Corps -->
-                <div class="kanban-body  border-top-0 rounded-bottom  bg-light p-2" 
+                <div  class="kanban-body  border-top-0 rounded-bottom   p-2" 
                     data-step="{{ $step['id'] }}"
                      style="min-height: 300px;">
+                        <div class="card shadow-sm text-align-center">
+                                +
+                        </div>
 
                     @foreach($tickets->where('state', $step['id']) as $ticket)
-                        
-                        <div wire:click="Visualiser({{ $ticket->id }})"
-                             class="kanban-item    mb-2 draggable-card {{ $ticket->priorite == 0 ? 'priority_0' : ($ticket->priorite == 1 ? 'priority_1' : 'border border-success') }}"
+                        <div data-aos="fade-down" data-aos-duration="1000" wire:click="Visualiser({{ $ticket->id }})"
+                             class="kanban-item    mb-2 draggable-card shadow-sm {{ $ticket->priorite == 0 ? 'border-start border-5 border-danger  ' : ($ticket->priorite == 1 ? 'border-start border-5 border-warning  ' : ' border-start border-success border-5 shadow-sm') }}"
                              draggable="true"
                              ondragstart="handleDragStart(event, {{ $ticket->id }})"
                              ondragend="handleDragEnd(event)"
@@ -103,11 +110,12 @@
                             
 
                   
-                       
+                            
                             <div  class="card-body  px-2 small d-flex flex-column justify-content-between" style="min-height: 60px;">
-                                <div class="fw-bold text-muted">{{ $ticket->sujet }}</div>
-                                    <div class="d-flex justify-content-start mt-1">
+                                    <div class="d-flex text-muted justify-content-between pt-0 mt-0">
+                                      #{{ $ticket->id }}
                                     </div>
+                                <div class="fw-bold text-muted">{{ $ticket->sujet }}</div>
                                     
                                 <div class="d-flex justify-content-end mt-1">
                                         {{-- <span title="commentaire" class="rounded-pill border px-2  border-secondary">{{count($ticket->commentaires)}}</span> --}}
@@ -118,7 +126,12 @@
                                         width="25" 
                                         height="25"
                                         title="Utilisateur : {{ $ticket->utilisateur->nom }}">
-                                        <img class="dropdown-toggle rounded-pill border border-success"
+                                        <img class="dropdown-toggle rounded-pill {{ 
+                                        $ticket->priorite == 0 
+                                        ? 'border-danger border-2 border' 
+                                        : ($ticket->priorite == 1 
+                                            ? 'border-warning border-2 border' 
+                                            : 'border-success border-2 border') }} "
                                         data-toggle="dropdown"
                                         src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name }}"
                                         alt="Profil" 
@@ -147,6 +160,7 @@
   padding: 0;
   
 }
+
 .priority_0{
     background: hsla(0, 93%, 73%, 0.69);
 }
@@ -157,7 +171,8 @@
     background: rgba(254, 254, 147, 0.69);
 }
 .priority_2{
-    background: rgba(147, 249, 254, 0.69);
+    /*background: rgba(147, 249, 254, 0.69);*/
+    
 }
 
 .kanban-column {
