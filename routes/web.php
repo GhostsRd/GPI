@@ -36,7 +36,7 @@ Route::get('/utilisateur-login', [App\Http\Controllers\Utilisateur\UtilisateurLo
 Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'index'])->name('utilisateurInscription');
 Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');
 Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
-Route::get('/checkout', [App\Http\Controllers\checkout\Checkout::class, 'index'])->name('checkout');
+Route::get('/utilisateur-checkout', [App\Http\Controllers\Utilisateur\checkout\Checkout::class, 'index'])->name('checkout');
 Route::get('/moniteur', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');
 Route::get('/logiciel', [App\Http\Controllers\equipement\logiciel::class, 'index'])->name('logiciel');
 Route::get('/ordinateur', [App\Http\Controllers\equipement\ordinateur::class, 'index'])->name('ordinateur');
