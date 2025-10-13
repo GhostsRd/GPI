@@ -29,7 +29,8 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
 
     <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
-    
+    <link href="{{ asset('css/ordi.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/monit.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleuser.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modalview.css') }}" rel="stylesheet">
@@ -144,19 +145,19 @@
                             Moniteurs
                         </a>
                         <a href="{{ url('logiciel') }}" class="submenu-item">
-                            <i class="bi bi-printer"></i>
+                            <i class="bi bi-window"></i>
                             Logiciels
-                        </a>
+                        </a>                        
                         
-                        <a href="{{ url('imprimante') }}" class="submenu-item">
+                        <a href="{{ url('/imprimante') }}" class="submenu-item">
                             <i class="bi bi-printer"></i>
                             Imprimantes
                         </a>
                         
-                        <a href="{{ url('materiel-reseaux') }}" class="submenu-item">
+                        <a href="{{ url('materiel-reseau') }}" class="submenu-item">
                             <i class="bi bi-hdd-network"></i>
-                            Matériel réseaux
-                        </a>
+                            Matériel Réseaux
+                        </a>                        
                         
                         <a href="{{ url('telephone') }}" class="submenu-item">
                             <i class="bi bi-telephone"></i>
