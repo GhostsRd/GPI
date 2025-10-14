@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Livewire\Equipement;
 
 use App\Models\telephone as TelephoneModel;
@@ -9,7 +8,6 @@ use Livewire\WithPagination;
 use Illuminate\Validation\Rule;
 
 class Telephone extends Component
-
 {
     use WithPagination;
 
@@ -28,22 +26,34 @@ class Telephone extends Component
     public $emplacement_actuel;
     public $imei;
 
-    // Propriétés pour les filtres
+    // Propriétés pour les filtres et le tri
     public $search = '';
     public $filterStatut = '';
     public $filterType = '';
+    public $filterFabricant = '';
     public $perPage = 10;
+    public $sortField = 'id';
+    public $sortDirection = 'desc';
 
     // États du composant
     public $showForm = false;
     public $isEditing = false;
     public $showDeleteModal = false;
+    public $showModal = false;
+    public $confirmingDelete = false; // <-- AJOUTEZ CETTE LIGNE
     public $telephoneToDelete;
+    public $statuts = [
+        'en_service' => 'En service',
+        'hors_service' => 'Hors service',
+        'reparation' => 'En réparation',
+        'stock' => 'En stock',
+    ];
 
     protected $queryString = [
         'search' => ['except' => ''],
         'filterStatut' => ['except' => ''],
         'filterType' => ['except' => ''],
+        'filterFabricant' => ['except' => ''],
     ];
 
     // Règles de validation
@@ -91,19 +101,36 @@ class Telephone extends Component
         $this->resetPage();
     }
 
+    public function updatingFilterFabricant()
+    {
+        $this->resetPage();
+    }
+
+    // Méthode de tri
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
+
     // Ouvrir le formulaire de création
     public function create()
     {
         $this->resetForm();
         $this->isEditing = false;
         $this->showForm = true;
+        $this->showModal = true;
     }
 
     // Ouvrir le formulaire d'édition
     public function edit($id)
     {
         $telephone = TelephoneModel::findOrFail($id);
-        
+
         $this->telephoneId = $telephone->id;
         $this->nom = $telephone->nom;
         $this->entite = $telephone->entite;
@@ -120,6 +147,7 @@ class Telephone extends Component
 
         $this->isEditing = true;
         $this->showForm = true;
+        $this->showModal = true;
     }
 
     // Sauvegarder (création ou édition)
@@ -147,32 +175,36 @@ class Telephone extends Component
             $telephone->update($data);
             $message = 'Équipement mis à jour avec succès.';
         } else {
-            TelephoneModel::create($data);  // <-- utiliser le modèle correctement
+            TelephoneModel::create($data);
             $message = 'Équipement créé avec succès.';
         }
 
         $this->resetForm();
         $this->showForm = false;
+        $this->showModal = false;
 
         session()->flash('success', $message);
     }
-
 
     // Confirmer la suppression
     public function confirmDelete($id)
     {
         $this->telephoneToDelete = $id;
         $this->showDeleteModal = true;
+        $this->confirmingDelete = true; // <-- AJOUTEZ CETTE LIGNE
+        $this->showModal = true;
     }
 
     // Supprimer l'équipement
     public function delete()
     {
         TelephoneModel::find($this->telephoneToDelete)->delete();
-        
+
         $this->showDeleteModal = false;
+        $this->confirmingDelete = false; // <-- AJOUTEZ CETTE LIGNE
+        $this->showModal = false;
         $this->telephoneToDelete = null;
-        
+
         session()->flash('success', 'Équipement supprimé avec succès.');
     }
 
@@ -180,7 +212,19 @@ class Telephone extends Component
     public function cancelDelete()
     {
         $this->showDeleteModal = false;
+        $this->confirmingDelete = false; // <-- AJOUTEZ CETTE LIGNE
+        $this->showModal = false;
         $this->telephoneToDelete = null;
+    }
+
+    // Fermer le modal
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->showForm = false;
+        $this->showDeleteModal = false;
+        $this->confirmingDelete = false; // <-- AJOUTEZ CETTE LIGNE
+        $this->resetForm();
     }
 
     // Réinitialiser le formulaire
@@ -209,6 +253,7 @@ class Telephone extends Component
     public function closeForm()
     {
         $this->showForm = false;
+        $this->showModal = false;
         $this->resetForm();
     }
 
@@ -220,11 +265,11 @@ class Telephone extends Component
         if ($this->search) {
             $query->where(function($q) {
                 $q->where('nom', 'like', '%' . $this->search . '%')
-                  ->orWhere('usager', 'like', '%' . $this->search . '%')
-                  ->orWhere('numero_serie', 'like', '%' . $this->search . '%')
-                  ->orWhere('imei', 'like', '%' . $this->search . '%')
-                  ->orWhere('marque', 'like', '%' . $this->search . '%')
-                  ->orWhere('modele', 'like', '%' . $this->search . '%');
+                    ->orWhere('usager', 'like', '%' . $this->search . '%')
+                    ->orWhere('numero_serie', 'like', '%' . $this->search . '%')
+                    ->orWhere('imei', 'like', '%' . $this->search . '%')
+                    ->orWhere('marque', 'like', '%' . $this->search . '%')
+                    ->orWhere('modele', 'like', '%' . $this->search . '%');
             });
         }
 
@@ -236,7 +281,22 @@ class Telephone extends Component
             $query->where('type', $this->filterType);
         }
 
-        $telephones = $query->latest()->paginate($this->perPage);
+        if ($this->filterFabricant) {
+            $query->where('marque', $this->filterFabricant);
+        }
+
+        // Appliquer le tri
+        $query->orderBy($this->sortField, $this->sortDirection);
+
+        $telephones = $query->paginate($this->perPage);
+
+        // Obtenir la liste des fabricants uniques pour le filtre
+        $fabricants = TelephoneModel::select('marque')
+            ->distinct()
+            ->whereNotNull('marque')
+            ->where('marque', '!=', '')
+            ->orderBy('marque')
+            ->pluck('marque');
 
         // Statistiques
         $stats = [
@@ -247,6 +307,6 @@ class Telephone extends Component
             'enReparation' => TelephoneModel::where('statut', 'En réparation')->count(),
         ];
 
-        return view('livewire.equipement.telephone', compact('telephones', 'stats'));
+        return view('livewire.equipement.telephone', compact('telephones', 'stats', 'fabricants'));
     }
 }

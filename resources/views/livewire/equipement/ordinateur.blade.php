@@ -14,7 +14,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     {{-- <h3 class="stats-number text-primary">{{ $totalTickets }}</h3> --}}
-                                    <p class="stats-label text-light mb-0">Totals tickets</p>
+                                    <p class="stats-label text-light mb-0">Total ordinateur</p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
@@ -87,7 +87,7 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label small fw-bold">Recherche</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-transparent">
@@ -103,7 +103,7 @@
                         <input type="text" wire:model.live="entite" class="form-control"
                                placeholder="Entité...">
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <label class="form-label small fw-bold">Statut</label>
                         <select wire:model.live="statut" class="form-select">
                             <option value="">Tous les statuts</option>
@@ -114,21 +114,21 @@
                     </div>
                       <div class="col-md-2">
                         <label class="form-label small fw-bold">Page</label>
-                         
+
                         <select wire:model.live="perPage" class="form-select">
                             <option value="10">10 par page</option>
                             <option value="20">20 par page</option>
                             <option value="50">50 par page</option>
                             <option value="100">100 par page</option>
                         </select>
-                
+
                     </div>
-                    <div class="col-md-1">
-                        <button wire:click="create" class="btn btn-primary">
+                    <div class="col-md-1"">
+                        <button wire:click="create" class="btn btn-primary btn-sm w-100">
                     <i class="fas fa-plus"></i> Nouveau
                 </button>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les tickets sélectionnés"
                             {{ empty($selectedTickets) ? 'disabled' : '' }}>
                             <i class="fas fa-trash"></i>
@@ -146,8 +146,8 @@
             </div>
         </div>
         <!-- Filtres -->
-        
-       
+
+
 
         <!-- Messages flash -->
         @if (session()->has('message'))
@@ -169,14 +169,14 @@
         <div class="table-container border-0   fade-in-up">
             <div class="table-header">
                 <div class="table-title">
-                    
+
                     Liste des ordinateurs
                 </div>
             </div>
 
             <div class="table-wrapper p-0 border-0 w-100 compact-mode">
                 <table class="table border-0 shadow-sm">
-         
+
                     <thead>
                     <tr>
                             <th>Nom</th>

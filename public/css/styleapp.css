@@ -1006,7 +1006,7 @@ h3 {
 }
 
 .sidebar-modern::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+    background: var(white);
 }
 
 /* Enhanced Animation Classes */

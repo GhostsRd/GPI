@@ -29,6 +29,8 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
 
     <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/imprimante.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/peri.css') }}" rel="stylesheet">
     <link href="{{ asset('css/ordi.css') }}" rel="stylesheet">
     {{-- <link href="{{ asset('css/monit.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
@@ -108,7 +110,7 @@
     </nav>
 
 
-    
+
 
     <!-- Modern Sidebar -->
     <aside class="sidebar-modern shadow-sm border-0" style="z-index: 3000  !important" id="sidebarModern">
@@ -135,11 +137,15 @@
                 </a>
                 <div class="collapse" id="parcCollapse">
                     <div class="nav-submenu">
+                        <a href="{{ url('equipement') }}" class="submenu-item">
+                            <i class="bi bi-laptop"></i>
+                            Vue d'ensemble équipements
+                        </a>
                         <a href="{{ url('ordinateur') }}" class="submenu-item">
                             <i class="bi bi-laptop"></i>
                             Ordinateurs
                         </a>
-                        
+
                         <a href="{{ url('moniteur') }}" class="submenu-item">
                             <i class="bi bi-display"></i>
                             Moniteurs
@@ -147,28 +153,28 @@
                         <a href="{{ url('logiciel') }}" class="submenu-item">
                             <i class="bi bi-window"></i>
                             Logiciels
-                        </a>                        
-                        
+                        </a>
+
                         <a href="{{ url('/imprimante') }}" class="submenu-item">
                             <i class="bi bi-printer"></i>
                             Imprimantes
                         </a>
-                        
+
                         <a href="{{ url('materiel-reseau') }}" class="submenu-item">
                             <i class="bi bi-hdd-network"></i>
                             Matériel Réseaux
-                        </a>                        
-                        
+                        </a>
+
                         <a href="{{ url('telephone') }}" class="submenu-item">
                             <i class="bi bi-telephone"></i>
                             Téléphones
                         </a>
-                        
+
                         <a href="{{ url('peripherique') }}" class="submenu-item">
                             <i class="bi bi-usb-symbol"></i>
                             Périphériques
                         </a>
-                        
+
                     </div>
                 </div>
             </div>

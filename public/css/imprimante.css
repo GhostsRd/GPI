@@ -1,0 +1,132 @@
+/* Style global de la page imprimante */
+body {
+    background-color: #f8fafc; /* Couleur douce pour le fond */
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+/* Conteneur principal */
+.imprimante-container {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Animation d'apparition douce */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Titre principal */
+.imprimante-header h1 {
+    background: linear-gradient(to right, #2563eb, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Boutons */
+.btn-primary {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+}
+
+.btn-secondary {
+    background: #6b7280;
+    color: white;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+/* Cartes de statistiques */
+.stat-card {
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+/* Tableau */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: #374151;
+}
+
+tbody tr {
+    transition: background 0.15s ease;
+}
+
+tbody tr:hover {
+    background-color: #f3f4f6;
+}
+
+/* Badges de statut */
+.status-badge {
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+}
+
+/* Différenciation par statut */
+.status-En-service { background: #dcfce7; color: #15803d; }
+.status-En-maintenance { background: #fef9c3; color: #a16207; }
+.status-En-stock { background: #dbeafe; color: #1e40af; }
+.status-Hors-service { background: #fee2e2; color: #b91c1c; }
+
+/* Modale */
+.modal {
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.25s ease-in-out;
+}
+
+.modal-content {
+    border-radius: 16px;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Champs de formulaire */
+input[type="text"], select {
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+}
+
+input[type="text"]:focus, select:focus {
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+}
+
+/* Boutons d’action */
+.action-button {
+    transition: all 0.2s ease-in-out;
+}
+
+.action-button:hover {
+    transform: scale(1.1);
+}

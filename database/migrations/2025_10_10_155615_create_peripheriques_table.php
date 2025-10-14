@@ -6,26 +6,40 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePeripheriquesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
         Schema::create('peripheriques', function (Blueprint $table) {
             $table->id();
+            $table->string('nom')->unique();
+            $table->string('type');
+            $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation'])->default('En stock');
+            $table->string('fabricant')->nullable();
+            $table->string('modele')->nullable();
+            $table->string('numero_serie')->nullable()->unique();
+            $table->string('entite')->nullable();
+            $table->string('lieu')->nullable();
+            $table->string('usager')->nullable();
+            $table->string('adresse_ip')->nullable();
+            $table->string('mac_address')->nullable();
+            $table->text('caracteristiques')->nullable();
+            $table->date('date_acquisition')->nullable();
+            $table->date('date_fin_garantie')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
+
+            // Index pour les performances
+            $table->index('statut');
+            $table->index('type');
+            $table->index('fabricant');
+            $table->index('entite');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('peripheriques');
     }
-}
+};

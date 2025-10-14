@@ -49,19 +49,21 @@ class Imprimante extends Component
     public function mount()
     {
         $this->resetFilters();
+        $this->totalEquipements = ImprimanteModel::count();
+
     }
 
     public function render()
     {
-        $query = Imprimante::query();
+        $query = ImprimanteModel::query();
 
         // Application des filtres
         if ($this->search) {
             $query->where(function($q) {
                 $q->where('nom', 'LIKE', '%'.$this->search.'%')
-                  ->orWhere('modele', 'LIKE', '%'.$this->search.'%')
-                  ->orWhere('numero_serie', 'LIKE', '%'.$this->search.'%')
-                  ->orWhere('reseau_ip', 'LIKE', '%'.$this->search.'%');
+                    ->orWhere('modele', 'LIKE', '%'.$this->search.'%')
+                    ->orWhere('numero_serie', 'LIKE', '%'.$this->search.'%')
+                    ->orWhere('reseau_ip', 'LIKE', '%'.$this->search.'%');
             });
         }
 
@@ -83,17 +85,17 @@ class Imprimante extends Component
         $imprimantes = $query->paginate(20);
 
         // Données pour les filtres
-        $fabricants = Imprimante::distinct()->pluck('fabricant')->filter();
-        $entites = Imprimante::distinct()->pluck('entite')->filter();
+        $fabricants = ImprimanteModel::distinct()->pluck('fabricant')->filter();
+        $entites = ImprimanteModel::distinct()->pluck('entite')->filter();
         $statuts = ['En service', 'En stock', 'Hors service', 'En maintenance'];
 
         // Statistiques
         $stats = [
-            'total' => Imprimante::count(),
-            'en_service' => Imprimante::where('statut', 'En service')->count(),
-            'en_stock' => Imprimante::where('statut', 'En stock')->count(),
-            'en_maintenance' => Imprimante::where('statut', 'En maintenance')->count(),
-            'hors_service' => Imprimante::where('statut', 'Hors service')->count(),
+            'total' => ImprimanteModel::count(),
+            'en_service' => ImprimanteModel::where('statut', 'En service')->count(),
+            'en_stock' => ImprimanteModel::where('statut', 'En stock')->count(),
+            'en_maintenance' => ImprimanteModel::where('statut', 'En maintenance')->count(),
+            'hors_service' => ImprimanteModel::where('statut', 'Hors service')->count(),
         ];
 
         return view('livewire.equipement.imprimante', compact('imprimantes', 'fabricants', 'entites', 'statuts', 'stats'));
@@ -118,8 +120,8 @@ class Imprimante extends Component
 
     public function edit($id)
     {
-        $imprimante = Imprimante::findOrFail($id);
-        
+        $imprimante = ImprimanteModel::findOrFail($id);
+
         $this->selectedId = $id;
         $this->nom = $imprimante->nom;
         $this->entite = $imprimante->entite;
@@ -156,10 +158,10 @@ class Imprimante extends Component
         ];
 
         if ($this->isEditing) {
-            Imprimante::find($this->selectedId)->update($data);
+            ImprimanteModel::find($this->selectedId)->update($data);
             session()->flash('message', 'Imprimante mise à jour avec succès.');
         } else {
-            Imprimante::create($data);
+            ImprimanteModel::create($data);
             session()->flash('message', 'Imprimante créée avec succès.');
         }
 
@@ -169,8 +171,11 @@ class Imprimante extends Component
 
     public function delete($id)
     {
-        Imprimante::find($id)->delete();
-        session()->flash('message', 'Imprimante supprimée avec succès.');
+        $imprimante = ImprimanteModel::find($id);
+        if ($imprimante) {
+            $imprimante->delete();
+            session()->flash('message', 'Imprimante supprimée avec succès.');
+        }
     }
 
     public function closeModal()
@@ -182,7 +187,7 @@ class Imprimante extends Component
     private function resetForm()
     {
         $this->reset([
-            'nom', 'entite', 'statut', 'fabricant', 'reseau_ip', 
+            'nom', 'entite', 'statut', 'fabricant', 'reseau_ip',
             'numero_serie', 'lieu', 'type', 'modele', 'selectedId', 'isEditing'
         ]);
         $this->resetErrorBag();
