@@ -22,28 +22,7 @@
             </div>
             <div class="card-body">
                 <!-- Cartes de statistiques globales -->
-                <div class="row mb-4">
-                    @foreach($statsGlobales as $statut => $count)
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="card border-{{ $getCouleurStatut($statut) }} h-100">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="card-title text-muted mb-1">{{ $statut }}</h6>
-                                        <h3 class="text-{{ $getCouleurStatut($statut) }} mb-0">{{ $count }}</h3>
-                                        <small class="text-muted">
-                                            {{ $getPourcentageStatut($statut) }}% du total
-                                        </small>
-                                    </div>
-                                    <div class="text-{{ $getCouleurStatut($statut) }} fs-2">
-                                        <i class="fas {{ $getIconeStatut($statut) }}"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
+                
 
                 <!-- Statistiques détaillées -->
                 <div class="row">

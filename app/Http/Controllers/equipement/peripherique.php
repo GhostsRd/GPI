@@ -5,7 +5,10 @@ namespace App\Http\Controllers\equipement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class peripherique extends Controller
+class Peripherique extends Controller
 {
-    //
+    public function index()
+    {
+        return view('equipement.peripherique');
+    }
 }

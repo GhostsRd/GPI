@@ -29,12 +29,13 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
 
     <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
-    
+    <link href="{{ asset('css/ordi.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/monit.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleuser.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modalview.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/styleequipement.css') }}" rel="stylesheet">
+
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
     {{-- <link href="/css/app.css" rel="stylesheet"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -53,9 +54,9 @@
     <nav class="navbar-modern navbar navbar-expand-lg navbar-light shadow-sm">
         <div class="container-fluid">
             <!-- Logo and Brand -->
-            <a class="navbar-brand-modern" href="{{ url('/home') }}">
-                <img class="shadow-sm rounded-2" width="35" src="{{ asset('/images/logoPivot.png') }}" alt="">
-                {{ config('app.name', 'GPI') }}
+            <a class="navbar-brand-modern text-muted    " href="{{ url('/home') }}">
+                <img class="shadow-sm rounded-pill" width="35" src="{{ asset('/images/logoPivot.png') }}" alt="">
+                GPI - Pivot
             </a>
 
             <!-- Mobile Toggle -->
@@ -110,7 +111,7 @@
     
 
     <!-- Modern Sidebar -->
-    <aside class="sidebar-modern shadow-sm border-0" id="sidebarModern">
+    <aside class="sidebar-modern shadow-sm border-0" style="z-index: 3000  !important" id="sidebarModern">
 
 
 
@@ -144,19 +145,19 @@
                             Moniteurs
                         </a>
                         <a href="{{ url('logiciel') }}" class="submenu-item">
-                            <i class="bi bi-printer"></i>
+                            <i class="bi bi-window"></i>
                             Logiciels
-                        </a>
+                        </a>                        
                         
-                        <a href="{{ url('imprimante') }}" class="submenu-item">
+                        <a href="{{ url('/imprimante') }}" class="submenu-item">
                             <i class="bi bi-printer"></i>
                             Imprimantes
                         </a>
                         
-                        <a href="{{ url('materiel-reseaux') }}" class="submenu-item">
+                        <a href="{{ url('materiel-reseau') }}" class="submenu-item">
                             <i class="bi bi-hdd-network"></i>
-                            Matériel réseaux
-                        </a>
+                            Matériel Réseaux
+                        </a>                        
                         
                         <a href="{{ url('telephone') }}" class="submenu-item">
                             <i class="bi bi-telephone"></i>

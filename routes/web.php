@@ -40,19 +40,17 @@ Route::get('/utilisateur-checkout', [App\Http\Controllers\Utilisateur\checkout\C
 Route::get('/moniteur', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');
 Route::get('/logiciel', [App\Http\Controllers\equipement\logiciel::class, 'index'])->name('logiciel');
 Route::get('/ordinateur', [App\Http\Controllers\equipement\ordinateur::class, 'index'])->name('ordinateur');
+Route::get('/imprimante', [App\Http\Controllers\equipement\imprimante::class, 'index'])->name('imprimante');
+Route::get('/telephone', [App\Http\Controllers\equipement\telephone::class, 'index'])->name('telephone');
+Route::get('/peripherique', [App\Http\Controllers\equipement\Peripherique::class, 'index'])->name('peripherique');
+Route::get('/materiel-reseau', [App\Http\Controllers\equipement\MaterielReseau::class, 'index'])->name('materiel-reseau');
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
-
-
-Route::get('/test', [App\Http\Controllers\equipement\logiciel::class, 'index'])->name('test');
-
-
 
 
 Route::post('/userinscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'store'])->name('userinscription');
 Route::post('/checklogin', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'login'])->name('verifierlogin');
 //Route::get('/utilisateur', [App\Http\Controllers\User\User::class, 'utilisateur'])->name('utilisateur');-
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\Acceuil\Acceuil::class, 'index'])->name('home');
     Route::get('/ticket', [App\Http\Controllers\ticket\Ticket::class, 'index'])->name('ticket');

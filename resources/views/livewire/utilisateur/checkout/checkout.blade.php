@@ -1,58 +1,84 @@
 <div>
-      <div class="container mt-xs-4 main-content">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-sm-8 col-xs-8 text-center">
-                    <div class="main_title">
-                        <h2 class="text-success">Check In / Out </h2>
-                        <p>
-                          Accédez à l’ensemble des tickets, suivez leur statut et assurez une résolution rapide des problèmes. 
-                          Simplifiez la gestion du support grâce à une interface claire et intuitive.
-                      </p>
-								              <a class="btn btn-success text-white fw-bold border p-2 px-4 mt-4 btn-lg rounded-pill shadow"  id="toggleSidebar"><span>Creer <svg width="15" xmlns="http://www.w3.org/2000/svg" fill="fill" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                                        </svg>
-                                        </span>
-                                        </a>
-
-                    </div>
-                </div>
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3">
+           
             </div>
-  <section  >
-             <nav class=" shadow-sm col-lg-12 navbar-light p-0 m-0">
-				<div class=" cold  p-0 m-0">
-					<input type="text" list="sujets" class="input-recherche rounded border-0 p-4 " wire:model="recherche" placeholder="Entrer votre recherche " style="border-color: none; width:100%;"  name="" id="">
-				
-              {{-- <datalist id="sujets" >
-               @foreach ($tickets as $ticket )
-                <option value="{{ $ticket->sujet }}">
-               @endforeach
-          </datalist> --}}
-        </div>
+            <div class="col-lg-9">
+                <section class="col-lg-9">
+                    <div class="list-group">
+                        <a href="#"
+                            class="list-group-item bg-secondary border-secondary list-group-item-action active"
+                            aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Liste de votre ticket</h5>
+                                <small>3 days ago</small>
+                            </div>
 
-			</nav>
-      
-         <table class=" rounded-3 col-lg-12 table-responsive table  border-0  shadow background-white rounded " style="background-color: white;">
-            <thead class="bg-white "  >
-               <tr class="border-bottom-0 ">
-                        <th class="bg-white">Référence</th>
-                        <th class="bg-white">Sujet</th>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-body-secondary">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-body-secondary">And some muted small print.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-body-secondary">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-body-secondary">And some muted small print.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-body-secondary">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-body-secondary">And some muted small print.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-body-secondary">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-body-secondary">And some muted small print.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-body-secondary">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-body-secondary">And some muted small print.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">List group item heading</h5>
+                                <small class="text-body-secondary">3 days ago</small>
+                            </div>
+                            <p class="mb-1">Some placeholder content in a paragraph.</p>
+                            <small class="text-body-secondary">And some muted small print.</small>
+                        </a>
+                    </div>
 
-                        <th class="bg-white">Categorie</th>
-                        <th class="bg-white">Statut</th>
-                        <th class="bg-white">Créé par</th>
-                        <th class="bg-white">Assigné à</th>
-                        <th class="bg-white">Équipement</th>
-                        <th class="bg-white">Date création</th>
-                        {{-- <th>Actions</th> --}}
-                    </tr>
-            </thead>
-            <tbody class="bg-white"  >
-              </tbody>
-            </table>
-    
-         <div class="mt-4">
- 
+                </section>
+            </div>
         </div>
-    </section>
+    </div>
+
 </div>
+<script>
+    /* global bootstrap: false */
+    (function() {
+        'use strict'
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    })()
+</script>
