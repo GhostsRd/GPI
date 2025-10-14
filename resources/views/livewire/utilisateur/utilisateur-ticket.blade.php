@@ -90,7 +90,8 @@
     <!-- === Timeline === -->
               <div class="col-lg-9 bg-white rounded-3 timeline animate-progress mt-0" id="ticketTimeline">
                   <div class="timeline-step {{ $ticketvals->state >= 1 ? 'active' : '' }} " data-step="1">
-                  <div class="circle"> <img class="dropdown-toggle rounded-pill" data-toggle="dropdown" src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}" alt="Profil" width="40" height="40" class="rounded-circle me-2"></div>
+                  <div class="circle"> 
+                    <img class="dropdown-toggle rounded-pill" data-toggle="dropdown" src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest'}}" alt="Profil" width="40" height="40" class="rounded-circle me-2"></div>
                   <h6>Création</h6>
 
                 

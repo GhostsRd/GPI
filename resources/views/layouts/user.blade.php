@@ -51,7 +51,7 @@
 	<link rel="stylesheet" href="{{asset('css/style.css')}}">
     {{-- aos --}}
 
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+       <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     @livewireStyles
 </head>
 <body class="light-mode">
@@ -78,7 +78,7 @@
 
         <!-- Chat -->
         <li class="nav-item ms-3">
-          <a class="nav-link" >
+          <a class="nav-link" href="{{route('utilisateurService')}}" >
             Ticket
            
           </a>
@@ -286,7 +286,7 @@
         <a href="#" class="nav-link text-dark">
           <i class="bi bi-house-door me-2 text-primary"></i> Accueil
         </a>
-        <a href="#services" class="nav-link text-dark">
+        <a href="{{route('utilisateurService')}}" class="nav-link text-dark">
           <i class="bi bi-gear me-2 text-primary"></i> Ticket
         </a>
 
@@ -351,6 +351,14 @@
 
    
     @livewireScripts
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+   AOS.init({ once: true });
+
+  Livewire.hook('message.processed', () => {
+    AOS.refresh(); // réactive les animations pour les nouveaux éléments
+  });
+</script>
 <script src="{{ asset('js/modalview.js') }}"></script>
 <script>
   const openChatBtn = document.getElementById('openChatBtn');

@@ -8,10 +8,13 @@ use App\Models\chat;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Commentaire;
 use App\Models\User;
+use Livewire\WithPagination;
 
 
 class UtilisateurService extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $recherche = "";
     public $message;
     public $total;
@@ -21,6 +24,7 @@ class UtilisateurService extends Component
     public $priorite;
     public $priorite_impact;
     public $equipement;
+    public $state;
     public $impact ;
     public $equipementSeeder;
     public $responsable_id = 2;
@@ -28,6 +32,9 @@ class UtilisateurService extends Component
     
     public function steps2(){
         $this->step2 = "active";
+    }
+    public function visiterCheckout(){
+        return redirect("/utilisateur-checkout");
     }
     protected $rules = [
         'sujet'      => 'required|string|min:5',
@@ -95,12 +102,13 @@ class UtilisateurService extends Component
         $chat->save();
 
         $this->reset(['sujet', 'details', 'priorite']);
+        $this->emitSelf('refreshComponent'); 
+        $this->dispatchBrowserEvent('toggleSidebar');
 
         // Event JS (ex: fermer modal)
-        //$this->dispatchBrowserEvent('ticket-saved');
         
         //session()->flash('message','Ticket creer avec succes');
-        return redirect()->to('/utilisateur-ticket-'.$findTicket->id);
+        //return redirect()->to('/utilisateur-ticket-'.$findTicket->id);
     }
     public function visualiser($id){
         
@@ -110,6 +118,7 @@ class UtilisateurService extends Component
     public function mount(){
         
         $this->step2;
+        $this->resetPage('refreshComponent');
         $this->dispatchBrowserEvent('ticket-saved');
     }
     public function storechat()
@@ -128,8 +137,10 @@ class UtilisateurService extends Component
         
         return view('livewire.utilisateur.utilisateur-service',[
             "tickets"=> ticket::where("sujet","like","%".$this->recherche."%")
-                ->where("utilisateur_id",$user_ID)
-                ->paginate(8),
+            ->where("state","like","%".$this->state."%")
+            ->where("utilisateur_id",$user_ID)
+            ->orderBy("created_at", "desc")
+                ->paginate(4),
          "chats"=> chat::all(),
          "responsables" => User::all(),
            ]);
