@@ -29,6 +29,7 @@ class Imprimante extends Component
     public $filterStatut = '';
     public $filterFabricant = '';
     public $filterEntite = '';
+     public $selectedImprimanteName = ''; // ✅ Ajoute ceci
 
     // Tri
     public $sortField = 'updated_at';
@@ -49,7 +50,6 @@ class Imprimante extends Component
     public function mount()
     {
         $this->resetFilters();
-        $this->totalEquipements = ImprimanteModel::count();
 
     }
 
@@ -169,14 +169,15 @@ class Imprimante extends Component
         $this->resetForm();
     }
 
-    public function delete($id)
-    {
-        $imprimante = ImprimanteModel::find($id);
-        if ($imprimante) {
-            $imprimante->delete();
-            session()->flash('message', 'Imprimante supprimée avec succès.');
-        }
+   public function delete($id)
+{
+    $imprimante = ImprimanteModel::find($id);
+    if ($imprimante) {
+        $this->selectedImprimanteName = $imprimante->nom; // ✅
+        $imprimante->delete();
+        session()->flash('message', "L’imprimante {$this->selectedImprimanteName} a été supprimée avec succès.");
     }
+}
 
     public function closeModal()
     {

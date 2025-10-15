@@ -16,12 +16,12 @@ class MaterielReseau extends Component
     public $typeFilter = '';
     public $sortField = 'updated_at';
     public $sortDirection = 'desc';
-    
+
     // Propriétés pour le formulaire
     public $showForm = false;
     public $editMode = false;
     public $materielId;
-    
+
     public $nom;
     public $entite;
     public $statut = 'En service';
@@ -31,6 +31,36 @@ class MaterielReseau extends Component
     public $type;
     public $modele;
     public $numero_serie;
+    public function create()
+    {
+        $this->validate([
+            'nom' => 'required|string|max:255',
+            'entite' => 'required|string|max:255',
+            'statut' => 'required|string|max:255',
+            'fabricant' => 'required|string|max:255',
+            'lieu' => 'required|string|max:255',
+            'reseau_ip' => 'nullable|ip',
+            'type' => 'required|string|max:255',
+            'modele' => 'required|string|max:255',
+            'numero_serie' => 'required|string|max:255',
+        ]);
+
+        MaterielReseau::create([
+            'nom' => $this->nom,
+            'entite' => $this->entite,
+            'statut' => $this->statut,
+            'fabricant' => $this->fabricant,
+            'lieu' => $this->lieu,
+            'reseau_ip' => $this->reseau_ip,
+            'type' => $this->type,
+            'modele' => $this->modele,
+            'numero_serie' => $this->numero_serie,
+        ]);
+
+        session()->flash('message', 'Matériel réseau ajouté avec succès !');
+        $this->reset();
+    }
+
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -45,7 +75,7 @@ class MaterielReseau extends Component
     // Options pour les selects
     public $statutOptions = [
         'En service',
-        'En stock', 
+        'En stock',
         'Hors service',
         'En maintenance'
     ];
@@ -137,7 +167,7 @@ class MaterielReseau extends Component
     public function showEditForm($id)
     {
         $materiel = MaterielReseau::findOrFail($id);
-        
+
         $this->materielId = $materiel->id;
         $this->nom = $materiel->nom;
         $this->entite = $materiel->entite;
@@ -148,7 +178,7 @@ class MaterielReseau extends Component
         $this->type = $materiel->type;
         $this->modele = $materiel->modele;
         $this->numero_serie = $materiel->numero_serie;
-        
+
         $this->showForm = true;
         $this->editMode = true;
     }
@@ -218,7 +248,7 @@ class MaterielReseau extends Component
             'numero_serie',
             'editMode'
         ]);
-        
+
         $this->resetErrorBag();
         $this->statut = 'En service';
     }
@@ -233,9 +263,9 @@ class MaterielReseau extends Component
     public function exportToCsv()
     {
         $materiels = MaterielReseau::all();
-        
+
         $fileName = 'materiels-reseau-' . date('Y-m-d') . '.csv';
-        
+
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
@@ -243,10 +273,10 @@ class MaterielReseau extends Component
 
         $callback = function() use ($materiels) {
             $file = fopen('php://output', 'w');
-            
+
             // En-têtes CSV
             fputcsv($file, [
-                'Nom', 'Entité', 'Statut', 'Fabricant', 'Lieu', 
+                'Nom', 'Entité', 'Statut', 'Fabricant', 'Lieu',
                 'IP Réseau', 'Type', 'Modèle', 'Numéro de série', 'Dernière modification'
             ]);
 

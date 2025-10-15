@@ -1,328 +1,466 @@
 <!-- resources/views/livewire/equipement/imprimante.blade.php -->
-<div class="bg-white rounded-lg shadow-md p-6">
-    <!-- En-tête -->
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Gestion des Imprimantes</h1>
-        <button wire:click="create" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center transition duration-200">
-            <i class="fas fa-plus mr-2"></i> Nouvelle Imprimante
-        </button>
-    </div>
 
-    <!-- Messages flash -->
-    @if (session()->has('message'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 flex justify-between items-center">
-            <span>{{ session('message') }}</span>
-            <button type="button" class="text-green-700" onclick="this.parentElement.style.display='none'">
-                <i class="fas fa-times"></i>
+<div class="ticket-dashboard">
+    <div class="dashboard-container">
+
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h4 fw-bold text-dark mb-0">
+                <i class="fas fa-print me-2 text-primary"></i> Gestion des Imprimantes
+            </h1>
+            <button wire:click="create" class="btn btn-primary btn-sm shadow-sm">
+                <i class="fas fa-plus me-2"></i> Nouvelle Imprimante
             </button>
         </div>
-    @endif
 
-    <!-- Filtres -->
-    <div class="bg-gray-50 p-4 rounded-lg mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <!-- Recherche -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Recherche</label>
-                <input type="text" wire:model.live.debounce.300ms="search"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                       placeholder="Nom, modèle, IP...">
+        <!-- Message flash -->
+        @if (session()->has('message'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
+        @endif
 
-            <!-- Statut -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Statut</label>
-                <select wire:model.live="filterStatut" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="">Tous les statuts</option>
-                    @foreach($statuts as $statut)
-                        <option value="{{ $statut }}">{{ $statut }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Fabricant -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Fabricant</label>
-                <select wire:model.live="filterFabricant" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="">Tous les fabricants</option>
-                    @foreach($fabricants as $fabricant)
-                        <option value="{{ $fabricant }}">{{ $fabricant }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Entité -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Entité</label>
-                <select wire:model.live="filterEntite" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                    <option value="">Toutes les entités</option>
-                    @foreach($entites as $entite)
-                        <option value="{{ $entite }}">{{ $entite }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <!-- Bouton reset -->
-            <div class="flex items-end">
-                <button wire:click="resetFilters" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center w-full justify-center transition duration-200">
-                    <i class="fas fa-redo mr-2"></i> Réinitialiser
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Statistiques -->
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <div class="text-blue-800 font-bold text-xl">{{ $stats['total'] }}</div>
-            <div class="text-blue-600 text-sm">Total</div>
-        </div>
-        <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-            <div class="text-green-800 font-bold text-xl">{{ $stats['en_service'] }}</div>
-            <div class="text-green-600 text-sm">En service</div>
-        </div>
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-            <div class="text-yellow-800 font-bold text-xl">{{ $stats['en_maintenance'] }}</div>
-            <div class="text-yellow-600 text-sm">En maintenance</div>
-        </div>
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <div class="text-blue-800 font-bold text-xl">{{ $stats['en_stock'] }}</div>
-            <div class="text-blue-600 text-sm">En stock</div>
-        </div>
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-            <div class="text-red-800 font-bold text-xl">{{ $stats['hors_service'] }}</div>
-            <div class="text-red-600 text-sm">Hors service</div>
-        </div>
-    </div>
-
-    <!-- Tableau -->
-    <div class="overflow-x-auto rounded-lg border border-gray-200">
-        <table class="min-w-full bg-white">
-            <thead class="bg-gray-50">
-            <tr>
-                <th wire:click="sortBy('nom')" class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition duration-150">
-                    Nom
-                    @if($sortField === 'nom')
-                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1"></i>
-                    @else
-                        <i class="fas fa-sort ml-1 text-gray-300"></i>
-                    @endif
-                </th>
-                <th wire:click="sortBy('entite')" class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition duration-150">
-                    Entité
-                    @if($sortField === 'entite')
-                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1"></i>
-                    @else
-                        <i class="fas fa-sort ml-1 text-gray-300"></i>
-                    @endif
-                </th>
-                <th wire:click="sortBy('statut')" class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition duration-150">
-                    Statut
-                    @if($sortField === 'statut')
-                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1"></i>
-                    @else
-                        <i class="fas fa-sort ml-1 text-gray-300"></i>
-                    @endif
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Fabricant
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    IP
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Série
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Lieu
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Type
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Modèle
-                </th>
-                <th wire:click="sortBy('updated_at')" class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition duration-150">
-                    Dernière modif.
-                    @if($sortField === 'updated_at')
-                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ml-1"></i>
-                    @else
-                        <i class="fas fa-sort ml-1 text-gray-300"></i>
-                    @endif
-                </th>
-                <th class="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                </th>
-            </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-            @forelse($imprimantes as $imprimante)
-                <tr class="hover:bg-gray-50 transition duration-150">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $imprimante->nom }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $imprimante->entite }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        @php
-                            $statusClasses = [
-                                'En service' => 'bg-green-100 text-green-800',
-                                'En maintenance' => 'bg-yellow-100 text-yellow-800',
-                                'Hors service' => 'bg-red-100 text-red-800',
-                                'En stock' => 'bg-blue-100 text-blue-800'
-                            ];
-                        @endphp
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusClasses[$imprimante->statut] ?? 'bg-gray-100 text-gray-800' }}">
-                            {{ $imprimante->statut }}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $imprimante->fabricant }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">{{ $imprimante->reseau_ip }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">{{ $imprimante->numero_serie }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $imprimante->lieu }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $imprimante->type }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $imprimante->modele }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $imprimante->updated_at->format('d/m/Y H:i') }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div class="flex space-x-2">
-                            <button wire:click="edit({{ $imprimante->id }})" class="text-blue-600 hover:text-blue-900 transition duration-200" title="Modifier">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button wire:click="delete({{ $imprimante->id }})"
-                                    wire:confirm="Êtes-vous sûr de vouloir supprimer cette imprimante ?"
-                                    class="text-red-600 hover:text-red-900 transition duration-200" title="Supprimer">
-                                <i class="fas fa-trash"></i>
-                            </button>
+        <!-- Statistiques -->
+        <div class="row mb-4">
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="card stats-widget border-0 shadow-sm dark-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-primary mb-1">{{ $stats['total'] }}</h3>
+                            <p class="stats-label text-black mb-0">Total</p>
                         </div>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="11" class="px-6 py-4 text-center text-sm text-gray-500">
-                        Aucune imprimante trouvée.
-                    </td>
-                </tr>
-            @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Pagination -->
-    <div class="mt-6">
-        {{ $imprimantes->links() }}
-    </div>
-</div>
-
-<!-- Modal -->
-@if ($showModal)
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" x-data x-on:click.self="Livewire.emit('closeModal')">
-        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">
-                        {{ $isEditing ? 'Modifier l\'imprimante' : 'Nouvelle Imprimante' }}
-                    </h2>
-                    <button wire:click="closeModal" class="text-gray-400 hover:text-gray-600 transition duration-200">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
+                        <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
+                            <i class="fas fa-chart-pie fa-lg"></i>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <form wire:submit.prevent="save">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Colonne 1 -->
-                        <div class="space-y-4">
-                            <div>
-                                <label for="nom" class="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
-                                <input type="text" wire:model="nom" id="nom"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                       placeholder="Ex: IMP-IT-001" required>
-                                @error('nom') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div>
-                                <label for="entite" class="block text-sm font-medium text-gray-700 mb-1">Entité</label>
-                                <input type="text" wire:model="entite" id="entite"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                       placeholder="Ex: Informatique, RH...">
-                            </div>
-
-                            <div>
-                                <label for="statut" class="block text-sm font-medium text-gray-700 mb-1">Statut *</label>
-                                <select wire:model="statut" id="statut"
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" required>
-                                    <option value="">Sélectionnez un statut</option>
-                                    <option value="En service">En service</option>
-                                    <option value="En stock">En stock</option>
-                                    <option value="En maintenance">En maintenance</option>
-                                    <option value="Hors service">Hors service</option>
-                                </select>
-                                @error('statut') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div>
-                                <label for="fabricant" class="block text-sm font-medium text-gray-700 mb-1">Fabricant</label>
-                                <input type="text" wire:model="fabricant" id="fabricant"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                       placeholder="Ex: HP, Canon, Epson...">
-                            </div>
-
-                            <div>
-                                <label for="reseau_ip" class="block text-sm font-medium text-gray-700 mb-1">Adresse IP</label>
-                                <input type="text" wire:model="reseau_ip" id="reseau_ip"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                       placeholder="192.168.1.100">
-                                @error('reseau_ip') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
-                            </div>
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="card stats-widget border-0 shadow-sm dark-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-success mb-1">{{ $stats['en_service'] }}</h3>
+                            <p class="stats-label text-black mb-0">En service</p>
                         </div>
+                        <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
+                            <i class="fas fa-check-circle fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                        <!-- Colonne 2 -->
-                        <div class="space-y-4">
-                            <div>
-                                <label for="numero_serie" class="block text-sm font-medium text-gray-700 mb-1">Numéro de série</label>
-                                <input type="text" wire:model="numero_serie" id="numero_serie"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                       placeholder="Ex: SN123456789">
-                                @error('numero_serie') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
-                            </div>
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="card stats-widget border-0 shadow-sm dark-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-warning mb-1">{{ $stats['en_maintenance'] }}</h3>
+                            <p class="stats-label text-black mb-0">En maintenance</p>
+                        </div>
+                        <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
+                            <i class="fas fa-tools fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div>
-                                <label for="lieu" class="block text-sm font-medium text-gray-700 mb-1">Lieu</label>
-                                <input type="text" wire:model="lieu" id="lieu"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                       placeholder="Ex: Bureau 101, Salle d'impression...">
-                            </div>
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="card stats-widget border-0 shadow-sm dark-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-info mb-1">{{ $stats['en_stock'] }}</h3>
+                            <p class="stats-label text-black mb-0">En stock</p>
+                        </div>
+                        <div class="avatar-sm rounded-circle bg-info bg-opacity-25 text-info d-flex align-items-center justify-content-center">
+                            <i class="fas fa-warehouse fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div>
-                                <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                                <select wire:model="type" id="type"
-                                        class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
-                                    <option value="">Sélectionnez un type</option>
-                                    <option value="Laser">Laser</option>
-                                    <option value="Jet d'encre">Jet d'encre</option>
-                                    <option value="Multifonction">Multifonction</option>
-                                    <option value="Thermique">Thermique</option>
-                                </select>
-                            </div>
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="card stats-widget border-0 shadow-sm dark-card">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-danger mb-1">{{ $stats['hors_service'] }}</h3>
+                            <p class="stats-label text-black mb-0">Hors service</p>
+                        </div>
+                        <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
+                            <i class="fas fa-times-circle fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                            <div>
-                                <label for="modele" class="block text-sm font-medium text-gray-700 mb-1">Modèle</label>
-                                <input type="text" wire:model="modele" id="modele"
-                                       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                       placeholder="Ex: HP LaserJet Pro M404...">
-                            </div>
+        <!-- Filtres -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Recherche</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-transparent">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" wire:model.live.debounce.300ms="search"
+                                   class="form-control" placeholder="Nom, modèle, IP...">
                         </div>
                     </div>
 
-                    <div class="mt-8 flex justify-end space-x-4 border-t pt-6">
-                        <button type="button" wire:click="closeModal"
-                                class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition duration-200">
-                            Annuler
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Statut</label>
+                        <select wire:model.live="filterStatut" class="form-select form-select-sm">
+                            <option value="">Tous</option>
+                            @foreach($statuts as $statut)
+                                <option value="{{ $statut }}">{{ $statut }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Fabricant</label>
+                        <select wire:model.live="filterFabricant" class="form-select form-select-sm">
+                            <option value="">Tous</option>
+                            @foreach($fabricants as $fabricant)
+                                <option value="{{ $fabricant }}">{{ $fabricant }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Entité</label>
+                        <select wire:model.live="filterEntite" class="form-select form-select-sm">
+                            <option value="">Toutes</option>
+                            @foreach($entites as $entite)
+                                <option value="{{ $entite }}">{{ $entite }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button wire:click="resetFilters" class="btn btn-secondary btn-sm w-100">
+                            <i class="fas fa-redo me-2"></i> Réinitialiser
                         </button>
-                        <button type="submit"
-                                class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg flex items-center transition duration-200">
-                            <i class="fas fa-save mr-2"></i>
-                            {{ $isEditing ? 'Mettre à jour' : 'Créer' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th wire:click="sortBy('nom')" class="text-uppercase small fw-bold cursor-pointer">
+                                    Nom
+                                    @if ($sortField === 'nom')
+                                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
+                                    @else
+                                        <i class="fas fa-sort ms-1 text-muted"></i>
+                                    @endif
+                                </th>
+                                <th wire:click="sortBy('entite')" class="text-uppercase small fw-bold cursor-pointer">
+                                    Entité
+                                    @if ($sortField === 'entite')
+                                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
+                                    @else
+                                        <i class="fas fa-sort ms-1 text-muted"></i>
+                                    @endif
+                                </th>
+                                <th wire:click="sortBy('statut')" class="text-uppercase small fw-bold cursor-pointer">
+                                    Statut
+                                    @if ($sortField === 'statut')
+                                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
+                                    @else
+                                        <i class="fas fa-sort ms-1 text-muted"></i>
+                                    @endif
+                                </th>
+                                <th>Fabricant</th>
+                                <th>IP</th>
+                                <th>Série</th>
+                                <th>Lieu</th>
+                                <th>Type</th>
+                                <th>Modèle</th>
+                                <th wire:click="sortBy('updated_at')" class="text-uppercase small fw-bold cursor-pointer">
+                                    Dernière modif.
+                                    @if ($sortField === 'updated_at')
+                                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
+                                    @else
+                                        <i class="fas fa-sort ms-1 text-muted"></i>
+                                    @endif
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($imprimantes as $imprimante)
+                                <tr>
+                                    <td class="fw-semibold">{{ $imprimante->nom }}</td>
+                                    <td>{{ $imprimante->entite }}</td>
+                                    <td>
+                                        @php
+                                            $statusClasses = [
+                                                'En service' => 'badge bg-success bg-opacity-25 text-success',
+                                                'En maintenance' => 'badge bg-warning bg-opacity-25 text-warning',
+                                                'Hors service' => 'badge bg-danger bg-opacity-25 text-danger',
+                                                'En stock' => 'badge bg-info bg-opacity-25 text-info'
+                                            ];
+                                        @endphp
+                                        <span class="{{ $statusClasses[$imprimante->statut] ?? 'badge bg-secondary' }}">
+                                            {{ $imprimante->statut }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $imprimante->fabricant }}</td>
+                                    <td class="font-monospace">{{ $imprimante->reseau_ip }}</td>
+                                    <td class="font-monospace">{{ $imprimante->numero_serie }}</td>
+                                    <td>{{ $imprimante->lieu }}</td>
+                                    <td>{{ $imprimante->type }}</td>
+                                    <td>{{ $imprimante->modele }}</td>
+                                    <td>{{ $imprimante->updated_at->format('d/m/Y H:i') }}</td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <button wire:click="edit({{ $imprimante->id }})" 
+                                                    class="btn btn-sm btn-outline-primary"
+                                                    title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button wire:click="confirmDelete({{ $imprimante->id }})"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Supprimer">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="11" class="text-center text-muted py-3">Aucune imprimante trouvée.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-3">
+            {{ $imprimantes->links() }}
+        </div>
+    </div>
+
+    <!-- Modal pour créer/modifier une imprimante -->
+    <div class="modal fade" id="imprimanteModal" tabindex="-1" aria-labelledby="imprimanteModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imprimanteModalLabel">
+                        {{ $isEditing ? 'Modifier l\'imprimante' : 'Nouvelle Imprimante' }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <form wire:submit.prevent="{{ $isEditing ? 'update' : 'store' }}">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <!-- Colonne gauche -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="nom" class="form-label">Nom de l'imprimante *</label>
+                                    <input type="text" class="form-control @error('nom') is-invalid @enderror" 
+                                           id="nom" wire:model="nom" required>
+                                    @error('nom') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="entite" class="form-label">Entité *</label>
+                                    <select class="form-select @error('entite') is-invalid @enderror" 
+                                            id="entite" wire:model="entite" required>
+                                        <option value="">Sélectionner une entité</option>
+                                        @foreach($entites as $entiteOption)
+                                            <option value="{{ $entiteOption }}">{{ $entiteOption }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('entite') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="statut" class="form-label">Statut *</label>
+                                    <select class="form-select @error('statut') is-invalid @enderror" 
+                                            id="statut" wire:model="statut" required>
+                                        <option value="">Sélectionner un statut</option>
+                                        @foreach($statuts as $statutOption)
+                                            <option value="{{ $statutOption }}">{{ $statutOption }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('statut') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fabricant" class="form-label">Fabricant *</label>
+                                    <select class="form-select @error('fabricant') is-invalid @enderror" 
+                                            id="fabricant" wire:model="fabricant" required>
+                                        <option value="">Sélectionner un fabricant</option>
+                                        @foreach($fabricants as $fabricantOption)
+                                            <option value="{{ $fabricantOption }}">{{ $fabricantOption }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('fabricant') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="modele" class="form-label">Modèle *</label>
+                                    <input type="text" class="form-control @error('modele') is-invalid @enderror" 
+                                           id="modele" wire:model="modele" required>
+                                    @error('modele') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+
+                            <!-- Colonne droite -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="type" class="form-label">Type *</label>
+                                    <select class="form-select @error('type') is-invalid @enderror" 
+                                            id="type" wire:model="type" required>
+                                        <option value="">Sélectionner un type</option>
+                                        <option value="Laser">Laser</option>
+                                        <option value="Jet d'encre">Jet d'encre</option>
+                                        <option value="Multifonction">Multifonction</option>
+                                        <option value="Thermique">Thermique</option>
+                                    </select>
+                                    @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="reseau_ip" class="form-label">Adresse IP</label>
+                                    <input type="text" class="form-control @error('reseau_ip') is-invalid @enderror" 
+                                           id="reseau_ip" wire:model="reseau_ip" placeholder="192.168.1.100">
+                                    @error('reseau_ip') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="numero_serie" class="form-label">Numéro de série</label>
+                                    <input type="text" class="form-control @error('numero_serie') is-invalid @enderror" 
+                                           id="numero_serie" wire:model="numero_serie">
+                                    @error('numero_serie') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="lieu" class="form-label">Lieu</label>
+                                    <input type="text" class="form-control @error('lieu') is-invalid @enderror" 
+                                           id="lieu" wire:model="lieu" placeholder="Bureau, étage...">
+                                    @error('lieu') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="date_achat" class="form-label">Date d'achat</label>
+                                    <input type="date" class="form-control @error('date_achat') is-invalid @enderror" 
+                                           id="date_achat" wire:model="date_achat">
+                                    @error('date_achat') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Notes</label>
+                            <textarea class="form-control @error('notes') is-invalid @enderror" 
+                                      id="notes" wire:model="notes" rows="3" 
+                                      placeholder="Informations supplémentaires..."></textarea>
+                            @error('notes') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">
+                            {{ $isEditing ? 'Modifier' : 'Créer' }}
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-@endif
+
+    <!-- Modal de confirmation de suppression -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer l'imprimante <strong>{{ $selectedImprimanteName }}</strong> ?</p>
+                    <p class="text-danger">Cette action est irréversible.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger" wire:click="delete" data-bs-dismiss="modal">
+                        <i class="fas fa-trash me-2"></i>Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    // Gestion de l'ouverture/fermeture des modals
+    document.addEventListener('livewire:initialized', () => {
+        // Modal création/édition
+        Livewire.on('showImprimanteModal', () => {
+            const modal = new bootstrap.Modal(document.getElementById('imprimanteModal'));
+            modal.show();
+        });
+
+        Livewire.on('hideImprimanteModal', () => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('imprimanteModal'));
+            if (modal) {
+                modal.hide();
+            }
+        });
+
+        // Modal suppression
+        Livewire.on('showDeleteModal', () => {
+            const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        });
+
+        Livewire.on('hideDeleteModal', () => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+            if (modal) {
+                modal.hide();
+            }
+        });
+
+        // Fermer les modals quand on navigue
+        Livewire.on('modalClosed', () => {
+            ['imprimanteModal', 'deleteModal'].forEach(modalId => {
+                const modalElement = document.getElementById(modalId);
+                if (modalElement) {
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    if (modal) {
+                        modal.hide();
+                    }
+                }
+            });
+        });
+    });
+
+    // Empêcher la fermeture du modal lors de la soumission
+    document.addEventListener('livewire:submit', () => {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) {
+                bsModal._config.backdrop = 'static';
+                bsModal._config.keyboard = false;
+            }
+        });
+    });
+</script>
+@endpush

@@ -306,7 +306,7 @@
 
 .table thead th {
     padding: 0.875rem;
-    color: white;
+    color: BLACK;
     font-weight: 600;
     text-align: left;
     font-size: 0.75rem;
@@ -508,17 +508,17 @@
     .container-fluid {
         padding: 1rem;
     }
-    
+
     .stats-number {
         font-size: 1.6rem !important;
     }
-    
+
     .table-header {
         flex-direction: column;
         gap: 0.875rem;
         padding: 1rem;
     }
-    
+
     .modal-dialog {
         margin: 1rem;
     }
@@ -528,7 +528,7 @@
     .container-fluid {
         padding: 0.75rem;
     }
-    
+
     .btn {
         padding: 0.5rem 0.875rem;
         font-size: 0.75rem;
