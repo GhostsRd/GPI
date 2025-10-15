@@ -14,7 +14,7 @@
        // const pct = currentIndex / (steps.length - 1) * 100;
        // connectors.forEach(c => c.style.width = pct + '%');
       //}
-   const canvas = document.getElementById('parallaxCanvas');
+const canvas = document.getElementById('parallaxCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
 

@@ -123,7 +123,7 @@
                         </select>
 
                     </div>
-                    <div class="col-md-1"">
+                    <div class="col-md-1">
                         <button wire:click="create" class="btn btn-primary btn-sm w-100">
                     <i class="fas fa-plus"></i> Nouveau
                 </button>

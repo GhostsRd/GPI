@@ -18,8 +18,8 @@ class OrdinateurSeeder extends Seeder
         }
 
         // Créer 50 ordinateurs de test
-        Ordinateur::factory()->count(50)->create();
+        Ordinateur::factory()->count(10)->create();
 
-        $this->command->info('50 ordinateurs de test créés avec succès!');
+        $this->command->info('10 ordinateurs de test créés avec succès!');
     }
 }

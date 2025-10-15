@@ -14,6 +14,7 @@ use Livewire\WithPagination;
 class UtilisateurService extends Component
 {
     use WithPagination;
+
     protected $paginationTheme = 'bootstrap';
     public $recherche = "";
     public $message;
@@ -50,9 +51,6 @@ class UtilisateurService extends Component
     {
         $this->validateOnly($propertyName);
     }
-
-
-
         public function store(ticket $ticket,chat $chat,Commentaire $commentaire){
         $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
         //$responsable = User::where("poste",);
@@ -60,16 +58,21 @@ class UtilisateurService extends Component
 
         if($this->categorie == "Réseau"){
             $this->responsable_id= 1;
+
         }elseif($this->categorie == "Logiciel"){
             $this->responsable_id= 2;
+        
         }
         if($this->impact == "Utilisateur"){
             $this->priorite_impact= 1;
+
         }elseif($this->impact == "Organisation" || $this->impact ==  "Service"){
             $this->priorite_impact= 0;
+        
         }
         elseif($this->impact == "Autre"){
             $this->priorite_impact= 2;
+        
         }
         $ticket->sujet = $this->sujet;
         $ticket->details = $this->details;
@@ -83,12 +86,7 @@ class UtilisateurService extends Component
         $ticket->priorite = $this->priorite_impact;
         $ticket->save();
 
-
-
         $findTicket = ticket::latest()->first();
-
-
-
         $commentaire->ticket_id = $findTicket->id;
         $commentaire->utilisateur_id = $utlisateurConnecter ;
         $commentaire->commentaire = "Ticket creer avec succes";
@@ -136,10 +134,11 @@ class UtilisateurService extends Component
         $user_ID =  Auth::guard('utilisateur')->user()->id;
         
         return view('livewire.utilisateur.utilisateur-service',[
-            "tickets"=> ticket::where("sujet","like","%".$this->recherche."%")
-            ->where("state","like","%".$this->state."%")
-            ->where("utilisateur_id",$user_ID)
-            ->orderBy("created_at", "desc")
+            "tickets"=> ticket::
+                      where("utilisateur_id",$user_ID)
+                    ->where("state","like","%" . $this->state . "%")
+                    ->where("sujet","like","%".$this->recherche."%")
+                    ->orderBy("created_at", "desc")
                 ->paginate(4),
          "chats"=> chat::all(),
          "responsables" => User::all(),

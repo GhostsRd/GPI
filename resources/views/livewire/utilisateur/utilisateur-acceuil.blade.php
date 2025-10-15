@@ -40,7 +40,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
                     <div class="main_title">
-                        <h2>Nos services </h2>
+                        <h2>Principales fonctionnalités du pPivot Gestion Parc Informatique</h2>
                         <p>
                             Is give may shall likeness made yielding spirit a itself togeth created 
                             after sea <br> is in beast beginning signs open god you're gathering ithe

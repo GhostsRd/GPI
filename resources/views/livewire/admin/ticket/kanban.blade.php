@@ -87,7 +87,6 @@
                      <span class="text-muted mt-2">Status</span><br>
                      <span class="fw-bold ">{{ $step['name'] }} </span>
                     <span class="">({{count($tickets->where('state', $step['id']))}})</span> 
-                        
 
                 </div>
 
@@ -107,10 +106,7 @@
                              ondragend="handleDragEnd(event)"
                              wire:key="ticket-{{ $ticket->id }}"
                              data-ticket="{{ $ticket->id }}">
-                            
-
-                  
-                            
+ 
                             <div  class="card-body  px-2 small d-flex flex-column justify-content-between" style="min-height: 60px;">
                                     <div class="d-flex text-muted justify-content-between pt-0 mt-0">
                                       #{{ $ticket->id }}

@@ -1,9 +1,7 @@
 <div>
 
     <div wire:ignore.self class="sidebar rounded-3 p-0 shadow-lg colg-lg-3  " id="sidebar">
-        <div>
-            <div>
-                <div>
+        
                     <!-- Header -->
                     <div class=" border-bottom">
                         <h4 class="modal-title mx-2 my-2 " id="ticketModalLabel">Nouveau Ticket</h4>
@@ -125,11 +123,7 @@
                                 class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button>
                         </div>
                     </form>
-                </div>
-            </div>
-
-       
-        </div>
+                
     </div>
 
 
@@ -170,7 +164,7 @@
                         <div class="d-flex align-items-center">
 
                             <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
@@ -185,7 +179,7 @@
                         <div class="d-flex align-items-center">
 
                             <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
@@ -1390,7 +1384,7 @@
             <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  col-lg-9">
                 <section class="p-0">
                     <div class="card bg-none border-0 m-0 p-0 mb-1">
-                        <select name="" wire:model="state" class="input-recherche border" id=""
+                        <select name=""   wire:model="state" class="input-recherche border" id=""
                             class="col-3">
                             <option value="">__Selectionner le status__</option>
                             <option value="1">Assigner</option>
