@@ -16,27 +16,26 @@
                             <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
                                 obligatoires</p>
 
-                           <div class="mb-3 col-lg-6 position-relative">
+                            <div class="mb-3 col-lg-6 position-relative">
                                 <label for="sujet" class="form-label">
                                     Tapez ici le matériel <span class="text-danger">*</span>
                                 </label>
 
-                            <input type="text"
-                                wire:model.debounce.300ms="search"
-                                class="form-control"
-                                placeholder="Cherchez un matériel (ex: HP Elitebook, Dell 24 pouces...)">
+                                <input type="text" wire:model="search" class="form-control"
+                                    placeholder="Cherchez un matériel (ex: HP Elitebook, Dell 24 pouces...)">
 
-                            @if(!empty($filteredMateriels))
-                                <ul class="list-group mt-2 shadow-sm">
-                                    @foreach($filteredMateriels as $materiel)
-                                        <li class="list-group-item list-group-item-action"
-                                            wire:click="selectMateriel('{{ $materiel->label }}')">
-                                            {{ $materiel->label }}
-                                            <span class="badge bg-secondary float-end">{{ ucfirst($materiel->type) }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
+                                {{-- @if (!empty($filteredMateriels))
+                                    <ul class="list-group mt-2 shadow-sm">
+                                        @foreach ($filteredMateriels as $materiel)
+                                            <li class="list-group-item list-group-item-action"
+                                                wire:click="selectMateriel('{{ $materiel->label }}')">
+                                                {{ $materiel->label }}
+                                                <span
+                                                    class="badge bg-secondary float-end">{{ ucfirst($materiel->type) }}</span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif --}}
 
                                 @error('sujet')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -44,44 +43,117 @@
                             </div>
 
 
+                    <div class="list-group">
+    @forelse($equipements as $index => $equipement)
+        <a wire:click="visualiserForm('{{ $equipement['id'] }}')" href="#"
+           data-aos="fade-down" data-aos-duration="400"
+           data-aos-delay="{{ $index * 100 }}"
+           class="list-group-item list-group-item-action border rounded-2 mb-1">
+
+            <div class="d-flex w-100 justify-content-between">
+                <b>#{{ $equipement['id'] }} - {{ $equipement['type'] }}</b>
+                <small class="text-body-secondary">{{ $equipement['statut'] }}</small>
+            </div>
+
+        </a>
+    @empty
+        <div class="alert alert-warning">Aucun équipement trouvé.</div>
+    @endforelse
+</div>
+                            @if ($filtrerMateriel)
+                                @foreach ($ordinateurs as $ordinateur)
+                                    <a wire:click="visualiserForm('{{ $ordinateur->id }}')" href="#"
+                                        data-aos="fade-down" class="list-group-item list-group-item-action border">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <b class="mb-1 text-black-50"># {{ $ordinateur->id }} -
+                                                {{ $ordinateur->nom }} : {{ $ordinateur->modele }}</b>
+                                            <small class="text-body-secondary">
+                                                {{ \Carbon\Carbon::parse($ordinateur->created_at)->translatedFormat('d M Y H:i') }}
+                                            </small>
+                                        </div>
+
+                                        <div class="d-flex w-100 justify-content-between">
+
+                                        </div>
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <small class="text-body-secondary">
+
+                                            </small>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @else
+                                {{-- @foreach ($materiels as $materiel)
+                                    <a wire:click="visualiser('{{ $materiel['id'] }}')" href="#"
+                                        data-aos="fade-down" data-aos-duration="400"
+                                        data-aos-delay="{{ $loop->index * 200 }}"
+                                        class="list-group-item list-group-item-action border">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <b class="mb-1 text-black-50"># {{ $materiel['id'] }} -
+                                                {{ $materiel['type'] }} : {{ $materiel['modele'] }}</b>
+                                            <small class="text-body-secondary">
+                                                {{ \Carbon\Carbon::parse($materiel['created_at'])->translatedFormat('d M Y H:i') }}
+                                            </small>
+                                        </div>
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <p class="mb-1 text-capitalize">{{ $materiel['details'] }}</p>
+                                        </div>
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <small class="text-body-secondary">
+                                                {{ $materiel['statut'] }}
+                                            </small>
+                                        </div>
+                                    </a>
+                                @endforeach --}}
+
+                            @endif
 
 
 
                         </div>
 
 
-                       @foreach ($ordinateurs as $ordinateur)
-                            <a wire:click="ajouterMateriel('{{ $ordinateur->id }}')" href="#"
-                            data-aos="fade-down"
-                            data-aos-duration="400"
-                            data-aos-delay="{{ $loop->index * 200 }}"
-                            class="list-group-item list-group-item-action border">
+                        {{-- @foreach ($materiels as $materiel)
+                            <a wire:click="visualiser('{{ $materiel['id'] }}')" href="#" data-aos="fade-down"
+                                data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}"
+                                class="list-group-item list-group-item-action border">
+
                                 <div class="d-flex w-100 justify-content-between">
-                                    <b class="mb-1 text-black-50"># {{ $ordinateur->id }} - {{ $ordinateur->modele }} {{ $ordinateur->os_version }}</b>
+                                    <b class="mb-1 text-black-50"># {{ $materiel['id'] }} - {{ $materiel['type'] }} :
+                                        {{ $materiel['modele'] }}</b>
                                     <small class="text-body-secondary">
-                                        {{ \Carbon\Carbon::parse($ordinateur->created_at)->translatedFormat('d M Y H:i') }}
+                                        {{ \Carbon\Carbon::parse($materiel['created_at'])->translatedFormat('d M Y H:i') }}
                                     </small>
                                 </div>
+
                                 <div class="d-flex w-100 justify-content-between">
-                                    <p class="mb-1 text-capitalize">{{ $ordinateur->details }}</p>
+                                    <p class="mb-1 text-capitalize">{{ $materiel['details'] }}</p>
                                 </div>
+
                                 <div class="d-flex w-100 justify-content-between">
-                                    <small class="text-body-secondary">{{ $ordinateur->statut }}</small>
+                                    <small class="text-body-secondary">
+                                        {{ $materiel['statut'] }}
+                                    </small>
                                 </div>
                             </a>
-                        @endforeach
+                        @endforeach --}}
 
 
-                        @if(count($selectedMateriels) > 0)
+                        @if (count($selectedMateriels) > 0)
                             <div class="mt-4">
                                 <h5 class="fw-bold text-success">Matériels sélectionnés :</h5>
                                 <ul class="list-group">
-                                    @foreach($selectedMateriels as $item)
+                                    @foreach ($selectedMateriels as $item)
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             {{ $item['modele'] }} — {{ $item['os_version'] }}
                                             <span class="badge bg-secondary">{{ $item['statut'] }}</span>
                                             <button class="btn btn-sm btn-outline-danger"
-                                                    wire:click="retirerMateriel('{{ $item['id'] }}')">
+                                                wire:click="retirerMateriel('{{ $item['id'] }}')">
                                                 Retirer
                                             </button>
                                         </li>
@@ -988,7 +1060,7 @@
             <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  col-lg-9">
                 <section class="p-0">
                     <div class="card bg-none border-0 m-0 p-0 mb-1">
-                        <select class="form-select" wire:model="state">
+                        <select class="form-select" wire:init wire:model="state">
                             <option value="">Tous</option>
                             <option value="En service">En service</option>
                             <option value="En stock">En stock</option>
@@ -1012,53 +1084,36 @@
                         </a>
 
 
-                        @foreach ($ordinateurs as $ordinateur)
-                            <a wire:click="visualiser('{{ $ordinateur->id }}')" href="#" data-aos="fade-down"
+                        @foreach ($materiels as $materiel)
+                            <a wire:click="visualiser('{{ $materiel['id'] }}')" href="#" data-aos="fade-down"
                                 data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}"
                                 class="list-group-item list-group-item-action border">
+
                                 <div class="d-flex w-100 justify-content-between">
-                                    <b class="mb-1 text-black-50"># {{ $ordinateur->id }} - {{ $ordinateur->modele }}
-                                        {{ $ordinateur->os_version }}</b>
-                                    <small
-                                        class="text-body-secondary">{{ \Carbon\Carbon::parse($ordinateur->created_at)->translatedFormat('d M Y H:i') }}</small>
+                                    <b class="mb-1 text-black-50"># {{ $materiel['id'] }} - {{ $materiel['type'] }} :
+                                        {{ $materiel['modele'] }}</b>
+                                    <small class="text-body-secondary">
+                                        {{ \Carbon\Carbon::parse($materiel['created_at'])->translatedFormat('d M Y H:i') }}
+                                    </small>
                                 </div>
 
                                 <div class="d-flex w-100 justify-content-between">
-                                    <p class="mb-1 text-capitalize">{{ $ordinateur->details }}</p>
-                                    <small class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
-                                        {{-- {{ $ordinateur->state == 2 ?? 'Assigner' }} --}}
-                                    </small>
+                                    <p class="mb-1 text-capitalize">{{ $materiel['details'] }}</p>
                                 </div>
+
                                 <div class="d-flex w-100 justify-content-between">
                                     <small class="text-body-secondary">
-                                        <svg width="12" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                            class="size-6 text-success">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
-                                        </svg>
-
-                                        {{ $ordinateur->statut }}</small>
-                                    <small class="text-body-secondary  ">
-                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2">
-
-
+                                        {{ $materiel['statut'] }}
                                     </small>
                                 </div>
-
-                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
                             </a>
                         @endforeach
 
 
 
 
-
                         <div class="mt-4 d-flex justify-content-center">
-                            {{ $ordinateurs->links() }}
+                            {{-- {{ $materiels->links() }} --}}
 
                         </div>
 
@@ -1070,3 +1125,10 @@
     </div>
 
 </div>
+@push('scripts')
+    <script>
+        Livewire.hook('message.processed', (message, component) => {
+            // Ici tu peux réinitialiser ton select ou plugin JS
+            // ex: $('#state-select').selectpicker('refresh');
+        });
+    </script>

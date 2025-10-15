@@ -10,144 +10,126 @@ use App\Models\User;
 use App\Models\ordinateur;
 use App\Models\moniteur;
 use App\Models\ticket;
-use Livewire\WithPagination;
+//use Livewire\WithPagination;
 
 
 class Checkout extends Component
 {
-    protected $paginationTheme = 'bootstrap';
-    use WithPagination;
+    //protected $paginationTheme = 'bootstrap';
+    //use WithPagination;
     public $categorie = [];
     public $tickets;
     public $recherche;
-    public $search;
+    public $search = "";
 
     public $state;
-public $filteredMateriels = [];
+    public $filteredMateriels = [];
 
-public $selectedMateriels = [];
+    public $equipements = [];
 
-public function retirerMateriel($id)
-{
-    $this->selectedMateriels = collect($this->selectedMateriels)
-        ->reject(fn($item) => $item['id'] == $id)
-        ->values()
-        ->toArray();
-}
-public function ajouterMateriel($id)
-{
-    // Cherche l'ordinateur correspondant
-    $ordinateur = ordinateur::find($id);
+    public $filtrerMateriel = "";
 
-    if ($ordinateur && !collect($this->selectedMateriels)->pluck('id')->contains($ordinateur->id)) {
-        // On pousse dans la collection s’il n’existe pas déjà
-        $this->selectedMateriels[] = [
-            'id' => $ordinateur->id,
-            'modele' => $ordinateur->modele,
-            'os_version' => $ordinateur->os_version,
-            'statut' => $ordinateur->statut,
-        ];
-    }
-}
-public function updatedSearch()
-{
-    if (strlen($this->search) > 1) {
-        
-        if($this->search == "ordinateur"){
-            $ordinateurs = ordinateur::get()
-            ->map(function ($item) {
-                return (object)[
-                    'type' => 'ordinateur',
-                    'id' => $item->id,
-                    'label' => trim($item->modele . ' ' . $item->os_version),
-                ];
-            });
-        }
-        // Recherche ordinateurs
-        $ordinateurs = ordinateur::query()
-            ->where('statut', 'En stock')
-            ->where(function ($query) {
-                $query->where('modele', 'like', '%' . $this->search . '%')
-                      ->orWhere('os_version', 'like', '%' . $this->search . '%');
-            })
-            ->limit(5)
-            ->get()
-            ->map(function ($item) {
-                return (object)[
-                    'type' => 'ordinateur',
-                    'id' => $item->id,
-                    'label' => trim($item->modele . ' ' . $item->os_version),
-                ];
-            });
+    public $selectedMateriels = [];
 
-        // Recherche moniteurs
-        $moniteurs = moniteur::query()
-            ->where('statut', 'En stock')
-            ->where(function ($query) {
-                $query->where('modele', 'like', '%' . $this->search . '%')
-                      ->orWhere('fabricant', 'like', '%' . $this->search . '%');
-            })
-            ->limit(5)
-            ->get()
-            ->map(function ($item) {
-                return (object)[
-                    'type' => 'moniteur',
-                    'id' => $item->id,
-                    'label' => trim($item->modele . ' ' . ($item->fabricant ?? '')),
-                ];
-            });
-
-        // Fusionner proprement
-        $this->filteredMateriels = collect($ordinateurs)
-            ->merge($moniteurs)
-            ->take(10)
-            ->values()
-            ->all(); // ✅ on convertit bien en array d’objets simples
-
-    } else {
-        $this->filteredMateriels = [];
-    }
-}
-
-public function selectMateriel($val)
-{
-    $this->search = $val;
-    $this->filteredMateriels = [];
-}
-    public function visiterTicket(){
+    public function visiterTicket()
+    {
         return redirect("/utilisateur-service");
     }
- 
 
-    public function mount(){
+
+    public function mount()
+    {
         $this->recherche;
-
+        $this->filtrerMateriel;
         $ordinateur = ordinateur::find(1);
-       // dd(gettype($ordinateur->statut));
-        
-       // dd($this->state);
+         $this->equipements = collect([
+            ['id' => 1, 'type' => 'Ordinateur portable', 'statut' => 'En stock'],
+            ['id' => 2, 'type' => 'Ordinateur de bureau', 'statut' => 'En stock'],
+            ['id' => 3, 'type' => 'Moniteur', 'statut' => 'En stock'],
+            ['id' => 4, 'type' => 'Clavier', 'statut' => 'En stock'],
+            ['id' => 5, 'type' => 'Souris', 'statut' => 'En stock'],
+            ['id' => 6, 'type' => 'Périphérique USB', 'statut' => 'En stock'],
+            ['id' => 7, 'type' => 'Bluetooth', 'statut' => 'En stock'],
+            ['id' => 8, 'type' => 'Dongle', 'statut' => 'En stock'],
+            ['id' => 9, 'type' => 'Casque filaire', 'statut' => 'En stock'],
+            ['id' => 10, 'type' => 'Casque sans fil', 'statut' => 'En stock'],
+            ['id' => 11, 'type' => 'Microphone', 'statut' => 'En stock'],
+            ['id' => 12, 'type' => 'Jabra', 'statut' => 'En stock'],
+            ['id' => 13, 'type' => 'Projecteur', 'statut' => 'En stock'],
+            ['id' => 14, 'type' => 'Chargeur', 'statut' => 'En stock'],
+            ['id' => 15, 'type' => 'Adaptateur', 'statut' => 'En stock'],
+            ['id' => 16, 'type' => 'Imprimante', 'statut' => 'En stock'],
+            ['id' => 17, 'type' => 'Scanner', 'statut' => 'En stock'],
+            ['id' => 18, 'type' => 'Tablette', 'statut' => 'En stock'],
+            ['id' => 19, 'type' => 'Téléphone mobile', 'statut' => 'En stock'],
+            ['id' => 20, 'type' => 'Câble USB Type-C', 'statut' => 'En stock'],
+            ['id' => 21, 'type' => 'Câble Lightning (iPhone)', 'statut' => 'En stock'],
+            ['id' => 22, 'type' => 'Câble HDMI', 'statut' => 'En stock'],
+            ['id' => 23, 'type' => 'Câble USB-A', 'statut' => 'En stock'],
+            ['id' => 24, 'type' => 'Câble audio jack 3.5mm', 'statut' => 'En stock'],
+        ]);
+        // dd(gettype($ordinateur->statut));
+
+        // dd($this->state);
+    }
+
+        public function getFilteredEquipementsProperty()
+    {
+        if ($this->search == '') {
+            return $this->equipements;
+        }
+
+        return $this->equipements->filter(function ($equip) {
+            return str_contains(strtolower($equip['type']), strtolower($this->search));
+        })->values(); // values() pour réindexer le tableau
     }
 
     public function render()
     {
-         $user_ID =  Auth::guard('utilisateur')->user()->id;
-        // $ordinateurs = collect();
-          //  $moniteurs = collect();
-        $query = ordinateur::query();
-        if ($this->state) {
-          $query->parStatut($this->state);
-    }
+        $user_ID = Auth::guard('utilisateur')->user()->id;
 
-        $query1 =  moniteur::query();
+        $queryOrdinateurs = Ordinateur::query();
+        $queryMoniteurs = Moniteur::query();
+
         if ($this->state) {
-            $query1->parStatut($this->state);
+            $queryOrdinateurs->parStatut($this->state);
+            $queryMoniteurs->parStatut($this->state);
         }
 
-    return view('livewire.utilisateur.checkout.checkout', [
-        "ordinateurs" => $query->paginate(5),
-        "moniteurs" => $query1->get(),
-    ]);
-}
-    
+        // Récupération des données
+        $ordinateurs = $queryOrdinateurs->paginate(5);
+        $moniteurs = $queryMoniteurs->paginate(5);
+
+        // Fusion dans une seule collection
+        $materiels = $ordinateurs->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'type' => 'Ordinateur',
+                'modele' => $item->modele,
+                'details' => $item->details,
+                'statut' => $item->statut,
+                'created_at' => $item->created_at,
+            ];
+        })->merge(
+                $moniteurs->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'type' => 'Moniteur',
+                        'modele' => $item->modele,
+                        'details' => $item->details,
+                        'statut' => $item->statut,
+                        'created_at' => $item->created_at,
+                    ];
+                })
+            );
+
+        return view('livewire.utilisateur.checkout.checkout', [
+            'materiels' => $materiels,
+            'ordinateurs' => ordinateur::where("statut","En stock")->paginate(10),
+            "moniteurs" => moniteur::where("statut", "En stock")->paginate(10),
+            'equipements' => $this->filteredEquipements
+        ]);
+    }
+
 }
 

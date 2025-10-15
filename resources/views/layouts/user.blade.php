@@ -306,6 +306,7 @@
 
     @livewireScripts
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+   
     <script>
         AOS.init({
             once: true
@@ -314,6 +315,8 @@
         Livewire.hook('message.processed', () => {
             AOS.refresh(); // réactive les animations pour les nouveaux éléments
         });
+
+          
     </script>
     <script src="{{ asset('js/modalview.js') }}"></script>
     <script>
@@ -364,18 +367,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
     <script src="{{ asset('js/gmaps.min.js') }}"></script>
     <script src="{{ asset('js/theme.js') }}"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script> --}}
-
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            once: false,
-            mirror: false,
-            useClassNames: false, // if true, will add content of `data-aos` as classes on scroll
-            disableMutationObserver: false,
-            disable: false,
-        });
-    </script>
+    
 
 
 </body>
