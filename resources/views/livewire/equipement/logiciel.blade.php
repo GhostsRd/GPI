@@ -12,69 +12,19 @@
         </div>
 
         <!-- Cartes de statistiques -->
-        <div class="row mb-4">
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Total Logiciels</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total'] }}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-boxes fa-2x text-gray-300"></i>
-                            </div>
+        <div class="col-md-12 text-end">
+    <div class="row">
+        <div class="col-xl-3 col-md-3 mb-3">
+            <div class="card stats-widget border-0 shadow-sm dark-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-dark mb-1">{{ $stats['total'] }}</h3>
+                            <p class="stats-label text-dark mb-0">Total Logiciels</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Licences Critiques</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['licences_critiques'] }}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    Installations</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_installations'] }}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-download fa-2x text-gray-300"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                    Licences Disponibles</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['total_licences'] }}</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-key fa-2x text-gray-300"></i>
+                        <div class="flex-shrink-0">
+                            <div class="avatar-sm rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center">
+                                <i class="fas fa-boxes fa-lg"></i>
                             </div>
                         </div>
                     </div>
@@ -82,11 +32,66 @@
             </div>
         </div>
 
+        <div class="col-xl-3 col-md-3 mb-3">
+            <div class="card stats-widget border-0 shadow-sm dark-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-dark mb-1">{{ $stats['licences_critiques'] }}</h3>
+                            <p class="stats-label text-dark mb-0">Licences Critiques</p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="avatar-sm rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center">
+                                <i class="fas fa-exclamation-triangle fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-3 mb-3">
+            <div class="card stats-widget border-0 shadow-sm dark-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-dark mb-1">{{ $stats['total_installations'] }}</h3>
+                            <p class="stats-label text-dark mb-0">Installations</p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="avatar-sm rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center">
+                                <i class="fas fa-download fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-3 mb-3">
+            <div class="card stats-widget border-0 shadow-sm dark-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h3 class="stats-number text-dark mb-1">{{ $stats['total_licences'] }}</h3>
+                            <p class="stats-label text-dark mb-0">Licences Disponibles</p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="avatar-sm rounded-circle bg-info bg-opacity-10 text-info d-flex align-items-center justify-content-center">
+                                <i class="fas fa-key fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
         <!-- Filtres et recherche -->
         <div class="card shadow mb-4">
-            <div class="card-header bg-white py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Filtres et Recherche</h6>
-            </div>
+            
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
@@ -142,9 +147,7 @@
 
         <!-- Tableau des logiciels -->
         <div class="card shadow">
-            <div class="card-header bg-white py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Liste des Logiciels</h6>
-            </div>
+           
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">

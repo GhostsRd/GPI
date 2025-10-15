@@ -1,0 +1,328 @@
+<?php
+// database/seeders/PeripheriqueSeeder.php
+
+namespace Database\Seeders;
+
+use App\Models\Peripherique;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Carbon\Carbon;
+
+class PeripheriqueSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $peripheriques = [
+            // Claviers
+            [
+                'nom' => 'CLAV-IT-001',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'Logitech',
+                'lieu' => 'Bureau 101',
+                'type' => 'Clavier',
+                'modele' => 'K120',
+                'usager' => 'Jean Dupont',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CLAV-IT-002',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'Microsoft',
+                'lieu' => 'Bureau 102',
+                'type' => 'Clavier',
+                'modele' => 'Wireless Desktop 850',
+                'usager' => 'Marie Martin',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CLAV-ADM-003',
+                'entite' => 'Administration',
+                'statut' => 'En service',
+                'fabricant' => 'Dell',
+                'lieu' => 'Bureau 201',
+                'type' => 'Clavier',
+                'modele' => 'KB216',
+                'usager' => 'Pierre Leroy',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CLAV-STOCK-004',
+                'entite' => 'IT',
+                'statut' => 'En stock',
+                'fabricant' => 'HP',
+                'lieu' => 'Stock IT',
+                'type' => 'Clavier',
+                'modele' => 'Elite USB Keyboard',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            // Souris
+            [
+                'nom' => 'SOUR-IT-001',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'Logitech',
+                'lieu' => 'Bureau 101',
+                'type' => 'Souris',
+                'modele' => 'MX Master 3',
+                'usager' => 'Jean Dupont',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'SOUR-IT-002',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'Microsoft',
+                'lieu' => 'Bureau 102',
+                'type' => 'Souris',
+                'modele' => 'Wireless Mobile Mouse 1850',
+                'usager' => 'Marie Martin',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'SOUR-ADM-003',
+                'entite' => 'Administration',
+                'statut' => 'En réparation',
+                'fabricant' => 'Dell',
+                'lieu' => 'Atelier IT',
+                'type' => 'Souris',
+                'modele' => 'WM126',
+                'usager' => 'Pierre Leroy',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'SOUR-STOCK-004',
+                'entite' => 'IT',
+                'statut' => 'En stock',
+                'fabricant' => 'Logitech',
+                'lieu' => 'Stock IT',
+                'type' => 'Souris',
+                'modele' => 'M185',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            // Webcams
+            [
+                'nom' => 'CAM-IT-001',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'Logitech',
+                'lieu' => 'Salle Réunion A',
+                'type' => 'Webcam',
+                'modele' => 'C920e',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CAM-IT-002',
+                'entite' => 'Direction',
+                'statut' => 'En service',
+                'fabricant' => 'Microsoft',
+                'lieu' => 'Bureau Direction',
+                'type' => 'Webcam',
+                'modele' => 'LifeCam Studio',
+                'usager' => 'Directeur Général',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CAM-STOCK-003',
+                'entite' => 'IT',
+                'statut' => 'En stock',
+                'fabricant' => 'Razer',
+                'lieu' => 'Stock IT',
+                'type' => 'Webcam',
+                'modele' => 'Kiyo',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            // Casques
+            [
+                'nom' => 'CASQ-IT-001',
+                'entite' => 'Support Technique',
+                'statut' => 'En service',
+                'fabricant' => 'Jabra',
+                'lieu' => 'Bureau Support',
+                'type' => 'Casque',
+                'modele' => 'Evolve2 40',
+                'usager' => 'Technicien Support',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CASQ-IT-002',
+                'entite' => 'Commercial',
+                'statut' => 'En service',
+                'fabricant' => 'Plantronics',
+                'lieu' => 'Bureau Commercial',
+                'type' => 'Casque',
+                'modele' => 'Voyager 4200',
+                'usager' => 'Commercial 1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CASQ-STOCK-003',
+                'entite' => 'IT',
+                'statut' => 'En stock',
+                'fabricant' => 'Logitech',
+                'lieu' => 'Stock IT',
+                'type' => 'Casque',
+                'modele' => 'H390',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'CASQ-HS-004',
+                'entite' => 'IT',
+                'statut' => 'Hors service',
+                'fabricant' => 'Sennheiser',
+                'lieu' => 'Déchets électroniques',
+                'type' => 'Casque',
+                'modele' => 'PC 8',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            // Écrans
+            [
+                'nom' => 'ECRAN-IT-001',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'Dell',
+                'lieu' => 'Bureau 101',
+                'type' => 'Écran',
+                'modele' => 'UltraSharp U2419H',
+                'usager' => 'Jean Dupont',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'ECRAN-IT-002',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'HP',
+                'lieu' => 'Bureau 102',
+                'type' => 'Écran',
+                'modele' => 'E24i G4',
+                'usager' => 'Marie Martin',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'ECRAN-REP-003',
+                'entite' => 'Comptabilité',
+                'statut' => 'En réparation',
+                'fabricant' => 'Samsung',
+                'lieu' => 'Atelier IT',
+                'type' => 'Écran',
+                'modele' => 'S24R350',
+                'usager' => 'Comptable 1',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            // Imprimantes
+            [
+                'nom' => 'IMP-ADM-001',
+                'entite' => 'Administration',
+                'statut' => 'En service',
+                'fabricant' => 'HP',
+                'lieu' => 'Bureau Administration',
+                'type' => 'Imprimante',
+                'modele' => 'LaserJet Pro M404dn',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'IMP-COM-002',
+                'entite' => 'Commercial',
+                'statut' => 'En service',
+                'fabricant' => 'Canon',
+                'lieu' => 'Espace Commercial',
+                'type' => 'Imprimante',
+                'modele' => 'PIXMA TS3350',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'IMP-STOCK-003',
+                'entite' => 'IT',
+                'statut' => 'En stock',
+                'fabricant' => 'Brother',
+                'lieu' => 'Stock IT',
+                'type' => 'Imprimante',
+                'modele' => 'HL-L2350DW',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            // Périphériques divers
+            [
+                'nom' => 'DOCK-IT-001',
+                'entite' => 'Informatique',
+                'statut' => 'En service',
+                'fabricant' => 'Dell',
+                'lieu' => 'Bureau 101',
+                'type' => 'Station d\'accueil',
+                'modele' => 'WD19',
+                'usager' => 'Jean Dupont',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'SCAN-ADM-001',
+                'entite' => 'Administration',
+                'statut' => 'En service',
+                'fabricant' => 'Fujitsu',
+                'lieu' => 'Bureau Archives',
+                'type' => 'Scanner',
+                'modele' => 'ScanSnap iX1500',
+                'usager' => 'Archiviste',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nom' => 'HAUT-REU-001',
+                'entite' => 'Direction',
+                'statut' => 'En service',
+                'fabricant' => 'JBL',
+                'lieu' => 'Salle Réunion Direction',
+                'type' => 'Haut-parleur',
+                'modele' => 'Flip 5',
+                'usager' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ];
+
+        foreach ($peripheriques as $peripherique) {
+            Peripherique::create($peripherique);
+        }
+
+        $this->command->info(count($peripheriques) . ' périphériques créés avec succès!');
+    }
+}

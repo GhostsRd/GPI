@@ -13,122 +13,51 @@
                 </button>
             </div>
         </div>
+        
         @if($showStats)
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">
-                    <i class="fas fa-chart-pie me-2"></i>Statistiques des Moniteurs
-                </h5>
-            </div>
+       
             <div class="card-body">
-                <!-- Cartes de statistiques globales -->
-                
-
-                <!-- Statistiques détaillées -->
-                <div class="row">
-                    <!-- Par entité -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h6 class="mb-0">Répartition par Entité</h6>
+                <div class="col-md-12 text-end">
+    <div class="row">
+        @foreach($statsGlobales as $statut => $count)
+            <div class="col-xl-3 col-md-3 mb-3">
+                <div class="card stats-widget border-0 shadow-sm dark-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h3 class="stats-number text-dark mb-1">{{ $count }}</h3>
+                                <p class="stats-label text-dark mb-0">{{ ucfirst($statut) }}</p>
                             </div>
-                            <div class="card-body">
-                                @foreach($statsParEntite as $stat)
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span>{{ $stat['entite'] }}</span>
-                                    <div class="d-flex align-items-center">
-                                        <div class="progress me-2" style="width: 100px; height: 8px;">
-                                            @php
-                                                $totalEntites = array_sum(array_column($statsParEntite, 'count'));
-                                                $pourcentage = $totalEntites > 0 ? round(($stat['count'] / $totalEntites) * 100, 1) : 0;
-                                            @endphp
-                                            <div class="progress-bar bg-primary" role="progressbar" 
-                                                 style="width: {{ $pourcentage }}%"></div>
-                                        </div>
-                                        <small class="text-muted">{{ $stat['count'] }} ({{ $pourcentage }}%)</small>
-                                    </div>
+                            <div class="flex-shrink-0">
+                                <div class="avatar-sm rounded-circle bg-light border text-dark d-flex align-items-center justify-content-center">
+                                    @switch($statut)
+                                        @case('En service')
+                                            <i class="fas fa-check-circle fa-lg"></i>
+                                            @break
+                                        @case('En stock')
+                                            <i class="fas fa-warehouse fa-lg"></i>
+                                            @break
+                                        @case('En réparation')
+                                            <i class="fas fa-tools fa-lg"></i>
+                                            @break
+                                        @case('Hors service')
+                                            <i class="fas fa-times-circle fa-lg"></i>
+                                            @break
+                                        @default
+                                            <i class="fas fa-chart-bar fa-lg"></i>
+                                    @endswitch
                                 </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Par fabricant -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h6 class="mb-0">Répartition par Fabricant</h6>
-                            </div>
-                            <div class="card-body">
-                                @foreach($statsParFabricant as $stat)
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span>{{ $stat['fabricant'] }}</span>
-                                    <div class="d-flex align-items-center">
-                                        <div class="progress me-2" style="width: 100px; height: 8px;">
-                                            @php
-                                                $totalFabricants = array_sum(array_column($statsParFabricant, 'count'));
-                                                $pourcentage = $totalFabricants > 0 ? round(($stat['count'] / $totalFabricants) * 100, 1) : 0;
-                                            @endphp
-                                            <div class="progress-bar bg-success" role="progressbar" 
-                                                 style="width: {{ $pourcentage }}%"></div>
-                                        </div>
-                                        <small class="text-muted">{{ $stat['count'] }} ({{ $pourcentage }}%)</small>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Par type -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h6 class="mb-0">Répartition par Type</h6>
-                            </div>
-                            <div class="card-body">
-                                @foreach($statsParType as $stat)
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span>{{ $stat['type'] }}</span>
-                                    <div class="d-flex align-items-center">
-                                        <div class="progress me-2" style="width: 100px; height: 8px;">
-                                            @php
-                                                $totalTypes = array_sum(array_column($statsParType, 'count'));
-                                                $pourcentage = $totalTypes > 0 ? round(($stat['count'] / $totalTypes) * 100, 1) : 0;
-                                            @endphp
-                                            <div class="progress-bar bg-warning" role="progressbar" 
-                                                 style="width: {{ $pourcentage }}%"></div>
-                                        </div>
-                                        <small class="text-muted">{{ $stat['count'] }} ({{ $pourcentage }}%)</small>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Évolution mensuelle -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h6 class="mb-0">Évolution (6 derniers mois)</h6>
-                            </div>
-                            <div class="card-body">
-                                @if(count($evolutionMensuelle) > 0)
-                                    @foreach(array_slice($evolutionMensuelle, 0, 6) as $evolution)
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span>{{ $evolution['month'] }}/{{ $evolution['year'] }}</span>
-                                        <span class="badge bg-info">{{ $evolution['count'] }} ajouts</span>
-                                    </div>
-                                    @endforeach
-                                @else
-                                    <p class="text-muted text-center mb-0">Aucune donnée d'évolution disponible</p>
-                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        @endforeach
+    </div>
+</div>
+                   
+                    </div>
+              
         </div>
         @endif
 
@@ -182,7 +111,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
-                        <thead class="table-dark">
+                        <thead class="table-white">
                         <tr>
                             <th>Nom</th>
                             <th>Entité</th>
@@ -440,33 +369,32 @@
             }
         });
     </script>
-    <style>
-
-            /* Animation pour le modal */
-        .modal.show {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Style pour les boutons de confirmation */
-        .swal2-confirm {
-            margin-right: 10px;
-        }
-
-        .swal2-cancel {
-            margin-left: 10px;
-        }
-
-        /* Responsive pour le modal */
-        @media (max-width: 768px) {
-            .modal-dialog {
-                margin: 20px;
-            }
-        }
-
-    </style>
 @endpush
+
+<style>
+    /* Animation pour le modal */
+    .modal.show {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Style pour les boutons de confirmation */
+    .swal2-confirm {
+        margin-right: 10px;
+    }
+
+    .swal2-cancel {
+        margin-left: 10px;
+    }
+
+    /* Responsive pour le modal */
+    @media (max-width: 768px) {
+        .modal-dialog {
+            margin: 20px;
+        }
+    }
+</style>

@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             OrdinateurSeeder::class,
             MoniteurSeeder::class,
             logicielSeeder::class,
+            PeripheriqueSeeder::class,
 
         ]);
     }

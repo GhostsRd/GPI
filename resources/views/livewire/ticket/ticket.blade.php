@@ -10,7 +10,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-primary">{{ $totalTickets }}</h3>
-                                    <p class="stats-label text-light mb-0">Totals tickets</p>
+                                    <p class="stats-label text-black mb-0">Totals tickets</p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
@@ -28,7 +28,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-success">{{ $inProgressTickets }}</h3>
-                                    <p class="stats-label text-light mb-0">En cours</p>
+                                    <p class="stats-label text-black mb-0">En cours</p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
@@ -46,7 +46,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-warning">{{ $pendingTickets }}</h3>
-                                    <p class="stats-label text-light mb-0">En Prêt</p>
+                                    <p class="stats-label text-black mb-0">En Prêt</p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
@@ -64,7 +64,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-grow-1">
                                     <h3 class="stats-number text-danger">{{ $resolvedTickets }}</h3>
-                                    <p class="stats-label text-light mb-0">Résolus</p>
+                                    <p class="stats-label text-black mb-0">Résolus</p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
