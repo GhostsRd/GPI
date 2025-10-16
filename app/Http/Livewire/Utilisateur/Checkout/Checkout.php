@@ -26,19 +26,59 @@ class Checkout extends Component
     public $filteredMateriels = [];
 
     public $equipements = [];
+    public $valeur1;
+    public $valeur2;
+    public $valeur3;
+    public $valeur4;
+
 
     public $filtrerMateriel = "";
 
     public $selectedMateriels = [];
+    public $etape = [
+        1 => "active",
+        2=> "remove",
+        3=> "remove",
+        4=> "remove",
+        5=> "remove"
+    ] ;
 
     public function visiterTicket()
     {
         return redirect("/utilisateur-service");
     }
 
+    public function test(){
+        dd($this->valeur1 , $this->valeur2 );
+    }
+    public function next_form($i){
+        //$this->current  = $i;
+       // dd($i);
+       if($this->valeur1 == 'Telephone' && $i == 2){
+           $i = 2;    
+        }elseif($this->valeur1 == 'Peripherique' && $i == 2){
+            $i = 4;
+        }
+
+
+         for($j = 1; $j <= 5; $j++){
+            if($i == $j){
+                $this->etape[$i] = "active";
+            }else{
+                $this->etape[$j] = "remove";
+            }
+        }
+       
+
+            
+  
+}
+
 
     public function mount()
-    {
+    {   
+        $this->etape;
+        $this->valeur1 ;
         $this->recherche;
         $this->filtrerMateriel;
         $ordinateur = ordinateur::find(1);

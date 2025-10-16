@@ -55,8 +55,24 @@
     {{-- aos --}}
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+    .etap.remove {
+      display: none;
+    }
+   
+    .etap.active {
+      display: block;
+    }
+
+    
+   
+  
+
+  </style>
     @livewireStyles
 </head>
+
+
 
 <body class="light-mode">
     <div id="app">

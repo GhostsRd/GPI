@@ -10,7 +10,7 @@
                     </div>
 
                     <!-- Formulaire Livewire -->
-                    <form wire:submit.prevent="store">
+                    <form>
                         <div class="modal-body row">
                             <!-- Sujet -->
                             <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
@@ -43,75 +43,293 @@
                             </div>
 
 
-                    <div class="list-group">
-    @forelse($equipements as $index => $equipement)
-        <a wire:click="visualiserForm('{{ $equipement['id'] }}')" href="#"
-           data-aos="fade-down" data-aos-duration="400"
-           data-aos-delay="{{ $index * 100 }}"
-           class="list-group-item list-group-item-action border rounded-2 mb-1">
-
-            <div class="d-flex w-100 justify-content-between">
-                <b>#{{ $equipement['id'] }} - {{ $equipement['type'] }}</b>
-                <small class="text-body-secondary">{{ $equipement['statut'] }}</small>
-            </div>
-
-        </a>
-    @empty
-        <div class="alert alert-warning">Aucun équipement trouvé.</div>
-    @endforelse
-</div>
-                            @if ($filtrerMateriel)
-                                @foreach ($ordinateurs as $ordinateur)
-                                    <a wire:click="visualiserForm('{{ $ordinateur->id }}')" href="#"
-                                        data-aos="fade-down" class="list-group-item list-group-item-action border">
+                            <div class="etap_validation text-dark ">
+                                <label for="sujet" class="form-label">
+                                    Choisir le matériel <span class="text-danger">*</span>
+                                </label>
+                                <div class="etap {{ $etape[1] }}">
+                                    <a href="#" wire:click="$set('valeur1', 'ordinateur')" data-aos-duration="400"
+                                        class=" {{ $valeur1 == 'ordinateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border-0  "
+                                        aria-current="true">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <b class="mb-1 text-black-50"># {{ $ordinateur->id }} -
-                                                {{ $ordinateur->nom }} : {{ $ordinateur->modele }}</b>
-                                            <small class="text-body-secondary">
-                                                {{ \Carbon\Carbon::parse($ordinateur->created_at)->translatedFormat('d M Y H:i') }}
-                                            </small>
+                                            <label># Ordinateur -</label>
+                                            <small class="text-body-secondary">En stock</small>
                                         </div>
 
-                                        <div class="d-flex w-100 justify-content-between">
-
-                                        </div>
-
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <small class="text-body-secondary">
-
-                                            </small>
-                                        </div>
                                     </a>
-                                @endforeach
-                            @else
-                                {{-- @foreach ($materiels as $materiel)
-                                    <a wire:click="visualiser('{{ $materiel['id'] }}')" href="#"
-                                        data-aos="fade-down" data-aos-duration="400"
-                                        data-aos-delay="{{ $loop->index * 200 }}"
-                                        class="list-group-item list-group-item-action border">
+
+                                    <a href="#" wire:click="$set('valeur1', 'Telephone')" data-aos-duration="400"
+                                        class=" {{ $valeur1 == 'Telephone' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border-0 rounded-2 mb-1">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <b class="mb-1 text-black-50"># {{ $materiel['id'] }} -
-                                                {{ $materiel['type'] }} : {{ $materiel['modele'] }}</b>
-                                            <small class="text-body-secondary">
-                                                {{ \Carbon\Carbon::parse($materiel['created_at'])->translatedFormat('d M Y H:i') }}
-                                            </small>
+                                            <label># Telephone -</label>
+                                            <small class="text-body-secondary">En stock</small>
                                         </div>
 
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <p class="mb-1 text-capitalize">{{ $materiel['details'] }}</p>
-                                        </div>
-
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <small class="text-body-secondary">
-                                                {{ $materiel['statut'] }}
-                                            </small>
-                                        </div>
                                     </a>
-                                @endforeach --}}
 
-                            @endif
+                                    <a href="#" wire:click="$set('valeur1', 'Peripherique')"
+                                        data-aos-duration="400"
+                                        class="{{ $valeur1 == 'Peripherique' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label># Peripherique -</label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+
+                                    </a>
+
+
+                                    <div class="">
+                                        <button wire:click="next_form(2)"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant</button>
+                                    </div>
+
+
+                                </div>
+
+                                {{-- etape 2 page telephone --}}
+
+                                <div class="etap {{ $etape[2] }}">
+                                    <a data-aos-duration="400" wire:click="$set('valeur2', 'Touche')"
+                                        class="{{ $valeur2 == 'Touche' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+
+                                        <div class=" d-flex w-100 justify-content-between">
+                                            <label># Telephone touche -</label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+
+                                    </a>
+
+                                    <a data-aos-duration="400" wire:click="$set('valeur2', 'Android')"
+                                        class="{{ $valeur2 == 'Android' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label># Telephone Android -</label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+
+                                    </a>
+
+                                    <a  wire:click="$set('valeur2', 'Tablette')"
+                                        class="{{ $valeur2 == 'Tablette' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+
+                                        <div class=" d-flex w-100 justify-content-between">
+                                            <label># Telephone Tablette -</label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+
+                                    </a>
+                                    <div class="">
+                                        <button wire:click="next_form(1)"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
+                                        <button wire:click="next_form(5)"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant</button>
+                                    </div>
+                                </div>
+
+                                {{-- etape 4 peripherique --}}
+
+
+                                <div class="etap {{ $etape[4] }}">
+                                    <a wire:click="$set('valeur2', 'Regulateur')" href="#" 
+                                        class="{{ $valeur2 == 'Regulateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label># Regulateur
+                                                -</label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+
+                                    </a>
+
+                                    <div class="list-group">
+
+                                        <!-- Ordinateur -->
+                                        <a wire:click="$set('valeur2', 'Ordinateur')" href="#"
+                                           
+                                            class="{{ $valeur2 == 'Ordinateur' ? 'bg-secondary shadow ' : 'shadow-sm' }}  card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Ordinateur -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Clavier -->
+                                        <a wire:click="$set('valeur2', 'Clavier')" href="#" 
+                                            class="{{ $valeur2 == 'Clavier' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Clavier -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Souris -->
+                                        <a wire:click="$set('valeur2', 'Souris')" href="#"
+                                            class="{{ $valeur2 == 'Souris' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Souris -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Webcam -->
+                                        <a wire:click="$set('valeur2', 'Webcam')" href="#" 
+                                            class="{{ $valeur2 == 'Webcam' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Webcam -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Casque -->
+                                        <a wire:click="$set('valeur2', 'Casque')" href="#" 
+                                            class="{{ $valeur2 == 'Casque' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Casque -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Scanner -->
+                                        <a wire:click="$set('valeur2', 'Scanner')" href="#"
+                                
+                                            class="{{ $valeur2 == 'Scanner' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Scanner -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Câble -->
+                                        <a wire:click="$set('valeur2', 'Cable')" href="#" 
+                                            class="{{ $valeur2 == 'Cable' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Câble -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- USB -->
+                                        <a wire:click="$set('valeur2', 'USB')" href="#"
+                                            class="{{ $valeur2 == 'USB' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># USB -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Jabra -->
+                                        <a wire:click="$set('valeur2', 'Jabra')" href="#" 
+                                            class="{{ $valeur2 == 'Jabra' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Jabra -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Powerbank -->
+                                        <a wire:click="$set('valeur2', 'Powerbank')" href="#"
+                                            
+                                            class="{{ $valeur2 == 'Powerbank' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Powerbank -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Chargeur -->
+                                        <a wire:click="$set('valeur2', 'Chargeur')" href="#"
+                                         
+                                            class="{{ $valeur2 == 'Chargeur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Chargeur -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- APN -->
+                                        <a wire:click="$set('valeur2', 'APN')" href="#" 
+                                            class="{{ $valeur2 == 'APN' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># APN -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Appareil Photo -->
+                                        <a wire:click="$set('valeur2', 'Appareil Photo')" href="#"
+                                          
+                                            class="{{ $valeur2 == 'Appareil Photo' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Appareil Photo -</blabel>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Dominos -->
+                                        <a wire:click="$set('valeur2', 'Dominos')" href="#"
+                                     
+                                            class="{{ $valeur2 == 'Dominos' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <label># Dominos -</label>
+                                                <small class="text-body-secondary">En stock</small>
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+
+
+                                    <div class="">
+                                        <button wire:click="next_form(1)"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
+                                        <button wire:click="next_form(5)" type="submit"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
+                                    </div>
+                                </div>
+
+                                {{-- validatation de l'etape --}}
+
+                                <div class="etap {{ $etape[5] }}">
+                                    <h5>Vos selection</h5>
+                                    <a href="#" data-aos="fade-down" data-aos-duration="400"
+                                        class="list-group-item list-group-item-action border rounded-2 mb-1">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label> 1 - {{ $valeur1 }} </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+
+                                    </a>
+
+                                    <a href="#" data-aos="fade-down" data-aos-duration="400"
+                                        class="list-group-item list-group-item-action border rounded-2 mb-1">
+
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label> 2 - {{ $valeur2 }} </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+
+                                    </a>
+                                    <div class="">
+                                        <button wire:click="next_form(1)"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
+                                        <button wire:click="next_form(4)" type="submit"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant</button>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+
+                            <!-- Étape 1 -->
+
+
+
 
 
 
@@ -144,7 +362,7 @@
                         @endforeach --}}
 
 
-                        @if (count($selectedMateriels) > 0)
+                        {{-- @if (count($selectedMateriels) > 0)
                             <div class="mt-4">
                                 <h5 class="fw-bold text-success">Matériels sélectionnés :</h5>
                                 <ul class="list-group">
@@ -159,8 +377,8 @@
                                         </li>
                                     @endforeach
                                 </ul>
-                            </div>
-                        @endif
+                            </div> --}}
+                        {{-- @endif --}}
 
                         <!-- Footer -->
                         <div class="modal-footer">
@@ -187,8 +405,9 @@
                 <ul style="list-style: none " class="px-2 py-2 ">
                     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                         <div class="d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="me-2 text-gradient text-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="me-2 text-gradient text-secondary">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
                             </svg>
@@ -202,7 +421,8 @@
                     </div>
                     <li style="cursor: pointer" class="bg-light bg-gradient py-2 " id="toggleSidebar"><svg
                             width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
@@ -1084,6 +1304,13 @@
                         </a>
 
 
+
+                        {{-- checkout form step by step --}}
+
+
+
+
+
                         @foreach ($materiels as $materiel)
                             <a wire:click="visualiser('{{ $materiel['id'] }}')" href="#" data-aos="fade-down"
                                 data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}"
@@ -1125,10 +1352,3 @@
     </div>
 
 </div>
-@push('scripts')
-    <script>
-        Livewire.hook('message.processed', (message, component) => {
-            // Ici tu peux réinitialiser ton select ou plugin JS
-            // ex: $('#state-select').selectpicker('refresh');
-        });
-    </script>
