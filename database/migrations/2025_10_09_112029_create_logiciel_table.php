@@ -34,13 +34,13 @@ return new class extends Migration
         Schema::create('logiciel_equipement', function (Blueprint $table) {
             $table->id();
             $table->foreignId('logiciel_id')->constrained()->onDelete('cascade');
-            $table->foreignId('equipement_id')->constrained()->onDelete('cascade');
+            $table->bigInteger('equipement_id')->constrained()->onDelete('cascade');
             $table->date('date_installation');
             $table->string('version_installee', 100)->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
 
-            // Empêcher les doublons
+            //Empêcher les doublons
             $table->unique(['logiciel_id', 'equipement_id']);
         });
     }
@@ -50,7 +50,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logiciel_equipement');
         Schema::dropIfExists('logiciels');
+        Schema::dropIfExists('logiciel_equipement');
     }
 };

@@ -230,7 +230,7 @@
                 </a>
                 <div class="collapse" id="checkoutcollaps">
                     <div class="nav-submenu">
-                        <a href="{{ route('checkout') }}" class="submenu-item">
+                        <a href="{{ route('checkoutadmin') }}" class="submenu-item">
                             <i class=" bi bi-box-arrow-in-right"></i>
                             Check-in
                         </a>

@@ -10,9 +10,13 @@ use App\Models\Logiciel;
 use App\Models\Peripherique;
 use App\Models\Moniteur;
 use App\Models\MaterielReseau;
+use Livewire\WithPagination;
 
 class Equipement extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+  
     public $stats = [];
     public $chartData = [];
     public $loading = true;

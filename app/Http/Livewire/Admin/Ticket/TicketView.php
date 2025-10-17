@@ -26,6 +26,7 @@ class TicketView extends Component
         4 => 'future',
         5 => 'future',
     ];
+    
     public $progress;
 
     public $selectedTicket;

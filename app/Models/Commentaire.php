@@ -10,6 +10,7 @@ class Commentaire extends Model
     use HasFactory;
     protected $fillable = [
         'ticket_id',
+        'checkout_id',
         'utilisateur_id', 
         'responsable_id',
         "etat",

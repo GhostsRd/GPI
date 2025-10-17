@@ -203,7 +203,7 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="d-flex justify-content-center mt-4">
+                <div class="container mt-4">
                     {{ $moniteurs->links() }}
                 </div>
             </div>
@@ -315,86 +315,3 @@
     @endif
 </div>
 
-@push('scripts')
-    <script>
-        // Gestion des notifications avec Toastr
-        window.addEventListener('notify', event => {
-            if (typeof toastr !== 'undefined') {
-                toastr[event.detail.type](event.detail.message);
-            } else {
-                // Fallback si Toastr n'est pas disponible
-                console.log(`${event.detail.type}: ${event.detail.message}`);
-            }
-        });
-
-        // Gestion de la confirmation de suppression avec SweetAlert2
-        window.addEventListener('swal:confirm', event => {
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    title: event.detail.title,
-                    text: event.detail.text,
-                    icon: event.detail.type,
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Oui, supprimer!',
-                    cancelButtonText: 'Annuler',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Appel de la méthode delete dans le composant Livewire
-                        Livewire.emit('deleteConfirmed', event.detail.id);
-                    }
-                });
-            } else {
-                // Fallback si SweetAlert2 n'est pas disponible
-                if (confirm(`${event.detail.title}\n${event.detail.text}`)) {
-                    Livewire.emit('deleteConfirmed', event.detail.id);
-                }
-            }
-        });
-
-        // Fermer le modal avec la touche Echap
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                Livewire.emit('closeModal');
-            }
-        });
-
-        // Fermer le modal en cliquant à l'extérieur
-        document.addEventListener('click', function(event) {
-            const modal = document.querySelector('.modal.show');
-            if (modal && event.target === modal) {
-                Livewire.emit('closeModal');
-            }
-        });
-    </script>
-@endpush
-
-<style>
-    /* Animation pour le modal */
-    .modal.show {
-        animation: fadeIn 0.3s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    /* Style pour les boutons de confirmation */
-    .swal2-confirm {
-        margin-right: 10px;
-    }
-
-    .swal2-cancel {
-        margin-left: 10px;
-    }
-
-    /* Responsive pour le modal */
-    @media (max-width: 768px) {
-        .modal-dialog {
-            margin: 20px;
-        }
-    }
-</style>

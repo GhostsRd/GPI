@@ -57,5 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/ticket-view', [App\Http\Controllers\admin\ticket\Ticketview::class, 'index'])->name('adminTicketview');
     Route::get('/admin/ticket-kanban', [App\Http\Controllers\admin\ticket\Kanban::class, 'index'])->name('adminTicketkanban');
     Route::get('/admin/ticket-view-{id}', [App\Http\Controllers\admin\ticket\Ticketview::class, 'ticketview'])->name('checkTicketview');
+    Route::get('/admin/checkout',[App\Http\Controllers\admin\checkout\Checkout::class,'index'])->name('checkoutadmin');
+    Route::get('/admin/checkout-view-{id}',[App\Http\Controllers\admin\checkout\CheckoutView::class,'index'])->name('checkoutview');
 
 });

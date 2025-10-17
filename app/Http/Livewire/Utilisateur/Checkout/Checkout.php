@@ -9,6 +9,7 @@ use App\Models\Commentaire;
 use App\Models\User;
 use App\Models\ordinateur;
 use App\Models\moniteur;
+use \App\Models\Checkout as modelchekout;
 use App\Models\ticket;
 //use Livewire\WithPagination;
 
@@ -47,7 +48,26 @@ class Checkout extends Component
     {
         return redirect("/utilisateur-service");
     }
+    public function EnvoyerCheckout(modelchekout $checkout){
+        $checkout->utilisateur_id = Auth::guard('utilisateur')->user()->id;
+        $checkout->responsable_id = 1;
+        $checkout->equipement_id = 1;
+        $checkout->materiel_type = $this->valeur1;
+        $checkout->statut = 1;
+        $checkout->materiel_details = $this->valeur2;
+        $checkout->save();
+        
+        for($i = 1; $i <=5 ; $i++){
+            if($i == 1){
+                $this->etape[$i] = "active";
+            }else{
 
+                $this->etape[$i] = "remove";
+            }
+        }
+        $this->reset(['valeur1', 'valeur2']);
+        $this->emitSelf('refreshComponent'); 
+    }
     public function test(){
         dd($this->valeur1 , $this->valeur2 );
     }
@@ -127,47 +147,16 @@ class Checkout extends Component
     public function render()
     {
         $user_ID = Auth::guard('utilisateur')->user()->id;
-
-        $queryOrdinateurs = Ordinateur::query();
-        $queryMoniteurs = Moniteur::query();
-
-        if ($this->state) {
-            $queryOrdinateurs->parStatut($this->state);
-            $queryMoniteurs->parStatut($this->state);
-        }
-
-        // Récupération des données
-        $ordinateurs = $queryOrdinateurs->paginate(5);
-        $moniteurs = $queryMoniteurs->paginate(5);
-
-        // Fusion dans une seule collection
-        $materiels = $ordinateurs->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'type' => 'Ordinateur',
-                'modele' => $item->modele,
-                'details' => $item->details,
-                'statut' => $item->statut,
-                'created_at' => $item->created_at,
-            ];
-        })->merge(
-                $moniteurs->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'type' => 'Moniteur',
-                        'modele' => $item->modele,
-                        'details' => $item->details,
-                        'statut' => $item->statut,
-                        'created_at' => $item->created_at,
-                    ];
-                })
-            );
-
+        
         return view('livewire.utilisateur.checkout.checkout', [
-            'materiels' => $materiels,
+        
             'ordinateurs' => ordinateur::where("statut","En stock")->paginate(10),
             "moniteurs" => moniteur::where("statut", "En stock")->paginate(10),
-            'equipements' => $this->filteredEquipements
+            'equipements' => $this->filteredEquipements,
+            "checkouts" => modelchekout::where("utilisateur_id",$user_ID)
+            ->orderBy("created_at","desc")
+            ->paginate(5),
+
         ]);
     }
 
