@@ -1,24 +1,24 @@
-<div>
+<div style="margin-top:5%">
 
-    <div wire:ignore.self class="sidebar rounded-3 p-0 shadow-lg colg-lg-3  " id="sidebar">
+    <div wire:ignore.self class="sidebar rounded-3 text-dark card bg-white p-0 shadow colg-lg-3 mt-4 " id="sidebar" >
         
                     <!-- Header -->
                     <div class=" border-bottom">
-                        <h4 class="modal-title mx-2 my-2 " id="ticketModalLabel">Nouveau Ticket</h4>
+                        <h4 class="modal-title mx-2 my-2 text-dark " id="ticketModalLabel">Nouveau Ticket</h4>
                     </div>
 
                     <!-- Formulaire Livewire -->
                     <form wire:submit.prevent="store">
                         <div class="modal-body row">
                             <!-- Sujet -->
-                            <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
+                            <p class="text-dark mb-3 mt-3">Les champs indiqués <span class="text-danger">*</span> sont
                                 obligatoires</p>
 
                             <div class="mb-3 col-lg-6">
                                 <label for="sujet" class="form-label">Sujet <span
-                                        class="text-danger">*</span></label>
+                                        class="text-danger ">*</span></label>
                                 <input type="text" placeholder="Ex: J'ai perdu mon telephone"
-                                    class="input-recherche text-dark rounded-2 border @error('sujet') is-invalid @enderror"
+                                    class="form-control input-recherche text-dark rounded-2 border @error('sujet') is-invalid @enderror"
                                     id="sujet" wire:model.debounce.500ms="sujet">
                                 @error('sujet')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -30,7 +30,7 @@
                                 <label for="details" class="form-label">Détails <span
                                         class="text-danger">*</span></label>
                                 <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
-                                    class="input-recherche text-dark border @error('details') is-invalid @enderror" id="details"
+                                    class="form-control input-recherche text-dark border @error('details') is-invalid @enderror" id="details"
                                     wire:model.debounce.500ms="details" rows="2"></textarea>
                                 @error('details')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -41,7 +41,7 @@
                                 <label for="categorie" class="form-label">Catégorie <span
                                         class="text-danger">*</span></label>
                                 <select id="categorie"
-                                    class="input-recherche text-muted border @error('categorie') is-invalid @enderror"
+                                    class="input-recherche form-control text-muted border @error('categorie') is-invalid @enderror"
                                     wire:model="categorie" wire:change="steps2">
                                     <option value="" class="text-mutted">-- Sélectionner une catégorie --</option>
                                     <option value="Réseau" class="text-mutted">Réseau</option>
@@ -59,7 +59,7 @@
                                 <label for="impact" class="form-label">Impact <span
                                         class="text-danger">*</span></label>
                                 <select id="impact"
-                                    class="input-recherche text-muted border @error('impact') is-invalid @enderror"
+                                    class="input-recherche form-control text-muted border @error('impact') is-invalid @enderror"
                                     wire:model="impact">
                                     <option value="">-- Sélectionner l'impact --</option>
                                     <option value="Utilisateur">Un utilisateur ou un groupe</option>
@@ -79,7 +79,7 @@
                             <div class="mb-3 col-lg-6">
                                 <label for="priorite" class="form-label">Priorité</label>
                                 <select
-                                    class="input-recherche text-muted border @error('priorite') is-invalid @enderror"
+                                    class="input-recherche form-control text-muted border @error('priorite') is-invalid @enderror"
                                     id="priorite" wire:model="priorite">
                                     <option value="">-- Sélectionner --</option>
                                     <option value="Basse">Basse</option>
@@ -96,7 +96,7 @@
                                 <label for="equipement" class="form-label">Équipement <span
                                         class="text-danger">*</span></label>
                                 <select id="equipement"
-                                    class="input-recherche text-muted border @error('equipementSeeder') is-invalid @enderror"
+                                    class="input-recherche form-control text-muted border @error('equipementSeeder') is-invalid @enderror"
                                     wire:model="equipement">
                                     <option value="">-- Sélectionner un équipement --</option>
                                     <option value="PC">PC</option>
@@ -116,11 +116,11 @@
                         </div>
 
                         <!-- Footer -->
-                        <div class="modal-footer">
+                        <div class="modal-footer ">
                             <button type="button" class="btn btn-outline-secondary border px-3"
                                 id="closeSidebar">Annuler</button>
                             <button type="submit"
-                                class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button>
+                                class="btn m-1 btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button>
                         </div>
                     </form>
                 
@@ -1384,7 +1384,7 @@
             <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  col-lg-9">
                 <section class="p-0">
                     <div class="card bg-none border-0 m-0 p-0 mb-1">
-                        <select name=""   wire:model="state" class="input-recherche border" id=""
+                        <select name=""   wire:model="state" class="input-recherche form-control border" id=""
                             class="col-3">
                             <option value="">__Selectionner le status__</option>
                             <option value="1">Assigner</option>
@@ -1395,19 +1395,19 @@
                         </select>
 
                     </div>
-                    <div class="list-group mt-2" style="overflow-y: none">
+                    <div class="list-group mt-2 " style="overflow-y: none">
                         <a href="#"
                             class="list-group-item border shadow-sm bg-light   bg-gradient list-group-item-action "
                             aria-current="true">
+                            
                             <div class="d-flex active w-100 justify-content-between">
                                 <h5 class="mb-1">Liste de votre ticket</h5>
                                 <small>
                                     <input type="text" wire:model="recherche"
-                                        class="input-recherche border p-1 px-5 rounded-2"
+                                        class="input-recherche border p-1 py-2 px-5 rounded-2"
                                         placeholder="Recherche par sujet..">
                                 </small>
                             </div>
-
                         </a>
                         @foreach ($tickets as $ticket)
                             <a wire:click="visualiser('{{ $ticket->id }}')" href="#" 

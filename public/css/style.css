@@ -168,23 +168,7 @@ body.dark-mode .navbar-brand img {
       .chat-toggle{right:12px;bottom:12px}
     }
 
-body {
-  line-height: 26px;
-  font-size: 15px;
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  color: #777777;
-  background: url('/images/body-bg.png') no-repeat center; }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Rubik", sans-serif;
-  font-weight: 500;
-  color: #000000; }
 
   /* POur la creation du ticket */
  :root{
@@ -610,27 +594,27 @@ button:focus {
 /* Home Banner Area css
 ============================================================================================ */
 /* Parallaxe + overlay */
-.parallax-animated {
+/* .parallax-animated {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
   background: linear-gradient(135deg, #0dfdd5ff, #10f2ccff);
-}
+} */
 
 /* Overlay sombre pour contraste texte */
-.parallax-animated::before {
+/* .parallax-animated::before {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.55);
   z-index: 0;
-}
+} */
 
 /* Texte et illustration */
-.parallax-animated .container {
+/* .parallax-animated .container {
   position: relative;
   z-index: 2;
-}
+} */
 
 /* Animation douce de l'image */
 .floating-image {

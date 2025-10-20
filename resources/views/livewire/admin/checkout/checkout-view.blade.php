@@ -145,7 +145,7 @@
                                         {{ $ordinateur->os_version }} </option>
                                 @endforeach
                             </select>
-                            <label for="">Selection le materiel</label>
+                            {{-- <label for="">Selection le materiel</label>
 
                             <input type="text" wire:model.debounce.500ms="selectEquipement"
                                 class="form-control border-0 shadow-sm" list="equipments">
@@ -162,7 +162,7 @@
                                         {{ $ordinateur->marque }} {{ $ordinateur->modele }}
                                         {{ $ordinateur->os_version }} </option>
                                 @endforeach
-                            </datalist>
+                            </datalist> --}}
                         </div>
                     </div>
                     <div class="container-fluid">

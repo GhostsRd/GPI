@@ -1,23 +1,23 @@
-<div>
+<div style="margin-top:5% " class=" container-fluid mt-5   parallax-section">
 
-    <div wire:ignore.self class="sidebar rounded-3 p-0 shadow-lg colg-lg-3  " id="sidebar">
+    <div wire:ignore.self class="sidebar rounded-3 p-0 shadow colg-lg-3 bg-white py-4 card mt-5 " id="sidebar">
         <div>
             <div>
                 <div>
                     <!-- Header -->
                     <div class=" border-bottom">
-                        <h4 class="modal-title mx-2 my-2 " id="ordinateurModalLabel">Nouveau Checkout</h4>
+                        <h4 class="modal-title mx-2 my-2 text-dark" id="ordinateurModalLabel">Nouveau Checkout</h4>
                     </div>
 
                     <!-- Formulaire Livewire -->
                     <form>
-                        <div class="modal-body row">
+                        <div class="modal-body p-2 row">
                             <!-- Sujet -->
-                            <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
-                                obligatoires</p>
+                            {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
+                                obligatoires</p> --}}
 
                             <div class="mb-3 col-lg-6 position-relative">
-                                <label for="sujet" class="form-label">
+                                <label for="sujet" class="form-label text-dark ">
                                     Tapez ici le matériel <span class="text-danger">*</span>
                                 </label>
 
@@ -43,27 +43,28 @@
                             </div>
 
 
-                            <div class="etap_validation text-dark ">
-                                <label for="sujet" class="form-label">
+                            <div class="etap_validation  ">
+                                <label for="sujet" class="form-label text-dark">
                                     Choisir le matériel <span class="text-danger">*</span>
                                 </label>
+
                                 <div class="etap {{ $etape[1] }}">
                                     <a href="#" wire:click="$set('valeur1', 'ordinateur')" data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'ordinateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border-0  "
+                                        class=" {{ $valeur1 == 'ordinateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} nav-link text-dark card border-0  "
                                         aria-current="true">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label># Ordinateur -</label>
+                                            <label class="text-dark"># Ordinateur </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
 
                                     <a href="#" wire:click="$set('valeur1', 'Telephone')" data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'Telephone' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border-0 rounded-2 mb-1">
+                                        class=" {{ $valeur1 == 'Telephone' ? 'bg-secondary shadow ' : 'shadow-sm' }} nav-link text-dark card border-0 rounded-2 mb-1">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label># Telephone -</label>
+                                            <label class="text-dark"># Telephone </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
@@ -71,10 +72,10 @@
 
                                     <a href="#" wire:click="$set('valeur1', 'Peripherique')"
                                         data-aos-duration="400"
-                                        class="{{ $valeur1 == 'Peripherique' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                        class=" {{ $valeur1 == 'Peripherique' ? 'bg-secondary shadow ' : 'shadow-sm' }} card text-dark border rounded-2 mb-1 nav-link">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label># Peripherique -</label>
+                                            <label class="text-dark"># Peripherique </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
@@ -92,31 +93,31 @@
                                 {{-- etape 2 page telephone --}}
 
                                 <div class="etap {{ $etape[2] }}">
-                                    <a data-aos-duration="400" wire:click="$set('valeur2', 'Touche')"
-                                        class="{{ $valeur2 == 'Touche' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                    <a href="#" data-aos-duration="400" wire:click="$set('valeur2', 'Touche')"
+                                        class="nav-link {{ $valeur2 == 'Touche' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class=" d-flex w-100 justify-content-between">
-                                            <label># Telephone touche -</label>
+                                            <label class="text-dark"># Telephone touche -</label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
 
-                                    <a data-aos-duration="400" wire:click="$set('valeur2', 'Android')"
-                                        class="{{ $valeur2 == 'Android' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                    <a data-aos-duration="400" wire:click="$set('valeur2', 'Android')" href="#"
+                                        class="nav-link {{ $valeur2 == 'Android' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label># Telephone Android -</label>
+                                            <label class="text-dark"># Telephone Android -</label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
 
-                                    <a wire:click="$set('valeur2', 'Tablette')"
-                                        class="{{ $valeur2 == 'Tablette' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                    <a wire:click="$set('valeur2', 'Tablette')" href="#"
+                                        class="nav-link {{ $valeur2 == 'Tablette' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class=" d-flex w-100 justify-content-between">
-                                            <label># Telephone Tablette -</label>
+                                            <label class="text-dark"># Telephone Tablette -</label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
@@ -286,23 +287,23 @@
 
                                 {{-- validatation de l'etape --}}
 
-                                <div class="etap {{ $etape[5] }}">
-                                    <h5>Vos selection</h5>
+                                <div class="etap py-2 {{ $etape[5] }}">
+                                    <h5 class="text-dark">Vos selection</h5>
                                     <a href="#" data-aos="fade-down" data-aos-duration="400"
-                                        class="list-group-item list-group-item-action border rounded-2 mb-1">
+                                        class="py-2 list-group-item list-group-item-action border rounded-2 mb-1">
 
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <label> 1 - {{ $valeur1 }} </label>
+                                        <div class="d-flex py-2 px-1 w-100 justify-content-between">
+                                            <label class="text-dark"> 1 - {{ $valeur1 }} </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
 
                                     <a href="#" data-aos="fade-down" data-aos-duration="400"
-                                        class="list-group-item list-group-item-action border rounded-2 mb-1">
+                                        class="py-2 list-group-item list-group-item-action border rounded-2 mb-1">
 
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <label> 2 - {{ $valeur2 }} </label>
+                                        <div class="d-flex py-2 px-1 w-100 justify-content-between">
+                                            <label class="text-dark"> 2 - {{ $valeur2 }} </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
@@ -345,12 +346,12 @@
 
 
 
-    <div wire:ignore.self class="container-fluid main-content">
+    <div wire:ignore.self class="container-fluid main-content mt-4">
         <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
             <div class="col-lg-3 bg-white py-1 px-0 shadow-sm">
 
 
-                <ul style="list-style: none " class="px-2 py-2 ">
+                <ul style="list-style: none " class="px-2 py-4 ">
                     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                         <div class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none"
@@ -377,23 +378,8 @@
                         Nouveau Checkout
 
                     </li>
-                    <li style="cursor: pointer" wire:click="visiterordinateur"
-                        class="mt-1 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-
-                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-                            </svg> Equipements
-                        </div>
-                        <div class="text-end">
-                            <span class=" text-danger small me-2 fw-bold "></span>
-
-                        </div>
-                    </li>
-                    <li style="cursor: pointer" wire:click="visiterordinateur"
+                
+                    <li style="cursor: pointer" 
                         class="mt-1 d-flex justify-content-between align-items-center pl-4">
                         <div class="d-flex align-items-center">
 
@@ -794,7 +780,7 @@
                         @foreach ($checkouts as $checkout)
                             <a wire:click="visualiser('{{ $checkout->id }}')" href="#" data-aos="fade-down"
                                 data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}"
-                                class="list-group-item list-group-item-action border">
+                                class="list-group-item py-2 list-group-item-action border">
 
                                 <div class="d-flex w-100 justify-content-between">
                                     <b class="mb-1 text-black-50"># {{ $checkout->id }} - {{ $checkout->materiel_type }} :
@@ -807,7 +793,7 @@
                                 <div class="d-flex w-100 justify-content-between">
                                     <p class="mb-1 text-capitalize"> {{ $checkout->materiel_details }}</p>
                                      <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
-                                        {{ $checkout->statut }}
+                                        {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
                                     </small>
                                      <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
                                             src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"

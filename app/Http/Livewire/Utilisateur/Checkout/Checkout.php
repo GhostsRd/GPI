@@ -88,9 +88,7 @@ class Checkout extends Component
                 $this->etape[$j] = "remove";
             }
         }
-       
-
-            
+        $this->emitSelf('refreshComponent'); 
   
 }
 
@@ -102,32 +100,7 @@ class Checkout extends Component
         $this->recherche;
         $this->filtrerMateriel;
         $ordinateur = ordinateur::find(1);
-         $this->equipements = collect([
-            ['id' => 1, 'type' => 'Ordinateur portable', 'statut' => 'En stock'],
-            ['id' => 2, 'type' => 'Ordinateur de bureau', 'statut' => 'En stock'],
-            ['id' => 3, 'type' => 'Moniteur', 'statut' => 'En stock'],
-            ['id' => 4, 'type' => 'Clavier', 'statut' => 'En stock'],
-            ['id' => 5, 'type' => 'Souris', 'statut' => 'En stock'],
-            ['id' => 6, 'type' => 'Périphérique USB', 'statut' => 'En stock'],
-            ['id' => 7, 'type' => 'Bluetooth', 'statut' => 'En stock'],
-            ['id' => 8, 'type' => 'Dongle', 'statut' => 'En stock'],
-            ['id' => 9, 'type' => 'Casque filaire', 'statut' => 'En stock'],
-            ['id' => 10, 'type' => 'Casque sans fil', 'statut' => 'En stock'],
-            ['id' => 11, 'type' => 'Microphone', 'statut' => 'En stock'],
-            ['id' => 12, 'type' => 'Jabra', 'statut' => 'En stock'],
-            ['id' => 13, 'type' => 'Projecteur', 'statut' => 'En stock'],
-            ['id' => 14, 'type' => 'Chargeur', 'statut' => 'En stock'],
-            ['id' => 15, 'type' => 'Adaptateur', 'statut' => 'En stock'],
-            ['id' => 16, 'type' => 'Imprimante', 'statut' => 'En stock'],
-            ['id' => 17, 'type' => 'Scanner', 'statut' => 'En stock'],
-            ['id' => 18, 'type' => 'Tablette', 'statut' => 'En stock'],
-            ['id' => 19, 'type' => 'Téléphone mobile', 'statut' => 'En stock'],
-            ['id' => 20, 'type' => 'Câble USB Type-C', 'statut' => 'En stock'],
-            ['id' => 21, 'type' => 'Câble Lightning (iPhone)', 'statut' => 'En stock'],
-            ['id' => 22, 'type' => 'Câble HDMI', 'statut' => 'En stock'],
-            ['id' => 23, 'type' => 'Câble USB-A', 'statut' => 'En stock'],
-            ['id' => 24, 'type' => 'Câble audio jack 3.5mm', 'statut' => 'En stock'],
-        ]);
+        
         // dd(gettype($ordinateur->statut));
 
         // dd($this->state);

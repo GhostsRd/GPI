@@ -73,7 +73,7 @@
 
 
 	 <div class="col-lg-9 main-content container text-center mt-5">
-   <button class=" px-2 mb-4  rounded-3"   id="toggleSidebar">Details</button>
+   <button class=" px-2 mb-4  rounded-3 btn btn-outline-secondary border-0 shadow-sm"   id="toggleSidebar">Details</button>
           {{-- <h2 class="fw-bold text-primary">📊 Évolution du Ticket Num </h2> --}}
           {{-- <h4 class="modal-title text-success " id="ticketModalLabel">Évolution du Ticket #{{$ticketvals->id}}</h4>
           <p class="text-muted">Suivez le parcours complet de votre demande en temps réel.</p> --}}
