@@ -6121,7 +6121,7 @@
       <h2 class="section-title">Services informatique</h2>
       <p class="text-muted mb-5">Des passionnés unis pour créer des solutions modernes et performantes.</p>
 
-      <div class="row g-4">
+      <div class="row g-4" data-aos="fade-right" data-aos-duration="1500">
         <div class="col-md-4">
           <div class="card border-0 shadow-sm p-4">
           
@@ -6136,7 +6136,7 @@
         </div>
 
 
-        <div class="col-md-4">
+        <div class="col-md-4" data-aos="fade-down" data-aos-duration="1500">
           <div class="card border-0 shadow-sm p-4">
             <img src="{{url('images/nicolas.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
@@ -6146,7 +6146,7 @@
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4" data-aos="fade-left" data-aos-duration="2000">
           <div class="card border-0 shadow-sm p-4">
             <img src="{{url('images/ely.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
@@ -6159,7 +6159,7 @@
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-duration="1500">
           <div class="card border-0 shadow-sm p-4">
             <img src="{{url('images/fandresena.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
@@ -6168,7 +6168,7 @@
             <p class="small">Conçoit des expériences élégantes et intuitives pour nos utilisateurs.</p>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-duration="1500">
           <div class="card border-0 shadow-sm p-4">
             <img src="{{url('images/hasina.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
