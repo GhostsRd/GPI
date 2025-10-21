@@ -14,10 +14,10 @@
           </p>
           <div class="d-flex justify-content-lg-start justify-content-center gap-3">
             <a class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow" href="#services">
-              <i class="bi bi-play-circle me-2  "></i> Commencer
+              <i class="bi bi-play-circle me-2  "></i> Commencer   ⮕
             </a>
             <a class="btn btn-light btn-sm rounded-pill shadow" href="#historique">
-              <i class="bi bi-clock-history me-2 btn-sm"></i> Documentation
+              <i class="bi bi-clock-history me-2 btn-sm"></i> Documentation   
             </a>
           </div>
         </div>
@@ -2705,7 +2705,7 @@
   </section>
 
   <section class="text-center bg-white ">
-    <h3 class="border-top  py-4"> C'est quoi GPI - Pivot ? </h3>
+    <h3 class="border-top  py-4 fw-bold"> C'est quoi GPI - Pivot ? </h3>
 
          <p class="py-2 col-8 offset-2"> Notre système  vous permet de signaler rapidement tout problème ou demande auprès de notre équipe.
         Chaque ticket et checkout est suivi en temps réel, attribué à un responsable et priorisé selon son urgence. Vous pouvez
@@ -6068,7 +6068,7 @@
 
   <section id="services" class="py-5 mt-5  bg-light">
     <div class="container text-center mt-5 py-5">
-        <h2 class=""> Commencez à utiliser notre plateforme</h2>
+        <h2 class="fw-bold"> Commencez à utiliser notre plateforme</h2>
       <p class="py-5"> Notre système  vous permet de signaler rapidement tout problème ou demande auprès de notre équipe.
         Chaque ticket et checkout est suivi en temps réel, attribué à un responsable et priorisé selon son urgence. Vous pouvez
         échanger facilement avec nos agents, suivre l’avancement et recevoir des notifications jusqu’à la résolution
@@ -6079,7 +6079,7 @@
             <div class="card-body">
               <h5 class="card-title">Ticket contenu</h5>
               <p class="card-text">Création de sites modernes, rapides et optimisés pour tous les appareils.</p>
-              <a href="{{ url('/utilisateur-service') }}" class="btn btn-outline-primary">Commencer </a>
+              <a href="{{ url('/utilisateur-service') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕ </a>
             </div>
           </div>
         </div>
@@ -6089,7 +6089,7 @@
             <div class="card-body">
               <h5 class="card-title">CheckIn / CheckOut</h5>
               <p class="card-text">Des applications intuitives conçues pour Android et iOS.</p>
-              <a href="{{ url('/utilisateur-checkout') }}" class="btn btn-outline-primary">Commencer</a>
+              <a href="{{ url('/utilisateur-checkout') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
             </div>
           </div>
         </div>
@@ -6098,7 +6098,7 @@
             <div class="card-body">
               <h5 class="card-title">Inventaire</h5>
               <p class="card-text">Expériences utilisateurs soignées et interfaces modernes.</p>
-              <a href="#" class="btn btn-outline-primary">Commencer</a>
+              <a href="#" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
             </div>
           </div>
         </div>
@@ -6107,7 +6107,7 @@
             <div class="card-body">
               <h5 class="card-title">Documentation</h5>
               <p class="card-text">Expériences utilisateurs soignées et interfaces modernes.</p>
-              <a href="#" class="btn btn-outline-primary">Commencer</a>
+              <a href="#" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
             </div>
           </div>
         </div>
@@ -6124,8 +6124,11 @@
       <div class="row g-4">
         <div class="col-md-4">
           <div class="card border-0 shadow-sm p-4">
-            <img src="https://i.pravatar.cc/150?img=12" class="rounded-circle mx-auto mb-3" width="120" height="120"
-              alt="Membre">
+          
+              <img class=" rounded-pill mx-auto mb-3 "
+                                data-toggle="dropdown"
+                                src="https://ui-avatars.com/api/?name=Lina Rakoto"
+                                alt="Profil" width="120" height="120" class="rounded-circle me-2">
             <h5 class="fw-bold mb-0">Lina Rakoto</h5>
             <p class="text-muted">Directeur Support Administratif</p>
             <p class="small">Spécialiste en interfaces modernes et expériences utilisateurs.</p>
@@ -6135,7 +6138,7 @@
 
         <div class="col-md-4">
           <div class="card border-0 shadow-sm p-4">
-            <img src="https://i.pravatar.cc/150?img=9" class="rounded-circle mx-auto mb-3" width="120" height="120"
+            <img src="{{url('images/nicolas.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
             <h5 class="fw-bold mb-0">Nicola Rijavola</h5>
             <p class="text-muted">Responsable Parc Informatique</p>
@@ -6145,7 +6148,7 @@
 
         <div class="col-md-4">
           <div class="card border-0 shadow-sm p-4">
-            <img src="https://i.pravatar.cc/150?img=22" class="rounded-circle mx-auto mb-3" width="120" height="120"
+            <img src="{{url('images/ely.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
             <h5 class="fw-bold mb-0">Tantely Ely</h5>
             <p class="text-muted">Charge de securite IT et Support Technique UI/UX</p>
@@ -6158,7 +6161,7 @@
 
         <div class="col-md-4">
           <div class="card border-0 shadow-sm p-4">
-            <img src="https://i.pravatar.cc/150?img=22" class="rounded-circle mx-auto mb-3" width="120" height="120"
+            <img src="{{url('images/fandresena.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
             <h5 class="fw-bold mb-0">Fandresena</h5>
             <p class="text-muted">Technicien de Maintenance</p>
@@ -6167,7 +6170,7 @@
         </div>
         <div class="col-md-4">
           <div class="card border-0 shadow-sm p-4">
-            <img src="https://i.pravatar.cc/150?img=22" class="rounded-circle mx-auto mb-3" width="120" height="120"
+            <img src="{{url('images/hasina.png')}}" class="rounded-circle mx-auto mb-3" width="120" height="120"
               alt="Membre">
             <h5 class="fw-bold mb-0">Hasina Samuela</h5>
             <p class="text-muted">Charger de Support utilisateurs et de Maintenance</p>

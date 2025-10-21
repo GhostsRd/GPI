@@ -184,6 +184,10 @@
             border: none;
         }
 
+        .btn-two:hover{
+            color: #000 !important;
+        }
+
         .btn-one:hover {
             background-color: #e65e4b;
         }

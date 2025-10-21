@@ -26,4 +26,9 @@ class Checkout extends Model
     {
         return $this->belongsTo(User::class, 'id');
     }
+
+     public function telephone()
+    {
+        return $this->belongsTo(TelephoneTablette::class, 'equipement_id');
+    }
 }

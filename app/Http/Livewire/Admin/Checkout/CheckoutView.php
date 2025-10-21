@@ -17,6 +17,21 @@ class CheckoutView extends Component
      public $selectedvalsdata;
      public $checkouts;
      public $selectEquipement;
+
+     public $affichecommentaire = True;
+     public $affichestep = False;
+
+
+     public function afficheretape(){
+        $this->affichestep = !$this->affichestep;
+
+     }
+
+      public function changercomment(){
+        $this->affichecommentaire = !$this->affichecommentaire;
+
+     }
+  
     public $progress;
       public $current = [
         1 => 'current',
@@ -24,7 +39,15 @@ class CheckoutView extends Component
         3 => 'future',
     ];
 
+    public function validerequipement(){
+        //dd($this->selectedvalsdata,$this->checkoutId);
+        CheckoutModel::where('id', $this->checkoutId)->update([
+            'equipement_id' => $this->selectedvalsdata,
+        ]);
 
+          $this->emitSelf('refreshComponent');
+          return redirect('/admin/checkout-view-'.$this->checkoutId);
+    }
      public function modelstep(CheckoutModel $checkout){
         $checkout = CheckoutModel::find($this->checkoutId);
         $this->currentStep = $checkout->statut;
@@ -95,6 +118,7 @@ class CheckoutView extends Component
          $this->checkouts = CheckoutModel::findOrFail($this->checkoutId);
        // $this->currentStep;
         $this->selectedvalsdata;
+        $this->affichestep;
 
     }   
 
@@ -119,6 +143,7 @@ class CheckoutView extends Component
             $commentaire->save();
 
             $this->comments = "";
+            $this->reset(['selectedvalsdata']);
             $this->emitSelf('refreshComponent');
             $this->emitTo('Utilisateur.utilisateur-ticket', 'refreshComponent');
         }

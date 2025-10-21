@@ -6,23 +6,23 @@
                 <div>
                     <!-- Header -->
                     <div class=" border-bottom">
-                        <h4 class="modal-title mx-2 my-2 text-dark" id="ordinateurModalLabel">Nouveau Checkout</h4>
+                        <h4 class="modal-title mx-2 my-2 text-dark" id="ordinateurModalLabel">Nouveau checkout</h4>
                     </div>
 
                     <!-- Formulaire Livewire -->
-                    <form>
-                        <div class="modal-body p-2 row">
+                    <form >
+                        <div class="modal-body p-2 row" style="overflow-y: scroll">
                             <!-- Sujet -->
                             {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
                                 obligatoires</p> --}}
 
                             <div class="mb-3 col-lg-6 position-relative">
-                                <label for="sujet" class="form-label text-dark ">
+                                {{-- <label for="sujet" class="form-label text-dark ">
                                     Tapez ici le matériel <span class="text-danger">*</span>
                                 </label>
 
                                 <input type="text" wire:model="search" class="form-control"
-                                    placeholder="Cherchez un matériel (ex: HP Elitebook, Dell 24 pouces...)">
+                                    placeholder="Cherchez un matériel (ex: HP Elitebook, Dell 24 pouces...)"> --}}
 
                                 {{-- @if (!empty($filteredMateriels))
                                     <ul class="list-group mt-2 shadow-sm">
@@ -84,7 +84,7 @@
 
                                     <div class="">
                                         <button wire:click="next_form(2)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮞</button>
                                     </div>
 
 
@@ -97,7 +97,7 @@
                                         class="nav-link {{ $valeur2 == 'Touche' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class=" d-flex w-100 justify-content-between">
-                                            <label class="text-dark"># Telephone touche -</label>
+                                            <label class="text-dark"># Telephone Touche -</label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
@@ -114,7 +114,7 @@
                                     </a>
 
                                     <a wire:click="$set('valeur2', 'Tablette')" href="#"
-                                        class="nav-link {{ $valeur2 == 'Tablette' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                        class="nav-link {{ $valeur2 == 'Tablette' ? 'bg-secondary shadow text-white' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class=" d-flex w-100 justify-content-between">
                                             <label class="text-dark"># Telephone Tablette -</label>
@@ -124,16 +124,16 @@
                                     </a>
                                     <div class="">
                                         <button wire:click="next_form(1)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
                                         <button wire:click="next_form(5)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮞</button>
                                     </div>
                                 </div>
 
                                 {{-- etape 4 peripherique --}}
 
 
-                                <div class="etap {{ $etape[4] }}">
+                                <div class="etap {{ $etape[4] }}" >
                                     <a wire:click="$set('valeur2', 'Regulateur')" href="#"
                                         class="{{ $valeur2 == 'Regulateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
@@ -145,7 +145,7 @@
 
                                     </a>
 
-                                    <div class="list-group">
+                                    <div class="list-group" >
 
                                         <!-- Ordinateur -->
                                         <a wire:click="$set('valeur2', 'Ordinateur')" href="#"
@@ -310,9 +310,15 @@
                                     </a>
                                     <div class="">
                                         <button wire:click="next_form(1)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
                                         <button type="submit" wire:click="EnvoyerCheckout"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button>
+                                            class="btn btn-two  fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
+                                           
+                                            <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-1">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                            </svg>
+
+                                        </button>
                                     </div>
                                 </div>
 
@@ -331,7 +337,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary border px-3"
+                            <button type="button" class="btn btn-one  text-white fw-bold text-sm rounded px-3"
                                 id="closeSidebar">Annuler</button>
                             {{-- <button type="submit" wire:click="EnvoyerCheckout"
                                 class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button> --}}
