@@ -31,8 +31,10 @@ class Kernel extends ConsoleKernel
     $schedule->call(function () {
 
       $ticket = Ticket::where('priorite', 0)
+    
     ->latest('created_at')
     ->first();
+    
         $notifications = Cache::get('notifications', []);
         $now = Carbon::now();
         $last = end($notifications);

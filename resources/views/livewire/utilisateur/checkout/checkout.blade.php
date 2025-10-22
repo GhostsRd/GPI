@@ -750,7 +750,7 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  col-lg-9">
+            <div class="mt-2 p-xs-0  p-0 p-md-0 p-xl-2  col-lg-9">
                 <section class="p-0">
                     <div class="card bg-none border-0 m-0 p-0 mb-1">
                         <select class="form-select" wire:init wire:model="state">
@@ -762,15 +762,15 @@
                             <option value="En réparation">En réparation</option>
                         </select>
                     </div>
-                    <div class="list-group mt-2" style="overflow-y: none">
+                    <div class="list-group mt-2 border-0 bg-white shadow-sm" style="overflow-y: none">
                         <a href="#"
-                            class="list-group-item border shadow-sm bg-light   bg-gradient list-group-item-action "
+                            class="list-group-item  border  bg-secondary-light   bg-gradient list-group-item-action "
                             aria-current="true">
                             <div class="d-flex active w-100 justify-content-between">
                                 <h5 class="mb-1">Liste de checkout</h5>
                                 <small>
                                     <input type="text" wire:model="recherche"
-                                        class="input-recherche border p-1 px-5 rounded-2"
+                                        class="input-recherche border  py-2 px-5 rounded-2"
                                         placeholder="Recherche par sujet..">
                                 </small>
                             </div>
@@ -785,9 +785,9 @@
 
 
                         @foreach ($checkouts as $checkout)
-                            <a wire:click="visualiser('{{ $checkout->id }}')" href="#" data-aos="fade-down"
+                            <a  href="#" data-aos="fade-down"
                                 data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}"
-                                class="list-group-item py-2 list-group-item-action border">
+                                class="list-group-item py- list-group-item-action border">
 
                                 <div class="d-flex w-100 justify-content-between">
                                     <b class="mb-1 text-black-50"># {{ $checkout->id }} - {{ $checkout->materiel_type }} :
@@ -797,15 +797,18 @@
                                     </small>
                                 </div>
 
-                                <div class="d-flex w-100 justify-content-between">
+                                <div class="d-flex w-100 mt-2 justify-content-between">
                                     <p class="mb-1 text-capitalize"> {{ $checkout->materiel_details }}</p>
-                                     <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
+                                     {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
                                         {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
-                                    </small>
-                                     <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2">
+                                    </small> --}}
+                                    <div class="d-flex justify-content-end">
+                                        <small class="text-muted mx-2">{{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}</small>
+                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                               src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
+                                               alt="Profil" width="20" height="20"
+                                               class="rounded-circle me-2">
+                                    </div>
                                 </div>
 
                                 <div class="d-flex w-100 justify-content-between">

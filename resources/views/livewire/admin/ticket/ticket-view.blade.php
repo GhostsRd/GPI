@@ -138,7 +138,7 @@
                     <div>
                         <button wire:click="afficheretape" class="btn btn-sm btn-secondary border-0 bg-white  "><span
                                 class="loader"></span>
-                            {{ $affichestep == 'False' ? 'Afficher les etapes ▼' : 'Masquer les etapes▲' }}</button>
+                            {{ $affichestep == 'False' ? 'Afficher les etapes ▼' : 'Masquer les etapes ▲' }}</button>
 
                     </div>
 
