@@ -31,12 +31,37 @@ class CheckoutView extends Component
         $this->affichecommentaire = !$this->affichecommentaire;
 
      }
+     public function RenouvelerCheckout($id){
+        $checkout = CheckoutModel::find($id);
+        $checkout->statut = 2;
+        //$ticket->archive = true;
+        
+        $checkout->save();
+
+        $this->reset(['currentStep'] );
+        $this->currentStep = 2;
+        $this->emitSelf('refreshComponent');
+    }
+  
+
+      public function RefuserCheckout($id){
+        $checkout = CheckoutModel::find($id);
+        $checkout->statut = 4;
+        $checkout->save();
+        $this->reset(['currentStep'] );
+        $this->currentStep = 4;
+        $this->emitSelf('refreshComponent');
+        $this->emitSelf('refreshComponent');
+
+    }
   
     public $progress;
       public $current = [
         1 => 'current',
         2 => 'future',
         3 => 'future',
+        4 => 'future',
+
     ];
 
     public function validerequipement(){

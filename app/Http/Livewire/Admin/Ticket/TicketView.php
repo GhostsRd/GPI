@@ -26,6 +26,18 @@ class TicketView extends Component
         4 => 'future',
         5 => 'future',
     ];
+
+    public $affichestep = False;
+    public $affichecommentaire = True;
+     public function afficheretape(){
+        $this->affichestep = !$this->affichestep;
+
+     }
+
+     public function changercomment(){
+        $this->affichecommentaire = !$this->affichecommentaire;
+
+     }
     
     public $progress;
 
@@ -215,6 +227,8 @@ public function affecter()
         $this->current;
         $this->progress;
         $this->techniciens = \App\Models\Utilisateur::where('role', 'technicien')->get();
+        $this->affichestep;
+        $this->affichecommentaire;
         // Exemple si tu veux charger directement ton modèle
         $this->ticketvals = Ticket::findOrFail($this->ticketId);
        

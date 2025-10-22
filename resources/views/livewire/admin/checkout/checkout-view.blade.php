@@ -124,13 +124,22 @@
                             <div class="connector col-lg-1">
                                 <div class="fill {{ $progress }}"></div>
                             </div>
-                            <div class="step {{ $current[3] }} col-lg-3" data-index="2">
+                           
+                            @if($checkouts->statut == 4)
+                                <div class="step {{ $current[4] }} col-lg-3" data-index="2">
+                                <div class="dot bg-danger">X</div>
+                                <div class="title">Refuser</div>
+                                <div class="sub">Decision Finale</div>
+
+                            </div>
+                            @else
+                                 <div class="step {{ $current[3] }} col-lg-3" data-index="2">
                                 <div class="dot">3</div>
                                 <div class="title">Rendu</div>
                                 <div class="sub">Intervention</div>
 
                             </div>
-
+                            @endif
                         </div>
                     </div> 
                     <hr>
@@ -146,9 +155,11 @@
                                 data-toggle="dropdown"
                                 src="https://ui-avatars.com/api/?name={{ $checkouts->responsable->name ?? 'Guest' }}"
                                 alt="Profil" width="40" height="40" class="shadow rounded-circle me-2">
-                            @if ($checkouts->materiel_type == 'Telephone')
-                                ⮕ {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
-                            @endif
+                                    @if ($checkouts->materiel_type == 'Telephone')
+                                        ⮕ {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
+                                        @else
+                                         ⮕ {{ $checkouts->ordinateur->nom }} {{ $checkouts->ordinateur->modele }} {{ $checkouts->ordinateur->os_version }} 
+                                    @endif
                         </p>
                         <label for="" class="fw-bold mb-2 d-flex justify-content-center">Lier une equipement </label>
                         <div class="offset-lg-3 col-lg-5 d-flex justify-content-center ">
@@ -353,10 +364,11 @@
                     <div>
                         <label style="margin:0 0 8px" class="fw-bold">Actions rapides</label>
                         <div style="display:flex;flex-direction:column;gap:8px">
+                            <button class="btn-ghost" id="markResolved" wire:click="RenouvelerCheckout({{ $checkouts->id }})">Renouveler</button>
                             <button class="btn-ghost" id="markResolved" wire:click="markResolved">Marquer comme
                                 Rendu</button>
                             <button class="btn-ghost" id="markClosed"
-                                wire:click="FermerTicket({{ $checkouts->id }})">Refuser</button>
+                                wire:click="RefuserCheckout({{ $checkouts->id }})">Refuser</button>
                         </div>
                     </div>
 

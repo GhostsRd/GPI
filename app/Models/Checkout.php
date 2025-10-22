@@ -31,4 +31,9 @@ class Checkout extends Model
     {
         return $this->belongsTo(TelephoneTablette::class, 'equipement_id');
     }
+
+    public function ordinateur()
+    {
+        return $this->belongsTo(ordinateur::class, 'equipement_id');
+    }
 }
