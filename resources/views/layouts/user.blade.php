@@ -330,14 +330,23 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('checkout') }}">• Checkout</a></li>
                     <li class="nav-item"><a class="nav-link" href="#apropos">• À propos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">• Contact</a></li>
-                    <li class="nav-item ms-lg-3 bg-teal">
-                        <a href="{{ route('login') }}"
+                    <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle"  id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#"
                             class="btn btn-one  text-white fw-bold text-sm rounded-pill px-3">
                             <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
                                 src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
                                 alt="Profil" width="20" height="20" class="rounded-circle me-2">
                             {{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</a>
+                         
+                            <ul class="dropdown-menu bg-white border-0 shadow-sm" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{{ route("utilisateurProfile") }}"><i class="bi bi-person-fill me-2"></i>Profil</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="bi bi-box-arrow-right me-2"></i>Se déconnecter</a></li>
+                            </ul>
+                        
                     </li>
+                    
+
                 </ul>
             </div>
         </div>

@@ -18,8 +18,10 @@
                               {{-- <i class="bi bi-ticket-detailed"></i>  --}}
                              Demande de Ticket #<span
                                     id="ticketId">{{ $ticketId }}</span> — {{ $ticketvals->sujet }}</label>
-
+                                
                         </div>
+
+                     
 
                         <div class="col-lg-1 col-mg-1 col-sm-1">
                             <div class="dropdown">
@@ -106,6 +108,8 @@
 
                         </div>
                     </div>
+
+                      
 
 
 
@@ -326,8 +330,32 @@
             </div>
             <div class="col-lg-3 mt-sm-4 mt-2">
                 <aside class="shadow-sm p-4 bg-white rounded-2 h-100 side ">
+                    <div wire:poll.60s> <!-- rafraîchit toutes les 60 secondes -->
+              
+                            @php
+                                $last = $notifications ? end($notifications) : null;
+                            @endphp
+
+                            @if ($last)
+                                <div class="">
+                                    <div class="list-group-item">
+                                        {{-- <strong>{{ $last['title'] }}</strong>: {{ $last['message'] }} --}}
+                                        <span class="text-muted float-end">
+                                           <i class="bi bi-bell fs-6"></i> Rappel  {{ \Carbon\Carbon::parse($last['created_at'])->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="list-group">
+                                    <div class="list-group-item">Aucune notification</div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div wire:poll.60s> <!-- Rafraîchit toutes les 60 secondes -->
                     <div>
                         <label class="fw-bold" style="margin:0 0 8px">Résumé</label>
+                        
                         <div class="info"><span class="text-muted fw-bold"
                                 style="font-size: 0.8rem;">Priorité:</span>
                             @if ($ticketvals->priorite == 0)

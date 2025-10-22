@@ -299,10 +299,11 @@
 
                                     </a>
 
+                                    
                                     <a href="#" data-aos="fade-down" data-aos-duration="400"
-                                        class="py-2 list-group-item list-group-item-action border rounded-2 mb-1">
+                                        class="{{ $valeur2 ?? 'collapse' }} py-2 list-group-item list-group-item-action border rounded-2 mb-1">
 
-                                        <div class="d-flex py-2 px-1 w-100 justify-content-between">
+                                        <div class="d-flex py-2  px-1 w-100 justify-content-between">
                                             <label class="text-dark"> 2 - {{ $valeur2 }} </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>

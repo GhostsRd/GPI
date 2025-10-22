@@ -59,5 +59,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/ticket-view-{id}', [App\Http\Controllers\admin\ticket\Ticketview::class, 'ticketview'])->name('checkTicketview');
     Route::get('/admin/checkout',[App\Http\Controllers\admin\checkout\Checkout::class,'index'])->name('checkoutadmin');
     Route::get('/admin/checkout-view-{id}',[App\Http\Controllers\admin\checkout\CheckoutView::class,'index'])->name('checkoutview');
+    Route::get('/admin/profile/utilisateur-{id}',[App\Http\Controllers\admin\profile\Profile::class,'index'])->name('userprofile');
 
 });

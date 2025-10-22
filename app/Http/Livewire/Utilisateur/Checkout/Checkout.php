@@ -78,6 +78,8 @@ class Checkout extends Component
            $i = 2;    
         }elseif($this->valeur1 == 'Peripherique' && $i == 2){
             $i = 4;
+        }elseif($this->valeur1 == 'ordinateur' && $i == 2){
+            $i = 5;
         }
 
 

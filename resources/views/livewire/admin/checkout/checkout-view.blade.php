@@ -32,6 +32,9 @@
 
                                             Panneau visuel</a>
                                     </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('ticket') }}">
                                             <i class="bi bi-layout-text-window fs-5"></i>
 
@@ -39,9 +42,9 @@
                                             Table visuel</a>
                                     </li>
                                     
-
-
-
+                                        <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item" wire:click="openAffectationModal" href="#">
 
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="15"
@@ -53,8 +56,11 @@
 
                                             Affecter</a>
                                         </li>
+                                        <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                         <li><a class="dropdown-item" href="{{ route('ticket') }}">
-                                            <i class="bi bi-layout-text-window fs-5"></i>
+                                            <i class="bi bi-x-circle text-danger"></i>
 
 
                                             Refuser</a>
@@ -173,7 +179,7 @@
                                             {{ $TelephoneTablette->marque }} {{ $TelephoneTablette->modele }}
                                         </option>
                                     @endforeach
-                                @elseif($checkouts->materiel_type == 'Ordinateur')
+                                @elseif($checkouts->materiel_type == 'ordinateur')
                                     @foreach ($ordinateurs as $ordinateur)
                                         <option value="{{ $ordinateur->id }}">{{ $ordinateur->type }}
                                             {{ $ordinateur->marque }} {{ $ordinateur->modele }}

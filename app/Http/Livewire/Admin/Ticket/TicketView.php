@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire\Admin\Ticket;
 
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use App\Models\ticket;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+
 
 use App\Models\Commentaire;
 
@@ -17,6 +19,7 @@ class TicketView extends Component
     //public $commentaires;
     public $comments;
     public $currentStep;
+    public $notifications = [];
     protected $listeners = ['refreshComponent' => '$refresh'];
 
     public $current = [
@@ -231,6 +234,7 @@ public function affecter()
         $this->affichecommentaire;
         // Exemple si tu veux charger directement ton modèle
         $this->ticketvals = Ticket::findOrFail($this->ticketId);
+        $this->notifications = Cache::get('notifications', []);
        
     }    
      public function Removeticket($id){
