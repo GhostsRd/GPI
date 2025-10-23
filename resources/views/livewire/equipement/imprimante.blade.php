@@ -16,13 +16,6 @@
             </div>
         @endif
 
-        @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-            </div>
-        @endif
-
         <!-- Statistiques -->
         <div class="row mb-4">
             <div class="col-xl-2 col-md-4 mb-3">
@@ -225,8 +218,8 @@
                                         ];
                                     @endphp
                                     <span class="{{ $statusClasses[$imprimante->statut] ?? 'badge bg-secondary' }}">
-                                        {{ $imprimante->statut }}
-                                    </span>
+                                {{ $imprimante->statut }}
+                            </span>
                                 </td>
                                 <td>{{ $imprimante->fabricant }}</td>
                                 <td class="font-monospace">{{ $imprimante->reseau_ip }}</td>
@@ -268,7 +261,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Pagination -->
         <div class="mt-3">
             {{ $imprimantes->links() }}
@@ -368,11 +360,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeModal">Annuler</button>
                             <button type="submit" class="btn btn-primary">
-                                <span wire:loading.remove>{{ $isEditing ? 'Modifier' : 'Créer' }}</span>
-                                <span wire:loading>
-                                    <i class="fas fa-spinner fa-spin me-1"></i>
-                                    {{ $isEditing ? 'Modification...' : 'Création...' }}
-                                </span>
+                                {{ $isEditing ? 'Modifier' : 'Créer' }}
                             </button>
                         </div>
                     </form>
@@ -417,8 +405,8 @@
                                             ];
                                         @endphp
                                         <span class="{{ $statusClasses[$selectedImprimante->statut] ?? 'badge bg-secondary' }}">
-                                            {{ $selectedImprimante->statut }}
-                                        </span>
+                                    {{ $selectedImprimante->statut }}
+                                </span>
                                     </div>
 
                                     <div class="mb-3">
@@ -563,104 +551,4 @@
             </div>
         </div>
     @endif
-
-    <!-- Modal de mapping pour l'import -->
-    @if($showMappingModal)
-        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5)" tabindex="-1" aria-labelledby="mappingModalLabel" aria-hidden="true" wire:ignore.self>
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title" id="mappingModalLabel">
-                            <i class="fas fa-columns me-2"></i>Mapping des Colonnes
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" wire:click="closeMappingModal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Associez les colonnes de votre fichier aux champs de la base de données.
-                            <strong class="d-block mt-1">La colonne "Nom" est obligatoire.</strong>
-                        </div>
-
-                        @if($csvHeaders)
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Colonne dans le fichier</th>
-                                        <th>Correspond à</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($csvHeaders as $index => $header)
-                                    <tr>
-                                        <td class="fw-semibold">
-                                            <span class="badge bg-primary me-2">{{ $index + 1 }}</span>
-                                            {{ $header }}
-                                        </td>
-                                        <td>
-                                            <select class="form-select form-select-sm" wire:model="columnMapping.{{ array_keys($availableColumns)[$loop->index] ?? '' }}">
-                                                <option value="">-- Sélectionner --</option>
-                                                @foreach($availableColumns as $key => $label)
-                                                <option value="{{ $index }}">{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        @endif
-
-                        @if($importErrors)
-                        <div class="alert alert-danger mt-3">
-                            <h6 class="alert-heading">Erreurs détectées</h6>
-                            <ul class="mb-0 small">
-                                @foreach($importErrors as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeMappingModal">Annuler</button>
-                        <button type="button" class="btn btn-primary" wire:click="confirmMapping" 
-                                wire:loading.attr="disabled" {{ empty($columnMapping['nom']) ? 'disabled' : '' }}>
-                            <i class="fas fa-file-import me-1"></i>
-                            <span wire:loading.remove>Importer</span>
-                            <span wire:loading>Import en cours...</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
 </div>
-
-@push('scripts')
-<script>
-    // Fermer les modals avec la touche Echap
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            Livewire.dispatch('closeModal');
-            Livewire.dispatch('closeDetailsModal');
-            Livewire.dispatch('closeDeleteModal');
-            Livewire.dispatch('closeImportModal');
-            Livewire.dispatch('closeMappingModal');
-        }
-    });
-
-    // Gérer les clics en dehors des modals
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('modal')) {
-            Livewire.dispatch('closeModal');
-            Livewire.dispatch('closeDetailsModal');
-            Livewire.dispatch('closeDeleteModal');
-            Livewire.dispatch('closeImportModal');
-            Livewire.dispatch('closeMappingModal');
-        }
-    });
-</script>
-@endpush

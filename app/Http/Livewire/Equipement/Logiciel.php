@@ -38,22 +38,7 @@ class Logiciel extends Component
     public $selectedLogiciel; // Pour stocker le logiciel sélectionné pour les détails
     public $modalTitle = 'Ajouter un Logiciel';
     public $editing = false;
-    public $selectedLogiciels = [];
-    public $selectAll = false;
 
-    // Propriétés pour l'import
-    public $showImportModal = false;
-    public $showMappingModal = false;
-    public $showImportedData = false;
-    public $importFile;
-    public $csvHeaders = [];
-    public $csvPreview = [];
-    public $fieldMapping = [];
-    public $importedData = [];
-    public $importErrors = [];
-    public $importSuccessCount = 0;
-
-    protected $paginationTheme = 'bootstrap';
 
     protected $rules = [
         'nom' => 'required|string|max:150',
@@ -239,17 +224,7 @@ class Logiciel extends Component
             $this->showDeleteModal = false;
             session()->flash('success', 'Logiciel supprimé avec succès.');
 
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
-        }
-    }
 
-    public function deleteSelected()
-    {
-        try {
-            LogicielModel::whereIn('id', $this->selectedLogiciels)->delete();
-            $this->selectedLogiciels = [];
-            session()->flash('success', 'Logiciels sélectionnés supprimés avec succès.');
         } catch (\Exception $e) {
             session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
