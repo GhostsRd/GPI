@@ -20,24 +20,19 @@ class CreateUtilisateursTable extends Migration
             $table->string('poste');
             $table->string('departement');
             $table->string('lieu_affectation');
-            $table->string('photo')->nullable();
+            $table->string('profile_image')->nullable();
             $table->string('sexe');
-            $table->date('date_naissance')->nullable();
+            $table->date('date_naissance');
             $table->date('date_embauche');
             $table->string('adresse');
             $table->string('email')->unique();
             $table->string('telephone')->unique();
             $table->string('password');
-            $table->string('role')->default('user');    
+            $table->string('role')->default('user');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('utilisateurs');

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <head>
-
     <title>Inscription - Gestion de Parc & Support</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -280,12 +279,14 @@
             animation: fadeInUp 0.5s ease 1.4s forwards;
         }
         .input-container:nth-of-type(7) {
-            animation: fadeInUp 0.5s ease 1.4s forwards;
+            animation: fadeInUp 0.5s ease 1.5s forwards;
         }
         .input-container:nth-of-type(8) {
-            animation: fadeInUp 0.5s ease 1.4s forwards;
+            animation: fadeInUp 0.5s ease 1.6s forwards;
         }
-
+        .input-container:nth-of-type(9) {
+            animation: fadeInUp 0.5s ease 1.7s forwards;
+        }
 
         .input-container:focus-within {
             border-color: var(--accent);
@@ -324,12 +325,88 @@
             color: var(--text-secondary);
         }
 
+        /* Styles pour l'upload d'image */
+        .image-upload-container {
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease 1.4s forwards;
+        }
+
+        .image-upload-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .image-upload-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .image-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            overflow: hidden;
+            background-color: var(--input-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-preview:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview i {
+            font-size: 24px;
+            color: var(--text-secondary);
+        }
+
+        .image-upload-input {
+            flex: 1;
+        }
+
+        .image-upload-input input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-input input[type="file"]:hover {
+            border-color: var(--accent);
+        }
+
+        .image-upload-input input[type="file"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(139, 95, 191, 0.2);
+        }
+
         .form-check {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
             opacity: 0;
-            animation: fadeIn 0.5s ease 1.3s forwards;
+            animation: fadeIn 0.5s ease 1.8s forwards;
         }
 
         .form-check-input {
@@ -361,7 +438,7 @@
             position: relative;
             overflow: hidden;
             opacity: 0;
-            animation: fadeIn 0.5s ease 1.4s forwards;
+            animation: fadeIn 0.5s ease 1.9s forwards;
         }
 
         .btn::before {
@@ -398,7 +475,7 @@
             margin-top: 10px;
             transition: all 0.3s ease;
             opacity: 0;
-            animation: fadeIn 0.5s ease 1.5s forwards;
+            animation: fadeIn 0.5s ease 2.0s forwards;
         }
 
         .login-link:hover {
@@ -526,6 +603,15 @@
             .feature {
                 justify-content: center;
             }
+
+            .image-upload-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .image-preview {
+                align-self: center;
+            }
         }
     </style>
 </head>
@@ -586,8 +672,26 @@
             <div class="card-header">S'inscrire</div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                     @csrf
+
+                    {{-- Upload d'image de profil --}}
+                    <div class="image-upload-container">
+                        <label class="image-upload-label">Photo de profil</label>
+                        <div class="image-upload-wrapper">
+                            <div class="image-preview" id="imagePreview">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="image-upload-input">
+                                <input type="file" id="profile_image" name="profile_image" accept="image/*" class="form-control">
+                            </div>
+                        </div>
+                        @error('profile_image')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
 
                     {{-- Nom d'utilisateur --}}
                     <div class="input-container">
@@ -598,8 +702,8 @@
                     </div>
                     @error('name')
                     <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
 
                     {{-- Email --}}
@@ -611,8 +715,8 @@
                     </div>
                     @error('email')
                     <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
 
                     {{-- Téléphone --}}
@@ -624,8 +728,8 @@
                     </div>
                     @error('phone')
                     <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
 
                     {{-- Poste --}}
@@ -637,8 +741,8 @@
                     </div>
                     @error('poste')
                     <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
 
                     {{-- Lieu de travail --}}
@@ -650,8 +754,8 @@
                     </div>
                     @error('lieu_travail')
                     <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
 
                     {{-- Mot de passe --}}
@@ -664,8 +768,8 @@
                     </div>
                     @error('password')
                     <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
+                        <strong>{{ $message }}</strong>
+                    </span>
                     @enderror
 
                     {{-- Confirmation mot de passe --}}
@@ -694,13 +798,12 @@
                     </a>
                 </form>
             </div>
-
-
-
-    </div>
-        <p style="text-align: center; margin-top: 20px; color: var(--text-secondary); opacity: 0; animation: fadeIn 0.5s ease 1.6s forwards;">
+        </div>
+        
+        <p style="text-align: center; margin-top: 20px; color: var(--text-secondary); opacity: 0; animation: fadeIn 0.5s ease 2.1s forwards;">
             © <span id="year"></span> IT Support Pivot • Gestion de Parc IT
         </p>
+    </div>
 </div>
 
 <script>
@@ -802,6 +905,29 @@
         setTimeout(() => {
             this.style.transform = '';
         }, 200);
+    });
+
+    // Gestion de l'upload d'image
+    const profileImageInput = document.getElementById('profile_image');
+    const imagePreview = document.getElementById('imagePreview');
+
+    profileImageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.addEventListener('load', function() {
+                imagePreview.innerHTML = `<img src="${this.result}" alt="Aperçu de la photo de profil">`;
+                imagePreview.style.borderColor = 'var(--accent)';
+            });
+            
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Permet de cliquer sur l'aperçu pour sélectionner un fichier
+    imagePreview.addEventListener('click', function() {
+        profileImageInput.click();
     });
 
     // Add hover effect to input containers

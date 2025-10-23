@@ -12,10 +12,13 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "intervention/image": "^3.11",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.4",
+        "league/csv": "^9.27",
         "livewire/livewire": "^2.12",
+        "maatwebsite/excel": "^3.1",
         "milon/barcode": "^10.0"
     },
     "require-dev": {

@@ -124,7 +124,7 @@
                     @endforeach
                 </td>
                 <td  class="text-muted bg-white p-1 border-0" id="tdanim2" data-aos="fade-left" data-aos-duration="800">{{
-                    $ee = strftime(" %d %b %Y %Hh:%m",$trans->created_at->getTimestamp());
+                    $ee = strftime(" %d %b %Y %Hh:%m",$trans->created_at->getTimestamp())
                 }}</td>
                 {{-- <td  class="text-muted bg-white p-1 border-0" id="tdanim1" wire:click="previsualiser('{{$user->url_img}}')">
                     @foreach ($valeurs as $item)

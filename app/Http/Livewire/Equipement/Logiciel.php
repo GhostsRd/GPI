@@ -4,16 +4,18 @@ namespace App\Http\Livewire\Equipement;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
 use App\Models\Logiciel as LogicielModel;
 use Illuminate\Support\Facades\DB;
 
 class Logiciel extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public $search = '';
     public $editeur = '';
     public $systeme_exploitation = '';
+    public $statutFilter = '';
     public $sortField = 'nom';
     public $sortDirection = 'asc';
     public $perPage = 20;
@@ -32,8 +34,26 @@ class Logiciel extends Component
 
     public $showModal = false;
     public $showDeleteModal = false;
+    public $showDetailsModal = false; // Ajout de cette propriété
+    public $selectedLogiciel; // Pour stocker le logiciel sélectionné pour les détails
     public $modalTitle = 'Ajouter un Logiciel';
     public $editing = false;
+    public $selectedLogiciels = [];
+    public $selectAll = false;
+
+    // Propriétés pour l'import
+    public $showImportModal = false;
+    public $showMappingModal = false;
+    public $showImportedData = false;
+    public $importFile;
+    public $csvHeaders = [];
+    public $csvPreview = [];
+    public $fieldMapping = [];
+    public $importedData = [];
+    public $importErrors = [];
+    public $importSuccessCount = 0;
+
+    protected $paginationTheme = 'bootstrap';
 
     protected $rules = [
         'nom' => 'required|string|max:150',
@@ -47,11 +67,25 @@ class Logiciel extends Component
         'date_expiration' => 'nullable|date|after_or_equal:date_achat',
     ];
 
-    // Ajout des messages de validation personnalisés
     protected $messages = [
         'nom.required' => 'Le nom du logiciel est obligatoire.',
         'date_expiration.after_or_equal' => 'La date d\'expiration doit être postérieure ou égale à la date d\'achat.',
     ];
+
+    public function mount()
+    {
+        $this->fieldMapping = [
+            'nom' => '',
+            'editeur' => '',
+            'version_nom' => '',
+            'version_systeme_exploitation' => '',
+            'nombre_installations' => '',
+            'nombre_licences' => '',
+            'date_achat' => '',
+            'date_expiration' => '',
+            'description' => '',
+        ];
+    }
 
     public function render()
     {
@@ -74,8 +108,16 @@ class Logiciel extends Component
             $query->where('version_systeme_exploitation', 'like', "%{$this->systeme_exploitation}%");
         }
 
+        if ($this->statutFilter) {
+            if ($this->statutFilter === 'Aucune licence') {
+                $query->where('nombre_licences', 0);
+            } else {
+                $query->where('statut_licences', $this->statutFilter);
+            }
+        }
+
         // Tri
-        if (in_array($this->sortField, ['nom', 'editeur', 'version_nom', 'nombre_installations', 'nombre_licences'])) {
+        if (in_array($this->sortField, ['nom', 'editeur', 'version_nom', 'nombre_installations', 'nombre_licences', 'statut_licences', 'updated_at'])) {
             $query->orderBy($this->sortField, $this->sortDirection);
         }
 
@@ -89,10 +131,23 @@ class Logiciel extends Component
             'total_licences' => LogicielModel::sum('nombre_licences'),
         ];
 
-        $editeurs = LogicielModel::distinct()->pluck('editeur')->filter();
-        $systemes = LogicielModel::distinct()->pluck('version_systeme_exploitation')->filter();
+        $editeurs = LogicielModel::distinct()->whereNotNull('editeur')->pluck('editeur');
+        $systemes = LogicielModel::distinct()->whereNotNull('version_systeme_exploitation')->pluck('version_systeme_exploitation');
 
         return view('livewire.equipement.logiciel', compact('logiciels', 'stats', 'editeurs', 'systemes'));
+    }
+
+    // AJOUT DE LA MÉTHODE MANQUANTE
+    public function showDetails($id)
+    {
+        $this->selectedLogiciel = LogicielModel::findOrFail($id);
+        $this->showDetailsModal = true;
+    }
+
+    public function closeDetailsModal()
+    {
+        $this->showDetailsModal = false;
+        $this->selectedLogiciel = null;
     }
 
     public function sortBy($field)
@@ -117,7 +172,7 @@ class Logiciel extends Component
     public function edit($id)
     {
         $logiciel = LogicielModel::findOrFail($id);
-        
+
         $this->logicielId = $logiciel->id;
         $this->nom = $logiciel->nom;
         $this->editeur_form = $logiciel->editeur;
@@ -162,9 +217,8 @@ class Logiciel extends Component
 
             $this->showModal = false;
             $this->resetForm();
-            $this->dispatchBrowserEvent('close-modal');
             session()->flash('success', $message);
-            
+
         } catch (\Exception $e) {
             session()->flash('error', 'Erreur lors de l\'enregistrement: ' . $e->getMessage());
         }
@@ -181,11 +235,21 @@ class Logiciel extends Component
         try {
             $logiciel = LogicielModel::findOrFail($this->logicielId);
             $logiciel->delete();
-            
+
             $this->showDeleteModal = false;
-            $this->dispatchBrowserEvent('close-modal');
             session()->flash('success', 'Logiciel supprimé avec succès.');
-            
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteSelected()
+    {
+        try {
+            LogicielModel::whereIn('id', $this->selectedLogiciels)->delete();
+            $this->selectedLogiciels = [];
+            session()->flash('success', 'Logiciels sélectionnés supprimés avec succès.');
         } catch (\Exception $e) {
             session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
@@ -210,42 +274,310 @@ class Logiciel extends Component
 
     public function resetFilters()
     {
-        $this->reset(['search', 'editeur', 'systeme_exploitation']);
+        $this->reset(['search', 'editeur', 'systeme_exploitation', 'statutFilter']);
         $this->resetPage();
     }
 
-    // Méthodes pour le dashboard (propriétés calculées)
-    public function getLogicielsCritiquesProperty()
-    {
-        return LogicielModel::licencesCritiques()
-            ->orderByRaw('(nombre_installations / nombre_licences) DESC')
-            ->get();
-    }
-
-    public function getLogicielsParEditeurProperty()
-    {
-        return LogicielModel::select('editeur', DB::raw('COUNT(*) as count'))
-            ->whereNotNull('editeur')
-            ->groupBy('editeur')
-            ->orderBy('count', 'desc')
-            ->get();
-    }
-
-    public function getDashboardStatsProperty()
-    {
-        return [
-            'total_logiciels' => LogicielModel::count(),
-            'licences_critiques' => $this->logicielsCritiques->count(),
-            'taux_utilisation_moyen' => LogicielModel::where('nombre_licences', '>', 0)
-                ->avg(DB::raw('(nombre_installations / nombre_licences) * 100')) ?? 0,
-        ];
-    }
-
-    // Fermer les modales
     public function closeModal()
     {
         $this->showModal = false;
         $this->showDeleteModal = false;
+        $this->showDetailsModal = false;
         $this->resetForm();
+    }
+
+    // Méthodes pour l'import
+    public function openImportModal()
+    {
+        $this->showImportModal = true;
+    }
+
+    public function closeImportModal()
+    {
+        $this->showImportModal = false;
+        $this->reset(['importFile']);
+    }
+
+    public function cancelImport()
+    {
+        $this->reset([
+            'showImportModal',
+            'showMappingModal', 
+            'showImportedData',
+            'importFile',
+            'csvHeaders',
+            'csvPreview',
+            'fieldMapping',
+            'importedData',
+            'importErrors',
+            'importSuccessCount'
+        ]);
+        
+        $this->fieldMapping = [
+            'nom' => '',
+            'editeur' => '',
+            'version_nom' => '',
+            'version_systeme_exploitation' => '',
+            'nombre_installations' => '',
+            'nombre_licences' => '',
+            'date_achat' => '',
+            'date_expiration' => '',
+            'description' => '',
+        ];
+    }
+
+    public function storeImportFile()
+    {
+        $this->validate([
+            'importFile' => 'required|file|mimes:csv,txt|max:10240',
+        ]);
+
+        try {
+            $filePath = $this->importFile->getRealPath();
+            
+            $this->csvHeaders = $this->getCsvHeaders($filePath);
+            $this->csvPreview = $this->getCsvPreview($filePath, 5);
+            
+            $this->showImportModal = false;
+            $this->showMappingModal = true;
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la lecture du fichier: ' . $e->getMessage());
+        }
+    }
+
+    public function processMappedData()
+    {
+        try {
+            $filePath = $this->importFile->getRealPath();
+            $data = $this->readCsvData($filePath);
+            
+            $this->importedData = [];
+            $this->importErrors = [];
+            $this->importSuccessCount = 0;
+            
+            foreach ($data as $index => $row) {
+                try {
+                    $mappedData = [];
+                    
+                    foreach ($this->fieldMapping as $field => $csvHeader) {
+                        if (!empty($csvHeader) && isset($row[$csvHeader])) {
+                            $mappedData[$field] = $row[$csvHeader];
+                        }
+                    }
+                    
+                    if (empty($mappedData['nom'])) {
+                        $this->importErrors[] = "Ligne " . ($index + 1) . ": Le nom du logiciel est obligatoire";
+                        continue;
+                    }
+                    
+                    if (isset($mappedData['nombre_installations'])) {
+                        $mappedData['nombre_installations'] = intval($mappedData['nombre_installations']);
+                    }
+                    
+                    if (isset($mappedData['nombre_licences'])) {
+                        $mappedData['nombre_licences'] = intval($mappedData['nombre_licences']);
+                    }
+                    
+                    $this->importedData[] = $mappedData;
+                    $this->importSuccessCount++;
+                    
+                } catch (\Exception $e) {
+                    $this->importErrors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
+                }
+            }
+            
+            $this->showMappingModal = false;
+            $this->showImportedData = true;
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors du traitement des données: ' . $e->getMessage());
+        }
+    }
+
+    public function saveImportedData()
+    {
+        try {
+            $importedCount = 0;
+            
+            foreach ($this->importedData as $data) {
+                try {
+                    LogicielModel::create([
+                        'nom' => $data['nom'],
+                        'editeur' => $data['editeur'] ?? null,
+                        'version_nom' => $data['version_nom'] ?? null,
+                        'version_systeme_exploitation' => $data['version_systeme_exploitation'] ?? null,
+                        'nombre_installations' => $data['nombre_installations'] ?? 0,
+                        'nombre_licences' => $data['nombre_licences'] ?? 0,
+                        'date_achat' => !empty($data['date_achat']) ? $data['date_achat'] : null,
+                        'date_expiration' => !empty($data['date_expiration']) ? $data['date_expiration'] : null,
+                        'description' => $data['description'] ?? null,
+                    ]);
+                    
+                    $importedCount++;
+                    
+                } catch (\Exception $e) {
+                    $this->importErrors[] = "Erreur lors de l'import de '{$data['nom']}': " . $e->getMessage();
+                }
+            }
+            
+            $this->cancelImport();
+            
+            if ($importedCount > 0) {
+                session()->flash('success', $importedCount . ' logiciel(s) importé(s) avec succès.');
+            }
+            
+            if (count($this->importErrors) > 0) {
+                session()->flash('warning', 'Import terminé avec ' . count($this->importErrors) . ' erreur(s).');
+            }
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de l\'importation: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadImportTemplate()
+    {
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="template_import_logiciels.csv"',
+        ];
+
+        $callback = function() {
+            $file = fopen('php://output', 'w');
+            
+            fputcsv($file, [
+                'Nom du logiciel',
+                'Éditeur',
+                'Version',
+                'Système d exploitation',
+                'Nombre installations',
+                'Nombre licences',
+                'Date achat',
+                'Date expiration',
+                'Description'
+            ]);
+            
+            fputcsv($file, [
+                'Microsoft Office',
+                'Microsoft',
+                '2021',
+                'Windows',
+                '50',
+                '100',
+                '2023-01-15',
+                '2024-01-15',
+                'Suite bureautique Microsoft'
+            ]);
+            
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    // Méthodes utilitaires pour la lecture CSV
+    private function getCsvHeaders($filePath)
+    {
+        $file = fopen($filePath, 'r');
+        $headers = fgetcsv($file);
+        fclose($file);
+        
+        return $headers ?: [];
+    }
+
+    private function getCsvPreview($filePath, $limit = 5)
+    {
+        $data = [];
+        $file = fopen($filePath, 'r');
+        $headers = fgetcsv($file);
+        
+        if (!$headers) {
+            fclose($file);
+            return [];
+        }
+        
+        $count = 0;
+        while (($row = fgetcsv($file)) !== FALSE && $count < $limit) {
+            $data[] = array_combine($headers, $row);
+            $count++;
+        }
+        
+        fclose($file);
+        return $data;
+    }
+
+    private function readCsvData($filePath)
+    {
+        $data = [];
+        $file = fopen($filePath, 'r');
+        $headers = fgetcsv($file);
+        
+        if (!$headers) {
+            fclose($file);
+            return [];
+        }
+        
+        while (($row = fgetcsv($file)) !== FALSE) {
+            $data[] = array_combine($headers, $row);
+        }
+        
+        fclose($file);
+        return $data;
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedLogiciels = $this->logiciels->pluck('id')->toArray();
+        } else {
+            $this->selectedLogiciels = [];
+        }
+    }
+
+    public function exportToCsv()
+    {
+        $logiciels = LogicielModel::all();
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="logiciels_export_' . date('Y-m-d') . '.csv"',
+        ];
+
+        $callback = function() use ($logiciels) {
+            $file = fopen('php://output', 'w');
+            
+            fputcsv($file, [
+                'Nom',
+                'Éditeur',
+                'Version',
+                'Système d\'exploitation',
+                'Installations',
+                'Licences',
+                'Statut',
+                'Date achat',
+                'Date expiration',
+                'Description'
+            ]);
+            
+            foreach ($logiciels as $logiciel) {
+                fputcsv($file, [
+                    $logiciel->nom,
+                    $logiciel->editeur,
+                    $logiciel->version_nom,
+                    $logiciel->version_systeme_exploitation,
+                    $logiciel->nombre_installations,
+                    $logiciel->nombre_licences,
+                    $logiciel->statut_licences,
+                    $logiciel->date_achat,
+                    $logiciel->date_expiration,
+                    $logiciel->description
+                ]);
+            }
+            
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

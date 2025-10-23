@@ -25,6 +25,8 @@ class Telephone extends Component
     public $statut = 'En service';
     public $emplacement_actuel;
     public $imei;
+    public $selectedTelephones = []; // Initialise toujours comme tableau
+
 
     // Propriétés pour les filtres et le tri
     public $search = '';
@@ -289,6 +291,10 @@ class Telephone extends Component
         $query->orderBy($this->sortField, $this->sortDirection);
 
         $telephones = $query->paginate($this->perPage);
+        $fabricantOptions = TelephoneModel::distinct()->pluck('marque')->filter()->toArray();
+        // Exemple si la colonne s'appelle 'marque'
+
+
 
         // Obtenir la liste des fabricants uniques pour le filtre
         $fabricants = TelephoneModel::select('marque')

@@ -29,6 +29,8 @@ class Peripherique extends Component
     public $filterType = '';
     public $sortField = 'nom';
     public $sortDirection = 'asc';
+    public $selectedPeripheriques = []; // ✅ tableau vide par défaut
+
 
     // Confirmation suppression
     public $confirmingDelete = null;
@@ -112,18 +114,25 @@ class Peripherique extends Component
     }
 
     public function render()
-    {
-        return view('livewire.equipement.peripherique', [
-            'peripheriques' => $this->peripheriques,
-            'totalPeripheriques' => $this->totalPeripheriques,
-            'enServiceCount' => $this->enServiceCount,
-            'enStockCount' => $this->enStockCount,
-            'horsServiceCount' => $this->horsServiceCount,
-            'enReparationCount' => $this->enReparationCount,
-            'sortField' => $this->sortField,
-            'sortDirection' => $this->sortDirection,
-        ]);
-    }
+{
+    $fabricants = PeripheriqueModel::distinct()->pluck('fabricant')->filter();
+
+    $stats = [
+        'total' => PeripheriqueModel::count(),
+        'en_service' => PeripheriqueModel::where('statut', 'En service')->count(),
+        'en_stock' => PeripheriqueModel::where('statut', 'En stock')->count(),
+        'en_maintenance' => PeripheriqueModel::where('statut', 'En maintenance')->count(),
+        'hors_service' => PeripheriqueModel::where('statut', 'Hors service')->count(),
+    ];
+
+    return view('livewire.equipement.peripherique', [
+        'peripheriques' => $this->peripheriques,
+        'sortField' => $this->sortField,
+        'sortDirection' => $this->sortDirection,
+        'fabricants' => $fabricants,
+        'stats' => $stats, // ✅ Ici c’est correct
+    ]);
+}
 
     public function showForm()
     {

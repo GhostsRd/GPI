@@ -31,6 +31,10 @@ class MaterielReseau extends Component
     public $type;
     public $modele;
     public $numero_serie;
+    public $selectedMateriels = [];
+    public $showDeleteModal = false;
+ // pour stocker l'ID du matériel à supprimer
+ // initialise comme tableau vide
     public function create()
     {
         $this->validate([
@@ -92,44 +96,57 @@ class MaterielReseau extends Component
         'Autre'
     ];
 
-    public function render()
-    {
-        $query = MaterielReseauModel::query();
+  public function render()
+{
+    $query = MaterielReseauModel::query();
 
-        // Appliquer les filtres
-        if ($this->search) {
-            $query->where(function ($q) {
-                $q->where('nom', 'like', '%' . $this->search . '%')
-                  ->orWhere('entite', 'like', '%' . $this->search . '%')
-                  ->orWhere('fabricant', 'like', '%' . $this->search . '%')
-                  ->orWhere('type', 'like', '%' . $this->search . '%')
-                  ->orWhere('modele', 'like', '%' . $this->search . '%')
-                  ->orWhere('numero_serie', 'like', '%' . $this->search . '%')
-                  ->orWhere('reseau_ip', 'like', '%' . $this->search . '%');
-            });
-        }
-
-        if ($this->statutFilter) {
-            $query->where('statut', $this->statutFilter);
-        }
-
-        if ($this->typeFilter) {
-            $query->where('type', $this->typeFilter);
-        }
-
-        $materiels = $query->orderBy($this->sortField, $this->sortDirection)
-                          ->paginate(15);
-
-        // Statistiques
-        $stats = [
-            'total' => MaterielReseauModel::count(),
-            'en_service' => MaterielReseauModel::where('statut', 'En service')->count(),
-            'en_maintenance' => MaterielReseauModel::where('statut', 'En maintenance')->count(),
-            'hors_service' => MaterielReseauModel::where('statut', 'Hors service')->count(),
-        ];
-
-        return view('livewire.equipement.materiel-reseau', compact('materiels', 'stats'));
+    // Appliquer les filtres
+    if ($this->search) {
+        $query->where(function ($q) {
+            $q->where('nom', 'like', '%' . $this->search . '%')
+              ->orWhere('entite', 'like', '%' . $this->search . '%')
+              ->orWhere('fabricant', 'like', '%' . $this->search . '%')
+              ->orWhere('type', 'like', '%' . $this->search . '%')
+              ->orWhere('modele', 'like', '%' . $this->search . '%')
+              ->orWhere('numero_serie', 'like', '%' . $this->search . '%')
+              ->orWhere('reseau_ip', 'like', '%' . $this->search . '%');
+        });
     }
+
+    if ($this->statutFilter) {
+        $query->where('statut', $this->statutFilter);
+    }
+
+    if ($this->typeFilter) {
+        $query->where('type', $this->typeFilter);
+    }
+
+    $materiels = $query->orderBy($this->sortField, $this->sortDirection)
+                       ->paginate(15);
+
+    // Statistiques
+    $stats = [
+        'total' => MaterielReseauModel::count(),
+        'en_service' => MaterielReseauModel::where('statut', 'En service')->count(),
+        'en_maintenance' => MaterielReseauModel::where('statut', 'En maintenance')->count(),
+        'hors_service' => MaterielReseauModel::where('statut', 'Hors service')->count(),
+    ];
+
+    // 🧩 Définir les options pour la vue
+    $fabricantOptions = ['Cisco', 'HP', 'Dell', 'MikroTik', 'Ubiquiti', 'Huawei', 'Autre'];
+    $entiteOptions = ['Informatique', 'Administration', 'Comptabilité', 'Commercial', 'Technique'];
+    $statuts = $this->statutOptions ?? [];
+
+    return view('livewire.equipement.materiel-reseau', [
+        'materiels' => $materiels,
+        'stats' => $stats,
+        'fabricantOptions' => $fabricantOptions,
+        'entiteOptions' => $entiteOptions,
+        'statuts' => $statuts,
+    ]);
+}
+
+
 
     public function sortBy($field)
     {

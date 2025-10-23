@@ -8,67 +8,104 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use Intervention\Image\Facades\Image; // Optionnel pour redimensionner
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'max:20'],
+            'poste' => ['required', 'string', 'max:255'],
+            'lieu_travail' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'], // 5MB max
+            'terms' => ['required', 'accepted'],
+        ], [
+            'profile_image.image' => 'Le fichier doit être une image',
+            'profile_image.mimes' => 'L\'image doit être au format JPEG, PNG, JPG, GIF ou WEBP',
+            'profile_image.max' => 'L\'image ne doit pas dépasser 5MB',
+            'terms.required' => 'Vous devez accepter les conditions d\'utilisation',
+            'terms.accepted' => 'Vous devez accepter les conditions d\'utilisation',
+        ]);
+    }
+
+    protected function create(array $data)
+    {
+        $profileImagePath = null;
+
+        // Gérer l'upload de l'image de profil
+        if (isset($data['profile_image']) && $data['profile_image'] instanceof UploadedFile) {
+            $profileImagePath = $this->storeProfileImage($data['profile_image']);
+        }
+
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'poste' => $data['poste'],
+            'lieu_travail' => $data['lieu_travail'],
+            'password' => Hash::make($data['password']),
+            'profile_image' => $profileImagePath,
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
+     * Stocker l'image de profil avec optimisation
      */
-    protected function create(array $data)
+    protected function storeProfileImage(UploadedFile $image)
     {
-       
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        // Générer un nom de fichier unique
+        $fileName = 'profile_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        
+        // Stocker l'image originale
+        $path = $image->storeAs('profiles', $fileName, 'public');
+        
+        // Optionnel : Redimensionner l'image pour optimiser l'espace
+        $this->optimizeProfileImage($path);
+        
+        return $path;
+    }
+
+    /**
+     * Optimiser l'image (optionnel - nécessite intervention/image)
+     */
+    protected function optimizeProfileImage($imagePath)
+    {
+        try {
+            // Redimensionner l'image à 500x500 pixels maximum
+            $image = Image::make(storage_path('app/public/' . $imagePath));
+            
+            $image->resize(500, 500, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            
+            // Compresser l'image
+            $image->save(storage_path('app/public/' . $imagePath), 80);
+            
+        } catch (\Exception $e) {
+            // En cas d'erreur, on garde l'image originale
+            \Log::error('Erreur optimisation image: ' . $e->getMessage());
+        }
+    }
+
+    protected function registered($request, $user)
+    {
+        // Actions après inscription réussie
+        session()->flash('success', 'Votre compte a été créé avec succès!');
     }
 }
