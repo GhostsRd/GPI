@@ -1632,17 +1632,22 @@
                             <option value="" class="border-0 ">-- Sélectionner --</option>
                             @foreach ($responsables as $user)
                                 <option class="border-0 shadow-sm" value="{{ $user->id }}">{{ $user->name }}
-                                    ({{ $user->poste }})</option>
+                                    ({{ $user->email }})</option>
                             @endforeach
                         </select>
                         @error('assigned_to')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
+                        
+                        <label class="form-label" style="margin:14px 0 8px">Message (facultatif)</label>
+                                <textarea  class="custom-textarea" name="message" id="message"
+                                    placeholder="D'autre chose a savoir ?"></textarea>
+                        
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button type="button" class="btn btn-success" wire:click="affecter">Valider</button>
+                        <button type="button" class="btn btn-secondary btn-light" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-success btn-light" wire:click="affecter">Valider</button>
                     </div>
                 </div>
             </div>

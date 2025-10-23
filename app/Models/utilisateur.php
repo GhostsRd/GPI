@@ -38,4 +38,8 @@ class utilisateur extends Authenticatable
     {
         return $this->hasMany(Commentaire::class, 'user_id');
     }
+
+    public function chat(){
+        return $this->belongsTo(Chat::class,'targetmsg_id');
+    }
 }

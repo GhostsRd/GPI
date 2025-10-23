@@ -11,7 +11,7 @@
 </head>
 <body style="background: var(--main-bg);">
 <!-- Container pour les notifications -->
-<div class="notification-container" id="notificationContainer"></div>
+<div class="" id="notificationContainer"></div>
 
 <div class="container-fluid py-4">
     <!-- Header -->
@@ -193,7 +193,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 
-<script>
+{{-- <script>
     // Livewire event listeners
     document.addEventListener('DOMContentLoaded', function() {
         // Écouter les événements Livewire
@@ -210,6 +210,6 @@
             }
         });
     });
-</script>
+</script> --}}
 </body>
 </html>

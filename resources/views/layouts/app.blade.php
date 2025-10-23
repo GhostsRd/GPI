@@ -190,12 +190,16 @@
                     <div class="nav-submenu">
                         <a href="{{ route('utilisateurDashboard') }}" class="submenu-item">
                             <i class="bi bi-circle"></i>
-                            Visualiser
+                            Administrateur
                         </a>
-                        <a href="{{ url('/utilisateurs/create') }}" class="submenu-item">
+                        <a href="{{ route('listeutilisateur') }}" class="submenu-item">
+                            <i class="bi bi-circle"></i>
+                            Utilisateurs
+                        </a>
+                        {{-- <a href="{{ url('/utilisateurs/create') }}" class="submenu-item">
                             <i class="bi bi-circle"></i>
                             Ajouter
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
