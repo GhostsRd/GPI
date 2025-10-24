@@ -7,7 +7,7 @@
 </head>
 <body>
     <h4>{{ $details["title"] }}</h4>
-     <p class="text-primary"> {{ $details["code"] }}</p>
+     <p class="text-primary"> {{ $details["message"] }}</p>
 
 </body>
 </html>

@@ -10,6 +10,8 @@ use App\Models\Commentaire;
 use App\Models\ordinateur;
 use App\Models\TelephoneTablette;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Momemail;
 
 class CheckoutView extends Component
 {   
@@ -39,6 +41,16 @@ class CheckoutView extends Component
         $chat->type = "user"; // type user(pour le sendeur) ou agent(pour  le recepteur)
         $chat->message = $this->message;
         $chat->save();
+
+
+        $data = [
+        'title' => 'Information',
+        'message' => 'Vous avez une nouvelle message sur GPI Pivot '. $this->message
+
+         ];
+
+        Mail::to('leoncerado@gmail.com')->send(new Momemail($data));
+
         $this->reset(['message']);
         $this->emit("refreshComponent");
 
