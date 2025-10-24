@@ -178,33 +178,23 @@ return [
     |
     */
     'extension_detector' => [
-        'xlsx'     => Excel::XLSX,
-        'xlsm'     => Excel::XLSX,
-        'xltx'     => Excel::XLSX,
-        'xltm'     => Excel::XLSX,
-        'xls'      => Excel::XLS,
-        'xlt'      => Excel::XLS,
-        'ods'      => Excel::ODS,
-        'ots'      => Excel::ODS,
-        'slk'      => Excel::SLK,
-        'xml'      => Excel::XML,
-        'gnumeric' => Excel::GNUMERIC,
-        'htm'      => Excel::HTML,
-        'html'     => Excel::HTML,
-        'csv'      => Excel::CSV,
-        'tsv'      => Excel::TSV,
-
-        /*
-        |--------------------------------------------------------------------------
-        | PDF Extension
-        |--------------------------------------------------------------------------
-        |
-        | Configure here which Pdf driver should be used by default.
-        | Available options: Excel::MPDF | Excel::TCPDF | Excel::DOMPDF
-        |
-        */
-        'pdf'      => Excel::DOMPDF,
-    ],
+    'xlsx'     => 0, // Excel::XLSX
+    'xlsm'     => 0,
+    'xltx'     => 0,
+    'xltm'     => 0,
+    'xls'      => 1, // Excel::XLS
+    'xlt'      => 1,
+    'ods'      => 3, // Excel::ODS
+    'ots'      => 3,
+    'slk'      => 4,
+    'xml'      => 5,
+    'gnumeric' => 6,
+    'htm'      => 7,
+    'html'     => 7,
+    'csv'      => 2,
+    'tsv'      => 8,
+    'pdf'      => 9, // Excel::DOMPDF
+],
 
     /*
     |--------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 <div>
 
-  <aside wire:ignore.self class="chat-popup " id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
+  <aside wire:ignore.self class="chat-popup bg-none" id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
     <header class="chat-header">
       <div > <img width="50" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('/images/avtar_1.png') }}" alt="Photo de profil">
         </div>
@@ -26,7 +26,7 @@
 
     <form wire:submit.prevent="EnvoyerMessage" class="p-2">
       <textarea id="input" wire:model="message" class="chat-input w-100" rows="1" placeholder="Écris un message..."></textarea> <br>
-      <button id="sendBtn" type="submit" class="btn btn-primary mt-0">Envoyer</button>
+      <button id="sendBtn" type="submit" class="btn btn-sm btn-primary mt-0">Envoyer</button>
     </form>
   </aside>
 
@@ -6213,6 +6213,18 @@
       </div>
     </div>
   </section>
+
+ <footer class=" parallax-footer  text-white py-4 mt-5">
+    <div class="container text-center">
+        <p class="mb-1">&copy; 2025 MonSite. Tous droits réservés.</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Accueil</a></li>
+            <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">À propos</a></li>
+            <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Contact</a></li>
+            <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Politique de confidentialité</a></li>
+        </ul>
+    </div>
+</footer>
 
 </div>
  <style>

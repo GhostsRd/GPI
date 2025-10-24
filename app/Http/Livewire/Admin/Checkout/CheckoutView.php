@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Admin\Checkout;
 
+use App\Models\chat;
 use App\Models\Checkout as CheckoutModel;
+use App\Models\utilisateur;
 use Livewire\Component;
 use App\Models\Commentaire;
 use App\Models\ordinateur;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class CheckoutView extends Component
 {   
      public $checkoutId;
+     public $message;
     public $currentStep;
      public $comments;
      public $selectedvalsdata;
@@ -26,6 +29,20 @@ class CheckoutView extends Component
         $this->affichestep = !$this->affichestep;
 
      }
+
+
+     public function EnvoyerMessage(Chat $chat){
+        //$chat = Chat::find($this->profilId);
+        $utilisateurs = utilisateur::findOrFail($this->checkouts->utilisateur->id);
+        $chat->targetmsg_id = $utilisateurs->matricule;
+        $chat->utilisateur_id = Auth::user()->id;
+        $chat->type = "user"; // type user(pour le sendeur) ou agent(pour  le recepteur)
+        $chat->message = $this->message;
+        $chat->save();
+        $this->reset(['message']);
+        $this->emit("refreshComponent");
+
+    }
 
       public function changercomment(){
         $this->affichecommentaire = !$this->affichecommentaire;
@@ -180,14 +197,26 @@ class CheckoutView extends Component
     public function render()
     {
          $this->modelstep(CheckoutModel::find($this->checkoutId));
+          $utilisateurs = utilisateur::findOrFail($this->checkouts->utilisateur->id);
         return view('livewire.admin.checkout.checkout-view',[
+            "utilisateurs" => $utilisateurs,
             "commentaires" => $this->checkouts
                 ->commentaires()
                 ->orderBy('created_at', 'desc')
                 ->paginate(2),
             "TelephoneTablettes" => TelephoneTablette::where("type","like","%" . $this->selectEquipement . "%")->get(),
             "ordinateurs" => ordinateur::where("nom","like","%" . $this->selectEquipement . "%")->get(),
-
+            "Chats" => chat::where(function ($query) {
+                    $userId = Auth::user()->id;
+                    $query->where('utilisateur_id', $userId)
+                        ->orWhere('targetmsg_id', $userId);
+                })
+                ->where(function ($query) use ($utilisateurs) {
+                    $query->where('targetmsg_id', $utilisateurs->matricule)
+                        ->orWhere('utilisateur_id', $utilisateurs->matricule);
+                })
+                ->orderBy('created_at', 'asc')
+                ->get()
         ]);
     }
 }

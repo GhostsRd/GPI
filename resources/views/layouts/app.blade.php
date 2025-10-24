@@ -113,17 +113,19 @@
 
 
     <!-- Modern Sidebar -->
-    <aside class="sidebar-modern shadow-sm border-0" style="z-index: 3000  !important" id="sidebarModern">
+    <aside class="sidebar-modern shadow  border-0" style="z-index: 1000  !important" id="sidebarModern">
 
 
 
         <nav class="sidebar-nav-modern">
-            <h6 class="nav-heading-modern">Visualisation</h6>
+            <div class="card border-0 m-0 mb-2 border-bottom rounded-0 border-secodondary border-5">
+                <label for="" class="fw-bold text-muted text-light">Gestion de Parc Informatique</label>
+            </div>
 
             <!-- Dashboard -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern" href="{{ url('/home') }}">
-                    <i class="nav-icon bi bi-speedometer2"></i>
+                    <i class="nav-icon bi bi-speedometer2 fs-6 text-secondary"></i>
                     <span>Tableau de bord</span>
                 </a>
             </div>
@@ -131,7 +133,7 @@
             <!-- Parc Informatique -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#parcCollapse">
-                    <i class="nav-icon bi bi-pc-display"></i>
+                    <i class="nav-icon bi bi-pc-display fs-6 text-secondary"></i>
                     <span>Parc Informatique</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
@@ -182,18 +184,18 @@
             <!-- Utilisateurs -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#usersCollapse">
-                    <i class="nav-icon bi bi-people"></i>
+                    <i class="nav-icon bi bi-people-fill fs-6 text-secondary"></i>
                     <span>Utilisateurs</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
                 <div class="collapse" id="usersCollapse">
                     <div class="nav-submenu">
                         <a href="{{ route('utilisateurDashboard') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
+                            <i class="bi bi-person-fill fs-6 text-secondary"></i>
                             Administrateur
                         </a>
                         <a href="{{ route('listeutilisateur') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
+                            <i class="bi bi-person-fill fs-6 text-secondary"></i>
                             Utilisateurs
                         </a>
                         {{-- <a href="{{ url('/utilisateurs/create') }}" class="submenu-item">
@@ -207,7 +209,7 @@
             <!-- Tickets -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#ticketsCollapse">
-                    <i class="nav-icon bi bi-ticket-perforated"></i>
+                    <i class="nav-icon bi bi-ticket-perforated-fill fs-6 text-secondary"></i>
                     <span>Ticket & Support</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
@@ -246,12 +248,38 @@
                 </div>
             </div>
 
-            <h6 class="nav-heading-modern">Paramètres</h6>
+        
+            <div class="nav-item-modern">
+                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#gestion">
+                     <i class="bi bi-folder-fill text-secondary fs-6"></i>
+                    <span>Gerer</span>
+                    <i class="nav-chevron bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse" id="gestion">
+                    <div class="nav-submenu">
+                        <a href="#" class="submenu-item">
+                            <i class=" bi bi-box-arrow-in-right"></i>
+                            Commentaire
+                        </a>
+                        <a href="#" class="submenu-item">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Chat
+                        </a>
+                        <a href="#" class="submenu-item">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Archive
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <h6 class=" border-bottom rounded-0 border-secodondary border-5"></h6>
 
             <!-- Paramètres -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#settingsCollapse">
-                    <i class="nav-icon bi bi-gear"></i>
+                    <i class="nav-icon bi bi-gear-fill fs-6 text-secondary"></i>
                     <span>Paramètres</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
@@ -269,7 +297,8 @@
                 </div>
             </div>
         </nav>
-    </aside>
+
+        </aside>
 
     <!-- Main Content -->
     <main class="main-content-modern">

@@ -652,10 +652,10 @@ h3 {
 }
 
 .nav-link-modern.active {
-    background: var(--gradient-primary);
-    color: white;
+     background: var(--sidebar-hover);
     transform: translateX(4px);
-    border: none; /* Bordure enlevée */
+    color: var(--primary);
+     border: none;
     box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
 }
 
@@ -1149,8 +1149,8 @@ h3 {
 .dropdown-item-modern:focus,
 .theme-toggle:focus,
 .sidebar-toggle:focus {
-    outline: 2px solid var(--primary);
-    outline-offset: 1px;
+    /* outline: 2px solid var(--primary);
+    outline-offset: 1px; */
 }
 
 /* RÉDUCTION DE LA TAILLE DES SLOTS À 80% */

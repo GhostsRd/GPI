@@ -112,6 +112,16 @@
             overflow: hidden;
         }
 
+        .parallax-footer {
+            background:
+                url("{{ 'images/footer.jpg' }}") no-repeat center fixed;
+            background-size: cover;
+            width: 100% !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+
         .parallax-section {
             background: no-repeat center fixed;
             background-size: cover;

@@ -16,10 +16,11 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.4",
-        "league/csv": "^9.27",
+        "league/csv": "*",
         "livewire/livewire": "^2.12",
-        "maatwebsite/excel": "^3.1",
-        "milon/barcode": "^10.0"
+        "maatwebsite/excel": "*",
+        "milon/barcode": "^10.0",
+        "phpoffice/phpspreadsheet": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

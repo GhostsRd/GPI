@@ -27,18 +27,7 @@
             </div>
 
 
-            
-            {{-- <div class="col-lg-2 col-3">
-                <div class="border rounded-2 shadow-sm py-1 rounded-2">
-                    Checkout
-                </div>
-            </div>
-            <div class="col-lg-2 col-3">
-                <div class="border rounded-2 shadow-sm py-1 rounded-2">
-                    Equipement
-                </div>
-            </div> --}}
-          
+       
         </div>
 
         </div>
@@ -145,9 +134,9 @@
       @endforeach
     </div>
 
-    <form wire:submit.prevent="EnvoyerMessage">
+    <form wire:submit.prevent="EnvoyerMessage" class="p-2">
       <textarea id="input" wire:model="message" class="chat-input" rows="1" placeholder="Écris un message..."></textarea>
-      <button id="sendBtn" type="submit" class="btn-send">Envoyer</button>
+      <button id="sendBtn" type="submit" class="btn border-0 btn-primary btn-sm">Envoyer</button>
     </form>
   </aside>
 
@@ -230,23 +219,6 @@
     }
   </style>
 
-<script>
-let soundEnabled = false;
-const audio = document.getElementById('notifSound');
-
-document.getElementById('enableSound').addEventListener('click', () => {
-    audio.play().then(() => {
-        soundEnabled = true;
-        audio.pause();
-        alert("✅ Sons activés !");
-    }).catch(err => console.warn("Autoplay bloqué :", err));
-});
-
-// Exemple d’événement Livewire
-window.addEventListener('playSound', () => {
-    if (soundEnabled) audio.play().catch(()=>{});
-});
-</script>
 
 
  <script>
@@ -290,3 +262,23 @@ window.addEventListener('playSound', () => {
     // accessibility: close with escape
     document.addEventListener('keydown', (e)=>{if(e.key === 'Escape' && popup.classList.contains('open')) closeChat();});
   </script>
+
+
+
+<script>
+let soundEnabled = false;
+const audio = document.getElementById('notifSound');
+
+document.getElementById('enableSound').addEventListener('click', () => {
+    audio.play().then(() => {
+        soundEnabled = true;
+        audio.pause();
+        alert("✅ Sons activés !");
+    }).catch(err => console.warn("Autoplay bloqué :", err));
+});
+
+// Exemple d’événement Livewire
+window.addEventListener('playSound', () => {
+    if (soundEnabled) audio.play().catch(()=>{});
+});
+</script>
