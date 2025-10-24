@@ -32,12 +32,12 @@ class RegisterController extends Controller
             'poste' => ['required', 'string', 'max:255'],
             'lieu_travail' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'], // 5MB max
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'], // 5MB max
             'terms' => ['required', 'accepted'],
         ], [
-            'profile_image.image' => 'Le fichier doit être une image',
-            'profile_image.mimes' => 'L\'image doit être au format JPEG, PNG, JPG, GIF ou WEBP',
-            'profile_image.max' => 'L\'image ne doit pas dépasser 5MB',
+            'photo.image' => 'Le fichier doit être une image',
+            'photo.mimes' => 'L\'image doit être au format JPEG, PNG, JPG, GIF ou WEBP',
+            'photo.max' => 'L\'image ne doit pas dépasser 5MB',
             'terms.required' => 'Vous devez accepter les conditions d\'utilisation',
             'terms.accepted' => 'Vous devez accepter les conditions d\'utilisation',
         ]);
