@@ -19,6 +19,7 @@ class CreateUtilisateursTable extends Migration
             $table->string('nom');
             $table->string('poste');
             $table->string('departement');
+            $table->string('photo')->nullable();
             $table->string('lieu_affectation');
             $table->string('profile_image')->nullable();
             $table->string('sexe');
