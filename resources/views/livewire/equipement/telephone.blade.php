@@ -85,7 +85,7 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label small fw-bold">Recherche</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-transparent">
@@ -114,32 +114,43 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-    <label class="form-label small fw-bold">Marque</label>
-    <select wire:model.live="filterFabricant" class="form-select form-select-sm">
-        <option value="">Toutes les marques</option>
-        @foreach($fabricants as $option)
-            <option value="{{ $option }}">{{ $option }}</option>
-        @endforeach
-    </select>
-</div>
-
-                    <div class="col-md-1">
-                        <button type="button" wire:click="resetFilters"
-                                class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
-                            <i class="fa fa-times"></i> Reset
+                        <label class="form-label small fw-bold">Marque</label>
+                        <select wire:model.live="filterFabricant" class="form-select form-select-sm">
+                            <option value="">Toutes les marques</option>
+                            @foreach($fabricants as $option)
+                                <option value="{{ $option }}">{{ $option }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="d-flex gap-2">
+                            <button type="button" wire:click="resetFilters"
+                                    class="btn btn-outline-secondary btn-sm flex-fill" title="Réinitialiser les filtres">
+                                <i class="fas fa-redo me-1"></i> RàZ
+                            </button>
+                            <button wire:click="openImportModal" class="btn btn-outline-info btn-sm flex-fill" title="Importer des équipements">
+                                <i class="fas fa-file-import me-1"></i> Importer
+                            </button>
+                            <button wire:click="exportToCsv" class="btn btn-outline-success btn-sm flex-fill" title="Exporter les équipements">
+                                <i class="fas fa-file-export me-1"></i> Exporter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions groupées -->
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button wire:click="create" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus me-1"></i> Nouvel Équipement
                         </button>
                     </div>
-                    <div class="col-md-1">
-                        <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les équipements sélectionnés"
-                            {{ empty($selectedTelephones) ? 'disabled' : '' }}>
-                            <i class="fas fa-trash"></i>
-                            ({{ count($selectedTelephones) }})
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button wire:click="exportToCsv" class="btn btn-success btn-sm w-100" title="Exporter les équipements">
-                            <i class="fas fa-file-export"></i>
-                            Exporter
+                    <div class="col-md-6 text-end">
+                        <button wire:click="confirmDeleteSelected" class="btn btn-danger btn-sm" 
+                                {{ empty($selectedTelephones) ? 'disabled' : '' }}>
+                            <i class="fas fa-trash me-1"></i>
+                            Supprimer ({{ count($selectedTelephones) }})
                         </button>
                     </div>
                 </div>
@@ -152,9 +163,6 @@
                 <div class="table-title">
                     Liste des Équipements ({{ $telephones->total() }})
                 </div>
-                <button wire:click="create" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus mr-2"></i>Nouvel Équipement
-                </button>
             </div>
 
             <div class="table-wrapper p-0 border-0 w-100 compact-mode">
@@ -279,11 +287,11 @@
                             <td>
                                 <div class="action-buttons">
                                     <button wire:click="edit({{ $telephone->id }})"
-                                            class="btn-action btn-edit">
+                                            class="btn-action btn-edit" title="Modifier">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button wire:click="confirmDelete({{ $telephone->id }})"
-                                            class="btn-action btn-delete">
+                                            class="btn-action btn-delete" title="Supprimer">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -436,6 +444,139 @@
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Modal d'import -->
+    @if($showImportModal)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Importer des Équipements</h5>
+                    <button type="button" wire:click="closeImportModal" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Fichier à importer (CSV, Excel)</label>
+                        <input type="file" wire:model="importFile" class="form-control" accept=".csv,.xlsx,.xls">
+                        @error('importFile') <span class="text-danger small">{{ $message }}</span> @enderror
+                    </div>
+                    
+                    @if($importFile)
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Fichier sélectionné : {{ $importFile->getClientOriginalName() }}
+                        </div>
+                    @endif
+
+                    @if(!empty($importErrors))
+                        <div class="alert alert-danger">
+                            <h6>Erreurs d'import :</h6>
+                            <ul class="mb-0">
+                                @foreach($importErrors as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    @if($importSuccessCount > 0)
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ $importSuccessCount }} équipement(s) importé(s) avec succès.
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="closeImportModal" class="btn btn-secondary">Annuler</button>
+                    <button type="button" wire:click="importTelephones" class="btn btn-primary" 
+                            {{ !$importFile ? 'disabled' : '' }}>
+                        <i class="fas fa-upload me-2"></i>
+                        {{ $isImporting ? 'Import en cours...' : 'Importer' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Modal de mapping -->
+    @if($showMappingModal)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mapping des colonnes</h5>
+                    <button type="button" wire:click="closeMappingModal" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Associez les colonnes de votre fichier aux champs du système.
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Champ système</th>
+                                    <th>Colonne du fichier</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($importMapping as $field => $mappedHeader)
+                                <tr>
+                                    <td class="fw-bold">{{ $field }}</td>
+                                    <td>
+                                        <select wire:model="importMapping.{{ $field }}" class="form-select form-select-sm">
+                                            <option value="">Non mappé</option>
+                                            @foreach($csvHeaders as $header)
+                                                <option value="{{ $header }}">{{ $header }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if(!empty($csvData))
+                    <div class="mt-4">
+                        <h6>Aperçu des données :</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        @foreach($csvHeaders as $header)
+                                        <th>{{ $header }}</th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($csvData as $row)
+                                    <tr>
+                                        @foreach($csvHeaders as $header)
+                                        <td>{{ $row[$header] ?? '' }}</td>
+                                        @endforeach
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="closeMappingModal" class="btn btn-secondary">Annuler</button>
+                    <button type="button" wire:click="processMappedData" class="btn btn-primary">
+                        <i class="fas fa-cogs me-2"></i>
+                        Traiter les données
+                    </button>
                 </div>
             </div>
         </div>
