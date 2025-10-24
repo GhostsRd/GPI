@@ -48,8 +48,8 @@ class RegisterController extends Controller
         $profileImagePath = null;
 
         // Gérer l'upload de l'image de profil
-        if (isset($data['profile_image']) && $data['profile_image'] instanceof UploadedFile) {
-            $profileImagePath = $this->storeProfileImage($data['profile_image']);
+        if (isset($data['photo']) && $data['photo'] instanceof UploadedFile) {
+            $profileImagePath = $this->storeProfileImage($data['photo']);
         }
 
         return User::create([
@@ -59,7 +59,7 @@ class RegisterController extends Controller
             'poste' => $data['poste'],
             'lieu_travail' => $data['lieu_travail'],
             'password' => Hash::make($data['password']),
-            'profile_image' => $profileImagePath,
+            'photo' => $profileImagePath,
         ]);
     }
 
