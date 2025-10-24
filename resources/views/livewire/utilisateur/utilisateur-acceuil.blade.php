@@ -6160,7 +6160,7 @@
           
               <img class=" rounded-pill mx-auto mb-3 "
                                 data-toggle="dropdown"
-                                src="https://ui-avatars.com/api/?name=Lina Rakoto"
+                                src="{{url('images/eliane.png')}}"
                                 alt="Profil" width="120" height="120" class="rounded-circle me-2">
             <h5 class="fw-bold mb-0">Lina Rakoto</h5>
             <p class="text-muted">Directeur Support Administratif</p>

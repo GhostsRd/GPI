@@ -103,11 +103,7 @@
             </div>
             
         </div>
-        <div class=" card col-lg-3 mt-2 bg-white d-flex justify-content-end">
-            <h3>Notification</h3>
-            <p>Voici votre premier notification</p>
-        </div>
-
+   
 
 
 <aside wire:ignore.self class="chat-popup" id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
