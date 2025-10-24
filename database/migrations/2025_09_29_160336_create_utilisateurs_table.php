@@ -21,7 +21,7 @@ class CreateUtilisateursTable extends Migration
             $table->string('departement');
             $table->string('photo')->nullable();
             $table->string('lieu_affectation');
-            $table->string('profile_image')->nullable();
+            $table->string('photo')->nullable();
             $table->string('sexe');
             $table->date('date_naissance');
             $table->date('date_embauche');

@@ -347,6 +347,19 @@ function previewImage(input) {
                             @enderror
                         </div>
 
+                        <div class="form-row">
+                        <div class="form-group">
+                            <div class="input-container">
+                                <i class="fas fa-briefcase"></i>
+                                <input id="poste" type="text" placeholder="Matricule"
+                                       class="form-control @error('poste') is-invalid @enderror"
+                                       name="poste" value="{{ old('matricule') }}" required>
+                            </div>
+                            @error('poste')
+                                <span class="error-message">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                         <div class="form-group">
                             <div class="input-container">
                                 <i class="fas fa-building"></i>
