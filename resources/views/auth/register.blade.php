@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Gestion de Parc & Support</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -672,6 +674,22 @@
             <div class="card-header">S'inscrire</div>
 
             <div class="card-body">
+                @if ($errors->any())
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        <ul style="margin: 0; padding-left: 20px;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                     @csrf
 
@@ -683,10 +701,10 @@
                                 <i class="fas fa-user-plus"></i>
                             </div>
                             <div class="image-upload-input">
-                                <input type="file" id="profile_image" name="profile_image" accept="image/*" class="form-control">
+                                <input type="file" id="photo" name="photo" accept="image/*" class="form-control">
                             </div>
                         </div>
-                        @error('profile_image')
+                        @error('photo')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -908,7 +926,7 @@
     });
 
     // Gestion de l'upload d'image
-    const profileImageInput = document.getElementById('profile_image');
+    const profileImageInput = document.getElementById('photo');
     const imagePreview = document.getElementById('imagePreview');
 
     profileImageInput.addEventListener('change', function() {
