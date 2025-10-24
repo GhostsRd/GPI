@@ -6,6 +6,12 @@
             <h1 class="h4 fw-bold text-dark mb-0">
                 <i class="fas fa-print me-2 text-primary"></i> Gestion des Imprimantes
             </h1>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary btn-sm" wire:click="toggleStats">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    {{ $showStats ? 'Masquer' : 'Afficher' }} stats
+                </button>
+            </div>
         </div>
 
         <!-- Message flash -->
@@ -16,13 +22,35 @@
             </div>
         @endif
 
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+
+        @if (session()->has('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> {{ session('warning') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+
         <!-- Statistiques -->
+        @if($showStats)
         <div class="row mb-4">
             <div class="col-xl-2 col-md-4 mb-3">
                 <div class="card stats-widget border-0 shadow-sm dark-card">
                     <div class="card-body d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h3 class="stats-number text-primary mb-1">{{ $stats['total'] }}</h3>
+                            <h3 class="stats-number text-primary mb-1">{{ $stats['total'] ?? 0 }}</h3>
                             <p class="stats-label text-black mb-0">Total</p>
                         </div>
                         <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
@@ -36,7 +64,7 @@
                 <div class="card stats-widget border-0 shadow-sm dark-card">
                     <div class="card-body d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h3 class="stats-number text-success mb-1">{{ $stats['en_service'] }}</h3>
+                            <h3 class="stats-number text-success mb-1">{{ $stats['en_service'] ?? 0 }}</h3>
                             <p class="stats-label text-black mb-0">En service</p>
                         </div>
                         <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
@@ -50,7 +78,7 @@
                 <div class="card stats-widget border-0 shadow-sm dark-card">
                     <div class="card-body d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h3 class="stats-number text-warning mb-1">{{ $stats['en_maintenance'] }}</h3>
+                            <h3 class="stats-number text-warning mb-1">{{ $stats['en_maintenance'] ?? 0 }}</h3>
                             <p class="stats-label text-black mb-0">En maintenance</p>
                         </div>
                         <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
@@ -64,7 +92,7 @@
                 <div class="card stats-widget border-0 shadow-sm dark-card">
                     <div class="card-body d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h3 class="stats-number text-info mb-1">{{ $stats['en_stock'] }}</h3>
+                            <h3 class="stats-number text-info mb-1">{{ $stats['en_stock'] ?? 0 }}</h3>
                             <p class="stats-label text-black mb-0">En stock</p>
                         </div>
                         <div class="avatar-sm rounded-circle bg-info bg-opacity-25 text-info d-flex align-items-center justify-content-center">
@@ -78,7 +106,7 @@
                 <div class="card stats-widget border-0 shadow-sm dark-card">
                     <div class="card-body d-flex align-items-center">
                         <div class="flex-grow-1">
-                            <h3 class="stats-number text-danger mb-1">{{ $stats['hors_service'] }}</h3>
+                            <h3 class="stats-number text-danger mb-1">{{ $stats['hors_service'] ?? 0 }}</h3>
                             <p class="stats-label text-black mb-0">Hors service</p>
                         </div>
                         <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
@@ -88,6 +116,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- Filtres avec boutons Import/Export -->
         <div class="card border-0 shadow-sm mb-4">
@@ -106,30 +135,30 @@
 
                     <div class="col-md-2">
                         <label class="form-label small fw-bold">Statut</label>
-                        <select wire:model.live="filterStatut" class="form-select form-select-sm">
+                        <select wire:model.live="statut" class="form-select form-select-sm">
                             <option value="">Tous</option>
-                            @foreach($statuts as $statut)
-                                <option value="{{ $statut }}">{{ $statut }}</option>
+                            @foreach($statuts as $statutOption)
+                                <option value="{{ $statutOption }}">{{ $statutOption }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="col-md-2">
                         <label class="form-label small fw-bold">Fabricant</label>
-                        <select wire:model.live="filterFabricant" class="form-select form-select-sm">
+                        <select wire:model.live="fabricant" class="form-select form-select-sm">
                             <option value="">Tous</option>
-                            @foreach($fabricants as $fabricant)
-                                <option value="{{ $fabricant }}">{{ $fabricant }}</option>
+                            @foreach($fabricants as $fabricantOption)
+                                <option value="{{ $fabricantOption }}">{{ $fabricantOption }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="col-md-2">
                         <label class="form-label small fw-bold">Entité</label>
-                        <select wire:model.live="filterEntite" class="form-select form-select-sm">
+                        <select wire:model.live="entite" class="form-select form-select-sm">
                             <option value="">Toutes</option>
-                            @foreach($entites as $entite)
-                                <option value="{{ $entite }}">{{ $entite }}</option>
+                            @foreach($entites as $entiteOption)
+                                <option value="{{ $entiteOption }}">{{ $entiteOption }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -152,6 +181,33 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Sélection multiple -->
+                @if(count($selectedImprimantes) > 0)
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="alert alert-info py-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    {{ count($selectedImprimantes) }} imprimante(s) sélectionnée(s)
+                                </span>
+                                <div class="d-flex gap-2">
+                                    <button wire:click="deleteSelected" 
+                                            wire:confirm="Êtes-vous sûr de vouloir supprimer les {{ count($selectedImprimantes) }} imprimantes sélectionnées ?"
+                                            class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash me-1"></i> Supprimer
+                                    </button>
+                                    <button wire:click="$set('selectedImprimantes', [])" 
+                                            class="btn btn-outline-secondary btn-sm">
+                                        <i class="fas fa-times me-1"></i> Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -162,6 +218,13 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                         <tr>
+                            <th width="50">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" 
+                                           wire:model="selectAll"
+                                           id="selectAll">
+                                </div>
+                            </th>
                             <th wire:click="sortBy('nom')" class="text-uppercase small fw-bold cursor-pointer">
                                 Nom
                                 @if ($sortField === 'nom')
@@ -206,6 +269,14 @@
                         <tbody>
                         @forelse($imprimantes as $imprimante)
                             <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" 
+                                               value="{{ $imprimante->id }}"
+                                               wire:model="selectedImprimantes"
+                                               id="imprimante_{{ $imprimante->id }}">
+                                    </div>
+                                </td>
                                 <td class="fw-semibold">{{ $imprimante->nom }}</td>
                                 <td>{{ $imprimante->entite }}</td>
                                 <td>
@@ -218,8 +289,8 @@
                                         ];
                                     @endphp
                                     <span class="{{ $statusClasses[$imprimante->statut] ?? 'badge bg-secondary' }}">
-                                {{ $imprimante->statut }}
-                            </span>
+                                        {{ $imprimante->statut }}
+                                    </span>
                                 </td>
                                 <td>{{ $imprimante->fabricant }}</td>
                                 <td class="font-monospace">{{ $imprimante->reseau_ip }}</td>
@@ -242,6 +313,12 @@
                                                 title="Modifier">
                                             <i class="fas fa-edit"></i>
                                         </button>
+                                        <!-- Bouton Fichiers -->
+                                        <button wire:click="openFileModal({{ $imprimante->id }})"
+                                                class="btn btn-sm btn-outline-secondary"
+                                                title="Fichiers attachés">
+                                            <i class="fas fa-paperclip"></i>
+                                        </button>
                                         <!-- Bouton Supprimer -->
                                         <button wire:click="confirmDelete({{ $imprimante->id }})"
                                                 class="btn btn-sm btn-outline-danger"
@@ -253,7 +330,10 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="11" class="text-center text-muted py-3">Aucune imprimante trouvée.</td>
+                                <td colspan="12" class="text-center text-muted py-3">
+                                    <i class="fas fa-print fa-2x mb-3 d-block"></i>
+                                    Aucune imprimante trouvée.
+                                </td>
                             </tr>
                         @endforelse
                         </tbody>
@@ -261,6 +341,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Pagination -->
         <div class="mt-3">
             {{ $imprimantes->links() }}
@@ -292,29 +373,36 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="entite" class="form-label">Entité</label>
-                                        <input type="text" class="form-control @error('entite') is-invalid @enderror"
-                                               id="entite" wire:model="entite" placeholder="Service, département...">
-                                        @error('entite') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        <label for="entite_form" class="form-label">Entité</label>
+                                        <input type="text" class="form-control @error('entite_form') is-invalid @enderror"
+                                               id="entite_form" wire:model="entite_form" placeholder="Service, département...">
+                                        @error('entite_form') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="statut" class="form-label">Statut *</label>
-                                        <select class="form-select @error('statut') is-invalid @enderror"
-                                                id="statut" wire:model="statut" required>
+                                        <label for="statut_form" class="form-label">Statut *</label>
+                                        <select class="form-select @error('statut_form') is-invalid @enderror"
+                                                id="statut_form" wire:model="statut_form" required>
                                             <option value="">Sélectionner un statut</option>
                                             @foreach($statuts as $statutOption)
                                                 <option value="{{ $statutOption }}">{{ $statutOption }}</option>
                                             @endforeach
                                         </select>
-                                        @error('statut') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        @error('statut_form') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="fabricant" class="form-label">Fabricant</label>
-                                        <input type="text" class="form-control @error('fabricant') is-invalid @enderror"
-                                               id="fabricant" wire:model="fabricant" placeholder="HP, Canon, Epson...">
-                                        @error('fabricant') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        <label for="fabricant_form" class="form-label">Fabricant</label>
+                                        <input type="text" class="form-control @error('fabricant_form') is-invalid @enderror"
+                                               id="fabricant_form" wire:model="fabricant_form" placeholder="HP, Canon, Epson...">
+                                        @error('fabricant_form') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="numero_serie" class="form-label">Numéro de série</label>
+                                        <input type="text" class="form-control @error('numero_serie') is-invalid @enderror"
+                                               id="numero_serie" wire:model="numero_serie">
+                                        @error('numero_serie') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
 
@@ -329,8 +417,13 @@
 
                                     <div class="mb-3">
                                         <label for="type" class="form-label">Type</label>
-                                        <input type="text" class="form-control @error('type') is-invalid @enderror"
-                                               id="type" wire:model="type" placeholder="Laser, Jet d'encre...">
+                                        <select class="form-select @error('type') is-invalid @enderror"
+                                                id="type" wire:model="type">
+                                            <option value="">Sélectionner un type</option>
+                                            @foreach($types as $typeOption)
+                                                <option value="{{ $typeOption }}">{{ $typeOption }}</option>
+                                            @endforeach
+                                        </select>
                                         @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
 
@@ -342,17 +435,18 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="numero_serie" class="form-label">Numéro de série</label>
-                                        <input type="text" class="form-control @error('numero_serie') is-invalid @enderror"
-                                               id="numero_serie" wire:model="numero_serie">
-                                        @error('numero_serie') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                    </div>
-
-                                    <div class="mb-3">
                                         <label for="lieu" class="form-label">Lieu</label>
                                         <input type="text" class="form-control @error('lieu') is-invalid @enderror"
                                                id="lieu" wire:model="lieu" placeholder="Bureau, étage...">
                                         @error('lieu') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="commentaires" class="form-label">Commentaires</label>
+                                        <textarea class="form-control @error('commentaires') is-invalid @enderror"
+                                                  id="commentaires" wire:model="commentaires" rows="3"
+                                                  placeholder="Notes supplémentaires..."></textarea>
+                                        @error('commentaires') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +454,11 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeModal">Annuler</button>
                             <button type="submit" class="btn btn-primary">
-                                {{ $isEditing ? 'Modifier' : 'Créer' }}
+                                <span wire:loading.remove>{{ $isEditing ? 'Modifier' : 'Créer' }}</span>
+                                <span wire:loading>
+                                    <i class="fas fa-spinner fa-spin me-1"></i>
+                                    {{ $isEditing ? 'Modification...' : 'Création...' }}
+                                </span>
                             </button>
                         </div>
                     </form>
@@ -405,13 +503,18 @@
                                             ];
                                         @endphp
                                         <span class="{{ $statusClasses[$selectedImprimante->statut] ?? 'badge bg-secondary' }}">
-                                    {{ $selectedImprimante->statut }}
-                                </span>
+                                            {{ $selectedImprimante->statut }}
+                                        </span>
                                     </div>
 
                                     <div class="mb-3">
                                         <h6 class="text-muted mb-1">Fabricant</h6>
                                         <p class="fw-semibold">{{ $selectedImprimante->fabricant ?? 'Non spécifié' }}</p>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <h6 class="text-muted mb-1">Numéro de série</h6>
+                                        <p class="fw-semibold font-monospace">{{ $selectedImprimante->numero_serie ?? 'Non renseigné' }}</p>
                                     </div>
                                 </div>
 
@@ -432,14 +535,16 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <h6 class="text-muted mb-1">Numéro de série</h6>
-                                        <p class="fw-semibold font-monospace">{{ $selectedImprimante->numero_serie ?? 'Non renseigné' }}</p>
-                                    </div>
-
-                                    <div class="mb-3">
                                         <h6 class="text-muted mb-1">Lieu</h6>
                                         <p class="fw-semibold">{{ $selectedImprimante->lieu ?? 'Non spécifié' }}</p>
                                     </div>
+
+                                    @if($selectedImprimante->commentaires)
+                                    <div class="mb-3">
+                                        <h6 class="text-muted mb-1">Commentaires</h6>
+                                        <p class="fw-semibold">{{ $selectedImprimante->commentaires }}</p>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -477,7 +582,7 @@
     @endif
 
     <!-- Modal de confirmation de suppression -->
-    @if($showDeleteModal)
+    @if($confirmingDelete)
         <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5)" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" wire:ignore.self>
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -491,7 +596,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="closeDeleteModal">Annuler</button>
-                        <button type="button" class="btn btn-danger" wire:click="delete">
+                        <button type="button" class="btn btn-danger" wire:click="deleteConfirmed">
                             <i class="fas fa-trash me-2"></i>Supprimer
                         </button>
                     </div>
@@ -543,12 +648,197 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="closeImportModal">Annuler</button>
-                        <button type="button" class="btn btn-info" wire:click="importImprimantes" {{ !$importFile ? 'disabled' : '' }}>
-                            <i class="fas fa-file-import me-1"></i>Importer
+                        <button type="button" class="btn btn-info" wire:click="importImprimantes" 
+                                wire:loading.attr="disabled" {{ !$importFile ? 'disabled' : '' }}>
+                            <i class="fas fa-file-import me-1"></i>
+                            <span wire:loading.remove>Importer</span>
+                            <span wire:loading>Import en cours...</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     @endif
+
+    <!-- Modal de mapping pour l'import -->
+    @if($showMappingModal)
+        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5)" tabindex="-1" aria-labelledby="mappingModalLabel" aria-hidden="true" wire:ignore.self>
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title" id="mappingModalLabel">
+                            <i class="fas fa-columns me-2"></i>Mapping des Colonnes
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" wire:click="closeMappingModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Associez les colonnes de votre fichier aux champs de la base de données.
+                            <strong class="d-block mt-1">La colonne "Nom" est obligatoire.</strong>
+                        </div>
+
+                        @if($csvHeaders)
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Champ de la base</th>
+                                        <th>Colonne dans le fichier</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($fieldMapping as $field => $mappedHeader)
+                                    <tr>
+                                        <td class="fw-semibold">
+                                            <span class="badge {{ $field === 'nom' ? 'bg-danger' : 'bg-secondary' }} me-2">
+                                                {{ $field === 'nom' ? 'Obligatoire' : 'Optionnel' }}
+                                            </span>
+                                            {{ $field }}
+                                        </td>
+                                        <td>
+                                            <select class="form-select form-select-sm" wire:model="fieldMapping.{{ $field }}">
+                                                <option value="">-- Non mappé --</option>
+                                                @foreach($csvHeaders as $header)
+                                                <option value="{{ $header }}">
+                                                    {{ $header }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        @endif
+
+                        @if($importErrors)
+                        <div class="alert alert-danger mt-3">
+                            <h6 class="alert-heading">Erreurs détectées</h6>
+                            <ul class="mb-0 small">
+                                @foreach($importErrors as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" wire:click="closeMappingModal">Annuler</button>
+                        <button type="button" class="btn btn-primary" wire:click="processMappedData" 
+                                wire:loading.attr="disabled" {{ empty($fieldMapping['nom']) ? 'disabled' : '' }}>
+                            <i class="fas fa-file-import me-1"></i>
+                            <span wire:loading.remove>Traiter les données</span>
+                            <span wire:loading>Traitement en cours...</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal de gestion des fichiers -->
+    @if($showFileModal)
+        <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5)" tabindex="-1" aria-labelledby="fileModalLabel" aria-hidden="true" wire:ignore.self>
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-secondary text-white">
+                        <h5 class="modal-title" id="fileModalLabel">
+                            <i class="fas fa-paperclip me-2"></i>Fichiers attachés
+                            @if($selectedImprimanteForFiles)
+                                - {{ $selectedImprimanteForFiles->nom }}
+                            @endif
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" wire:click="closeFileModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Upload de fichiers -->
+                        <div class="mb-4">
+                            <label class="form-label">Ajouter des fichiers</label>
+                            <input type="file" wire:model="uploadedFiles" class="form-control" multiple
+                                   accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.txt">
+                            <div class="form-text">Formats supportés: images, PDF, Word, Excel, texte. Max 10MB par fichier.</div>
+                            
+                            @if(count($uploadedFiles) > 0)
+                            <div class="mt-2">
+                                <button wire:click="uploadFiles" class="btn btn-success btn-sm">
+                                    <i class="fas fa-upload me-1"></i>Uploader {{ count($uploadedFiles) }} fichier(s)
+                                </button>
+                            </div>
+                            @endif
+                        </div>
+
+                        <!-- Liste des fichiers -->
+                        <div>
+                            <h6 class="mb-3">Fichiers attachés ({{ count($attachedFiles) }})</h6>
+                            
+                            @if(count($attachedFiles) > 0)
+                            <div class="list-group">
+                                @foreach($attachedFiles as $file)
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-file me-2 text-muted"></i>
+                                        <span class="fw-semibold">{{ $file['name'] }}</span>
+                                        <small class="text-muted ms-2">({{ $file['size'] }})</small>
+                                        <br>
+                                        <small class="text-muted">Ajouté le {{ $file['date'] }}</small>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ $file['url'] }}" target="_blank" 
+                                           class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                        <button wire:click="deleteFile('{{ $file['path'] }}')"
+                                                wire:confirm="Êtes-vous sûr de vouloir supprimer ce fichier ?"
+                                                class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @else
+                            <div class="text-center py-4 text-muted">
+                                <i class="fas fa-folder-open fa-2x mb-2"></i>
+                                <p>Aucun fichier attaché</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" wire:click="closeFileModal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
+
+@push('scripts')
+<script>
+    // Fermer les modals avec la touche Echap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            @this.dispatch('closeModal');
+            @this.dispatch('closeDetailsModal');
+            @this.dispatch('closeDeleteModal');
+            @this.dispatch('closeImportModal');
+            @this.dispatch('closeMappingModal');
+            @this.dispatch('closeFileModal');
+        }
+    });
+
+    // Gérer les clics en dehors des modals
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+            @this.dispatch('closeModal');
+            @this.dispatch('closeDetailsModal');
+            @this.dispatch('closeDeleteModal');
+            @this.dispatch('closeImportModal');
+            @this.dispatch('closeMappingModal');
+            @this.dispatch('closeFileModal');
+        }
+    });
+</script>
+@endpush

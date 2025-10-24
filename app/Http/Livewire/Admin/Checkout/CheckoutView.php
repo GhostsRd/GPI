@@ -53,6 +53,7 @@ class CheckoutView extends Component
 
         $this->reset(['message']);
         $this->emit("refreshComponent");
+        
 
     }
 
@@ -81,7 +82,7 @@ class CheckoutView extends Component
         $this->currentStep = 4;
         $this->emitSelf('refreshComponent');
         $this->emitSelf('refreshComponent');
-
+        return redirect()->back()->with('success', 'Vous ete sur!');
     }
   
     public $progress;

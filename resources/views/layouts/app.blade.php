@@ -238,11 +238,20 @@
                     <div class="nav-submenu">
                         <a href="{{ route('checkoutadmin') }}" class="submenu-item">
                             <i class=" bi bi-box-arrow-in-right"></i>
-                            Check-in
+                            Out/ In
                         </a>
                         <a href="{{ url('??') }}" class="submenu-item">
                             <i class="bi bi-box-arrow-right"></i>
-                            Check-out
+                            Reservationd equipement
+                        </a>
+
+                        <a href="{{ url('??') }}" class="submenu-item">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Reservation d'equipement
+                        </a>
+                        <a href="{{ url('??') }}" class="submenu-item">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Rapport et statistique
                         </a>
                     </div>
                 </div>
@@ -274,8 +283,28 @@
             </div>
 
 
-            <h6 class=" border-bottom rounded-0 border-secodondary border-5"></h6>
+            {{-- <h6 class=" border-bottom rounded-0 border-secodondary border-5"></h6> --}}
+             <div class="nav-item-modern">
+                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#settingsCollapse">
+                    <i class="nav-icon bi bi-gear-fill fs-6 text-secondary"></i>
+                    <span>Carte SIM</span>
+                    <i class="nav-chevron bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse" id="settingsCollapse">
+                    <div class="nav-submenu">
+                        <a href="{{ url('/produit') }}" class="submenu-item">
+                            <i class="bi bi-circle"></i>
+                            Flotte
+                        </a>
+                        <a href="{{ url('/parametres') }}" class="submenu-item">
+                            <i class="bi bi-circle"></i>
+                            --
+                        </a>
+                    </div>
+                </div>
+            </div>
 
+            <h6 class=" border-bottom rounded-0 border-secodondary border-5"></h6>
             <!-- Paramètres -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#settingsCollapse">
@@ -309,6 +338,9 @@
 @livewireScripts
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- SweetAlert2 CSS & JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
    AOS.init({ once: true });
 

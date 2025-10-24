@@ -98,6 +98,37 @@
             margin-top: 5px;
         }
 
+        /* Styles pour les messages d'erreur */
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            color: #0f5132;
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
         @media (max-width: 768px) {
             .image-upload-wrapper {
                 flex-direction: column;
@@ -125,7 +156,7 @@
 <div class="container">
     <div class="hero-section">
         <div class="app-logo">
-            <img src="images/logoPivot.png" alt="Logo IT Support Pivot" style="width: 60px; height: auto;">
+            <img src="{{ asset('images/logoPivot.png') }}" alt="Logo IT Support Pivot" style="width: 60px; height: auto;">
             <h1>IT Support Pivot</h1>
         </div>
 
@@ -172,56 +203,107 @@
             <div class="card-header">Inscription Utilisateur</div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('userinscription') }}" enctype="multipart/form-data">
+                <!-- Messages de succès/erreur -->
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('userinscription') }}" enctype="multipart/form-data" id="registrationForm">
                     @csrf
 
                     <!-- Section Upload Photo de Profil -->
                     <div class="image-upload-container">
-                        <label class="image-upload-label">Photo de profil</label>
-                        <div class="image-upload-wrapper">
-                            <div class="image-preview" id="imagePreview">
-                                <i class="fas fa-user-plus"></i>
-                            </div>
-                            <div class="image-upload-input">
-                                <input type="file" id="profile_image" name="profile_image" accept="image/*" class="form-control">
-                                <small>
-                                    Formats acceptés: JPEG, PNG, JPG, GIF • Max: 2MB
-                                </small>
-                            </div>
-                        </div>
-                        @error('profile_image')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+    <label class="image-upload-label">Photo de profil</label>
+    <div class="image-upload-wrapper">
+        <div class="image-preview" id="imagePreview" onclick="document.getElementById('photo').click()">
+            <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="image-upload-input">
+            <input type="file" id="photo" name="photo" accept="image/*" 
+                   onchange="previewImage(this)" 
+                   class="form-control @error('photo') is-invalid @enderror">
+            <small>Formats acceptés: JPEG, PNG, JPG, GIF • Max: 2MB</small>
+            @error('photo')
+                <span class="error-message">{{ $message }}</span>
+            @enderror
+        </div>
+    </div>
+</div>
 
+<script>
+function previewImage(input) {
+    const preview = document.getElementById('imagePreview');
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        
+        // Validation
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Fichier trop volumineux (max 2MB)');
+            input.value = '';
+            return;
+        }
+        
+        if (!file.type.match('image.*')) {
+            alert('Veuillez sélectionner une image');
+            input.value = '';
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            preview.style.borderColor = '#28a745';
+        }
+        
+        reader.readAsDataURL(file);
+    }
+}
+</script>
                     <div class="form-row">
                         <div class="form-group">
                             <div class="input-container">
                                 <i class="fas fa-user"></i>
-                                <input id="name" type="text" wire:model='nom' placeholder="Nom complet"
-                                       class="form-control @error('name') is-invalid @enderror"
-                                       name="nom" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="nom" type="text" placeholder="Nom complet"
+                                       class="form-control @error('nom') is-invalid @enderror"
+                                       name="nom" value="{{ old('nom') }}" required autocomplete="name" autofocus>
                             </div>
-                            @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                            @error('nom')
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
                             <div class="input-container">
                                 <i class="fas fa-envelope"></i>
-                                <input id="email" type="email" wire:model='email' placeholder="Adresse e-mail"
+                                <input id="email" type="email" placeholder="Adresse e-mail"
                                        class="form-control @error('email') is-invalid @enderror"
                                        name="email" value="{{ old('email') }}" required autocomplete="email">
                             </div>
                             @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -230,28 +312,24 @@
                         <div class="form-group">
                             <div class="input-container">
                                 <i class="fas fa-phone"></i>
-                                <input id="phone" type="tel" placeholder="Numéro de téléphone"
-                                       class="form-control @error('phone') is-invalid @enderror"
-                                       name="telephone" value="{{ old('phone') }}" required autocomplete="tel">
+                                <input id="telephone" type="tel" placeholder="Numéro de téléphone"
+                                       class="form-control @error('telephone') is-invalid @enderror"
+                                       name="telephone" value="{{ old('telephone') }}" required autocomplete="tel">
                             </div>
-                            @error('phone')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                            @error('telephone')
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
                             <div class="input-container">
-                                <i class="fas fa-id-card"></i>
-                                <input id="matricule" wire:model="matricule" type="text" placeholder="Matricule"
-                                       class="form-control @error('matricule') is-invalid @enderror"
-                                       name="matricule" value="{{ old('matricule') }}" required>
+                                <i class="fas fa-calendar-day"></i>
+                                <input id="date_naissance" type="date"
+                                       class="form-control @error('date_naissance') is-invalid @enderror"
+                                       name="date_naissance" value="{{ old('date_naissance') }}" required>
                             </div>
-                            @error('matricule')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                            @error('date_naissance')
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -265,9 +343,7 @@
                                        name="poste" value="{{ old('poste') }}" required>
                             </div>
                             @error('poste')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -276,17 +352,15 @@
                                 <i class="fas fa-building"></i>
                                 <select id="departement" class="form-control @error('departement') is-invalid @enderror" name="departement" required>
                                     <option value="">Sélectionnez votre département</option>
-                                    <option value="IT">IT & Technologies</option>
-                                    <option value="RH">Ressources Humaines</option>
-                                    <option value="Finance">Finance & Comptabilité</option>
-                                    <option value="Medicale">Medicale</option>
-                                    <option value="Autre">Autre</option>
+                                    <option value="IT" {{ old('departement') == 'IT' ? 'selected' : '' }}>IT & Technologies</option>
+                                    <option value="RH" {{ old('departement') == 'RH' ? 'selected' : '' }}>Ressources Humaines</option>
+                                    <option value="Finance" {{ old('departement') == 'Finance' ? 'selected' : '' }}>Finance & Comptabilité</option>
+                                    <option value="Medicale" {{ old('departement') == 'Medicale' ? 'selected' : '' }}>Médicale</option>
+                                    <option value="Autre" {{ old('departement') == 'Autre' ? 'selected' : '' }}>Autre</option>
                                 </select>
                             </div>
                             @error('departement')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -295,14 +369,12 @@
                         <div class="form-group">
                             <div class="input-container">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <input id="adresse" type="text" placeholder="Adresse"
+                                <input id="adresse" type="text" placeholder="Adresse complète"
                                        class="form-control @error('adresse') is-invalid @enderror"
                                        name="adresse" value="{{ old('adresse') }}" required>
                             </div>
                             @error('adresse')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -311,15 +383,12 @@
                                 <i class="fas fa-user-tag"></i>
                                 <select id="sexe" class="form-control @error('sexe') is-invalid @enderror" name="sexe" required>
                                     <option value="">Sélectionnez votre sexe</option>
-                                    <option value="homme">Homme</option>
-                                    <option value="femme">Femme</option>
-                                    <option value="autre">Autre</option>
+                                    <option value="Homme" {{ old('sexe') == 'Homme' ? 'selected' : '' }}>Homme</option>
+                                    <option value="Femme" {{ old('sexe') == 'Femme' ? 'selected' : '' }}>Femme</option>
                                 </select>
                             </div>
                             @error('sexe')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -333,23 +402,19 @@
                                        name="lieu_affectation" value="{{ old('lieu_affectation') }}" required>
                             </div>
                             @error('lieu_affectation')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="form-group">
                             <div class="input-container">
                                 <i class="fas fa-calendar-alt"></i>
-                                <input id="date_embauche" wire:model='date_embauche' type="date"
+                                <input id="date_embauche" type="date"
                                        class="form-control @error('date_embauche') is-invalid @enderror"
                                        name="date_embauche" value="{{ old('date_embauche') }}" required>
                             </div>
                             @error('date_embauche')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -364,9 +429,7 @@
                                 <i class="fas fa-eye-slash password-toggle" id="togglePassword"></i>
                             </div>
                             @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
+                                <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -374,27 +437,34 @@
                             <div class="input-container">
                                 <i class="fas fa-lock"></i>
                                 <input id="password-confirm" type="password" placeholder="Confirmer le mot de passe"
-                                       class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                       class="form-control @error('password_confirmation') is-invalid @enderror" 
+                                       name="password_confirmation" required autocomplete="new-password">
                                 <i class="fas fa-eye-slash password-toggle" id="togglePasswordConfirm"></i>
                             </div>
+                            @error('password_confirmation')
+                                <span class="error-message">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="terms" id="terms" required>
+                        <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox" name="terms" id="terms" required {{ old('terms') ? 'checked' : '' }}>
                         <label class="form-check-label" for="terms">
                             J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a>
                         </label>
+                        @error('terms')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="newsletter" id="newsletter">
+                        <input class="form-check-input" type="checkbox" name="newsletter" id="newsletter" {{ old('newsletter') ? 'checked' : '' }}>
                         <label class="form-check-label" for="newsletter">
                             Je souhaite recevoir les actualités et mises à jour de la plateforme
                         </label>
                     </div>
 
-                    <button type="submit" class="btn">
+                    <button type="submit" class="btn" id="submitBtn">
                         <i class="fas fa-user-plus"></i> Créer mon compte utilisateur
                     </button>
 
@@ -415,7 +485,7 @@
 
 <script>
     // Gestion de l'upload d'image
-    const profileImageInput = document.getElementById('profile_image');
+    const profileImageInput = document.getElementById('photo');
     const imagePreview = document.getElementById('imagePreview');
 
     profileImageInput.addEventListener('change', function() {
@@ -458,60 +528,31 @@
         profileImageInput.click();
     });
 
-    // Animation pour le conteneur d'upload
-    const imageUploadContainer = document.querySelector('.image-upload-container');
-    
-    // Observer pour l'animation d'entrée
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    });
-
-    if (imageUploadContainer) {
-        observer.observe(imageUploadContainer);
-    }
-
-    // Gestion du thème (si pas déjà dans login.js)
-    const themeSwitcher = document.getElementById('themeSwitcher');
-    const htmlElement = document.documentElement;
-    const themeIcon = themeSwitcher?.querySelector('i');
-
-    if (themeSwitcher && themeIcon) {
-        // Vérifier le thème sauvegardé ou la préférence système
-        const savedTheme = localStorage.getItem('theme') ||
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-        // Appliquer le thème sauvegardé
-        htmlElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-
-        themeSwitcher.addEventListener('click', () => {
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-
-            // Animation du bouton
-            themeSwitcher.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                themeSwitcher.style.transform = '';
-            }, 300);
-        });
-
-        function updateThemeIcon(theme) {
-            if (theme === 'dark') {
-                themeIcon.className = 'fas fa-sun';
-            } else {
-                themeIcon.className = 'fas fa-moon';
-            }
+    // Validation du formulaire avant soumission
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('password-confirm').value;
+        const terms = document.getElementById('terms').checked;
+        
+        // Vérification de la correspondance des mots de passe
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Les mots de passe ne correspondent pas.');
+            return;
         }
-    }
+        
+        // Vérification des conditions d'utilisation
+        if (!terms) {
+            e.preventDefault();
+            alert('Veuillez accepter les conditions d\'utilisation.');
+            return;
+        }
+        
+        // Désactiver le bouton pour éviter les doubles soumissions
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création du compte...';
+    });
 
     // Gestion de la visibilité des mots de passe
     const togglePassword = document.getElementById('togglePassword');
@@ -549,6 +590,23 @@
 
     // Set current year in footer
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Animation pour le conteneur d'upload
+    const imageUploadContainer = document.querySelector('.image-upload-container');
+    
+    // Observer pour l'animation d'entrée
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    });
+
+    if (imageUploadContainer) {
+        observer.observe(imageUploadContainer);
+    }
 </script>
 
 </body>
