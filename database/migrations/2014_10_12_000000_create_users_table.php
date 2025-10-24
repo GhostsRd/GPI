@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('poste')->nullable();
             $table->string( 'photo')->nullable();
             $table->string('lieu_travail')->nullable();
-            $table->string('photo')->nullable(); // Champ pour l'image de profil
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\Facades\Image; // Optionnel pour redimensionner
 
 class RegisterController extends Controller
 {
@@ -32,7 +31,7 @@ class RegisterController extends Controller
             'poste' => ['required', 'string', 'max:255'],
             'lieu_travail' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'], // 5MB max
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
             'terms' => ['required', 'accepted'],
         ], [
             'photo.image' => 'Le fichier doit être une image',
@@ -47,9 +46,8 @@ class RegisterController extends Controller
     {
         $profileImagePath = null;
 
-        // Gérer l'upload de l'image de profil
         if (isset($data['photo']) && $data['photo'] instanceof UploadedFile) {
-            $profileImagePath = $this->storeProfileImage($data['photo']);
+            $profileImagePath = $this->storeAndResizeProfileImage($data['photo']);
         }
 
         return User::create([
@@ -64,48 +62,86 @@ class RegisterController extends Controller
     }
 
     /**
-     * Stocker l'image de profil avec optimisation
+     * Stocker et redimensionner l'image avec PHP natif
      */
-    protected function storeProfileImage(UploadedFile $image)
+    protected function storeAndResizeProfileImage(UploadedFile $image)
     {
         // Générer un nom de fichier unique
-        $fileName = 'profile_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        $fileName = 'profile_' . time() . '_' . uniqid() . '.jpg';
         
-        // Stocker l'image originale
-        $path = $image->storeAs('profiles', $fileName, 'public');
+        // Lire l'image originale
+        $originalPath = $image->getRealPath();
+        $imageInfo = getimagesize($originalPath);
+        $mimeType = $imageInfo['mime'];
         
-        // Optionnel : Redimensionner l'image pour optimiser l'espace
-        $this->optimizeProfileImage($path);
-        
-        return $path;
-    }
-
-    /**
-     * Optimiser l'image (optionnel - nécessite intervention/image)
-     */
-    protected function optimizeProfileImage($imagePath)
-    {
-        try {
-            // Redimensionner l'image à 500x500 pixels maximum
-            $image = Image::make(storage_path('app/public/' . $imagePath));
-            
-            $image->resize(500, 500, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-            
-            // Compresser l'image
-            $image->save(storage_path('app/public/' . $imagePath), 80);
-            
-        } catch (\Exception $e) {
-            // En cas d'erreur, on garde l'image originale
-            \Log::error('Erreur optimisation image: ' . $e->getMessage());
+        // Créer l'image selon le type
+        switch ($mimeType) {
+            case 'image/jpeg':
+                $sourceImage = imagecreatefromjpeg($originalPath);
+                break;
+            case 'image/png':
+                $sourceImage = imagecreatefrompng($originalPath);
+                break;
+            case 'image/gif':
+                $sourceImage = imagecreatefromgif($originalPath);
+                break;
+            default:
+                // Si le format n'est pas supporté, stocker l'original
+                return $image->storeAs('profiles', $fileName, 'public');
         }
+        
+        // Dimensions originales
+        $originalWidth = imagesx($sourceImage);
+        $originalHeight = imagesy($sourceImage);
+        
+        // Nouvelles dimensions (carré 500x500)
+        $newSize = 500;
+        $newWidth = $newSize;
+        $newHeight = $newSize;
+        
+        // Conserver les proportions
+        if ($originalWidth > $originalHeight) {
+            $newWidth = $newSize;
+            $newHeight = intval($originalHeight * $newSize / $originalWidth);
+        } else {
+            $newHeight = $newSize;
+            $newWidth = intval($originalWidth * $newSize / $originalHeight);
+        }
+        
+        // Créer une nouvelle image
+        $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+        
+        // Conserver la transparence pour les PNG
+        if ($mimeType == 'image/png') {
+            imagealphablending($resizedImage, false);
+            imagesavealpha($resizedImage, true);
+            $transparent = imagecolorallocatealpha($resizedImage, 255, 255, 255, 127);
+            imagefilledrectangle($resizedImage, 0, 0, $newWidth, $newHeight, $transparent);
+        }
+        
+        // Redimensionner
+        imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
+        
+        // Sauvegarder l'image redimensionnée
+        $storagePath = storage_path('app/public/profiles/' . $fileName);
+        
+        // Créer le dossier si nécessaire
+        if (!file_exists(dirname($storagePath))) {
+            mkdir(dirname($storagePath), 0755, true);
+        }
+        
+        // Sauvegarder en JPEG pour réduire la taille
+        imagejpeg($resizedImage, $storagePath, 80);
+        
+        // Libérer la mémoire
+        imagedestroy($sourceImage);
+        imagedestroy($resizedImage);
+        
+        return 'profiles/' . $fileName;
     }
 
     protected function registered($request, $user)
     {
-        // Actions après inscription réussie
         session()->flash('success', 'Votre compte a été créé avec succès!');
     }
 }
