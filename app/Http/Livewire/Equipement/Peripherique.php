@@ -3,42 +3,86 @@
 namespace App\Http\Livewire\Equipement;
 
 use App\Models\Peripherique as PeripheriqueModel;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use League\Csv\Reader;
+use League\Csv\Statement;
 
 class Peripherique extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
-    public $showForm = false;
-    public $editingId = null;
+    protected $paginationTheme = 'bootstrap';
 
-    // Propriétés du formulaire
-    public $nom = '';
-    public $entite = '';
-    public $statut = '';
-    public $fabricant = '';
-    public $lieu = '';
-    public $type = '';
-    public $modele = '';
-    public $usager = '';
-
-    // Propriétés de recherche
+    // Propriétés pour la recherche et les filtres
     public $search = '';
     public $filterStatut = '';
     public $filterType = '';
+    public $filterFabricant = '';
+    
+    // Propriétés pour les statistiques
+    public $stats = [];
+
+    // Propriétés pour le formulaire
+    public $peripheriqueId;
+    public $nom;
+    public $entite;
+    public $statut = 'En service';
+    public $fabricant;
+    public $lieu;
+    public $type;
+    public $modele;
+    public $usager;
+
+    // États des modals
+    public $showForm = false;
+    public $editingId = null;
+    public $showImportModal = false;
+    public $showMappingModal = false;
+    public $showImportedData = false;
+    public $confirmingDelete = false;
+    public $deleteId = null;
+
+    // Sélection multiple et tri
+    public $selectedPeripheriques = [];
+    public $selectAll = false;
     public $sortField = 'nom';
     public $sortDirection = 'asc';
-    public $selectedPeripheriques = []; // ✅ tableau vide par défaut
-
-
-    // Confirmation suppression
-    public $confirmingDelete = null;
 
     // Options pour les selects
-    public $statuts = [];
-    public $types = [];
+    public $statuts = ['En service', 'En stock', 'Hors service', 'En réparation'];
+    public $types = ['Clavier', 'Souris', 'Webcam', 'Casque', 'Écran', 'Imprimante', 'Scanner'];
+    public $fabricants = [];
+    public $entites = [];
 
+    // Propriétés pour l'import avec mapping
+    public $importFile;
+    public $importErrors = [];
+    public $importSuccessCount = 0;
+    public $isImporting = false;
+
+    // Propriétés pour le mapping
+    public $csvHeaders = [];
+    public $csvPreview = [];
+    public $fieldMapping = [
+        'nom' => '',
+        'entite' => '',
+        'statut' => '',
+        'fabricant' => '',
+        'lieu' => '',
+        'type' => '',
+        'modele' => '',
+        'usager' => ''
+    ];
+
+    // Données importées temporaires
+    public $importedData = [];
+
+    // Règles de validation
     protected $rules = [
         'nom' => 'required|string|max:100|unique:peripheriques,nom',
         'entite' => 'nullable|string|max:100',
@@ -50,47 +94,29 @@ class Peripherique extends Component
         'usager' => 'nullable|string|max:100',
     ];
 
+    /**
+     * Initialisation du composant
+     */
     public function mount()
     {
-        $this->statuts = ['En service', 'En stock', 'Hors service', 'En réparation'];
-        $this->types = ['Clavier', 'Souris', 'Webcam', 'Casque', 'Écran', 'Imprimante', 'Scanner'];
+        $this->chargerStatistiques();
+        $this->chargerFabricants();
+        $this->chargerEntites();
     }
 
-    // Computed properties pour les statistiques
-    public function getTotalPeripheriquesProperty()
+    /**
+     * Rendu du composant
+     */
+    public function render()
     {
-        return PeripheriqueModel::count();
-    }
-
-    public function getEnServiceCountProperty()
-    {
-        return PeripheriqueModel::where('statut', 'En service')->count();
-    }
-
-    public function getEnStockCountProperty()
-    {
-        return PeripheriqueModel::where('statut', 'En stock')->count();
-    }
-
-    public function getHorsServiceCountProperty()
-    {
-        return PeripheriqueModel::where('statut', 'Hors service')->count();
-    }
-
-    public function getEnReparationCountProperty()
-    {
-        return PeripheriqueModel::where('statut', 'En réparation')->count();
-    }
-
-    public function getPeripheriquesProperty()
-    {
-        return PeripheriqueModel::query()
+        $query = PeripheriqueModel::query()
             ->when($this->search, function($query) {
                 $query->where(function($q) {
                     $q->where('nom', 'like', '%'.$this->search.'%')
-                        ->orWhere('modele', 'like', '%'.$this->search.'%')
-                        ->orWhere('fabricant', 'like', '%'.$this->search.'%')
-                        ->orWhere('entite', 'like', '%'.$this->search.'%');
+                      ->orWhere('modele', 'like', '%'.$this->search.'%')
+                      ->orWhere('fabricant', 'like', '%'.$this->search.'%')
+                      ->orWhere('entite', 'like', '%'.$this->search.'%')
+                      ->orWhere('usager', 'like', '%'.$this->search.'%');
                 });
             })
             ->when($this->filterStatut, function($query) {
@@ -99,41 +125,500 @@ class Peripherique extends Component
             ->when($this->filterType, function($query) {
                 $query->where('type', $this->filterType);
             })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(20);
+            ->when($this->filterFabricant, function($query) {
+                $query->where('fabricant', $this->filterFabricant);
+            })
+            ->orderBy($this->sortField, $this->sortDirection);
+
+        $peripheriques = $query->paginate(20);
+
+        $fabricantsList = PeripheriqueModel::whereNotNull('fabricant')
+            ->distinct()
+            ->pluck('fabricant')
+            ->toArray();
+
+        return view('livewire.equipement.peripherique', [
+            'peripheriques' => $peripheriques,
+            'fabricantsList' => $fabricantsList,
+            'stats' => $this->stats,
+        ]);
     }
 
+    // ==================== MÉTHODES DE RECHERCHE ET FILTRES ====================
+
+    /**
+     * Réinitialiser les filtres
+     */
+    public function resetFilters()
+    {
+        $this->reset(['search', 'filterStatut', 'filterType', 'filterFabricant', 'selectedPeripheriques', 'selectAll']);
+        $this->resetPage();
+    }
+
+    /**
+     * Trier les résultats
+     */
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
-            $this->sortField = $field;
             $this->sortDirection = 'asc';
+        }
+        $this->sortField = $field;
+    }
+
+    /**
+     * Sélectionner/désélectionner tous les périphériques
+     */
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $query = PeripheriqueModel::query()
+                ->when($this->search, function($query) {
+                    $query->where(function($q) {
+                        $q->where('nom', 'like', '%'.$this->search.'%')
+                          ->orWhere('modele', 'like', '%'.$this->search.'%')
+                          ->orWhere('fabricant', 'like', '%'.$this->search.'%')
+                          ->orWhere('entite', 'like', '%'.$this->search.'%');
+                    });
+                })
+                ->when($this->filterStatut, function($query) {
+                    $query->where('statut', $this->filterStatut);
+                })
+                ->when($this->filterType, function($query) {
+                    $query->where('type', $this->filterType);
+                })
+                ->when($this->filterFabricant, function($query) {
+                    $query->where('fabricant', $this->filterFabricant);
+                });
+
+            $this->selectedPeripheriques = $query->pluck('id')->toArray();
+        } else {
+            $this->selectedPeripheriques = [];
         }
     }
 
-    public function render()
-{
-    $fabricants = PeripheriqueModel::distinct()->pluck('fabricant')->filter();
+    // ==================== MÉTHODES D'IMPORT AVEC MAPPING ====================
 
-    $stats = [
-        'total' => PeripheriqueModel::count(),
-        'en_service' => PeripheriqueModel::where('statut', 'En service')->count(),
-        'en_stock' => PeripheriqueModel::where('statut', 'En stock')->count(),
-        'en_maintenance' => PeripheriqueModel::where('statut', 'En maintenance')->count(),
-        'hors_service' => PeripheriqueModel::where('statut', 'Hors service')->count(),
-    ];
+    /**
+     * Ouvrir la modal d'import
+     */
+    public function openImportModal()
+    {
+        $this->showImportModal = true;
+        $this->resetImport();
+    }
 
-    return view('livewire.equipement.peripherique', [
-        'peripheriques' => $this->peripheriques,
-        'sortField' => $this->sortField,
-        'sortDirection' => $this->sortDirection,
-        'fabricants' => $fabricants,
-        'stats' => $stats, // ✅ Ici c’est correct
-    ]);
-}
+    /**
+     * Fermer la modal d'import
+     */
+    public function closeImportModal()
+    {
+        $this->showImportModal = false;
+        $this->resetImport();
+    }
 
+    /**
+     * Réinitialiser l'import
+     */
+    private function resetImport()
+    {
+        $this->reset([
+            'importFile', 
+            'importErrors', 
+            'importSuccessCount',
+            'isImporting',
+            'csvHeaders',
+            'csvPreview',
+            'importedData',
+            'showImportedData'
+        ]);
+        $this->fieldMapping = [
+            'nom' => '',
+            'entite' => '',
+            'statut' => '',
+            'fabricant' => '',
+            'lieu' => '',
+            'type' => '',
+            'modele' => '',
+            'usager' => ''
+        ];
+        $this->resetErrorBag();
+    }
+
+    /**
+     * Stocker le fichier et préparer le mapping
+     */
+    public function storeImportFile()
+    {
+        $this->validate([
+            'importFile' => 'required|file|mimes:csv,txt|max:10240'
+        ]);
+
+        try {
+            // Stocker le fichier
+            $filePath = $this->importFile->storeAs(
+                'imports/peripheriques',
+                'import_' . time() . '.csv',
+                'public'
+            );
+
+            // Lire le fichier CSV
+            $this->readCsvFile(storage_path('app/public/' . $filePath));
+
+            // Passer à l'étape de mapping
+            $this->showImportModal = false;
+            $this->showMappingModal = true;
+
+        } catch (\Exception $e) {
+            $this->importErrors[] = 'Erreur lors du stockage du fichier: ' . $e->getMessage();
+            session()->flash('error', 'Erreur lors du stockage du fichier: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Lire le fichier CSV pour extraction des en-têtes et preview
+     */
+    private function readCsvFile($filePath)
+    {
+        try {
+            $csv = Reader::createFromPath($filePath, 'r');
+            $csv->setHeaderOffset(0);
+            $csv->setDelimiter(',');
+
+            // Obtenir les en-têtes
+            $this->csvHeaders = $csv->getHeader();
+            
+            // Obtenir un aperçu des données (5 premières lignes)
+            $stmt = (new Statement())->limit(5);
+            $records = $stmt->process($csv);
+            
+            $this->csvPreview = [];
+            foreach ($records as $record) {
+                $this->csvPreview[] = $record;
+            }
+
+            // Mapping automatique basé sur la similarité des noms
+            $this->autoMapFields();
+
+        } catch (\Exception $e) {
+            $this->importErrors[] = 'Erreur lors de la lecture du fichier: ' . $e->getMessage();
+        }
+    }
+
+    /**
+     * Mapping automatique des champs
+     */
+    private function autoMapFields()
+    {
+        $fieldPatterns = [
+            'nom' => ['nom', 'name', 'designation', 'libelle', 'peripherique', 'equipement', 'identification'],
+            'entite' => ['entite', 'entity', 'departement', 'service', 'department', 'division'],
+            'statut' => ['statut', 'status', 'etat', 'state', 'situation'],
+            'fabricant' => ['fabricant', 'manufacturer', 'marque', 'brand', 'make', 'constructor'],
+            'lieu' => ['lieu', 'location', 'place', 'emplacement', 'site', 'localisation'],
+            'type' => ['type', 'typologie', 'categorie', 'category'],
+            'modele' => ['modele', 'model', 'reference', 'product', 'produit'],
+            'usager' => ['usager', 'user', 'utilisateur', 'utilise_par', 'assigne_a']
+        ];
+
+        foreach ($this->csvHeaders as $header) {
+            $headerLower = strtolower(trim($header));
+            
+            foreach ($fieldPatterns as $field => $patterns) {
+                foreach ($patterns as $pattern) {
+                    if (str_contains($headerLower, $pattern) && empty($this->fieldMapping[$field])) {
+                        $this->fieldMapping[$field] = $header;
+                        break 2;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Traiter les données avec le mapping
+     */
+    public function processMappedData()
+    {
+        try {
+            $this->importErrors = [];
+            $this->importedData = [];
+
+            // Trouver le dernier fichier importé
+            $files = Storage::disk('public')->files('imports/peripheriques');
+            if (empty($files)) {
+                throw new \Exception('Aucun fichier importé trouvé');
+            }
+
+            $latestFile = last($files);
+            $filePath = storage_path('app/public/' . $latestFile);
+
+            // Lire et traiter le fichier avec le mapping
+            $csv = Reader::createFromPath($filePath, 'r');
+            $csv->setHeaderOffset(0);
+            $csv->setDelimiter(',');
+
+            $records = $csv->getRecords();
+            $lineNumber = 1;
+
+            foreach ($records as $record) {
+                $lineNumber++;
+                $mappedData = [];
+
+                try {
+                    // Appliquer le mapping
+                    foreach ($this->fieldMapping as $field => $csvHeader) {
+                        if (!empty($csvHeader) && isset($record[$csvHeader])) {
+                            $mappedData[$field] = trim($record[$csvHeader]);
+                        } else {
+                            $mappedData[$field] = '';
+                        }
+                    }
+
+                    // Validation des données requises
+                    if (empty($mappedData['nom'])) {
+                        $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
+                        continue;
+                    }
+
+                    if (empty($mappedData['type'])) {
+                        $this->importErrors[] = "Ligne {$lineNumber}: Le type est obligatoire";
+                        continue;
+                    }
+
+                    // Nettoyer et formater les données
+                    $mappedData = $this->cleanMappedData($mappedData);
+                    
+                    $this->importedData[] = $mappedData;
+
+                } catch (\Exception $e) {
+                    $this->importErrors[] = "Ligne {$lineNumber}: " . $e->getMessage();
+                }
+            }
+
+            $this->importSuccessCount = count($this->importedData);
+            $this->showMappingModal = false;
+            $this->showImportedData = true;
+
+        } catch (\Exception $e) {
+            $this->importErrors[] = 'Erreur lors du traitement des données: ' . $e->getMessage();
+            session()->flash('error', 'Erreur lors du traitement des données: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Nettoyer les données mappées
+     */
+    private function cleanMappedData($data)
+    {
+        // Nettoyer chaque champ
+        foreach ($data as $key => $value) {
+            $data[$key] = trim($value);
+            
+            // Validation spécifique pour le statut
+            if ($key === 'statut' && !empty($value)) {
+                $statutsValides = ['En service', 'En stock', 'Hors service', 'En réparation'];
+                if (!in_array($value, $statutsValides)) {
+                    $data[$key] = 'En stock'; // Valeur par défaut
+                }
+            }
+
+            // Validation spécifique pour le type
+            if ($key === 'type' && !empty($value)) {
+                $typesValides = ['Clavier', 'Souris', 'Webcam', 'Casque', 'Écran', 'Imprimante', 'Scanner'];
+                if (!in_array($value, $typesValides)) {
+                    // On garde la valeur mais on pourrait la normaliser si nécessaire
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Sauvegarder les données importées dans la base
+     */
+    public function saveImportedData()
+    {
+        try {
+            DB::beginTransaction();
+
+            $savedCount = 0;
+            $errors = [];
+
+            foreach ($this->importedData as $index => $data) {
+                try {
+                    // Vérifier si le périphérique existe déjà
+                    $existing = PeripheriqueModel::where('nom', $data['nom'])->first();
+                    if ($existing) {
+                        $errors[] = "Ligne " . ($index + 1) . ": Le périphérique '{$data['nom']}' existe déjà";
+                        continue;
+                    }
+
+                    // Créer le périphérique
+                    PeripheriqueModel::create([
+                        'nom' => $data['nom'],
+                        'entite' => $data['entite'] ?? null,
+                        'statut' => $data['statut'] ?? 'En stock',
+                        'fabricant' => $data['fabricant'] ?? null,
+                        'lieu' => $data['lieu'] ?? null,
+                        'type' => $data['type'],
+                        'modele' => $data['modele'] ?? null,
+                        'usager' => $data['usager'] ?? null,
+                    ]);
+
+                    $savedCount++;
+
+                } catch (\Exception $e) {
+                    $errors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
+                }
+            }
+
+            DB::commit();
+
+            // Nettoyer les fichiers temporaires
+            $this->cleanImportFiles();
+
+            $this->showImportedData = false;
+            $this->chargerStatistiques();
+            $this->chargerFabricants();
+            $this->chargerEntites();
+
+            if ($savedCount > 0) {
+                session()->flash('success', $savedCount . ' périphérique(s) importé(s) avec succès !');
+            }
+
+            if (!empty($errors)) {
+                session()->flash('warning', 'Import terminé avec ' . count($errors) . ' erreur(s).');
+                $this->importErrors = $errors;
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Erreur lors de la sauvegarde: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Nettoyer les fichiers d'import temporaires
+     */
+    private function cleanImportFiles()
+    {
+        try {
+            $files = Storage::disk('public')->files('imports/peripheriques');
+            foreach ($files as $file) {
+                Storage::disk('public')->delete($file);
+            }
+        } catch (\Exception $e) {
+            // Ignorer les erreurs de nettoyage
+        }
+    }
+
+    /**
+     * Annuler l'import
+     */
+    public function cancelImport()
+    {
+        $this->cleanImportFiles();
+        $this->resetImport();
+        $this->showMappingModal = false;
+        $this->showImportedData = false;
+    }
+
+    /**
+     * Télécharger le template d'import
+     */
+    public function downloadImportTemplate()
+    {
+        try {
+            $fileName = 'template_import_peripheriques.csv';
+            $templateContent = "nom,entite,statut,fabricant,lieu,type,modele,usager\n" .
+                             "Clavier Bureau 1,SIEGE,En service,Logitech,Bureau A1,Clavier,K120,John Doe\n" .
+                             "Souris RH,DRH,En stock,Microsoft,Stock,Souris,Basic Mouse,\n" .
+                             "Écran Direction,SIEGE,En service,Dell,Bureau Directeur,Écran,UltraSharp U2419H,PDG\n" .
+                             "Imprimante Commercial,Commercial,En service,HP,Bureau Open Space,Imprimante,LaserJet Pro,Équipe Commerciale";
+
+            return response()->streamDownload(function () use ($templateContent) {
+                echo $templateContent;
+            }, $fileName, [
+                'Content-Type' => 'text/csv; charset=utf-8',
+            ]);
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors du téléchargement du template: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Exporter les périphériques en CSV
+     */
+    public function exportToCsv()
+    {
+        try {
+            $query = PeripheriqueModel::query()
+                ->when($this->search, function($query) {
+                    $query->where(function($q) {
+                        $q->where('nom', 'like', '%'.$this->search.'%')
+                          ->orWhere('modele', 'like', '%'.$this->search.'%')
+                          ->orWhere('fabricant', 'like', '%'.$this->search.'%')
+                          ->orWhere('entite', 'like', '%'.$this->search.'%');
+                    });
+                })
+                ->when($this->filterStatut, function($query) {
+                    $query->where('statut', $this->filterStatut);
+                })
+                ->when($this->filterType, function($query) {
+                    $query->where('type', $this->filterType);
+                })
+                ->when($this->filterFabricant, function($query) {
+                    $query->where('fabricant', $this->filterFabricant);
+                })
+                ->orderBy($this->sortField, $this->sortDirection);
+
+            $peripheriques = $query->get();
+
+            $fileName = 'peripheriques_export_' . date('Y-m-d_H-i-s') . '.csv';
+
+            return response()->streamDownload(function () use ($peripheriques) {
+                $file = fopen('php://output', 'w');
+
+                // En-têtes
+                fputcsv($file, [
+                    'Nom', 'Entité', 'Statut', 'Fabricant', 'Lieu', 
+                    'Type', 'Modèle', 'Usager', 'Date création', 'Date modification'
+                ]);
+
+                // Données
+                foreach ($peripheriques as $peripherique) {
+                    fputcsv($file, [
+                        $peripherique->nom,
+                        $peripherique->entite ?? 'N/A',
+                        $peripherique->statut,
+                        $peripherique->fabricant ?? 'N/A',
+                        $peripherique->lieu ?? 'N/A',
+                        $peripherique->type,
+                        $peripherique->modele ?? 'N/A',
+                        $peripherique->usager ?? 'N/A',
+                        $peripherique->created_at->format('d/m/Y'),
+                        $peripherique->updated_at->format('d/m/Y'),
+                    ]);
+                }
+
+                fclose($file);
+            }, $fileName);
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de l\'export: ' . $e->getMessage());
+        }
+    }
+
+    // ==================== MÉTHODES CRUD ====================
+
+    /**
+     * Afficher le formulaire de création
+     */
     public function showForm()
     {
         $this->resetForm();
@@ -141,6 +626,9 @@ class Peripherique extends Component
         $this->editingId = null;
     }
 
+    /**
+     * Afficher le formulaire d'édition
+     */
     public function edit($id)
     {
         $peripherique = PeripheriqueModel::findOrFail($id);
@@ -158,6 +646,9 @@ class Peripherique extends Component
         $this->showForm = true;
     }
 
+    /**
+     * Enregistrer un nouveau périphérique
+     */
     public function save()
     {
         if ($this->editingId) {
@@ -187,21 +678,131 @@ class Peripherique extends Component
 
         $this->resetForm();
         $this->showForm = false;
+        $this->chargerStatistiques();
+        $this->chargerFabricants();
+        $this->chargerEntites();
+        
         session()->flash('success', $message);
     }
 
+    /**
+     * Confirmer la suppression
+     */
     public function confirmDelete($id)
     {
-        $this->confirmingDelete = $id;
+        $this->deleteId = $id;
+        $this->confirmingDelete = true;
     }
 
+    /**
+     * Supprimer un périphérique
+     */
     public function delete($id)
     {
-        PeripheriqueModel::findOrFail($id)->delete();
-        $this->confirmingDelete = null;
-        session()->flash('success', 'Périphérique supprimé avec succès.');
+        try {
+            PeripheriqueModel::findOrFail($id)->delete();
+            $this->chargerStatistiques();
+            $this->chargerFabricants();
+            $this->chargerEntites();
+
+            session()->flash('success', 'Périphérique supprimé avec succès.');
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression du périphérique: ' . $e->getMessage());
+        }
     }
 
+    /**
+     * Suppression confirmée
+     */
+    public function deleteConfirmed()
+    {
+        if ($this->deleteId) {
+            $this->delete($this->deleteId);
+            $this->confirmingDelete = false;
+            $this->deleteId = null;
+        }
+    }
+
+    /**
+     * Supprimer les périphériques sélectionnés
+     */
+    public function deleteSelected()
+    {
+        try {
+            if (empty($this->selectedPeripheriques)) {
+                session()->flash('warning', 'Aucun périphérique sélectionné.');
+                return;
+            }
+
+            $count = PeripheriqueModel::whereIn('id', $this->selectedPeripheriques)->delete();
+            
+            $this->selectedPeripheriques = [];
+            $this->selectAll = false;
+            $this->chargerStatistiques();
+            $this->chargerFabricants();
+            $this->chargerEntites();
+
+            session()->flash('success', $count . ' périphérique(s) supprimé(s) avec succès.');
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+        }
+    }
+
+    // ==================== MÉTHODES POUR LES STATISTIQUES ====================
+
+    /**
+     * Charger les statistiques
+     */
+    public function chargerStatistiques()
+    {
+        try {
+            $this->stats = [
+                'total' => PeripheriqueModel::count(),
+                'en_service' => PeripheriqueModel::where('statut', 'En service')->count(),
+                'en_stock' => PeripheriqueModel::where('statut', 'En stock')->count(),
+                'hors_service' => PeripheriqueModel::where('statut', 'Hors service')->count(),
+                'en_reparation' => PeripheriqueModel::where('statut', 'En réparation')->count(),
+            ];
+        } catch (\Exception $e) {
+            $this->stats = [
+                'total' => 0,
+                'en_service' => 0,
+                'en_stock' => 0,
+                'hors_service' => 0,
+                'en_reparation' => 0,
+            ];
+        }
+    }
+
+    /**
+     * Charger la liste des fabricants
+     */
+    private function chargerFabricants()
+    {
+        $this->fabricants = PeripheriqueModel::whereNotNull('fabricant')
+            ->distinct()
+            ->pluck('fabricant')
+            ->toArray();
+    }
+
+    /**
+     * Charger la liste des entités
+     */
+    private function chargerEntites()
+    {
+        $this->entites = PeripheriqueModel::whereNotNull('entite')
+            ->distinct()
+            ->pluck('entite')
+            ->toArray();
+    }
+
+    // ==================== MÉTHODES UTILITAIRES ====================
+
+    /**
+     * Réinitialiser le formulaire
+     */
     public function resetForm()
     {
         $this->reset([
@@ -211,11 +812,16 @@ class Peripherique extends Component
         $this->resetErrorBag();
     }
 
-    public function resetFilters()
+    /**
+     * Fermer le modal
+     */
+    public function closeModal()
     {
-        $this->reset(['search', 'filterStatut', 'filterType']);
-        $this->resetPage();
+        $this->showForm = false;
+        $this->resetForm();
     }
+
+    // ==================== MÉTHODES DE PAGINATION ====================
 
     public function updatingSearch()
     {
@@ -228,6 +834,11 @@ class Peripherique extends Component
     }
 
     public function updatingFilterType()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFilterFabricant()
     {
         $this->resetPage();
     }

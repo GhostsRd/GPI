@@ -82,7 +82,7 @@
         </div>
 
         <!-- Barre de recherche et filtres -->
-        <div class="card border-0 shadow-sm mb-4">
+         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
@@ -126,6 +126,12 @@
                         <button type="button" wire:click="resetFilters"
                                 class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
                             <i class="fa fa-times"></i> Reset
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <!-- AJOUT DU BOUTON IMPORT -->
+                        <button wire:click="openImportModal" class="btn btn-info btn-sm w-100" title="Importer des périphériques">
+                            <i class="fas fa-file-import"></i> Importer
                         </button>
                     </div>
                     <div class="col-md-1">
@@ -300,6 +306,278 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Import -->
+@if($showImportModal)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-file-import me-2"></i>
+                        Importer des périphériques
+                    </h5>
+                    <button type="button" wire:click="closeImportModal" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Sélectionnez un fichier CSV contenant les données des périphériques.
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Fichier CSV</label>
+                        <input type="file" class="form-control" wire:model="importFile" accept=".csv,.txt">
+                        @error('importFile') <span class="text-danger small">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mt-3">
+                        <button type="button" wire:click="downloadImportTemplate" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-download me-1"></i>
+                            Télécharger le template
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="closeImportModal" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>
+                        Annuler
+                    </button>
+                    <button type="button" wire:click="storeImportFile" class="btn btn-primary" 
+                            {{ !$importFile ? 'disabled' : '' }}>
+                        <i class="fas fa-arrow-right me-1"></i>
+                        Suivant
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+<!-- Modal Mapping -->
+@if($showMappingModal)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-table me-2"></i>
+                        Mapping des colonnes
+                    </h5>
+                    <button type="button" wire:click="cancelImport" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Associez les colonnes de votre fichier CSV aux champs de l'application.
+                    </div>
+
+                    <!-- Aperçu des données -->
+                    @if(count($csvPreview) > 0)
+                        <div class="mb-4">
+                            <h6>Aperçu des données (5 premières lignes) :</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            @foreach($csvHeaders as $header)
+                                                <th>{{ $header }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($csvPreview as $row)
+                                            <tr>
+                                                @foreach($csvHeaders as $header)
+                                                    <td>{{ $row[$header] ?? '' }}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Formulaire de mapping -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Nom *</label>
+                                <select class="form-select" wire:model="fieldMapping.nom">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Entité</label>
+                                <select class="form-select" wire:model="fieldMapping.entite">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Statut</label>
+                                <select class="form-select" wire:model="fieldMapping.statut">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Fabricant</label>
+                                <select class="form-select" wire:model="fieldMapping.fabricant">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Type *</label>
+                                <select class="form-select" wire:model="fieldMapping.type">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Lieu</label>
+                                <select class="form-select" wire:model="fieldMapping.lieu">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Modèle</label>
+                                <select class="form-select" wire:model="fieldMapping.modele">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Usager</label>
+                                <select class="form-select" wire:model="fieldMapping.usager">
+                                    <option value="">Sélectionnez la colonne</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="cancelImport" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>
+                        Annuler
+                    </button>
+                    <button type="button" wire:click="processMappedData" class="btn btn-primary">
+                        <i class="fas fa-cog me-1"></i>
+                        Traiter les données
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+<!-- Modal Aperçu des données importées -->
+@if($showImportedData)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-eye me-2"></i>
+                        Aperçu des données à importer
+                    </h5>
+                    <button type="button" wire:click="cancelImport" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    @if($importSuccessCount > 0)
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ $importSuccessCount }} ligne(s) prête(s) à être importée(s).
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Type</th>
+                                        <th>Statut</th>
+                                        <th>Fabricant</th>
+                                        <th>Lieu</th>
+                                        <th>Modèle</th>
+                                        <th>Usager</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($importedData as $data)
+                                        <tr>
+                                            <td>{{ $data['nom'] }}</td>
+                                            <td>{{ $data['type'] }}</td>
+                                            <td>{{ $data['statut'] }}</td>
+                                            <td>{{ $data['fabricant'] }}</td>
+                                            <td>{{ $data['lieu'] }}</td>
+                                            <td>{{ $data['modele'] }}</td>
+                                            <td>{{ $data['usager'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
+
+                    @if(count($importErrors) > 0)
+                        <div class="alert alert-danger mt-3">
+                            <h6><i class="fas fa-exclamation-triangle me-2"></i>Erreurs détectées :</h6>
+                            <ul class="mb-0">
+                                @foreach($importErrors as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="cancelImport" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>
+                        Annuler
+                    </button>
+                    @if($importSuccessCount > 0)
+                        <button type="button" wire:click="saveImportedData" class="btn btn-success">
+                            <i class="fas fa-save me-1"></i>
+                            Importer {{ $importSuccessCount }} élément(s)
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
 
     <!-- Modal Formulaire -->
     @if($showForm)

@@ -288,29 +288,32 @@
         </div>
     </div>
 
-    <!-- Modal de formulaire -->
+    <!-- Modal de formulaire - CENTRÉ ET AMÉLIORÉ -->
     @if($showForm)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
+    <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
+    <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-gradient-primary text-white">
                     <h5 class="modal-title">
+                        <i class="fas {{ $editMode ? 'fa-edit' : 'fa-plus-circle' }} me-2"></i>
                         {{ $editMode ? 'Modifier le Matériel' : 'Nouveau Matériel' }}
                     </h5>
-                    <button type="button" wire:click="cancelForm" class="btn-close"></button>
+                    <button type="button" wire:click="cancelForm" class="btn-close btn-close-white"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-4">
                     <form wire:submit.prevent="saveMateriel">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Nom *</label>
-                                    <input type="text" wire:model="nom" class="form-control" required>
-                                    @error('nom') <span class="text-danger small">{{ $message }}</span> @enderror
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Nom <span class="text-danger">*</span></label>
+                                    <input type="text" wire:model="nom" class="form-control" 
+                                           placeholder="Nom du matériel" required>
+                                    @error('nom') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Entité</label>
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Entité</label>
                                     <select wire:model="entite" class="form-select">
                                         <option value="">Sélectionnez une entité</option>
                                         @foreach($entiteOptions as $option)
@@ -319,18 +322,18 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Statut *</label>
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Statut <span class="text-danger">*</span></label>
                                     <select wire:model="statut" class="form-select" required>
                                         @foreach($statutOptions as $option)
                                             <option value="{{ $option }}">{{ $option }}</option>
                                         @endforeach
                                     </select>
-                                    @error('statut') <span class="text-danger small">{{ $message }}</span> @enderror
+                                    @error('statut') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Fabricant</label>
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Fabricant</label>
                                     <select wire:model="fabricant" class="form-select">
                                         <option value="">Sélectionnez un fabricant</option>
                                         @foreach($fabricantOptions as $option)
@@ -341,8 +344,8 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Type</label>
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Type</label>
                                     <select wire:model="type" class="form-select">
                                         <option value="">Sélectionnez un type</option>
                                         @foreach($typeOptions as $option)
@@ -351,33 +354,37 @@
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Modèle</label>
-                                    <input type="text" wire:model="modele" class="form-control">
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Modèle</label>
+                                    <input type="text" wire:model="modele" class="form-control" 
+                                           placeholder="Modèle du matériel">
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Numéro de série</label>
-                                    <input type="text" wire:model="numero_serie" class="form-control">
-                                    @error('numero_serie') <span class="text-danger small">{{ $message }}</span> @enderror
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Numéro de série</label>
+                                    <input type="text" wire:model="numero_serie" class="form-control" 
+                                           placeholder="Numéro de série unique">
+                                    @error('numero_serie') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Adresse IP</label>
-                                    <input type="text" wire:model="reseau_ip" class="form-control" placeholder="192.168.1.1">
-                                    @error('reseau_ip') <span class="text-danger small">{{ $message }}</span> @enderror
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Adresse IP</label>
+                                    <input type="text" wire:model="reseau_ip" class="form-control" 
+                                           placeholder="192.168.1.1">
+                                    @error('reseau_ip') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Lieu</label>
-                                    <input type="text" wire:model="lieu" class="form-control">
+                                <div class="form-group">
+                                    <label class="form-label fw-semibold">Lieu</label>
+                                    <input type="text" wire:model="lieu" class="form-control" 
+                                           placeholder="Localisation du matériel">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="modal-footer">
-                            <button type="button" wire:click="cancelForm" class="btn btn-secondary">
-                                Annuler
+                        <div class="modal-footer bg-light mt-4">
+                            <button type="button" wire:click="cancelForm" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Annuler
                             </button>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>
@@ -391,38 +398,39 @@
     </div>
     @endif
 
-    <!-- Modal de détails -->
+    <!-- Modal de détails - CENTRÉ ET AMÉLIORÉ -->
     @if($showDetailsModal)
-    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5)" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true" wire:ignore.self>
+    <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
+    <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="detailsModalLabel">
-                        <i class="fas fa-desktop me-2"></i>Détails du Matériel
+                <div class="modal-header bg-gradient-info text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-network-wired me-2"></i>Détails du Matériel
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" wire:click="closeDetailsModal"></button>
+                    <button type="button" wire:click="closeDetailsModal" class="btn-close btn-close-white"></button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body p-4">
                     @if($selectedMateriel)
-                        <div class="row">
+                        <div class="row g-4">
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Nom du matériel</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->nom ?? 'Non spécifié' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Nom du matériel</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->nom ?? 'Non spécifié' }}</p>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Entité</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->entite ?? 'Non spécifié' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Entité</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->entite ?? 'Non spécifié' }}</p>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Statut</h6>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Statut</h6>
                                     @php
                                         $statusClasses = [
                                             'En service' => 'badge bg-success',
-                                            'En maintenance' => 'badge bg-warning',
+                                            'En maintenance' => 'badge bg-warning text-dark',
                                             'Hors service' => 'badge bg-danger',
                                             'En stock' => 'badge bg-info'
                                         ];
@@ -432,63 +440,69 @@
                                     </span>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Fabricant</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->fabricant ?? 'Non spécifié' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Fabricant</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->fabricant ?? 'Non spécifié' }}</p>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Type</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->type ?? 'Non spécifié' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Type</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->type ?? 'Non spécifié' }}</p>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Modèle</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->modele ?? 'Non spécifié' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Modèle</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->modele ?? 'Non spécifié' }}</p>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Numéro de série</h6>
-                                    <p class="fw-semibold font-monospace">{{ $selectedMateriel->numero_serie ?? 'Non renseigné' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Numéro de série</h6>
+                                    <p class="fw-semibold text-dark font-monospace bg-light p-2 rounded">
+                                        {{ $selectedMateriel->numero_serie ?? 'Non renseigné' }}
+                                    </p>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Adresse IP</h6>
-                                    <p class="fw-semibold font-monospace">{{ $selectedMateriel->reseau_ip ?? 'Non configurée' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Adresse IP</h6>
+                                    <p class="fw-semibold text-dark font-monospace bg-light p-2 rounded">
+                                        {{ $selectedMateriel->reseau_ip ?? 'Non configurée' }}
+                                    </p>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Lieu</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->lieu ?? 'Non spécifié' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Lieu</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->lieu ?? 'Non spécifié' }}</p>
                                 </div>
 
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Date d'ajout</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->created_at?->format('d/m/Y à H:i') ?? '—' }}</p>
+                                <div class="info-card">
+                                    <h6 class="text-muted mb-2">Date d'ajout</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->created_at?->format('d/m/Y à H:i') ?? '—' }}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row mt-3">
+                        <div class="row mt-4">
                             <div class="col-12">
-                                <div class="mb-3">
-                                    <h6 class="text-muted mb-1">Dernière mise à jour</h6>
-                                    <p class="fw-semibold">{{ $selectedMateriel->updated_at?->format('d/m/Y à H:i') ?? '—' }}</p>
+                                <div class="info-card bg-light p-3 rounded">
+                                    <h6 class="text-muted mb-2">Dernière mise à jour</h6>
+                                    <p class="fw-semibold text-dark">{{ $selectedMateriel->updated_at?->format('d/m/Y à H:i') ?? '—' }}</p>
                                 </div>
                             </div>
                         </div>
                     @else
                         <div class="text-center py-4">
-                            <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                            <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
                             <p class="text-muted">Impossible de charger les détails du matériel.</p>
                         </div>
                     @endif
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="closeDetailsModal">Fermer</button>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" wire:click="closeDetailsModal">
+                        <i class="fas fa-times me-2"></i>Fermer
+                    </button>
                     @if($selectedMateriel)
                         <button type="button" class="btn btn-primary" wire:click="showEditForm({{ $selectedMateriel->id }})">
                             <i class="fas fa-edit me-2"></i>Modifier
@@ -500,53 +514,75 @@
     </div>
     @endif
 
-    <!-- Modal de confirmation de suppression -->
+    <!-- Modal de confirmation de suppression - CENTRÉ ET AMÉLIORÉ -->
     @if($showDeleteModal)
-        <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirmer la suppression</h5>
-                        <button type="button" wire:click="closeDeleteModal" class="btn-close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Voulez-vous vraiment supprimer {{ $deleteId ? 'ce matériel' : 'les matériels sélectionnés' }} ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button wire:click="closeDeleteModal" class="btn btn-secondary">Annuler</button>
-                        <button wire:click="{{ $deleteId ? 'deleteMateriel' : 'deleteSelected' }}" class="btn btn-danger">Oui, supprimer</button>
-                    </div>
+    <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
+    <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-gradient-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmation de suppression
+                    </h5>
+                    <button type="button" wire:click="closeDeleteModal" class="btn-close btn-close-white"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <i class="fas fa-trash-alt fa-3x text-danger mb-3"></i>
+                    <h6 class="fw-semibold mb-3">
+                        Voulez-vous vraiment supprimer {{ $deleteId ? 'ce matériel' : 'les matériels sélectionnés' }} ?
+                    </h6>
+                    <p class="text-muted">Cette action est irréversible.</p>
+                </div>
+                <div class="modal-footer bg-light justify-content-center">
+                    <button wire:click="closeDeleteModal" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Annuler
+                    </button>
+                    <button wire:click="{{ $deleteId ? 'deleteMateriel' : 'deleteSelected' }}" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Oui, supprimer
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
     @endif
 
-    <!-- Modal d'import -->
+    <!-- Modal d'import - CENTRÉ ET AMÉLIORÉ -->
     @if($showImportModal)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Importer des Matériels Réseau</h5>
-                    <button type="button" wire:click="closeImportModal" class="btn-close"></button>
+    <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
+    <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-gradient-info text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-file-import me-2"></i>Importer des Matériels Réseau
+                    </h5>
+                    <button type="button" wire:click="closeImportModal" class="btn-close btn-close-white"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Fichier à importer (CSV, Excel)</label>
+                <div class="modal-body p-4">
+                    <div class="alert alert-info border-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Importez vos matériels réseau depuis un fichier CSV ou Excel.
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label fw-semibold">Fichier à importer</label>
                         <input type="file" wire:model="importFile" class="form-control" accept=".csv,.xlsx,.xls">
-                        @error('importFile') <span class="text-danger small">{{ $message }}</span> @enderror
+                        <div class="form-text text-muted">
+                            Formats supportés : CSV, Excel (.xlsx, .xls)
+                        </div>
+                        @error('importFile') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     </div>
                     
                     @if($importFile)
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Fichier sélectionné : {{ $importFile->getClientOriginalName() }}
+                        <div class="alert alert-success border-0 mt-3">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Fichier sélectionné : <strong>{{ $importFile->getClientOriginalName() }}</strong>
                         </div>
                     @endif
 
                     @if(!empty($importErrors))
-                        <div class="alert alert-danger">
-                            <h6>Erreurs d'import :</h6>
+                        <div class="alert alert-danger border-0 mt-3">
+                            <h6 class="alert-heading">Erreurs d'import :</h6>
                             <ul class="mb-0">
                                 @foreach($importErrors as $error)
                                     <li>{{ $error }}</li>
@@ -556,97 +592,18 @@
                     @endif
 
                     @if($importSuccessCount > 0)
-                        <div class="alert alert-success">
+                        <div class="alert alert-success border-0 mt-3">
                             <i class="fas fa-check-circle me-2"></i>
-                            {{ $importSuccessCount }} matériel(s) importé(s) avec succès.
+                            <strong>{{ $importSuccessCount }}</strong> matériel(s) importé(s) avec succès.
                         </div>
                     @endif
                 </div>
-                <div class="modal-footer">
-                    <button type="button" wire:click="closeImportModal" class="btn btn-secondary">Annuler</button>
-                    <button type="button" wire:click="importMateriels" class="btn btn-primary" 
-                            
-                        <i class="fas fa-upload me-2"></i>
-                        
+                <div class="modal-footer bg-light">
+                    <button type="button" wire:click="closeImportModal" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Annuler
                     </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Modal de mapping -->
-    @if($showMappingModal)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Mapping des colonnes</h5>
-                    <button type="button" wire:click="closeMappingModal" class="btn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Associez les colonnes de votre fichier aux champs du système.
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Champ système</th>
-                                    <th>Colonne du fichier</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($importMapping as $field => $mappedHeader)
-                                <tr>
-                                    <td class="fw-bold">{{ $field }}</td>
-                                    <td>
-                                        <select wire:model="importMapping.{{ $field }}" class="form-select form-select-sm">
-                                            <option value="">Non mappé</option>
-                                            @foreach($csvHeaders as $header)
-                                                <option value="{{ $header }}">{{ $header }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    @if(!empty($csvData))
-                    <div class="mt-4">
-                        <h6>Aperçu des données :</h6>
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
-                                <thead>
-                                    <tr>
-                                        @foreach($csvHeaders as $header)
-                                        <th>{{ $header }}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($csvData as $row)
-                                    <tr>
-                                        @foreach($csvHeaders as $header)
-                                        <td>{{ $row[$header] ?? '' }}</td>
-                                        @endforeach
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    @endif
-                </div>
-                <div class="modal-footer">
-                    <button type="button" wire:click="closeMappingModal" class="btn btn-secondary">Annuler</button>
-                    <button type="button" wire:click="processMappedData" class="btn btn-primary">
-                        <i class="fas fa-cogs me-2"></i>
-                        Traiter les données
+                    <button type="button" wire:click="importMateriels" class="btn btn-primary" {{ !$importFile ? 'disabled' : '' }}>
+                        <i class="fas fa-upload me-2"></i>Importer
                     </button>
                 </div>
             </div>
@@ -656,8 +613,8 @@
 
     <!-- Messages Flash -->
     @if (session()->has('message'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+            <div class="alert alert-success alert-dismissible fade show shadow-lg" role="alert">
                 <i class="fas fa-check-circle me-2"></i>
                 {{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -666,8 +623,8 @@
     @endif
 
     @if (session()->has('error'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
+            <div class="alert alert-danger alert-dismissible fade show shadow-lg" role="alert">
                 <i class="fas fa-exclamation-circle me-2"></i>
                 {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -684,47 +641,51 @@
         }
         
         .stats-widget {
-            border-radius: 10px;
-            transition: transform 0.2s;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
         }
         
         .stats-widget:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
         .stats-number {
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 0.2rem;
         }
         
         .stats-label {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6c757d;
+            font-weight: 500;
         }
         
         .avatar-sm {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
         }
         
         .table-container {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
         .table-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
-            background: #f8f9fa;
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-bottom: 1px solid #dee2e6;
         }
         
         .table-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: #495057;
         }
@@ -734,32 +695,36 @@
         }
         
         .table th {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-bottom: 2px solid #dee2e6;
             font-weight: 600;
             color: #495057;
-            padding: 0.75rem;
+            padding: 1rem;
+            font-size: 0.875rem;
         }
         
         .table td {
-            padding: 0.75rem;
+            padding: 0.875rem;
             vertical-align: middle;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #f1f3f4;
+            font-size: 0.875rem;
         }
         
         .sortable {
             cursor: pointer;
             user-select: none;
+            transition: background-color 0.2s;
         }
         
         .sortable:hover {
-            background-color: #e9ecef;
+            background-color: rgba(0,0,0,0.03);
         }
         
         .checkbox-modern {
             width: 18px;
             height: 18px;
             cursor: pointer;
+            border-radius: 3px;
         }
         
         .action-buttons {
@@ -776,21 +741,22 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
         
         .btn-edit {
-            background-color: #fff3cd;
+            background-color: rgba(255, 193, 7, 0.1);
             color: #ffc107;
         }
         
         .btn-delete {
-            background-color: #f8d7da;
+            background-color: rgba(220, 53, 69, 0.1);
             color: #dc3545;
         }
         
         .btn-action:hover {
             transform: scale(1.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
         
         .fade-in-up {
@@ -810,23 +776,97 @@
         
         /* Styles pour les lignes selon le statut */
         .statut-en-service:hover {
-            background-color: rgba(40, 167, 69, 0.05) !important;
+            background-color: rgba(40, 167, 69, 0.03) !important;
         }
         
         .statut-en-maintenance:hover {
-            background-color: rgba(255, 193, 7, 0.05) !important;
+            background-color: rgba(255, 193, 7, 0.03) !important;
         }
         
         .statut-hors-service:hover {
-            background-color: rgba(220, 53, 69, 0.05) !important;
+            background-color: rgba(220, 53, 69, 0.03) !important;
         }
         
         .statut-en-stock:hover {
-            background-color: rgba(13, 110, 253, 0.05) !important;
+            background-color: rgba(13, 110, 253, 0.03) !important;
         }
         
         .font-mono {
             font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+        }
+        
+        /* Styles améliorés pour les modales */
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            border-radius: 12px 12px 0 0;
+            padding: 1.25rem 1.5rem;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+        
+        .bg-gradient-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+        
+        .bg-gradient-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+        
+        .info-card {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        
+        .info-card:last-child {
+            border-bottom: none;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            padding: 0.625rem 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        
+        /* Amélioration de la pagination */
+        .pagination {
+            margin-bottom: 0;
+        }
+        
+        .page-link {
+            border-radius: 6px;
+            margin: 0 2px;
+            border: 1px solid #dee2e6;
+        }
+        
+        /* Amélioration des badges */
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+            border-radius: 6px;
+            font-weight: 600;
         }
     </style>
 @endpush

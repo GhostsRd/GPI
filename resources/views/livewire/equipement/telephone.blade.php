@@ -125,35 +125,26 @@
                     
                     <div class="col-md-4">
                         <div class="d-flex gap-2">
-                            <button type="button" wire:click="resetFilters"
-                                    class="btn btn-outline-secondary btn-sm flex-fill" title="Réinitialiser les filtres">
-                                <i class="fas fa-redo me-1"></i> RàZ
-                            </button>
+                                <button wire:click="create" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus me-1"></i> Nouvel Équipement
+                                </button>
                             <button wire:click="openImportModal" class="btn btn-outline-info btn-sm flex-fill" title="Importer des équipements">
                                 <i class="fas fa-file-import me-1"></i> Importer
                             </button>
                             <button wire:click="exportToCsv" class="btn btn-outline-success btn-sm flex-fill" title="Exporter les équipements">
                                 <i class="fas fa-file-export me-1"></i> Exporter
                             </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Actions groupées -->
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <button wire:click="create" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus me-1"></i> Nouvel Équipement
-                        </button>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <button wire:click="confirmDeleteSelected" class="btn btn-danger btn-sm" 
+
+                            <button wire:click="confirmDeleteSelected" class="btn btn-danger btn-sm" 
                                 {{ empty($selectedTelephones) ? 'disabled' : '' }}>
                             <i class="fas fa-trash me-1"></i>
                             Supprimer ({{ count($selectedTelephones) }})
                         </button>
+                        </div>
                     </div>
                 </div>
+    
+                
             </div>
         </div>
 

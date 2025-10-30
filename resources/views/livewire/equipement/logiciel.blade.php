@@ -130,7 +130,8 @@
                         </button>
                     </div>
                     <div class="col-md-1">
-                        <button wire:click="openImportModal" class="btn btn-info btn-sm w-100" title="Importer des logiciels">
+                        <!-- CORRECTION : Utilisation de la bonne méthode -->
+                        <button type="button" wire:click="openImportModal" class="btn btn-info btn-sm w-100" title="Importer des logiciels">
                             <i class="fas fa-file-import"></i> Importer
                         </button>
                     </div>
@@ -138,7 +139,7 @@
                         <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les logiciels sélectionnés"
                             {{ empty($selectedLogiciels) ? 'disabled' : '' }}>
                             <i class="fas fa-trash"></i>
-                            ({{ count($selectedLogiciels) }})
+                            ({{ is_array($selectedLogiciels ?? null) ? count($selectedLogiciels) : 0 }})
                         </button>
                     </div>
                     <div class="col-md-1">
@@ -316,8 +317,8 @@
         </div>
     </div>
 
-    <!-- Modal Formulaire -->
-    @if($showModal)
+    <!-- ✅ Modal Import (CORRIGÉ) -->
+@if($showModal)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -402,10 +403,7 @@
             </div>
         </div>
     </div>
-    @endif
-
-    <!-- Modal Import -->
-    @if($showImportModal)
+    @endif    @if($showImportModal)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1060;" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
@@ -659,6 +657,94 @@
     </div>
     @endif
 
+    <!-- Modal Formulaire -->
+    @if($showModal)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas {{ $editing ? 'fa-edit' : 'fa-plus' }} me-2"></i>
+                        {{ $editing ? 'Modifier le Logiciel' : 'Nouveau Logiciel' }}
+                    </h5>
+                    <button type="button" wire:click="$set('showModal', false)" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent="save">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nom du logiciel *</label>
+                                    <input type="text" class="form-control" wire:model="nom" required>
+                                    @error('nom') <span class="text-danger small">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Éditeur</label>
+                                    <input type="text" class="form-control" wire:model="editeur_form">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Version</label>
+                                    <input type="text" class="form-control" wire:model="version_nom">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre d'installations</label>
+                                    <input type="number" class="form-control" wire:model="nombre_installations" min="0">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Système d'exploitation</label>
+                                    <input type="text" class="form-control" wire:model="version_systeme_exploitation" 
+                                           placeholder="Windows, macOS, Linux...">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre de licences</label>
+                                    <input type="number" class="form-control" wire:model="nombre_licences" min="0">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Date d'achat</label>
+                                    <input type="date" class="form-control" wire:model="date_achat">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Date d'expiration</label>
+                                    <input type="date" class="form-control" wire:model="date_expiration">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" wire:model="description" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" wire:click="$set('showModal', false)" class="btn btn-secondary">
+                                <i class="fas fa-times me-1"></i>
+                                Annuler
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>
+                                {{ $editing ? 'Modifier' : 'Créer' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Confirmation Modal -->
     @if($showDeleteModal)
         <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
@@ -683,6 +769,97 @@
         </div>
     @endif
 
+    <!-- Modal Détails -->
+    @if($showDetailsModal && $selectedLogiciel)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1050;" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Détails du Logiciel
+                    </h5>
+                    <button type="button" wire:click="closeDetailsModal" class="btn-close btn-close-white"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nom</label>
+                                <p>{{ $selectedLogiciel->nom }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Éditeur</label>
+                                <p>{{ $selectedLogiciel->editeur ?? 'N/A' }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Version</label>
+                                <p>{{ $selectedLogiciel->version_nom ?? 'N/A' }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Système d'exploitation</label>
+                                <p>{{ $selectedLogiciel->version_systeme_exploitation ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Installations</label>
+                                <p>{{ $selectedLogiciel->nombre_installations }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Licences</label>
+                                <p>{{ $selectedLogiciel->nombre_licences }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Statut</label>
+                                <span class="status-badge 
+                                    @if($selectedLogiciel->statut_licences == 'Normal') bg-green-100 text-green-800
+                                    @elseif($selectedLogiciel->statut_licences == 'Attention') bg-yellow-100 text-yellow-800
+                                    @elseif($selectedLogiciel->statut_licences == 'Critique') bg-red-100 text-red-800
+                                    @else bg-gray-100 text-gray-800
+                                    @endif">
+                                    {{ $selectedLogiciel->statut_licences }}
+                                    @if($selectedLogiciel->statut_licences != 'Aucune licence')
+                                        ({{ $selectedLogiciel->pourcentage_utilisation }}%)
+                                    @endif
+                                </span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Date d'achat</label>
+                                <p>{{ $selectedLogiciel->date_achat ? $selectedLogiciel->date_achat->format('d/m/Y') : 'N/A' }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Date d'expiration</label>
+                                <p>{{ $selectedLogiciel->date_expiration ? $selectedLogiciel->date_expiration->format('d/m/Y') : 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @if($selectedLogiciel->description)
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Description</label>
+                                <p>{{ $selectedLogiciel->description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="closeDetailsModal" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>
+                        Fermer
+                    </button>
+                    <button type="button" wire:click="edit({{ $selectedLogiciel->id }})" wire:click="closeDetailsModal" class="btn btn-primary">
+                        <i class="fas fa-edit me-1"></i>
+                        Modifier
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Flash Messages -->
     @if (session()->has('success'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
@@ -693,99 +870,7 @@
             </div>
         </div>
     @endif
-
-<!-- Modal Détails -->
-@if($showDetailsModal && $selectedLogiciel)
-<div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1050;" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Détails du Logiciel
-                </h5>
-                <button type="button" wire:click="closeDetailsModal" class="btn-close btn-close-white"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Nom</label>
-                            <p>{{ $selectedLogiciel->nom }}</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Éditeur</label>
-                            <p>{{ $selectedLogiciel->editeur ?? 'N/A' }}</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Version</label>
-                            <p>{{ $selectedLogiciel->version_nom ?? 'N/A' }}</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Système d'exploitation</label>
-                            <p>{{ $selectedLogiciel->version_systeme_exploitation ?? 'N/A' }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Installations</label>
-                            <p>{{ $selectedLogiciel->nombre_installations }}</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Licences</label>
-                            <p>{{ $selectedLogiciel->nombre_licences }}</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Statut</label>
-                            <span class="status-badge 
-                                @if($selectedLogiciel->statut_licences == 'Normal') bg-green-100 text-green-800
-                                @elseif($selectedLogiciel->statut_licences == 'Attention') bg-yellow-100 text-yellow-800
-                                @elseif($selectedLogiciel->statut_licences == 'Critique') bg-red-100 text-red-800
-                                @else bg-gray-100 text-gray-800
-                                @endif">
-                                {{ $selectedLogiciel->statut_licences }}
-                                @if($selectedLogiciel->statut_licences != 'Aucune licence')
-                                    ({{ $selectedLogiciel->pourcentage_utilisation }}%)
-                                @endif
-                            </span>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Date d'achat</label>
-                            <p>{{ $selectedLogiciel->date_achat ? $selectedLogiciel->date_achat->format('d/m/Y') : 'N/A' }}</p>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Date d'expiration</label>
-                            <p>{{ $selectedLogiciel->date_expiration ? $selectedLogiciel->date_expiration->format('d/m/Y') : 'N/A' }}</p>
-                        </div>
-                    </div>
-                </div>
-                @if($selectedLogiciel->description)
-                <div class="row">
-                    <div class="col-12">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Description</label>
-                            <p>{{ $selectedLogiciel->description }}</p>
-                        </div>
-                    </div>
-                </div>
-                @endif
-            </div>
-            <div class="modal-footer">
-                <button type="button" wire:click="closeDetailsModal" class="btn btn-secondary">
-                    <i class="fas fa-times me-1"></i>
-                    Fermer
-                </button>
-                <button type="button" wire:click="edit({{ $selectedLogiciel->id }})" wire:click="closeDetailsModal" class="btn btn-primary">
-                    <i class="fas fa-edit me-1"></i>
-                    Modifier
-                </button>
-            </div>
-        </div>
-    </div>
 </div>
-@endif
-</div>
-
 
 @push('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">

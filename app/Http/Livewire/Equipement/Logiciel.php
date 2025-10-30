@@ -34,11 +34,26 @@ class Logiciel extends Component
 
     public $showModal = false;
     public $showDeleteModal = false;
-    public $showDetailsModal = false; // Ajout de cette propriété
-    public $selectedLogiciel; // Pour stocker le logiciel sélectionné pour les détails
+    public $showDetailsModal = false;
+    public $showImportModal = false;
+    public $showMappingModal = false;
+    public $showImportedData = false;
+    public $selectedLogiciel;
     public $modalTitle = 'Ajouter un Logiciel';
     public $editing = false;
 
+    // Propriétés pour l'import
+    public $importFile;
+    public $csvHeaders = [];
+    public $csvPreview = [];
+    public $fieldMapping = [];
+    public $importedData = [];
+    public $importErrors = [];
+    public $importSuccessCount = 0;
+
+    // Propriétés pour la sélection multiple
+    public $selectedLogiciels = [];
+    public $selectAll = false;
 
     protected $rules = [
         'nom' => 'required|string|max:150',
@@ -59,6 +74,28 @@ class Logiciel extends Component
 
     public function mount()
     {
+        $this->resetImport();
+    }
+
+    /**
+     * Réinitialiser complètement l'import
+     */
+    public function resetImport()
+    {
+        $this->reset([
+            'showImportModal',
+            'showMappingModal',
+            'showImportedData',
+            'importFile',
+            'csvHeaders',
+            'csvPreview',
+            'fieldMapping',
+            'importedData',
+            'importErrors',
+            'importSuccessCount',
+        ]);
+
+        // Réinitialiser le mapping des champs
         $this->fieldMapping = [
             'nom' => '',
             'editeur' => '',
@@ -70,6 +107,8 @@ class Logiciel extends Component
             'date_expiration' => '',
             'description' => '',
         ];
+
+        $this->resetErrorBag();
     }
 
     public function render()
@@ -122,7 +161,8 @@ class Logiciel extends Component
         return view('livewire.equipement.logiciel', compact('logiciels', 'stats', 'editeurs', 'systemes'));
     }
 
-    // AJOUT DE LA MÉTHODE MANQUANTE
+    // ==================== MÉTHODES POUR LES DÉTAILS ====================
+
     public function showDetails($id)
     {
         $this->selectedLogiciel = LogicielModel::findOrFail($id);
@@ -135,6 +175,8 @@ class Logiciel extends Component
         $this->selectedLogiciel = null;
     }
 
+    // ==================== MÉTHODES DE TRI ET FILTRES ====================
+
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
@@ -145,6 +187,14 @@ class Logiciel extends Component
 
         $this->sortField = $field;
     }
+
+    public function resetFilters()
+    {
+        $this->reset(['search', 'editeur', 'systeme_exploitation', 'statutFilter']);
+        $this->resetPage();
+    }
+
+    // ==================== MÉTHODES CRUD ====================
 
     public function create()
     {
@@ -224,6 +274,25 @@ class Logiciel extends Component
             $this->showDeleteModal = false;
             session()->flash('success', 'Logiciel supprimé avec succès.');
 
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteSelected()
+    {
+        try {
+            if (empty($this->selectedLogiciels)) {
+                session()->flash('warning', 'Aucun logiciel sélectionné.');
+                return;
+            }
+
+            $count = LogicielModel::whereIn('id', $this->selectedLogiciels)->delete();
+            
+            $this->selectedLogiciels = [];
+            $this->selectAll = false;
+            
+            session()->flash('success', $count . ' logiciel(s) supprimé(s) avec succès.');
 
         } catch (\Exception $e) {
             session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
@@ -247,12 +316,6 @@ class Logiciel extends Component
         $this->resetErrorBag();
     }
 
-    public function resetFilters()
-    {
-        $this->reset(['search', 'editeur', 'systeme_exploitation', 'statutFilter']);
-        $this->resetPage();
-    }
-
     public function closeModal()
     {
         $this->showModal = false;
@@ -261,44 +324,23 @@ class Logiciel extends Component
         $this->resetForm();
     }
 
-    // Méthodes pour l'import
+    // ==================== MÉTHODES POUR L'IMPORT ====================
+
     public function openImportModal()
     {
         $this->showImportModal = true;
+        $this->resetImport();
     }
 
     public function closeImportModal()
     {
         $this->showImportModal = false;
-        $this->reset(['importFile']);
+        $this->resetImport();
     }
 
     public function cancelImport()
     {
-        $this->reset([
-            'showImportModal',
-            'showMappingModal', 
-            'showImportedData',
-            'importFile',
-            'csvHeaders',
-            'csvPreview',
-            'fieldMapping',
-            'importedData',
-            'importErrors',
-            'importSuccessCount'
-        ]);
-        
-        $this->fieldMapping = [
-            'nom' => '',
-            'editeur' => '',
-            'version_nom' => '',
-            'version_systeme_exploitation' => '',
-            'nombre_installations' => '',
-            'nombre_licences' => '',
-            'date_achat' => '',
-            'date_expiration' => '',
-            'description' => '',
-        ];
+        $this->resetImport();
     }
 
     public function storeImportFile()
@@ -313,11 +355,45 @@ class Logiciel extends Component
             $this->csvHeaders = $this->getCsvHeaders($filePath);
             $this->csvPreview = $this->getCsvPreview($filePath, 5);
             
+            // Mapping automatique
+            $this->autoMapFields();
+            
             $this->showImportModal = false;
             $this->showMappingModal = true;
             
         } catch (\Exception $e) {
             session()->flash('error', 'Erreur lors de la lecture du fichier: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Mapping automatique des champs
+     */
+    private function autoMapFields()
+    {
+        $fieldPatterns = [
+            'nom' => ['nom','name','logiciel','software','application','app','titre','title'],
+            'editeur' => ['editeur','editor','publisher','fabricant','manufacturer','company','societe'],
+            'version_nom' => ['version_nom','version','version_name','release','build','numero_version'],
+            'version_systeme_exploitation' => ['version_systeme_exploitation','systeme_exploitation','os','operating_system','platform','systeme'],
+            'nombre_installations' => ['nombre_installations','installations','installs','deployments','count_install','nb_install'],
+            'nombre_licences' => ['nombre_licences','licences','licenses','license_count','seats','nb_licences'],
+            'date_achat' => ['date_achat','achat','purchase_date','buy_date','acquisition','date_acquisition'],
+            'date_expiration' => ['date_expiration','expiration','expiry_date','end_date','valid_until','date_fin'],
+            'description' => ['description','desc','notes','commentaires','remarks','note']
+        ];
+
+        foreach ($this->csvHeaders as $header) {
+            $headerLower = strtolower(trim($header));
+            
+            foreach ($fieldPatterns as $field => $patterns) {
+                foreach ($patterns as $pattern) {
+                    if (str_contains($headerLower, $pattern) && empty($this->fieldMapping[$field])) {
+                        $this->fieldMapping[$field] = $header;
+                        break 2;
+                    }
+                }
+            }
         }
     }
 
@@ -337,7 +413,9 @@ class Logiciel extends Component
                     
                     foreach ($this->fieldMapping as $field => $csvHeader) {
                         if (!empty($csvHeader) && isset($row[$csvHeader])) {
-                            $mappedData[$field] = $row[$csvHeader];
+                            $mappedData[$field] = trim($row[$csvHeader]);
+                        } else {
+                            $mappedData[$field] = '';
                         }
                     }
                     
@@ -346,13 +424,8 @@ class Logiciel extends Component
                         continue;
                     }
                     
-                    if (isset($mappedData['nombre_installations'])) {
-                        $mappedData['nombre_installations'] = intval($mappedData['nombre_installations']);
-                    }
-                    
-                    if (isset($mappedData['nombre_licences'])) {
-                        $mappedData['nombre_licences'] = intval($mappedData['nombre_licences']);
-                    }
+                    // Nettoyer et formater les données
+                    $mappedData = $this->cleanMappedData($mappedData);
                     
                     $this->importedData[] = $mappedData;
                     $this->importSuccessCount++;
@@ -370,13 +443,48 @@ class Logiciel extends Component
         }
     }
 
+    /**
+     * Nettoyer les données mappées
+     */
+    private function cleanMappedData($data)
+    {
+        foreach ($data as $key => $value) {
+            // Conversion des nombres
+            if (in_array($key, ['nombre_installations', 'nombre_licences'])) {
+                $data[$key] = is_numeric($value) ? (int)$value : 0;
+            }
+            
+            // Validation des dates
+            if (in_array($key, ['date_achat', 'date_expiration']) && !empty($value)) {
+                try {
+                    $date = \Carbon\Carbon::parse($value);
+                    $data[$key] = $date->format('Y-m-d');
+                } catch (\Exception $e) {
+                    $data[$key] = null;
+                }
+            }
+        }
+
+        return $data;
+    }
+
     public function saveImportedData()
     {
         try {
+            DB::beginTransaction();
+
             $importedCount = 0;
+            $errors = [];
             
-            foreach ($this->importedData as $data) {
+            foreach ($this->importedData as $index => $data) {
                 try {
+                    // Vérifier si le logiciel existe déjà
+                    $existing = LogicielModel::where('nom', $data['nom'])->first();
+                    if ($existing) {
+                        $errors[] = "Ligne " . ($index + 1) . ": Le logiciel '{$data['nom']}' existe déjà";
+                        continue;
+                    }
+
                     LogicielModel::create([
                         'nom' => $data['nom'],
                         'editeur' => $data['editeur'] ?? null,
@@ -384,17 +492,19 @@ class Logiciel extends Component
                         'version_systeme_exploitation' => $data['version_systeme_exploitation'] ?? null,
                         'nombre_installations' => $data['nombre_installations'] ?? 0,
                         'nombre_licences' => $data['nombre_licences'] ?? 0,
-                        'date_achat' => !empty($data['date_achat']) ? $data['date_achat'] : null,
-                        'date_expiration' => !empty($data['date_expiration']) ? $data['date_expiration'] : null,
+                        'date_achat' => $data['date_achat'] ?? null,
+                        'date_expiration' => $data['date_expiration'] ?? null,
                         'description' => $data['description'] ?? null,
                     ]);
                     
                     $importedCount++;
                     
                 } catch (\Exception $e) {
-                    $this->importErrors[] = "Erreur lors de l'import de '{$data['nom']}': " . $e->getMessage();
+                    $errors[] = "Ligne " . ($index + 1) . ": Erreur lors de l'import de '{$data['nom']}': " . $e->getMessage();
                 }
             }
+
+            DB::commit();
             
             $this->cancelImport();
             
@@ -402,11 +512,13 @@ class Logiciel extends Component
                 session()->flash('success', $importedCount . ' logiciel(s) importé(s) avec succès.');
             }
             
-            if (count($this->importErrors) > 0) {
-                session()->flash('warning', 'Import terminé avec ' . count($this->importErrors) . ' erreur(s).');
+            if (!empty($errors)) {
+                session()->flash('warning', 'Import terminé avec ' . count($errors) . ' erreur(s).');
+                $this->importErrors = $errors;
             }
             
         } catch (\Exception $e) {
+            DB::rollBack();
             session()->flash('error', 'Erreur lors de l\'importation: ' . $e->getMessage());
         }
     }
@@ -422,15 +534,15 @@ class Logiciel extends Component
             $file = fopen('php://output', 'w');
             
             fputcsv($file, [
-                'Nom du logiciel',
-                'Éditeur',
-                'Version',
-                'Système d exploitation',
-                'Nombre installations',
-                'Nombre licences',
-                'Date achat',
-                'Date expiration',
-                'Description'
+                'nom',
+                'editeur',
+                'version_nom',
+                'version_systeme_exploitation',
+                'nombre_installations',
+                'nombre_licences',
+                'date_achat',
+                'date_expiration',
+                'description'
             ]);
             
             fputcsv($file, [
@@ -445,13 +557,26 @@ class Logiciel extends Component
                 'Suite bureautique Microsoft'
             ]);
             
+            fputcsv($file, [
+                'Adobe Photoshop',
+                'Adobe',
+                'CC 2023',
+                'Windows/macOS',
+                '25',
+                '30',
+                '2023-02-01',
+                '2024-02-01',
+                'Logiciel de retouche photo'
+            ]);
+            
             fclose($file);
         };
 
         return response()->stream($callback, 200, $headers);
     }
 
-    // Méthodes utilitaires pour la lecture CSV
+    // ==================== MÉTHODES UTILITAIRES CSV ====================
+
     private function getCsvHeaders($filePath)
     {
         $file = fopen($filePath, 'r');
@@ -501,14 +626,53 @@ class Logiciel extends Component
         return $data;
     }
 
+    // ==================== MÉTHODES POUR LA SÉLECTION MULTIPLE ====================
+
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selectedLogiciels = $this->logiciels->pluck('id')->toArray();
+            $query = $this->getLogicielsQuery();
+            $this->selectedLogiciels = $query->pluck('id')->toArray();
         } else {
             $this->selectedLogiciels = [];
         }
     }
+
+    /**
+     * Obtenir la requête de base pour les logiciels (pour la sélection multiple)
+     */
+    private function getLogicielsQuery()
+    {
+        $query = LogicielModel::query();
+
+        if ($this->search) {
+            $query->where(function($q) {
+                $q->where('nom', 'like', "%{$this->search}%")
+                  ->orWhere('editeur', 'like', "%{$this->search}%")
+                  ->orWhere('version_nom', 'like', "%{$this->search}%");
+            });
+        }
+
+        if ($this->editeur) {
+            $query->where('editeur', $this->editeur);
+        }
+
+        if ($this->systeme_exploitation) {
+            $query->where('version_systeme_exploitation', 'like', "%{$this->systeme_exploitation}%");
+        }
+
+        if ($this->statutFilter) {
+            if ($this->statutFilter === 'Aucune licence') {
+                $query->where('nombre_licences', 0);
+            } else {
+                $query->where('statut_licences', $this->statutFilter);
+            }
+        }
+
+        return $query;
+    }
+
+    // ==================== MÉTHODE D'EXPORT ====================
 
     public function exportToCsv()
     {
@@ -554,5 +718,32 @@ class Logiciel extends Component
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    // ==================== MÉTHODES DE PAGINATION ====================
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingEditeur()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSystemeExploitation()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingStatutFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
+    {
+        $this->resetPage();
     }
 }
