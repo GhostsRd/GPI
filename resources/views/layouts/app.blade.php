@@ -81,14 +81,18 @@
                 </div>
 
                 <!-- User Menu -->
-                <ul class="navbar-nav">
+               <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <div class="user-dropdown" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('/images/avtar_1.png') }}" class="user-avatar" width="40" height="40" alt="">
+                                @if(Auth::user()->photo)
+                                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="user-avatar" width="40" height="40" alt="Photo de profil">
+                                @else
+                                    <img src="{{ asset('/images/avtar_1.png') }}" class="user-avatar" width="40" height="40" alt="Photo par défaut">
+                                @endif
                                 <span class="ms-2 fw-bold text-dark">{{ Auth::user()->name ?? 'Guest' }}</span>
                             </div>
-                        </div>
+                    
 
                         <div class="dropdown-menu dropdown-menu-modern dropdown-menu-end">
 

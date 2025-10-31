@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class, // Si vous avez un seeder pour les users
+            UsersSeeder::class, // Si vous avez un seeder pour les users
             OrdinateurSeeder::class,
             MoniteurSeeder::class,
             logicielSeeder::class,
