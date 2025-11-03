@@ -2,12 +2,45 @@
     <div class="dashboard-container">
         <!-- En-tête -->
         <div class="mb-4">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Gestion des Logiciels</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-boxes me-2 text-primary"></i>Gestion des Logiciels
+            </h1>
             <p class="text-gray-600">Inventaire complet des applications et licences</p>
         </div>
 
+        <!-- Messages flash -->
+        @if (session()->has('message'))
+            <div class="alert alert-success alert-dismissible fade show small" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show small" role="alert">
+                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show small" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+
+        @if (session()->has('warning'))
+            <div class="alert alert-warning alert-dismissible fade show small" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> {{ session('warning') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+
         <!-- Statistiques -->
+        @if($showStats)
         <div class="row mb-4">
+            <!-- Total -->
             <div class="col-xl-3 col-md-6">
                 <div class="card stats-widget border-0 shadow-sm">
                     <div class="card-body">
@@ -26,6 +59,7 @@
                 </div>
             </div>
 
+            <!-- Licences critiques -->
             <div class="col-xl-3 col-md-6">
                 <div class="card stats-widget border-0 shadow-sm">
                     <div class="card-body">
@@ -44,13 +78,14 @@
                 </div>
             </div>
 
+            <!-- Total installations -->
             <div class="col-xl-3 col-md-6">
                 <div class="card stats-widget border-0 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
                                 <h3 class="stats-number text-success">{{ $stats['total_installations'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Installations</p>
+                                <p class="stats-label text-black mb-0">Total Installations</p>
                             </div>
                             <div class="flex-shrink-0">
                                 <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
@@ -62,17 +97,25 @@
                 </div>
             </div>
 
+            <!-- Taux de conformité -->
             <div class="col-xl-3 col-md-6">
                 <div class="card stats-widget border-0 shadow-sm">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <h3 class="stats-number text-info">{{ $stats['total_licences'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Licences Disponibles</p>
+                                @php
+                                    $installations = $stats['total_installations'] ?? 0;
+                                    $licences = $stats['total_licences'] ?? 1;
+                                    $taux = $licences > 0 ? round(($installations / $licences) * 100) : 0;
+                                @endphp
+                                <h3 class="stats-number mb-0 {{ $taux <= 80 ? 'text-success' : ($taux <= 100 ? 'text-warning' : 'text-danger') }}">
+                                    {{ $taux }}%
+                                </h3>
+                                <p class="stats-label text-black mb-0">Taux Conformité</p>
                             </div>
                             <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-info bg-opacity-25 text-info d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-key fa-lg"></i>
+                                <div class="avatar-sm rounded-circle {{ $taux <= 80 ? 'bg-success bg-opacity-25 text-success' : ($taux <= 100 ? 'bg-warning bg-opacity-25 text-warning' : 'bg-danger bg-opacity-25 text-danger') }} d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-chart-line fa-lg"></i>
                                 </div>
                             </div>
                         </div>
@@ -80,6 +123,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <!-- Barre de recherche et filtres -->
         <div class="card border-0 shadow-sm mb-4">
@@ -91,7 +135,7 @@
                             <span class="input-group-text bg-transparent">
                                 <i class="fas fa-search text-muted"></i>
                             </span>
-                            <input type="text" wire:model.live="search"
+                            <input type="text" wire:model.live.debounce.300ms="search"
                                    class="form-control" placeholder="Nom, éditeur, version...">
                         </div>
                     </div>
@@ -99,8 +143,8 @@
                         <label class="form-label small fw-bold">Éditeur</label>
                         <select wire:model.live="editeur" class="form-select form-select-sm">
                             <option value="">Tous les éditeurs</option>
-                            @foreach($editeurs as $editeur)
-                                <option value="{{ $editeur }}">{{ $editeur }}</option>
+                            @foreach($editeurs as $editeurOption)
+                                <option value="{{ $editeurOption }}">{{ $editeurOption }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -126,11 +170,10 @@
                     <div class="col-md-1">
                         <button type="button" wire:click="resetFilters"
                                 class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
-                            <i class="fa fa-times"></i> Reset
+                            <i class="fas fa-times"></i> Reset
                         </button>
                     </div>
                     <div class="col-md-1">
-                        <!-- CORRECTION : Utilisation de la bonne méthode -->
                         <button type="button" wire:click="openImportModal" class="btn btn-info btn-sm w-100" title="Importer des logiciels">
                             <i class="fas fa-file-import"></i> Importer
                         </button>
@@ -139,7 +182,7 @@
                         <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les logiciels sélectionnés"
                             {{ empty($selectedLogiciels) ? 'disabled' : '' }}>
                             <i class="fas fa-trash"></i>
-                            ({{ is_array($selectedLogiciels ?? null) ? count($selectedLogiciels) : 0 }})
+                            ({{ count($selectedLogiciels) }})
                         </button>
                     </div>
                     <div class="col-md-1">
@@ -149,6 +192,39 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Résultats du filtre -->
+                @if($search || $editeur || $systeme_exploitation || $statutFilter)
+                <div class="mt-3 pt-2 border-top">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="text-muted small">Filtres actifs :</span>
+                        @if($search)
+                        <span class="badge bg-light text-dark border small d-flex align-items-center">
+                            Recherche: "{{ $search }}"
+                            <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                        </span>
+                        @endif
+                        @if($editeur)
+                        <span class="badge bg-light text-dark border small d-flex align-items-center">
+                            Éditeur: {{ $editeur }}
+                            <button wire:click="$set('editeur', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                        </span>
+                        @endif
+                        @if($systeme_exploitation)
+                        <span class="badge bg-light text-dark border small d-flex align-items-center">
+                            Système: {{ $systeme_exploitation }}
+                            <button wire:click="$set('systeme_exploitation', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                        </span>
+                        @endif
+                        @if($statutFilter)
+                        <span class="badge bg-light text-dark border small d-flex align-items-center">
+                            Statut: {{ $statutFilter }}
+                            <button wire:click="$set('statutFilter', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                        </span>
+                        @endif
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -158,9 +234,15 @@
                 <div class="table-title">
                     Liste des Logiciels ({{ $logiciels->total() }})
                 </div>
-                <button wire:click="create" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus mr-2"></i>Nouveau Logiciel
-                </button>
+                <div class="d-flex gap-2">
+                    <button wire:click="toggleStats" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        {{ $showStats ? 'Masquer' : 'Afficher' }} stats
+                    </button>
+                    <button wire:click="create" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus mr-2"></i>Nouveau Logiciel
+                    </button>
+                </div>
             </div>
 
             <div class="table-wrapper p-0 border-0 w-100 compact-mode">
@@ -281,6 +363,10 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
+                                    <button wire:click="showDetails({{ $logiciel->id }})"
+                                            class="btn-action btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                     <button wire:click="edit({{ $logiciel->id }})"
                                             class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i>
@@ -317,347 +403,7 @@
         </div>
     </div>
 
-    <!-- ✅ Modal Import (CORRIGÉ) -->
-@if($showModal)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas {{ $editing ? 'fa-edit' : 'fa-plus' }} me-2"></i>
-                        {{ $editing ? 'Modifier le Logiciel' : 'Nouveau Logiciel' }}
-                    </h5>
-                    <button type="button" wire:click="$set('showModal', false)" class="btn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <form wire:submit.prevent="save">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Nom du logiciel *</label>
-                                    <input type="text" class="form-control" wire:model="nom" required>
-                                    @error('nom') <span class="text-danger small">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Éditeur</label>
-                                    <input type="text" class="form-control" wire:model="editeur_form">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Version</label>
-                                    <input type="text" class="form-control" wire:model="version_nom">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre d'installations</label>
-                                    <input type="number" class="form-control" wire:model="nombre_installations" min="0">
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Système d'exploitation</label>
-                                    <input type="text" class="form-control" wire:model="version_systeme_exploitation" 
-                                           placeholder="Windows, macOS, Linux...">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre de licences</label>
-                                    <input type="number" class="form-control" wire:model="nombre_licences" min="0">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Date d'achat</label>
-                                    <input type="date" class="form-control" wire:model="date_achat">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Date d'expiration</label>
-                                    <input type="date" class="form-control" wire:model="date_expiration">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" wire:model="description" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" wire:click="$set('showModal', false)" class="btn btn-secondary">
-                                <i class="fas fa-times me-1"></i>
-                                Annuler
-                            </button>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i>
-                                {{ $editing ? 'Modifier' : 'Créer' }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif    @if($showImportModal)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1060;" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-file-import me-2"></i>
-                        Importer des Logiciels
-                    </h5>
-                    <button type="button" wire:click="closeImportModal" class="btn-close btn-close-white"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Sélectionnez un fichier CSV à importer. Le fichier sera stocké temporairement pour le mapping.
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Fichier CSV</label>
-                        <input type="file" wire:model="importFile" class="form-control" accept=".csv,.txt">
-                        @error('importFile') <span class="text-danger small">{{ $message }}</span> @enderror
-                    </div>
-
-                    <div class="mt-3">
-                        <button type="button" wire:click="downloadImportTemplate" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-download me-1"></i>
-                            Télécharger le template
-                        </button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" wire:click="closeImportModal" class="btn btn-secondary">
-                        <i class="fas fa-times me-1"></i>
-                        Annuler
-                    </button>
-                    <button type="button" wire:click="storeImportFile" class="btn btn-info" {{ !$importFile ? 'disabled' : '' }}>
-                        <i class="fas fa-arrow-right me-1"></i>
-                        Suivant (Mapping)
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Modal Mapping -->
-    @if($showMappingModal)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1070;" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title">
-                        <i class="fas fa-map me-2"></i>
-                        Mapping des Colonnes
-                    </h5>
-                    <button type="button" wire:click="cancelImport" class="btn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        Associez chaque colonne de votre fichier aux champs de la base de données.
-                    </div>
-
-                    <!-- Aperçu des données -->
-                    @if(count($csvPreview) > 0)
-                    <div class="mb-4">
-                        <h6>Aperçu des données (5 premières lignes):</h6>
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
-                                <thead>
-                                    <tr>
-                                        @foreach($csvHeaders as $header)
-                                        <th>{{ $header }}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($csvPreview as $row)
-                                    <tr>
-                                        @foreach($csvHeaders as $header)
-                                        <td>{{ $row[$header] ?? '' }}</td>
-                                        @endforeach
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    @endif
-
-                    <!-- Formulaire de mapping -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>Mapping des champs:</h6>
-                            @foreach($fieldMapping as $field => $value)
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold text-capitalize">
-                                    {{ str_replace('_', ' ', $field) }}
-                                    @if($field === 'nom') <span class="text-danger">*</span> @endif
-                                </label>
-                                <select wire:model="fieldMapping.{{ $field }}" class="form-select form-select-sm">
-                                    <option value="">-- Non mappé --</option>
-                                    @foreach($csvHeaders as $header)
-                                    <option value="{{ $header }}">{{ $header }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            @endforeach
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <h6>Instructions:</h6>
-                            <div class="card bg-light">
-                                <div class="card-body small">
-                                    <p><strong>Champs obligatoires:</strong></p>
-                                    <ul>
-                                        <li><strong>Nom:</strong> Nom du logiciel</li>
-                                    </ul>
-                                    <p><strong>Champs optionnels:</strong></p>
-                                    <ul>
-                                        <li><strong>Éditeur:</strong> Société éditrice du logiciel</li>
-                                        <li><strong>Version:</strong> Numéro de version</li>
-                                        <li><strong>Système d'exploitation:</strong> Windows, macOS, Linux, etc.</li>
-                                        <li><strong>Nombre d'installations:</strong> Nombre d'installations actuelles</li>
-                                        <li><strong>Nombre de licences:</strong> Nombre total de licences</li>
-                                        <li><strong>Date d'achat:</strong> Date d'acquisition (format YYYY-MM-DD)</li>
-                                        <li><strong>Date d'expiration:</strong> Date d'expiration des licences</li>
-                                        <li><strong>Description:</strong> Description du logiciel</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" wire:click="cancelImport" class="btn btn-secondary">
-                        <i class="fas fa-times me-1"></i>
-                        Annuler
-                    </button>
-                    <button type="button" wire:click="processMappedData" class="btn btn-warning">
-                        <i class="fas fa-cog me-1"></i>
-                        Traiter les données
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Modal Aperçu des données importées -->
-    @if($showImportedData)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1080;" tabindex="-1">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title">
-                        <i class="fas fa-check-circle me-2"></i>
-                        Aperçu des Données Importées
-                    </h5>
-                    <button type="button" wire:click="cancelImport" class="btn-close btn-close-white"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-success">
-                        <i class="fas fa-info-circle me-2"></i>
-                        {{ $importSuccessCount }} enregistrement(s) prêt(s) à être importés.
-                        @if(count($importErrors) > 0)
-                        <br><strong>{{ count($importErrors) }} erreur(s) détectée(s):</strong>
-                        @endif
-                    </div>
-
-                    @if(count($importErrors) > 0)
-                    <div class="alert alert-danger">
-                        <h6>Erreurs d'importation:</h6>
-                        <ul class="small mb-0">
-                            @foreach($importErrors as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-
-                    <!-- Aperçu des données mappées -->
-                    @if(count($importedData) > 0)
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Éditeur</th>
-                                    <th>Version</th>
-                                    <th>Système d'exploitation</th>
-                                    <th>Installations</th>
-                                    <th>Licences</th>
-                                    <th>Statut</th>
-                                    <th>Date achat</th>
-                                    <th>Date expiration</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($importedData as $data)
-                                <tr>
-                                    <td>{{ $data['nom'] }}</td>
-                                    <td>{{ $data['editeur'] ?? 'N/A' }}</td>
-                                    <td>{{ $data['version_nom'] ?? 'N/A' }}</td>
-                                    <td>{{ $data['version_systeme_exploitation'] ?? 'N/A' }}</td>
-                                    <td class="text-center">{{ $data['nombre_installations'] ?? 0 }}</td>
-                                    <td class="text-center">{{ $data['nombre_licences'] ?? 0 }}</td>
-                                    <td>
-                                        @php
-                                            $installations = $data['nombre_installations'] ?? 0;
-                                            $licences = $data['nombre_licences'] ?? 0;
-                                            
-                                            if ($licences == 0) {
-                                                $statut = 'Aucune licence';
-                                                $badgeClass = 'bg-secondary';
-                                            } elseif ($installations > $licences) {
-                                                $statut = 'Critique';
-                                                $badgeClass = 'bg-danger';
-                                            } elseif ($installations == $licences) {
-                                                $statut = 'Attention';
-                                                $badgeClass = 'bg-warning';
-                                            } else {
-                                                $statut = 'Normal';
-                                                $badgeClass = 'bg-success';
-                                            }
-                                        @endphp
-                                        <span class="badge {{ $badgeClass }}">
-                                            {{ $statut }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $data['date_achat'] ?? 'N/A' }}</td>
-                                    <td>{{ $data['date_expiration'] ?? 'N/A' }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    @endif
-                </div>
-                <div class="modal-footer">
-                    <button type="button" wire:click="cancelImport" class="btn btn-secondary">
-                        <i class="fas fa-times me-1"></i>
-                        Annuler
-                    </button>
-                    <button type="button" wire:click="saveImportedData" class="btn btn-success" {{ count($importedData) === 0 ? 'disabled' : '' }}>
-                        <i class="fas fa-save me-1"></i>
-                        Sauvegarder ({{ count($importedData) }})
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Modal Formulaire -->
+    <!-- Modal pour créer/modifier un logiciel -->
     @if($showModal)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -667,7 +413,7 @@
                         <i class="fas {{ $editing ? 'fa-edit' : 'fa-plus' }} me-2"></i>
                         {{ $editing ? 'Modifier le Logiciel' : 'Nouveau Logiciel' }}
                     </h5>
-                    <button type="button" wire:click="$set('showModal', false)" class="btn-close"></button>
+                    <button type="button" wire:click="closeModal" class="btn-close"></button>
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="save">
@@ -681,12 +427,12 @@
 
                                 <div class="mb-3">
                                     <label class="form-label">Éditeur</label>
-                                    <input type="text" class="form-control" wire:model="editeur_form">
+                                    <input type="text" class="form-control" wire:model="editeur_form" placeholder="Microsoft, Adobe, Google...">
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Version</label>
-                                    <input type="text" class="form-control" wire:model="version_nom">
+                                    <input type="text" class="form-control" wire:model="version_nom" placeholder="2023, CC 2023, v2.1...">
                                 </div>
 
                                 <div class="mb-3">
@@ -723,13 +469,13 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label class="form-label">Description</label>
-                                    <textarea class="form-control" wire:model="description" rows="3"></textarea>
+                                    <textarea class="form-control" wire:model="description" rows="3" placeholder="Description du logiciel..."></textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" wire:click="$set('showModal', false)" class="btn btn-secondary">
+                            <button type="button" wire:click="closeModal" class="btn btn-secondary">
                                 <i class="fas fa-times me-1"></i>
                                 Annuler
                             </button>
@@ -745,31 +491,7 @@
     </div>
     @endif
 
-    <!-- Confirmation Modal -->
-    @if($showDeleteModal)
-        <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirmer la suppression</h5>
-                        <button type="button" wire:click="$set('showDeleteModal', false)" class="btn-close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Êtes-vous sûr de vouloir supprimer ce logiciel ? Cette action est irréversible.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button wire:click="$set('showDeleteModal', false)" class="btn btn-secondary">Annuler</button>
-                        <button wire:click="delete" class="btn btn-danger">
-                            <i class="fas fa-trash me-1"></i>
-                            Supprimer
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    <!-- Modal Détails -->
+    <!-- Modal de détails du logiciel -->
     @if($showDetailsModal && $selectedLogiciel)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1050;" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -790,15 +512,15 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Éditeur</label>
-                                <p>{{ $selectedLogiciel->editeur ?? 'N/A' }}</p>
+                                <p>{{ $selectedLogiciel->editeur ?? 'Non spécifié' }}</p>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Version</label>
-                                <p>{{ $selectedLogiciel->version_nom ?? 'N/A' }}</p>
+                                <p>{{ $selectedLogiciel->version_nom ?? 'Non spécifié' }}</p>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Système d'exploitation</label>
-                                <p>{{ $selectedLogiciel->version_systeme_exploitation ?? 'N/A' }}</p>
+                                <p>{{ $selectedLogiciel->version_systeme_exploitation ?? 'Non spécifié' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -826,11 +548,11 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Date d'achat</label>
-                                <p>{{ $selectedLogiciel->date_achat ? $selectedLogiciel->date_achat->format('d/m/Y') : 'N/A' }}</p>
+                                <p>{{ $selectedLogiciel->date_achat ? $selectedLogiciel->date_achat->format('d/m/Y') : 'Non spécifiée' }}</p>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Date d'expiration</label>
-                                <p>{{ $selectedLogiciel->date_expiration ? $selectedLogiciel->date_expiration->format('d/m/Y') : 'N/A' }}</p>
+                                <p>{{ $selectedLogiciel->date_expiration ? $selectedLogiciel->date_expiration->format('d/m/Y') : 'Non spécifiée' }}</p>
                             </div>
                         </div>
                     </div>
@@ -844,13 +566,27 @@
                         </div>
                     </div>
                     @endif
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Date de création</label>
+                                <p>{{ $selectedLogiciel->created_at->format('d/m/Y à H:i') }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Dernière modification</label>
+                                <p>{{ $selectedLogiciel->updated_at->format('d/m/Y à H:i') }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" wire:click="closeDetailsModal" class="btn btn-secondary">
                         <i class="fas fa-times me-1"></i>
                         Fermer
                     </button>
-                    <button type="button" wire:click="edit({{ $selectedLogiciel->id }})" wire:click="closeDetailsModal" class="btn btn-primary">
+                    <button type="button" wire:click="edit({{ $selectedLogiciel->id }})" class="btn btn-primary">
                         <i class="fas fa-edit me-1"></i>
                         Modifier
                     </button>
@@ -860,22 +596,349 @@
     </div>
     @endif
 
-    <!-- Flash Messages -->
-    @if (session()->has('success'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <!-- Modal de confirmation de suppression -->
+    @if($showDeleteModal && $selectedLogiciel)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmer la suppression</h5>
+                    <button type="button" wire:click="closeDeleteModal" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-triangle text-danger display-5"></i>
+                        <h4 class="mt-2 h5">Êtes-vous sûr ?</h4>
+                        <p class="text-muted small">
+                            Vous êtes sur le point de supprimer le logiciel <strong>{{ $selectedLogiciel->nom }}</strong>. 
+                            Cette action est irréversible.
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button wire:click="closeDeleteModal" class="btn btn-secondary">Annuler</button>
+                    <button wire:click="deleteConfirmed" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>
+                        Supprimer
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
     @endif
+
+    <!-- Modal d'import -->
+@if($showImportModal)
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title small fw-semibold">
+                    <i class="fas fa-file-import me-1 text-primary"></i>
+                    Importer des Logiciels
+                </h5>
+                <button type="button" class="btn-close btn-close-sm" wire:click="closeImportModal"></button>
+            </div>
+            <div class="modal-body p-3">
+                <div class="text-center mb-3">
+                    <i class="fas fa-file-csv display-6 text-primary mb-3"></i>
+                    <h6 class="fw-semibold">Importer depuis un fichier CSV</h6>
+                    <p class="text-muted small">Téléchargez le template ou importez votre fichier CSV</p>
+                </div>
+
+                <div class="alert alert-info small">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Formats supportés: CSV, TXT. Taille max: 10MB
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-medium">Fichier CSV</label>
+                    <input type="file" wire:model="importFile" 
+                           class="form-control form-control-sm @error('importFile') is-invalid @enderror" 
+                           accept=".csv,.txt">
+                    @error('importFile') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="mb-3">
+                    <button type="button" wire:click="downloadImportTemplate" 
+                            class="btn btn-outline-primary btn-sm w-100">
+                        <i class="fas fa-download me-1"></i>
+                        Télécharger le template
+                    </button>
+                </div>
+
+                @if($importErrors && count($importErrors) > 0)
+                <div class="alert alert-danger small">
+                    <h6 class="alert-heading small">Erreurs détectées</h6>
+                    <ul class="mb-0 small">
+                        @foreach($importErrors as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" wire:click="closeImportModal">
+                    <i class="fas fa-times me-1"></i>
+                    Annuler
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" 
+                        wire:click="storeImportFile" 
+                        wire:loading.attr="disabled"
+                        {{ !$importFile ? 'disabled' : '' }}>
+                    <i class="fas fa-arrow-right me-1"></i>
+                    <span wire:loading.remove>Suivant</span>
+                    <span wire:loading>
+                        <i class="fas fa-spinner fa-spin me-1"></i>
+                        Chargement...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+<!-- Modal Mapping -->
+@if($showMappingModal)
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title small fw-semibold">
+                    <i class="fas fa-map-marked-alt me-1 text-warning"></i>
+                    Mapping des Colonnes
+                </h5>
+                <button type="button" class="btn-close btn-close-sm" wire:click="cancelImport"></button>
+            </div>
+            <div class="modal-body p-3">
+                <div class="alert alert-warning small">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Associez les colonnes de votre fichier aux champs du système.
+                </div>
+
+                <!-- Aperçu des données -->
+                @if(count($csvPreview) > 0)
+                <div class="mb-4">
+                    <h6 class="small fw-semibold">Aperçu des données (5 premières lignes):</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered small">
+                            <thead class="table-light">
+                                <tr>
+                                    @foreach($csvHeaders as $header)
+                                    <th>{{ $header }}</th>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($csvPreview as $row)
+                                <tr>
+                                    @foreach($csvHeaders as $header)
+                                    <td>{{ $row[$header] ?? '' }}</td>
+                                    @endforeach
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @endif
+
+                <!-- Formulaire de mapping -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="small fw-semibold">Mapping des champs:</h6>
+                        @foreach(['nom' => 'Nom*', 'editeur' => 'Éditeur', 'version_nom' => 'Version', 'version_systeme_exploitation' => 'Système d\'exploitation'] as $field => $label)
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium">{{ $label }}</label>
+                            <select wire:model="fieldMapping.{{ $field }}" 
+                                    class="form-select form-select-sm @if($field === 'nom' && empty($fieldMapping['nom'])) is-invalid @endif">
+                                <option value="">-- Sélectionner une colonne --</option>
+                                @foreach($csvHeaders as $header)
+                                <option value="{{ $header }}">{{ $header }}</option>
+                                @endforeach
+                            </select>
+                            @if($field === 'nom' && empty($fieldMapping['nom']))
+                            <div class="invalid-feedback small">Le champ nom est obligatoire</div>
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="small fw-semibold">Champs optionnels :</h6>
+                        @foreach(['nombre_installations' => 'Installations', 'nombre_licences' => 'Licences', 'date_achat' => 'Date achat', 'date_expiration' => 'Date expiration'] as $field => $label)
+                        <div class="mb-3">
+                            <label class="form-label small text-muted">{{ $label }}</label>
+                            <select wire:model="fieldMapping.{{ $field }}" class="form-select form-select-sm">
+                                <option value="">-- Optionnel --</option>
+                                @foreach($csvHeaders as $header)
+                                <option value="{{ $header }}">{{ $header }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                @if($importErrors && count($importErrors) > 0)
+                <div class="alert alert-danger small mt-3">
+                    <h6 class="alert-heading small">Erreurs de mapping</h6>
+                    <ul class="mb-0 small">
+                        @foreach($importErrors as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" wire:click="cancelImport">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Retour
+                </button>
+                <button type="button" class="btn btn-warning btn-sm" 
+                        wire:click="processMappedData"
+                        wire:loading.attr="disabled"
+                        {{ empty($fieldMapping['nom']) ? 'disabled' : '' }}>
+                    <i class="fas fa-check me-1"></i>
+                    <span wire:loading.remove>Valider le mapping</span>
+                    <span wire:loading>
+                        <i class="fas fa-spinner fa-spin me-1"></i>
+                        Traitement...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+<!-- Modal Aperçu des données importées -->
+@if($showImportedData)
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title small fw-semibold">
+                    <i class="fas fa-check-circle me-1 text-success"></i>
+                    Aperçu des Données Importées
+                </h5>
+                <button type="button" class="btn-close btn-close-sm" wire:click="cancelImport"></button>
+            </div>
+            <div class="modal-body p-3">
+                <div class="alert alert-success small">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>{{ $importSuccessCount }}</strong> enregistrement(s) prêt(s) à être importés.
+                    @if(count($importErrors) > 0)
+                    - <strong>{{ count($importErrors) }}</strong> erreur(s)
+                    @endif
+                </div>
+
+                @if(count($importErrors) > 0)
+                <div class="alert alert-danger small">
+                    <h6 class="alert-heading small">Erreurs d'importation:</h6>
+                    <ul class="mb-0 small">
+                        @foreach($importErrors as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <!-- Aperçu des données mappées -->
+                @if(count($importedData) > 0)
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered small">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Éditeur</th>
+                                <th>Version</th>
+                                <th>Système d'exploitation</th>
+                                <th>Installations</th>
+                                <th>Licences</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(array_slice($importedData, 0, 5) as $data)
+                            <tr>
+                                <td>{{ $data['nom'] }}</td>
+                                <td>{{ $data['editeur'] ?? 'N/A' }}</td>
+                                <td>{{ $data['version_nom'] ?? 'N/A' }}</td>
+                                <td>{{ $data['version_systeme_exploitation'] ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $data['nombre_installations'] ?? 0 }}</td>
+                                <td class="text-center">{{ $data['nombre_licences'] ?? 0 }}</td>
+                                <td>
+                                    @php
+                                        $installations = $data['nombre_installations'] ?? 0;
+                                        $licences = $data['nombre_licences'] ?? 0;
+                                        
+                                        if ($licences == 0) {
+                                            $statut = 'Aucune licence';
+                                            $badgeClass = 'bg-secondary';
+                                        } elseif ($installations > $licences) {
+                                            $statut = 'Critique';
+                                            $badgeClass = 'bg-danger';
+                                        } elseif ($installations == $licences) {
+                                            $statut = 'Attention';
+                                            $badgeClass = 'bg-warning';
+                                        } else {
+                                            $statut = 'Normal';
+                                            $badgeClass = 'bg-success';
+                                        }
+                                    @endphp
+                                    <span class="badge {{ $badgeClass }} badge-sm">
+                                        {{ $statut }}
+                                    </span>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @if(count($importedData) > 5)
+                            <tr>
+                                <td colspan="7" class="text-center text-muted small">
+                                    ... et {{ count($importedData) - 5 }} autre(s) logiciel(s)
+                                </td>
+                            </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                @endif
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary btn-sm" wire:click="cancelImport">
+                    <i class="fas fa-times me-1"></i>
+                    Annuler
+                </button>
+                <button type="button" class="btn btn-success btn-sm" 
+                        wire:click="saveImportedData"
+                        wire:loading.attr="disabled"
+                        {{ count($importedData) === 0 ? 'disabled' : '' }}>
+                    <i class="fas fa-save me-1"></i>
+                    <span wire:loading.remove>Importer ({{ count($importedData) }})</span>
+                    <span wire:loading>
+                        <i class="fas fa-spinner fa-spin me-1"></i>
+                        Import...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 </div>
 
 @push('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        .logiciel-dashboard {
+        .ticket-dashboard {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
@@ -973,6 +1036,11 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
+        }
+        
+        .btn-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
         }
         
         .btn-edit {

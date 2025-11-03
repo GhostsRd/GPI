@@ -9,11 +9,8 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 use League\Csv\Reader;
 use League\Csv\Statement;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\MoniteursImport;
 
 class Moniteur extends Component
 {
@@ -26,13 +23,12 @@ class Moniteur extends Component
     public $statut = '';
     public $entite = '';
     public $fabricant = '';
+    public $perPage = 20;
     
     // Propriétés pour les statistiques
     public $statsGlobales = [];
     public $stats = [];
-    public $statsParEntite = [];
-    public $statsParFabricant = [];
-    public $statsParType = [];
+    public $showStats = true;
 
     // Propriétés pour le formulaire
     public $moniteurId;
@@ -51,13 +47,14 @@ class Moniteur extends Component
     // États des modals
     public $isEditing = false;
     public $showModal = false;
-    public $showStats = true;
     public $showImportModal = false;
     public $showDetailsModal = false;
     public $showFileModal = false;
     public $showMappingModal = false;
+    public $showImportedData = false;
     public $confirmingDelete = false;
-    public $deleteId = null; 
+    public $deleteId = null;
+    public $selectedMoniteurName = '';
 
     // Données pour les selects
     public $utilisateurs;
@@ -69,18 +66,16 @@ class Moniteur extends Component
     // Sélection multiple et tri
     public $selectedMoniteurs = [];
     public $selectAll = false;
-    public $sortField = 'id';
-    public $sortDirection = 'asc';
+    public $sortField = 'updated_at';
+    public $sortDirection = 'desc';
 
-    // Propriétés pour l'import avec mapping
+    // Propriétés pour l'import
     public $importFile;
     public $importErrors = [];
     public $importSuccessCount = 0;
-    public $isImporting = false;
-
-    // Propriétés pour le mapping
     public $csvHeaders = [];
     public $csvPreview = [];
+    public $importedData = [];
     public $fieldMapping = [
         'nom' => '',
         'entite' => '',
@@ -93,17 +88,11 @@ class Moniteur extends Component
         'commentaires' => ''
     ];
 
-    // Données importées temporaires
-    public $importedData = [];
-    public $showImportedData = false;
-
-    // Propriétés pour les détails
+    // Propriétés pour les détails et fichiers
     public $selectedMoniteur = null;
-
-    // Propriétés pour les fichiers attachés
+    public $selectedMoniteurForFiles = null;
     public $uploadedFiles = [];
     public $attachedFiles = [];
-    public $selectedMoniteurForFiles = null;
 
     // Règles de validation
     protected $rules = [
@@ -139,7 +128,7 @@ class Moniteur extends Component
         $query = $this->getMoniteursQuery();
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        $moniteurs = $query->paginate(20);
+        $moniteurs = $query->paginate($this->perPage);
 
         $fabricantsList = MoniteurModel::whereNotNull('fabricant')
             ->distinct()
@@ -156,14 +145,10 @@ class Moniteur extends Component
 
     // ==================== MÉTHODES DE RECHERCHE ET FILTRES ====================
 
-    /**
-     * Obtenir la requête de base pour les moniteurs
-     */
     private function getMoniteursQuery()
     {
         $query = MoniteurModel::with(['utilisateur', 'usager']);
 
-        // Application des filtres
         if ($this->statut) {
             $query->where('statut', $this->statut);
         }
@@ -195,9 +180,6 @@ class Moniteur extends Component
         return $query;
     }
 
-    /**
-     * Réinitialiser les filtres
-     */
     public function resetFilters()
     {
         $this->reset(['search', 'statut', 'entite', 'fabricant', 'selectedMoniteurs', 'selectAll']);
@@ -205,9 +187,6 @@ class Moniteur extends Component
         session()->flash('message', 'Filtres réinitialisés avec succès.');
     }
 
-    /**
-     * Trier les résultats
-     */
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
@@ -218,9 +197,6 @@ class Moniteur extends Component
         $this->sortField = $field;
     }
 
-    /**
-     * Sélectionner/désélectionner tous les moniteurs
-     */
     public function updatedSelectAll($value)
     {
         if ($value) {
@@ -230,397 +206,8 @@ class Moniteur extends Component
         }
     }
 
-    // ==================== MÉTHODES D'IMPORT AVEC MAPPING ====================
-
-    /**
-     * Ouvrir la modal d'import
-     */
-    public function openImportModal()
-    {
-        $this->showImportModal = true;
-        $this->resetImport();
-    }
-
-    /**
-     * Fermer la modal d'import
-     */
-    public function closeImportModal()
-    {
-        $this->showImportModal = false;
-        $this->resetImport();
-    }
-
-    /**
-     * Réinitialiser l'import
-     */
-    private function resetImport()
-    {
-        $this->reset([
-            'importFile', 
-            'importErrors', 
-            'importSuccessCount',
-            'isImporting',
-            'csvHeaders',
-            'csvPreview',
-            'importedData',
-            'showImportedData'
-        ]);
-        $this->fieldMapping = [
-            'nom' => '',
-            'entite' => '',
-            'statut' => '',
-            'fabricant' => '',
-            'numero_serie' => '',
-            'lieu' => '',
-            'type' => '',
-            'modele' => '',
-            'commentaires' => ''
-        ];
-        $this->resetErrorBag();
-    }
-
-    /**
-     * Stocker le fichier et préparer le mapping
-     */
-    public function storeImportFile()
-    {
-        $this->validate([
-            'importFile' => 'required|file|mimes:csv,txt|max:10240'
-        ]);
-
-        try {
-            // Stocker le fichier
-            $filePath = $this->importFile->storeAs(
-                'imports/moniteurs',
-                'import_' . time() . '.csv',
-                'public'
-            );
-
-            // Lire le fichier CSV
-            $this->readCsvFile(storage_path('app/public/' . $filePath));
-
-            // Passer à l'étape de mapping
-            $this->showImportModal = false;
-            $this->showMappingModal = true;
-
-        } catch (\Exception $e) {
-            $this->importErrors[] = 'Erreur lors du stockage du fichier: ' . $e->getMessage();
-            session()->flash('error', 'Erreur lors du stockage du fichier: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Lire le fichier CSV pour extraction des en-têtes et preview
-     */
-    private function readCsvFile($filePath)
-    {
-        try {
-            $csv = Reader::createFromPath($filePath, 'r');
-            $csv->setHeaderOffset(0);
-            $csv->setDelimiter(',');
-
-            // Obtenir les en-têtes
-            $this->csvHeaders = $csv->getHeader();
-            
-            // Obtenir un aperçu des données (5 premières lignes)
-            $stmt = (new Statement())->limit(5);
-            $records = $stmt->process($csv);
-            
-            $this->csvPreview = [];
-            foreach ($records as $record) {
-                $this->csvPreview[] = $record;
-            }
-
-            // Mapping automatique basé sur la similarité des noms
-            $this->autoMapFields();
-
-        } catch (\Exception $e) {
-            $this->importErrors[] = 'Erreur lors de la lecture du fichier: ' . $e->getMessage();
-        }
-    }
-
-    /**
-     * Mapping automatique des champs
-     */
-    private function autoMapFields()
-    {
-        $fieldPatterns = [
-        'nom'          => ['nom','name','designation','libelle','moniteur','equipement','it identification'],
-        'entite'       => ['entite','entity','departement','service','department','division'],
-        'statut'       => ['statut','status','etat','state','situation'],
-        'fabricant'    => ['fabricant','manufacturer','marque','brand','make','constructor'],
-        'numero_serie' => ['numero_serie','serial','serial_number','sn','no_serie','num_serie'],
-        'lieu'         => ['lieu','location','place','emplacement','site','localisation'],
-        'type'         => ['type','typologie','technology','technologie','related pc'],
-        'modele'       => ['modele','model','reference','product','produit'],
-        'commentaires' => ['commentaires','comments','notes','remarques','note','observation','accessoire_avec'],
-    ];
-        
-
-        foreach ($this->csvHeaders as $header) {
-            $headerLower = strtolower(trim($header));
-            
-            foreach ($fieldPatterns as $field => $patterns) {
-                foreach ($patterns as $pattern) {
-                    if (str_contains($headerLower, $pattern) && empty($this->fieldMapping[$field])) {
-                        $this->fieldMapping[$field] = $header;
-                        break 2;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Traiter les données avec le mapping
-     */
-    public function processMappedData()
-    {
-        try {
-            $this->importErrors = [];
-            $this->importedData = [];
-
-            // Trouver le dernier fichier importé
-            $files = Storage::disk('public')->files('imports/moniteurs');
-            if (empty($files)) {
-                throw new \Exception('Aucun fichier importé trouvé');
-            }
-
-            $latestFile = last($files);
-            $filePath = storage_path('app/public/' . $latestFile);
-
-            // Lire et traiter le fichier avec le mapping
-            $csv = Reader::createFromPath($filePath, 'r');
-            $csv->setHeaderOffset(0);
-            $csv->setDelimiter(',');
-
-            $records = $csv->getRecords();
-            $lineNumber = 1;
-
-            foreach ($records as $record) {
-                $lineNumber++;
-                $mappedData = [];
-
-                try {
-                    // Appliquer le mapping
-                    foreach ($this->fieldMapping as $field => $csvHeader) {
-                        if (!empty($csvHeader) && isset($record[$csvHeader])) {
-                            $mappedData[$field] = trim($record[$csvHeader]);
-                        } else {
-                            $mappedData[$field] = '';
-                        }
-                    }
-
-                    // Validation des données requises
-                    if (empty($mappedData['nom'])) {
-                        $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
-                        continue;
-                    }
-
-                    // Nettoyer et formater les données
-                    $mappedData = $this->cleanMappedData($mappedData);
-                    
-                    $this->importedData[] = $mappedData;
-
-                } catch (\Exception $e) {
-                    $this->importErrors[] = "Ligne {$lineNumber}: " . $e->getMessage();
-                }
-            }
-
-            $this->importSuccessCount = count($this->importedData);
-            $this->showMappingModal = false;
-            $this->showImportedData = true;
-
-        } catch (\Exception $e) {
-            $this->importErrors[] = 'Erreur lors du traitement des données: ' . $e->getMessage();
-            session()->flash('error', 'Erreur lors du traitement des données: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Nettoyer les données mappées
-     */
-    private function cleanMappedData($data)
-    {
-        // Nettoyer chaque champ
-        foreach ($data as $key => $value) {
-            $data[$key] = trim($value);
-            
-            // Validation spécifique pour le statut
-            if ($key === 'statut' && !empty($value)) {
-                $statutsValides = ['En service', 'En stock', 'Hors service', 'En réparation'];
-                if (!in_array($value, $statutsValides)) {
-                    $data[$key] = 'En stock'; // Valeur par défaut
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Sauvegarder les données importées dans la base
-     */
-    public function saveImportedData()
-    {
-        try {
-            DB::beginTransaction();
-
-            $savedCount = 0;
-            $errors = [];
-
-            foreach ($this->importedData as $index => $data) {
-                try {
-                    // Vérifier si le moniteur existe déjà
-                    $existing = MoniteurModel::where('nom', $data['nom'])->first();
-                    if ($existing) {
-                        $errors[] = "Ligne " . ($index + 1) . ": Le moniteur '{$data['nom']}' existe déjà";
-                        continue;
-                    }
-
-                    // Créer le moniteur
-                    MoniteurModel::create([
-                        'nom' => $data['nom'],
-                        'entite' => $data['entite'] ?? null,
-                        'statut' => $data['statut'] ?? 'En stock',
-                        'fabricant' => $data['fabricant'] ?? null,
-                        'numero_serie' => $data['numero_serie'] ?? null,
-                        'lieu' => $data['lieu'] ?? null,
-                        'type' => $data['type'] ?? null,
-                        'modele' => $data['modele'] ?? null,
-                        'commentaires' => $data['commentaires'] ?? null,
-                    ]);
-
-                    $savedCount++;
-
-                } catch (\Exception $e) {
-                    $errors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
-                }
-            }
-
-            DB::commit();
-
-            // Nettoyer les fichiers temporaires
-            $this->cleanImportFiles();
-
-            $this->showImportedData = false;
-            $this->chargerStatistiques();
-            $this->chargerFabricants();
-            $this->chargerEntites();
-
-            if ($savedCount > 0) {
-                session()->flash('success', $savedCount . ' moniteur(s) importé(s) avec succès !');
-            }
-
-            if (!empty($errors)) {
-                session()->flash('warning', 'Import terminé avec ' . count($errors) . ' erreur(s).');
-                $this->importErrors = $errors;
-            }
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            session()->flash('error', 'Erreur lors de la sauvegarde: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Nettoyer les fichiers d'import temporaires
-     */
-    private function cleanImportFiles()
-    {
-        try {
-            $files = Storage::disk('public')->files('imports/moniteurs');
-            foreach ($files as $file) {
-                Storage::disk('public')->delete($file);
-            }
-        } catch (\Exception $e) {
-            // Ignorer les erreurs de nettoyage
-        }
-    }
-
-    /**
-     * Annuler l'import
-     */
-    public function cancelImport()
-    {
-        $this->cleanImportFiles();
-        $this->resetImport();
-        $this->showMappingModal = false;
-        $this->showImportedData = false;
-    }
-
-    /**
-     * Télécharger le template d'import
-     */
-    public function downloadImportTemplate()
-    {
-        try {
-            $fileName = 'template_import_moniteurs.csv';
-            $templateContent = "nom,entite,statut,fabricant,numero_serie,lieu,type,modele,commentaires\n" .
-                             "Moniteur Bureau 1,SI,En service,Dell,SN123456,Bureau A1,LCD,UltraSharp U2419H,Écran principal direction\n" .
-                             "Moniteur Bureau 2,Commercial,En stock,HP,SN123457,Stock,LCD,EliteDisplay E243,En attente d'affectation\n" .
-                             "Moniteur Salle Reunion,Marketing,En service,LG,SN123458,Salle Réunion,LED,27UN880-B,Écran présentation";
-
-            return response()->streamDownload(function () use ($templateContent) {
-                echo $templateContent;
-            }, $fileName, [
-                'Content-Type' => 'text/csv; charset=utf-8',
-            ]);
-            
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors du téléchargement du template: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Exporter les moniteurs en CSV
-     */
-    public function exportToCsv()
-    {
-        try {
-            $query = $this->getMoniteursQuery();
-            $moniteurs = $query->get();
-
-            $fileName = 'moniteurs_export_' . date('Y-m-d_H-i-s') . '.csv';
-
-            return response()->streamDownload(function () use ($moniteurs) {
-                $file = fopen('php://output', 'w');
-
-                // En-têtes
-                fputcsv($file, [
-                    'Nom', 'Entité', 'Statut', 'Fabricant', 'Modèle', 
-                    'Numéro de série', 'Utilisateur', 'Lieu', 'Type', 'Commentaires'
-                ]);
-
-                // Données
-                foreach ($moniteurs as $moniteur) {
-                    fputcsv($file, [
-                        $moniteur->nom,
-                        $moniteur->entite ?? 'N/A',
-                        $moniteur->statut,
-                        $moniteur->fabricant ?? 'N/A',
-                        $moniteur->modele ?? 'N/A',
-                        $moniteur->numero_serie ?? 'N/A',
-                        $moniteur->utilisateur->name ?? 'Non attribué',
-                        $moniteur->lieu ?? 'N/A',
-                        $moniteur->type ?? 'N/A',
-                        $moniteur->commentaires ?? '',
-                    ]);
-                }
-
-                fclose($file);
-            }, $fileName);
-
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de l\'export: ' . $e->getMessage());
-        }
-    }
-
     // ==================== MÉTHODES CRUD ====================
 
-    /**
-     * Afficher le formulaire de création
-     */
     public function create()
     {
         $this->resetForm();
@@ -628,9 +215,6 @@ class Moniteur extends Component
         $this->showModal = true;
     }
 
-    /**
-     * Afficher le formulaire d'édition
-     */
     public function edit($id)
     {
         $moniteur = MoniteurModel::findOrFail($id);
@@ -652,9 +236,15 @@ class Moniteur extends Component
         $this->showModal = true;
     }
 
-    /**
-     * Enregistrer un nouveau moniteur
-     */
+    public function save()
+    {
+        if ($this->isEditing) {
+            $this->update();
+        } else {
+            $this->store();
+        }
+    }
+
     public function store()
     {
         $validatedData = $this->validate();
@@ -687,9 +277,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Mettre à jour un moniteur
-     */
     public function update()
     {
         $this->validate([
@@ -735,9 +322,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Supprimer un moniteur
-     */
     public function delete($id)
     {
         try {
@@ -753,30 +337,26 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Confirmer la suppression
-     */
     public function confirmDelete($id)
     {
-        $this->deleteId = $id;
-        $this->confirmingDelete = true;
+        $moniteur = MoniteurModel::find($id);
+        if ($moniteur) {
+            $this->deleteId = $id;
+            $this->selectedMoniteurName = $moniteur->nom;
+            $this->confirmingDelete = true;
+        }
     }
 
-    /**
-     * Suppression confirmée
-     */
     public function deleteConfirmed()
     {
         if ($this->deleteId) {
             $this->delete($this->deleteId);
             $this->confirmingDelete = false;
             $this->deleteId = null;
+            $this->selectedMoniteurName = '';
         }
     }
 
-    /**
-     * Supprimer les moniteurs sélectionnés
-     */
     public function deleteSelected()
     {
         try {
@@ -800,11 +380,369 @@ class Moniteur extends Component
         }
     }
 
+    // ==================== MÉTHODES D'IMPORT ====================
+
+    public function openImportModal()
+    {
+        $this->showImportModal = true;
+        $this->resetImport();
+    }
+
+    public function closeImportModal()
+    {
+        $this->showImportModal = false;
+        $this->resetImport();
+    }
+
+    private function resetImport()
+    {
+        $this->reset([
+            'importFile', 
+            'importErrors', 
+            'importSuccessCount',
+            'csvHeaders',
+            'csvPreview',
+            'importedData',
+            'showImportedData',
+            'showMappingModal'
+        ]);
+        $this->fieldMapping = [
+            'nom' => '',
+            'entite' => '',
+            'statut' => '',
+            'fabricant' => '',
+            'numero_serie' => '',
+            'lieu' => '',
+            'type' => '',
+            'modele' => '',
+            'commentaires' => ''
+        ];
+        $this->resetErrorBag();
+    }
+public function updatedImportFile($value)
+{
+    \Log::info('Import file updated:', [
+        'has_file' => !is_null($value),
+        'file_name' => $this->importFile ? $this->importFile->getClientOriginalName() : 'null'
+    ]);
+}
+    /**
+ * Stocker le fichier et préparer le mapping - VERSION CORRIGÉE
+ */
+public function storeImportFile()
+{
+    $this->validate([
+        'importFile' => 'required|file|mimes:csv,txt|max:10240'
+    ]);
+
+    try {
+        if (!$this->importFile) {
+            session()->flash('error', 'Aucun fichier sélectionné.');
+            return;
+        }
+
+        // Stocker le fichier
+        $filePath = $this->importFile->storeAs(
+            'imports/moniteurs',
+            'import_' . time() . '_' . $this->importFile->getClientOriginalName(),
+            'public'
+        );
+
+        if (!$filePath) {
+            session()->flash('error', 'Erreur lors du stockage du fichier.');
+            return;
+        }
+
+        $fullPath = storage_path('app/public/' . $filePath);
+        
+        if (!file_exists($fullPath)) {
+            session()->flash('error', 'Fichier non trouvé après stockage.');
+            return;
+        }
+
+        // Lire le fichier CSV
+        $this->readCsvFile($fullPath);
+
+        // Passer à l'étape de mapping
+        $this->showMappingModal = true;
+        
+        \Log::info('Import file stored successfully, moving to mapping');
+
+    } catch (\Exception $e) {
+        \Log::error('Import error:', ['error' => $e->getMessage()]);
+        $this->importErrors[] = 'Erreur lors du stockage du fichier: ' . $e->getMessage();
+        session()->flash('error', 'Erreur lors du stockage du fichier: ' . $e->getMessage());
+    }
+
+}    private function readCsvFile($filePath)
+{
+    try {
+        \Log::info('Reading CSV file:', ['path' => $filePath]);
+        
+        $csv = Reader::createFromPath($filePath, 'r');
+        $csv->setHeaderOffset(0);
+        $csv->setDelimiter(',');
+
+        $this->csvHeaders = $csv->getHeader();
+        \Log::info('CSV Headers:', $this->csvHeaders);
+        
+        $stmt = (new Statement())->limit(5);
+        $records = $stmt->process($csv);
+        
+        $this->csvPreview = [];
+        foreach ($records as $record) {
+            $this->csvPreview[] = $record;
+        }
+
+        \Log::info('CSV Preview data:', $this->csvPreview);
+        
+        $this->autoMapFields();
+
+    } catch (\Exception $e) {
+        \Log::error('Error reading CSV:', ['error' => $e->getMessage()]);
+        $this->importErrors[] = 'Erreur lors de la lecture du fichier: ' . $e->getMessage();
+    }
+}
+    private function autoMapFields()
+    {
+        $fieldPatterns = [
+            'nom'          => ['nom','name','designation','moniteur'],
+            'entite'       => ['entite','entity','departement','service'],
+            'statut'       => ['statut','status','etat'],
+            'fabricant'    => ['fabricant','manufacturer','marque'],
+            'numero_serie' => ['numero_serie','serial','serial_number'],
+            'lieu'         => ['lieu','location','place'],
+            'type'         => ['type','typologie','technology'],
+            'modele'       => ['modele','model','reference'],
+            'commentaires' => ['commentaires','comments','notes'],
+        ];
+
+        foreach ($this->csvHeaders as $header) {
+            $headerLower = strtolower(trim($header));
+            
+            foreach ($fieldPatterns as $field => $patterns) {
+                foreach ($patterns as $pattern) {
+                    if (str_contains($headerLower, $pattern) && empty($this->fieldMapping[$field])) {
+                        $this->fieldMapping[$field] = $header;
+                        break 2;
+                    }
+                }
+            }
+        }
+    }
+
+    public function processMappedData()
+    {
+        try {
+            $this->importErrors = [];
+            $this->importedData = [];
+
+            $files = Storage::disk('public')->files('imports/moniteurs');
+            if (empty($files)) {
+                throw new \Exception('Aucun fichier importé trouvé');
+            }
+
+            $latestFile = last($files);
+            $filePath = storage_path('app/public/' . $latestFile);
+
+            $csv = Reader::createFromPath($filePath, 'r');
+            $csv->setHeaderOffset(0);
+            $csv->setDelimiter(',');
+
+            $records = $csv->getRecords();
+            $lineNumber = 1;
+
+            foreach ($records as $record) {
+                $lineNumber++;
+                $mappedData = [];
+
+                try {
+                    foreach ($this->fieldMapping as $field => $csvHeader) {
+                        if (!empty($csvHeader) && isset($record[$csvHeader])) {
+                            $mappedData[$field] = trim($record[$csvHeader]);
+                        } else {
+                            $mappedData[$field] = '';
+                        }
+                    }
+
+                    if (empty($mappedData['nom'])) {
+                        $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
+                        continue;
+                    }
+
+                    $mappedData = $this->cleanMappedData($mappedData);
+                    
+                    $this->importedData[] = $mappedData;
+
+                } catch (\Exception $e) {
+                    $this->importErrors[] = "Ligne {$lineNumber}: " . $e->getMessage();
+                }
+            }
+
+            $this->importSuccessCount = count($this->importedData);
+            $this->showMappingModal = false;
+            $this->showImportedData = true;
+
+        } catch (\Exception $e) {
+            $this->importErrors[] = 'Erreur lors du traitement des données: ' . $e->getMessage();
+        }
+    }
+
+    private function cleanMappedData($data)
+    {
+        foreach ($data as $key => $value) {
+            $data[$key] = trim($value);
+            
+            if ($key === 'statut' && !empty($value)) {
+                $statutsValides = ['En service', 'En stock', 'Hors service', 'En réparation'];
+                if (!in_array($value, $statutsValides)) {
+                    $data[$key] = 'En stock';
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    public function saveImportedData()
+    {
+        try {
+            DB::beginTransaction();
+
+            $savedCount = 0;
+            $errors = [];
+
+            foreach ($this->importedData as $index => $data) {
+                try {
+                    $existing = MoniteurModel::where('nom', $data['nom'])->first();
+                    if ($existing) {
+                        $errors[] = "Ligne " . ($index + 1) . ": Le moniteur '{$data['nom']}' existe déjà";
+                        continue;
+                    }
+
+                    MoniteurModel::create([
+                        'nom' => $data['nom'],
+                        'entite' => $data['entite'] ?? null,
+                        'statut' => $data['statut'] ?? 'En stock',
+                        'fabricant' => $data['fabricant'] ?? null,
+                        'numero_serie' => $data['numero_serie'] ?? null,
+                        'lieu' => $data['lieu'] ?? null,
+                        'type' => $data['type'] ?? null,
+                        'modele' => $data['modele'] ?? null,
+                        'commentaires' => $data['commentaires'] ?? null,
+                    ]);
+
+                    $savedCount++;
+
+                } catch (\Exception $e) {
+                    $errors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
+                }
+            }
+
+            DB::commit();
+
+            $this->cleanImportFiles();
+
+            $this->showImportedData = false;
+            $this->chargerStatistiques();
+            $this->chargerFabricants();
+            $this->chargerEntites();
+
+            if ($savedCount > 0) {
+                session()->flash('success', $savedCount . ' moniteur(s) importé(s) avec succès !');
+            }
+
+            if (!empty($errors)) {
+                session()->flash('warning', 'Import terminé avec ' . count($errors) . ' erreur(s).');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Erreur lors de la sauvegarde: ' . $e->getMessage());
+        }
+    }
+
+    private function cleanImportFiles()
+    {
+        try {
+            $files = Storage::disk('public')->files('imports/moniteurs');
+            foreach ($files as $file) {
+                Storage::disk('public')->delete($file);
+            }
+        } catch (\Exception $e) {
+            // Ignorer les erreurs de nettoyage
+        }
+    }
+
+    public function cancelImport()
+    {
+        $this->cleanImportFiles();
+        $this->resetImport();
+        $this->showMappingModal = false;
+        $this->showImportedData = false;
+        $this->showImportModal = false;
+    }
+
+    public function downloadImportTemplate()
+    {
+        try {
+            $fileName = 'template_import_moniteurs.csv';
+            $templateContent = "nom,entite,statut,fabricant,numero_serie,lieu,type,modele,commentaires\n" .
+                             "Moniteur Bureau 1,SI,En service,Dell,SN123456,Bureau A1,LCD,UltraSharp U2419H,Écran principal direction\n" .
+                             "Moniteur Bureau 2,Commercial,En stock,HP,SN123457,Stock,LCD,EliteDisplay E243,En attente d'affectation";
+
+            return response()->streamDownload(function () use ($templateContent) {
+                echo $templateContent;
+            }, $fileName, [
+                'Content-Type' => 'text/csv; charset=utf-8',
+            ]);
+            
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors du téléchargement du template: ' . $e->getMessage());
+        }
+    }
+
+    public function exportToCsv()
+    {
+        try {
+            $query = $this->getMoniteursQuery();
+            $moniteurs = $query->get();
+
+            $fileName = 'moniteurs_export_' . date('Y-m-d_H-i-s') . '.csv';
+
+            return response()->streamDownload(function () use ($moniteurs) {
+                $file = fopen('php://output', 'w');
+
+                fputcsv($file, [
+                    'Nom', 'Entité', 'Statut', 'Fabricant', 'Modèle', 
+                    'Numéro de série', 'Utilisateur', 'Lieu', 'Type', 'Commentaires'
+                ]);
+
+                foreach ($moniteurs as $moniteur) {
+                    fputcsv($file, [
+                        $moniteur->nom,
+                        $moniteur->entite ?? 'N/A',
+                        $moniteur->statut,
+                        $moniteur->fabricant ?? 'N/A',
+                        $moniteur->modele ?? 'N/A',
+                        $moniteur->numero_serie ?? 'N/A',
+                        $moniteur->utilisateur->name ?? 'Non attribué',
+                        $moniteur->lieu ?? 'N/A',
+                        $moniteur->type ?? 'N/A',
+                        $moniteur->commentaires ?? '',
+                    ]);
+                }
+
+                fclose($file);
+            }, $fileName);
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de l\'export: ' . $e->getMessage());
+        }
+    }
+
     // ==================== GESTION DES FICHIERS ====================
 
-    /**
-     * Ouvrir le modal de gestion des fichiers
-     */
     public function openFileModal($moniteurId)
     {
         $this->selectedMoniteurForFiles = MoniteurModel::find($moniteurId);
@@ -812,9 +750,6 @@ class Moniteur extends Component
         $this->showFileModal = true;
     }
 
-    /**
-     * Fermer le modal des fichiers
-     */
     public function closeFileModal()
     {
         $this->showFileModal = false;
@@ -823,9 +758,6 @@ class Moniteur extends Component
         $this->attachedFiles = [];
     }
 
-    /**
-     * Charger les fichiers attachés
-     */
     private function loadAttachedFiles()
     {
         if ($this->selectedMoniteurForFiles) {
@@ -849,9 +781,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Uploader des fichiers
-     */
     public function uploadFiles()
     {
         $this->validate([
@@ -863,7 +792,6 @@ class Moniteur extends Component
             
             foreach ($this->uploadedFiles as $file) {
                 try {
-                    // Créer le dossier par date
                     $dateFolder = now()->format('Y-m-d');
                     $filePath = $file->storeAs(
                         "moniteurs/{$this->selectedMoniteurForFiles->id}/{$dateFolder}",
@@ -885,9 +813,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Télécharger un fichier
-     */
     public function downloadFile($filePath)
     {
         try {
@@ -897,9 +822,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Supprimer un fichier
-     */
     public function deleteFile($filePath)
     {
         try {
@@ -913,9 +835,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Formater la taille du fichier
-     */
     private function formatFileSize($bytes)
     {
         if ($bytes >= 1073741824) {
@@ -931,9 +850,6 @@ class Moniteur extends Component
 
     // ==================== MÉTHODES POUR LES DÉTAILS ====================
 
-    /**
-     * Afficher les détails d'un moniteur
-     */
     public function showDetails($id)
     {
         $this->selectedMoniteur = MoniteurModel::with(['utilisateur', 'usager'])->find($id);
@@ -942,31 +858,30 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Fermer la modal de détails
-     */
     public function closeDetailsModal()
     {
         $this->showDetailsModal = false;
         $this->selectedMoniteur = null;
     }
 
+    public function closeDeleteModal()
+    {
+        $this->confirmingDelete = false;
+        $this->deleteId = null;
+        $this->selectedMoniteurName = '';
+    }
+
     // ==================== MÉTHODES POUR LES STATISTIQUES ====================
 
-    /**
-     * Charger les statistiques
-     */
     public function chargerStatistiques()
     {
         try {
-            // Statistiques globales par statut
             $this->statsGlobales = MoniteurModel::select('statut', DB::raw('COUNT(*) as count'))
                 ->groupBy('statut')
                 ->get()
                 ->pluck('count', 'statut')
                 ->toArray();
 
-            // Pour compatibilité avec le template
             $this->stats = [
                 'total'         => MoniteurModel::count(),
                 'en_service'    => MoniteurModel::where('statut', 'En service')->count(),
@@ -975,37 +890,8 @@ class Moniteur extends Component
                 'en_reparation' => MoniteurModel::where('statut', 'En réparation')->count(),
             ];
 
-            // Statistiques par entité
-            $this->statsParEntite = MoniteurModel::select('entite', DB::raw('COUNT(*) as count'))
-                ->whereNotNull('entite')
-                ->groupBy('entite')
-                ->orderBy('count', 'desc')
-                ->get()
-                ->toArray();
-
-            // Statistiques par fabricant
-            $this->statsParFabricant = MoniteurModel::select('fabricant', DB::raw('COUNT(*) as count'))
-                ->whereNotNull('fabricant')
-                ->groupBy('fabricant')
-                ->orderBy('count', 'desc')
-                ->get()
-                ->toArray();
-
-            // Statistiques par type
-            $this->statsParType = MoniteurModel::select('type', DB::raw('COUNT(*) as count'))
-                ->whereNotNull('type')
-                ->groupBy('type')
-                ->orderBy('count', 'desc')
-                ->get()
-                ->toArray();
-
         } catch (\Throwable $e) {
-            // En cas d'erreur, initialise les données à vide
-            $this->statsGlobales     = [];
-            $this->statsParEntite    = [];
-            $this->statsParFabricant = [];
-            $this->statsParType      = [];
-
+            $this->statsGlobales = [];
             $this->stats = [
                 'total'         => 0,
                 'en_service'    => 0,
@@ -1016,9 +902,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Charger la liste des fabricants
-     */
     private function chargerFabricants()
     {
         $this->fabricants = MoniteurModel::whereNotNull('fabricant')
@@ -1027,9 +910,6 @@ class Moniteur extends Component
             ->toArray();
     }
 
-    /**
-     * Charger la liste des entités
-     */
     private function chargerEntites()
     {
         $this->entites = MoniteurModel::whereNotNull('entite')
@@ -1038,9 +918,6 @@ class Moniteur extends Component
             ->toArray();
     }
 
-    /**
-     * Afficher/Masquer les statistiques
-     */
     public function toggleStats()
     {
         $this->showStats = !$this->showStats;
@@ -1051,9 +928,6 @@ class Moniteur extends Component
 
     // ==================== MÉTHODES UTILITAIRES ====================
 
-    /**
-     * Réinitialiser le formulaire
-     */
     private function resetForm()
     {
         $this->reset([
@@ -1064,9 +938,6 @@ class Moniteur extends Component
         $this->resetErrorBag();
     }
 
-    /**
-     * Fermer le modal
-     */
     public function closeModal()
     {
         $this->showModal = false;
@@ -1095,9 +966,16 @@ class Moniteur extends Component
         $this->resetPage();
     }
 
-    /**
-     * Obtenir l'icône pour un statut
-     */
+    public function updatingPerPage()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSelectedMoniteurs()
+    {
+        $this->selectAll = false;
+    }
+
     public function getIconeStatut($statut)
     {
         switch($statut) {
@@ -1109,9 +987,6 @@ class Moniteur extends Component
         }
     }
 
-    /**
-     * Obtenir la couleur du badge pour un statut
-     */
     public function getBadgeColor($statut)
     {
         switch($statut) {

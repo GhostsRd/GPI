@@ -31,6 +31,7 @@ class Logiciel extends Component
     public $description;
     public $date_achat;
     public $date_expiration;
+       public $showStats = false; // ← ajoute cette ligne
 
     public $showModal = false;
     public $showDeleteModal = false;

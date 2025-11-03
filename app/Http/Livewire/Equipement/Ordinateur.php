@@ -23,6 +23,8 @@ class Ordinateur extends Component
     public $statut = '';
     public $entite = '';
     public $perPage = 20;
+    public $sortField = 'nom';
+    public $sortDirection = 'asc';
     protected $paginationTheme = 'bootstrap';
 
     // Variables pour le formulaire
@@ -32,8 +34,6 @@ class Ordinateur extends Component
     public $sous_entite;
     public $statut_form = 'En service';
     public $fabricant;
-    public $fabricants = [];
-
     public $modele;
     public $numero_serie;
     public $utilisateur_id;
@@ -54,7 +54,10 @@ class Ordinateur extends Component
     public $showImportedData = false;
     public $modalTitle = 'Ajouter un ordinateur';
     public $editMode = false;
+    public $isEditing = false;
     public $selectedOrdinateur = null;
+    public $confirmingDelete = false;
+    public $selectedOrdinateurName = '';
 
     // Propriétés pour l'import avec mapping
     public $fichierExcel;
@@ -62,7 +65,7 @@ class Ordinateur extends Component
     public $importErrors = [];
     public $importSuccessCount = 0;
     public $isImporting = false;
-    public $stats = []; 
+    public $showStats = true;
 
     // Propriétés pour le mapping
     public $csvHeaders = [];
@@ -90,7 +93,7 @@ class Ordinateur extends Component
     public $importedData = [];
 
     // Statistiques
-    public $statsGlobales = [];
+    public $stats = [];
 
     protected $rules = [
         'nom' => 'required|string|max:100|unique:ordinateurs,nom',
@@ -145,8 +148,9 @@ class Ordinateur extends Component
                     ->orWhere('fabricant', 'LIKE', "%{$this->search}%")
                     ->orWhere('modele', 'LIKE', "%{$this->search}%")
                     ->orWhere('reseau_ip', 'LIKE', "%{$this->search}%")
+                    ->orWhere('os_version', 'LIKE', "%{$this->search}%")
                     ->orWhereHas('utilisateur', function ($q) {
-                        $q->where('name', 'LIKE', "%{$this->search}%");
+                        $q->where('nom', 'LIKE', "%{$this->search}%");
                     });
             });
         }
@@ -159,11 +163,241 @@ class Ordinateur extends Component
             $query->where('entite', 'LIKE', "%{$this->entite}%");
         }
 
-        $ordinateurs = $query->orderBy('nom')->paginate($this->perPage);
+        // Tri
+        $query->orderBy($this->sortField, $this->sortDirection);
+
+        $ordinateurs = $query->paginate($this->perPage);
         $utilisateurs = Utilisateur::orderBy('nom')->get();
         $statuts = ['En service', 'En stock', 'Hors service', 'En réparation'];
 
         return view('livewire.equipement.ordinateur', compact('ordinateurs', 'utilisateurs', 'statuts'));
+    }
+
+    // ==================== MÉTHODES DE TRI ====================
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+        $this->sortField = $field;
+    }
+
+    // ==================== MÉTHODES POUR LES STATISTIQUES ====================
+
+    /**
+     * Basculer l'affichage des statistiques
+     */
+    public function toggleStats()
+    {
+        $this->showStats = !$this->showStats;
+    }
+
+    /**
+     * Charger les statistiques
+     */
+    public function chargerStatistiques()
+    {
+        $total = OrdinateurModel::count();
+        $enService = OrdinateurModel::where('statut', 'En service')->count();
+        $enStock = OrdinateurModel::where('statut', 'En stock')->count();
+        $enReparation = OrdinateurModel::where('statut', 'En réparation')->count();
+        $horsService = OrdinateurModel::where('statut', 'Hors service')->count();
+
+        $this->stats = [
+            'total' => $total,
+            'en_service' => $enService,
+            'en_stock' => $enStock,
+            'en_reparation' => $enReparation,
+            'hors_service' => $horsService
+        ];
+    }
+
+    /**
+     * Obtenir la couleur du badge pour un statut
+     */
+    public function getBadgeColor($statut)
+    {
+        switch($statut) {
+            case 'En service': return 'success';
+            case 'En stock': return 'info';
+            case 'En réparation': return 'warning';
+            case 'Hors service': return 'danger';
+            default: return 'secondary';
+        }
+    }
+
+    // ==================== MÉTHODES CRUD ====================
+
+    public function create()
+    {
+        $this->resetForm();
+        $this->modalTitle = 'Ajouter un ordinateur';
+        $this->editMode = false;
+        $this->showModal = true;
+    }
+
+    public function edit($id)
+    {
+        $ordinateur = OrdinateurModel::findOrFail($id);
+
+        $this->ordinateurId = $ordinateur->id;
+        $this->nom = $ordinateur->nom;
+        $this->entite_form = $ordinateur->entite;
+        $this->sous_entite = $ordinateur->sous_entite;
+        $this->statut_form = $ordinateur->statut;
+        $this->fabricant = $ordinateur->fabricant;
+        $this->modele = $ordinateur->modele;
+        $this->numero_serie = $ordinateur->numero_serie;
+        $this->utilisateur_id = $ordinateur->utilisateur_id;
+        $this->usager_id = $ordinateur->usager_id;
+        $this->date_dernier_inventaire = $ordinateur->date_dernier_inventaire
+            ? $ordinateur->date_dernier_inventaire->format('Y-m-d')
+            : null;
+        $this->reseau_ip = $ordinateur->reseau_ip;
+        $this->disque_dur = $ordinateur->disque_dur;
+        $this->os_version = $ordinateur->os_version;
+        $this->os_noyau = $ordinateur->os_noyau;
+        $this->derniere_date_demarrage = $ordinateur->derniere_date_demarrage
+            ? $ordinateur->derniere_date_demarrage->format('Y-m-d\TH:i')
+            : null;
+        $this->notes = $ordinateur->notes;
+
+        $this->modalTitle = 'Modifier l\'ordinateur';
+        $this->editMode = true;
+        $this->showModal = true;
+    }
+
+    public function save()
+    {
+        if ($this->editMode) {
+            $this->rules['nom'] = 'required|string|max:100|unique:ordinateurs,nom,' . $this->ordinateurId;
+            $this->rules['numero_serie'] = 'nullable|string|max:100|unique:ordinateurs,numero_serie,' . $this->ordinateurId;
+        }
+
+        $this->validate();
+
+        try {
+            $data = [
+                'nom' => $this->nom,
+                'entite' => $this->entite_form,
+                'sous_entite' => $this->sous_entite,
+                'statut' => $this->statut_form,
+                'fabricant' => $this->fabricant,
+                'modele' => $this->modele,
+                'numero_serie' => $this->numero_serie,
+                'utilisateur_id' => $this->utilisateur_id,
+                'usager_id' => $this->usager_id,
+                'date_dernier_inventaire' => $this->date_dernier_inventaire,
+                'reseau_ip' => $this->reseau_ip,
+                'disque_dur' => $this->disque_dur,
+                'os_version' => $this->os_version,
+                'os_noyau' => $this->os_noyau,
+                'derniere_date_demarrage' => $this->derniere_date_demarrage,
+                'notes' => $this->notes,
+            ];
+
+            if ($this->editMode) {
+                $ordinateur = OrdinateurModel::findOrFail($this->ordinateurId);
+                $ordinateur->update($data);
+                session()->flash('message', 'Ordinateur mis à jour avec succès.');
+            } else {
+                OrdinateurModel::create($data);
+                session()->flash('message', 'Ordinateur créé avec succès.');
+            }
+
+            $this->resetForm();
+            $this->showModal = false;
+            $this->chargerStatistiques();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de l\'opération: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Confirmer la suppression
+     */
+    public function confirmDelete($id)
+    {
+        $ordinateur = OrdinateurModel::findOrFail($id);
+        $this->selectedOrdinateurName = $ordinateur->nom;
+        $this->ordinateurId = $id;
+        $this->confirmingDelete = true;
+    }
+
+    /**
+     * Fermer la modal de confirmation de suppression
+     */
+    public function closeDeleteModal()
+    {
+        $this->confirmingDelete = false;
+        $this->selectedOrdinateurName = '';
+        $this->ordinateurId = null;
+    }
+
+    /**
+     * Supprimer après confirmation
+     */
+    public function deleteConfirmed()
+    {
+        try {
+            $ordinateur = OrdinateurModel::findOrFail($this->ordinateurId);
+            $ordinateur->delete();
+
+            session()->flash('message', 'Ordinateur supprimé avec succès.');
+            $this->chargerStatistiques();
+            $this->closeDeleteModal();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Afficher les détails d'un ordinateur
+     */
+    public function showDetails($id)
+    {
+        $this->selectedOrdinateur = OrdinateurModel::with(['utilisateur', 'usager'])->find($id);
+        if ($this->selectedOrdinateur) {
+            $this->showDetailsModal = true;
+        }
+    }
+
+    /**
+     * Fermer la modal de détails
+     */
+    public function closeDetailsModal()
+    {
+        $this->showDetailsModal = false;
+        $this->selectedOrdinateur = null;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->resetForm();
+    }
+
+    public function resetForm()
+    {
+        $this->reset([
+            'ordinateurId', 'nom', 'entite_form', 'sous_entite', 'statut_form',
+            'fabricant', 'modele', 'numero_serie', 'utilisateur_id', 'usager_id',
+            'date_dernier_inventaire', 'reseau_ip', 'disque_dur', 'os_version',
+            'os_noyau', 'derniere_date_demarrage', 'notes'
+        ]);
+        $this->resetErrorBag();
+    }
+
+    /**
+     * Réinitialiser les filtres
+     */
+    public function resetFilters()
+    {
+        $this->reset(['search', 'statut', 'entite']);
+        $this->resetPage();
     }
 
     // ==================== MÉTHODES D'IMPORT AVEC MAPPING ====================
@@ -280,31 +514,20 @@ class Ordinateur extends Component
         }
     }
 
-     // Méthodes pour ouvrir et fermer la modale
-    public function openMappingModal()
-    {
-        $this->showMappingModal = true;
-    }
-
-    public function closeMappingModal()
-    {
-        $this->showMappingModal = false;
-    }
-
     /**
      * Mapping automatique des champs
      */
     private function autoMapFields()
     {
         $fieldPatterns = [
-            'nom' => ['nom', 'name', 'designation', 'libelle', 'ordinateur', 'computer', 'hostname'],
+            'nom' => ['nom', 'nom', 'designation', 'libelle', 'ordinateur', 'computer', 'hostnom'],
             'entite' => ['entite', 'entity', 'departement', 'service', 'department', 'division'],
             'sous_entite' => ['sous_entite', 'sous_entite', 'sous_entity', 'sub_department', 'sub_service'],
             'statut' => ['statut', 'status', 'etat', 'state', 'situation'],
             'fabricant' => ['fabricant', 'manufacturer', 'marque', 'brand', 'make', 'constructor'],
             'modele' => ['modele', 'model', 'reference', 'product', 'produit'],
             'numero_serie' => ['numero_serie', 'serial', 'serial_number', 'sn', 'no_serie', 'num_serie'],
-            'utilisateur' => ['utilisateur', 'user', 'utilisateur_nom', 'user_name', 'affecte_a'],
+            'utilisateur' => ['utilisateur', 'user', 'utilisateur_nom', 'user_nom', 'affecte_a'],
             'usager' => ['usager', 'usager_nom', 'utilisateur_final', 'end_user'],
             'date_dernier_inventaire' => ['date_dernier_inventaire', 'date_inventaire', 'inventory_date', 'last_inventory'],
             'reseau_ip' => ['reseau_ip', 'ip', 'ip_address', 'adresse_ip', 'network_ip'],
@@ -431,7 +654,77 @@ class Ordinateur extends Component
     /**
      * Sauvegarder les données importées dans la base
      */
-  
+    public function saveImportedData()
+    {
+        try {
+            DB::beginTransaction();
+
+            $savedCount = 0;
+            $errors = [];
+
+            foreach ($this->importedData as $index => $data) {
+                try {
+                    // Vérifier si l'ordinateur existe déjà
+                    $existing = OrdinateurModel::where('nom', $data['nom'])->first();
+                    if ($existing) {
+                        $errors[] = "Ligne " . ($index + 1) . ": L'ordinateur '{$data['nom']}' existe déjà";
+                        continue;
+                    }
+
+                    // Créer l'ordinateur
+                    OrdinateurModel::create([
+                        'nom' => $data['nom'],
+                        'entite' => $data['entite'] ?? null,
+                        'sous_entite' => $data['sous_entite'] ?? null,
+                        'statut' => $data['statut'] ?? 'En stock',
+                        'fabricant' => $data['fabricant'] ?? null,
+                        'modele' => $data['modele'] ?? null,
+                        'numero_serie' => $data['numero_serie'] ?? null,
+                        'reseau_ip' => $data['reseau_ip'] ?? null,
+                        'disque_dur' => $data['disque_dur'] ?? null,
+                        'os_version' => $data['os_version'] ?? null,
+                        'os_noyau' => $data['os_noyau'] ?? null,
+                        'date_dernier_inventaire' => $data['date_dernier_inventaire'] ?? null,
+                        'derniere_date_demarrage' => $data['derniere_date_demarrage'] ?? null,
+                        'notes' => $data['notes'] ?? null,
+                    ]);
+
+                    $savedCount++;
+
+                } catch (\Exception $e) {
+                    $errors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
+                }
+            }
+
+            DB::commit();
+
+            // Nettoyer les fichiers temporaires
+            $this->cleanImportFiles();
+
+            // FORCER LE RECHARGEMENT DES DONNÉES
+            $this->showImportedData = false;
+            $this->showMappingModal = false;
+            
+            // Recharger les données et statistiques
+            $this->chargerStatistiques();
+            
+            // Réinitialiser la pagination pour voir les nouvelles données
+            $this->resetPage();
+
+            if ($savedCount > 0) {
+                session()->flash('message', $savedCount . ' ordinateur(s) importé(s) avec succès !');
+            }
+
+            if (!empty($errors)) {
+                session()->flash('warning', 'Import terminé avec ' . count($errors) . ' erreur(s).');
+                $this->importErrors = $errors;
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Erreur lors de la sauvegarde: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Nettoyer les fichiers d'import temporaires
@@ -451,7 +744,14 @@ class Ordinateur extends Component
     /**
      * Annuler l'import
      */
-    
+    public function cancelImport()
+    {
+        $this->cleanImportFiles();
+        $this->resetImport();
+        $this->showMappingModal = false;
+        $this->showImportedData = false;
+        $this->showImportModal = false;
+    }
 
     /**
      * Télécharger le template d'import
@@ -495,144 +795,7 @@ class Ordinateur extends Component
         ]);
     }
 
-    // ==================== MÉTHODES CRUD ====================
-
-    public function openModal()
-    {
-        $this->showModal = true;
-    }
-
-    public function closeModal()
-    {
-        $this->showModal = false;
-        $this->resetForm();
-    }
-
-    /**
-     * Afficher les détails d'un ordinateur
-     */
-    public function showDetails($id)
-    {
-        $this->selectedOrdinateur = OrdinateurModel::with(['utilisateur', 'usager'])->find($id);
-        if ($this->selectedOrdinateur) {
-            $this->showDetailsModal = true;
-        }
-    }
-
-    /**
-     * Fermer la modal de détails
-     */
-    public function closeDetailsModal()
-    {
-        $this->showDetailsModal = false;
-        $this->selectedOrdinateur = null;
-    }
-
-    public function create()
-    {
-        $this->resetForm();
-        $this->modalTitle = 'Ajouter un ordinateur';
-        $this->editMode = false;
-        $this->showModal = true;
-    }
-
-    public function edit($id)
-    {
-        $ordinateur = OrdinateurModel::findOrFail($id);
-
-        $this->ordinateurId = $ordinateur->id;
-        $this->nom = $ordinateur->nom;
-        $this->entite_form = $ordinateur->entite;
-        $this->sous_entite = $ordinateur->sous_entite;
-        $this->statut_form = $ordinateur->statut;
-        $this->fabricant = $ordinateur->fabricant;
-        $this->modele = $ordinateur->modele;
-        $this->numero_serie = $ordinateur->numero_serie;
-        $this->utilisateur_id = $ordinateur->utilisateur_id;
-        $this->usager_id = $ordinateur->usager_id;
-        $this->date_dernier_inventaire = $ordinateur->date_dernier_inventaire
-            ? $ordinateur->date_dernier_inventaire->format('Y-m-d')
-            : null;
-        $this->reseau_ip = $ordinateur->reseau_ip;
-        $this->disque_dur = $ordinateur->disque_dur;
-        $this->os_version = $ordinateur->os_version;
-        $this->os_noyau = $ordinateur->os_noyau;
-        $this->derniere_date_demarrage = $ordinateur->derniere_date_demarrage
-            ? $ordinateur->derniere_date_demarrage->format('Y-m-d\TH:i')
-            : null;
-        $this->notes = $ordinateur->notes;
-
-        $this->modalTitle = 'Modifier l\'ordinateur';
-        $this->editMode = true;
-        $this->showModal = true;
-    }
-
-    public function save()
-    {
-        if ($this->editMode) {
-            $this->rules['nom'] = 'required|string|max:100|unique:ordinateurs,nom,' . $this->ordinateurId;
-            $this->rules['numero_serie'] = 'nullable|string|max:100|unique:ordinateurs,numero_serie,' . $this->ordinateurId;
-        }
-
-        $this->validate();
-
-        try {
-            $data = [
-                'nom' => $this->nom,
-                'entite' => $this->entite_form,
-                'sous_entite' => $this->sous_entite,
-                'statut' => $this->statut_form,
-                'fabricant' => $this->fabricant,
-                'modele' => $this->modele,
-                'numero_serie' => $this->numero_serie,
-                'utilisateur_id' => $this->utilisateur_id,
-                'usager_id' => $this->usager_id,
-                'date_dernier_inventaire' => $this->date_dernier_inventaire,
-                'reseau_ip' => $this->reseau_ip,
-                'disque_dur' => $this->disque_dur,
-                'os_version' => $this->os_version,
-                'os_noyau' => $this->os_noyau,
-                'derniere_date_demarrage' => $this->derniere_date_demarrage,
-                'notes' => $this->notes,
-            ];
-
-            if ($this->editMode) {
-                $ordinateur = OrdinateurModel::findOrFail($this->ordinateurId);
-                $ordinateur->update($data);
-                session()->flash('message', 'Ordinateur mis à jour avec succès.');
-            } else {
-                OrdinateurModel::create($data);
-                session()->flash('message', 'Ordinateur créé avec succès.');
-            }
-
-            $this->resetForm();
-            $this->showModal = false;
-            $this->chargerStatistiques();
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de l\'opération: ' . $e->getMessage());
-        }
-    }
-
-    public function delete($id)
-    {
-        $ordinateur = OrdinateurModel::findOrFail($id);
-        $ordinateur->delete();
-
-        session()->flash('message', 'Ordinateur supprimé avec succès.');
-        $this->chargerStatistiques();
-    }
-
-    public function resetForm()
-    {
-        $this->reset([
-            'ordinateurId', 'nom', 'entite_form', 'sous_entite', 'statut_form',
-            'fabricant', 'modele', 'numero_serie', 'utilisateur_id', 'usager_id',
-            'date_dernier_inventaire', 'reseau_ip', 'disque_dur', 'os_version',
-            'os_noyau', 'derniere_date_demarrage', 'notes'
-        ]);
-        $this->resetErrorBag();
-    }
-    
+    // ==================== MÉTHODES D'EXPORT ====================
 
     /**
      * Exporter les ordinateurs en CSV
@@ -650,7 +813,7 @@ class Ordinateur extends Component
                         ->orWhere('modele', 'LIKE', "%{$this->search}%")
                         ->orWhere('reseau_ip', 'LIKE', "%{$this->search}%")
                         ->orWhereHas('utilisateur', function ($q) {
-                            $q->where('name', 'LIKE', "%{$this->search}%");
+                            $q->where('nom', 'LIKE', "%{$this->search}%");
                         });
                 });
             }
@@ -688,8 +851,8 @@ class Ordinateur extends Component
                         $ord->fabricant,
                         $ord->modele,
                         $ord->numero_serie,
-                        $ord->utilisateur->name ?? 'N/A',
-                        $ord->usager->name ?? 'N/A',
+                        $ord->utilisateur->nom?? 'N/A',
+                        $ord->usager->nom?? 'N/A',
                         $ord->date_dernier_inventaire?->format('d/m/Y') ?? '',
                         $ord->reseau_ip,
                         $ord->disque_dur,
@@ -710,140 +873,4 @@ class Ordinateur extends Component
             return back();
         }
     }
-
-    // ==================== MÉTHODES POUR LES STATISTIQUES ====================
-
-    /**
-     * Charger les statistiques
-     */
-    public function chargerStatistiques()
-    {
-        $this->statsGlobales = OrdinateurModel::select('statut', DB::raw('COUNT(*) as count'))
-            ->groupBy('statut')
-            ->get()
-            ->pluck('count', 'statut')
-            ->toArray();
-    }
-
-    /**
-     * Obtenir l'icône pour un statut
-     */
-    public function getIconeStatut($statut)
-    {
-        switch($statut) {
-            case 'En service': return 'fa-check-circle';
-            case 'En stock': return 'fa-warehouse';
-            case 'En réparation': return 'fa-tools';
-            case 'Hors service': return 'fa-times-circle';
-            default: return 'fa-desktop';
-        }
-    }
-
-    /**
-     * Obtenir la couleur du badge pour un statut
-     */
-    public function getBadgeColor($statut)
-    {
-        switch($statut) {
-            case 'En service': return 'success';
-            case 'En stock': return 'info';
-            case 'En réparation': return 'warning';
-            case 'Hors service': return 'danger';
-            default: return 'secondary';
-        }
-    }
-
-    // ==================== MÉTHODES D'IMPORT AVEC MAPPING ====================
-
-/**
- * Sauvegarder les données importées dans la base
- */
-public function saveImportedData()
-{
-    try {
-        DB::beginTransaction();
-
-        $savedCount = 0;
-        $errors = [];
-
-        foreach ($this->importedData as $index => $data) {
-            try {
-                // Vérifier si le moniteur existe déjà
-                $existing = OrdinateurModel::where('nom', $data['nom'])->first();
-                if ($existing) {
-                    $errors[] = "Ligne " . ($index + 1) . ": Le moniteur '{$data['nom']}' existe déjà";
-                    continue;
-                }
-
-                // Créer le moniteur
-                OrdinateurModel::create([
-                    'nom' => $data['nom'],
-                    'entite' => $data['entite'] ?? null,
-                    'statut' => $data['statut'] ?? 'En stock',
-                    'fabricant' => $data['fabricant'] ?? null,
-                    'numero_serie' => $data['numero_serie'] ?? null,
-                    'lieu' => $data['lieu'] ?? null,
-                    'type' => $data['type'] ?? null,
-                    'modele' => $data['modele'] ?? null,
-                    'commentaires' => $data['commentaires'] ?? null,
-                ]);
-
-                $savedCount++;
-
-            } catch (\Exception $e) {
-                $errors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
-            }
-        }
-
-        DB::commit();
-
-        // Nettoyer les fichiers temporaires
-        $this->cleanImportFiles();
-
-        // FORCER LE RECHARGEMENT DES DONNÉES
-        $this->showImportedData = false;
-        $this->showMappingModal = false;
-        
-        // Recharger les données et statistiques
-        $this->chargerStatistiques();
-        $this->chargerFabricants();
-        $this->chargerEntites();
-        
-        // Réinitialiser la pagination pour voir les nouvelles données
-        $this->resetPage();
-        
-        // Émettre un événement pour forcer le re-rendu
-        $this->emit('$refresh');
-
-        if ($savedCount > 0) {
-            session()->flash('success', $savedCount . ' moniteur(s) importé(s) avec succès ! Les données sont maintenant visibles dans le tableau.');
-        }
-
-        if (!empty($errors)) {
-            session()->flash('warning', 'Import terminé avec ' . count($errors) . ' erreur(s).');
-            $this->importErrors = $errors;
-        }
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        session()->flash('error', 'Erreur lors de la sauvegarde: ' . $e->getMessage());
-    }
-}
-
-/**
- * Annuler l'import
- */
-public function cancelImport()
-{
-    $this->cleanImportFiles();
-    $this->resetImport();
-    $this->showMappingModal = false;
-    $this->showImportedData = false;
-    $this->showImportModal = false; // Ajouter cette ligne
-}
-
-/**
- * Fermer la modal d'import
- */
-
 }
