@@ -3,7 +3,7 @@
             <div class="table-header">
                 <div class="table-title">
                     
-                    Liste des Checkout
+                    Reservation d'equipement
                 </div>
             </div>
 
@@ -49,8 +49,8 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody class="">
-                    @foreach($checkouts as $checkout)
+                    <tbody>
+                    {{-- @foreach($checkouts as $checkout)
                         <tr  style="cursor:pointer" >
                             <td>
                                 <input type="checkbox"
@@ -59,7 +59,7 @@
                                        class="checkbox-modern">
                             </td>
                             <td wire:click="Visualiser({{ $checkout->id }})"># {{ $checkout->id }}</td>
-                            <td wire:click="Visualiser({{ $checkout->id }})" class="text-muted"> {{ $checkout->utilisateur->nom }} </td>
+                            <td wire:click="Visualiser({{ $checkout->id }})"> {{ $checkout->utilisateur->nom }} </td>
                             <td wire:click="Visualiser({{ $checkout->id }})">{{ $checkout->materiel_type }}</td>
                             <td wire:click="Visualiser({{ $checkout->id }})" >{{ $checkout->materiel_details }}</td>
                             <td wire:click="Visualiser({{ $checkout->id }})">{{ $checkout->statut }}</td>
@@ -86,14 +86,14 @@
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @endforeach --}}
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination -->
             <div class="mt-4 container d-flex justify-content-center">
-                {{ $checkouts->links() }}
+                {{-- {{ $checkouts->links() }} --}}
             </div>
         </div>
 

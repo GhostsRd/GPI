@@ -1,136 +1,130 @@
 <div style="margin-top:5%">
 
-    <div wire:ignore.self class="sidebar rounded-3 text-dark card bg-white p-0 shadow colg-lg-3 mt-4 " id="sidebar" >
-        
-                    <!-- Header -->
-                    <div class=" border-bottom">
-                        <h4 class="modal-title mx-2 my-2 text-dark " id="ticketModalLabel">Nouveau Ticket</h4>
-                    </div>
+    <div wire:ignore.self class="sidebar rounded-3 text-dark card bg-white p-0 shadow colg-lg-3 mt-4 " id="sidebar">
 
-                    <!-- Formulaire Livewire -->
-                    <form wire:submit.prevent="store">
-                        <div class="modal-body row">
-                            <!-- Sujet -->
-                            <p class="text-dark mb-3 mt-3">Les champs indiqués <span class="text-danger">*</span> sont
-                                obligatoires</p>
+        <!-- Header -->
+        <div class=" border-bottom">
+            <h4 class="modal-title mx-2 my-2 text-dark " id="ticketModalLabel">Nouveau Ticket</h4>
+        </div>
 
-                            <div class="mb-3 col-lg-6">
-                                <label for="sujet" class="form-label">Sujet <span
-                                        class="text-danger ">*</span></label>
-                                <input type="text" placeholder="Ex: J'ai perdu mon telephone"
-                                    class="form-control input-recherche text-dark rounded-2 border @error('sujet') is-invalid @enderror"
-                                    id="sujet" wire:model.debounce.500ms="sujet">
-                                @error('sujet')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+        <!-- Formulaire Livewire -->
+        <form wire:submit.prevent="store">
+            <div class="modal-body row">
+                <!-- Sujet -->
+                <p class="text-dark mb-3 mt-3">Les champs indiqués <span class="text-danger">*</span> sont
+                    obligatoires</p>
 
-                            <!-- Détails -->
-                            <div class="mb-3 col-lg-6">
-                                <label for="details" class="form-label">Détails <span
-                                        class="text-danger">*</span></label>
-                                <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
-                                    class="form-control input-recherche text-dark border @error('details') is-invalid @enderror" id="details"
-                                    wire:model.debounce.500ms="details" rows="2"></textarea>
-                                @error('details')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                <div class="mb-3 col-lg-6">
+                    <label for="sujet" class="form-label">Sujet <span class="text-danger ">*</span></label>
+                    <input type="text" placeholder="Ex: J'ai perdu mon telephone"
+                        class="form-control input-recherche text-dark rounded-2 border @error('sujet') is-invalid @enderror"
+                        id="sujet" wire:model.debounce.500ms="sujet">
+                    @error('sujet')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                            <div class="mb-3 col-lg-6">
-                                <label for="categorie" class="form-label">Catégorie <span
-                                        class="text-danger">*</span></label>
-                                <select id="categorie"
-                                    class="input-recherche form-control text-muted border @error('categorie') is-invalid @enderror"
-                                    wire:model="categorie" wire:change="steps2">
-                                    <option value="" class="text-mutted">-- Sélectionner une catégorie --</option>
-                                    <option value="Réseau" class="text-mutted">Réseau</option>
-                                    <option value="Logiciel" class="text-mutted">Logiciel</option>
-                                    <option value="Matériel" class="text-mutted">Matériel</option>
-                                    <option value="Sécurité" class="text-mutted">Sécurité</option>
-                                    <option value="Autre" class="text-mutted">Autre</option>
-                                </select>
-                                @error('categorie')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                <!-- Détails -->
+                <div class="mb-3 col-lg-6">
+                    <label for="details" class="form-label">Détails <span class="text-danger">*</span></label>
+                    <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
+                        class="form-control input-recherche text-dark border @error('details') is-invalid @enderror" id="details"
+                        wire:model.debounce.500ms="details" rows="2"></textarea>
+                    @error('details')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                            <div class="mb-3 col-lg-6">
-                                <label for="impact" class="form-label">Impact <span
-                                        class="text-danger">*</span></label>
-                                <select id="impact"
-                                    class="input-recherche form-control text-muted border @error('impact') is-invalid @enderror"
-                                    wire:model="impact">
-                                    <option value="">-- Sélectionner l'impact --</option>
-                                    <option value="Utilisateur">Un utilisateur ou un groupe</option>
-                                    <option value="Service">Un service ou département</option>
-                                    <option value="Organisation">Toute l’organisation</option>
-                                    <option value="Autre">Autre</option>
+                <div class="mb-3 col-lg-6">
+                    <label for="categorie" class="form-label">Catégorie <span class="text-danger">*</span></label>
+                    <select id="categorie"
+                        class="input-recherche form-control text-muted border @error('categorie') is-invalid @enderror"
+                        wire:model="categorie" wire:change="steps2">
+                        <option value="" class="text-mutted">-- Sélectionner une catégorie --</option>
+                        <option value="Réseau" class="text-mutted">Réseau</option>
+                        <option value="Logiciel" class="text-mutted">Logiciel</option>
+                        <option value="Matériel" class="text-mutted">Matériel</option>
+                        <option value="Sécurité" class="text-mutted">Sécurité</option>
+                        <option value="Autre" class="text-mutted">Autre</option>
+                    </select>
+                    @error('categorie')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                                </select>
-                                @error('impact')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                <div class="mb-3 col-lg-6">
+                    <label for="impact" class="form-label">Impact <span class="text-danger">*</span></label>
+                    <select id="impact"
+                        class="input-recherche form-control text-muted border @error('impact') is-invalid @enderror"
+                        wire:model="impact">
+                        <option value="">-- Sélectionner l'impact --</option>
+                        <option value="Utilisateur">Un utilisateur ou un groupe</option>
+                        <option value="Service">Un service ou département</option>
+                        <option value="Organisation">Toute l’organisation</option>
+                        <option value="Autre">Autre</option>
+
+                    </select>
+                    @error('impact')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
 
 
-                            <!-- Priorité -->
-                            <div class="mb-3 col-lg-6">
-                                <label for="priorite" class="form-label">Priorité</label>
-                                <select
-                                    class="input-recherche form-control text-muted border @error('priorite') is-invalid @enderror"
-                                    id="priorite" wire:model="priorite">
-                                    <option value="">-- Sélectionner --</option>
-                                    <option value="Basse">Basse</option>
-                                    <option value="Normale">Normale</option>
-                                    <option value="Haute">Urgent</option>
-                                    <option value="Critique">Critique</option>
-                                </select>
-                                @error('priorite')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                <!-- Priorité -->
+                <div class="mb-3 col-lg-6">
+                    <label for="priorite" class="form-label">Priorité</label>
+                    <select
+                        class="input-recherche form-control text-muted border @error('priorite') is-invalid @enderror"
+                        id="priorite" wire:model="priorite">
+                        <option value="">-- Sélectionner --</option>
+                        <option value="Basse">Basse</option>
+                        <option value="Normale">Normale</option>
+                        <option value="Haute">Urgent</option>
+                        <option value="Critique">Critique</option>
+                    </select>
+                    @error('priorite')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                            <div class="mb-3 col-lg-6">
-                                <label for="equipement" class="form-label">Équipement <span
-                                        class="text-danger">*</span></label>
-                                <select id="equipement"
-                                    class="input-recherche form-control text-muted border @error('equipementSeeder') is-invalid @enderror"
-                                    wire:model="equipement">
-                                    <option value="">-- Sélectionner un équipement --</option>
-                                    <option value="PC">PC</option>
-                                    <option value="Imprimante">Imprimante</option>
-                                    <option value="Routeur">Routeur</option>
-                                    <option value="Switch">Switch</option>
-                                    <option value="Serveur">Serveur</option>
-                                    <option value="autre">Autre</option>
+                <div class="mb-3 col-lg-6">
+                    <label for="equipement" class="form-label">Équipement <span class="text-danger">*</span></label>
+                    <select id="equipement"
+                        class="input-recherche form-control text-muted border @error('equipementSeeder') is-invalid @enderror"
+                        wire:model="equipement">
+                        <option value="">-- Sélectionner un équipement --</option>
+                        <option value="PC">PC</option>
+                        <option value="Imprimante">Imprimante</option>
+                        <option value="Routeur">Routeur</option>
+                        <option value="Switch">Switch</option>
+                        <option value="Serveur">Serveur</option>
+                        <option value="autre">Autre</option>
 
-                                </select>
-                                @error('equipementSeeder')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                    </select>
+                    @error('equipementSeeder')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
 
-                        </div>
+            </div>
 
-                        <!-- Footer -->
-                        <div class="modal-footer ">
-                            <button type="button" class="btn btn-outline-secondary border px-3"
-                                id="closeSidebar">Annuler</button>
-                            <button type="submit"
-                                class="btn m-1 btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button>
-                        </div>
-                    </form>
-                
+            <!-- Footer -->
+            <div class="modal-footer ">
+                <button type="button" class="btn btn-outline-secondary border px-3" id="closeSidebar">Annuler</button>
+                <button type="submit"
+                    class="btn m-1 btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button>
+            </div>
+        </form>
+
     </div>
 
 
 
     <div class="container-fluid main-content">
-        <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
-            <div class="col-lg-3 bg-white py-1 px-0 shadow-sm">
+        <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12" >
+            <div class="col-lg-3 bg-white py-1 px-0 ">
 
 
                 <ul style="list-style: none " class="px-2 py-2 ">
@@ -160,7 +154,7 @@
                         Nouveau ticket
 
                     </li>
-                    <li style="cursor: pointer"  class="mt-1 d-flex justify-content-between align-items-center">
+                    <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
 
                             <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +169,8 @@
 
                         </div>
                     </li>
-                    <li style="cursor: pointer" wire:click="visiterCheckout" class="mt-1 d-flex justify-content-between align-items-center ">
+                    <li style="cursor: pointer" wire:click="visiterCheckout"
+                        class="mt-1 d-flex justify-content-between align-items-center ">
                         <div class="d-flex align-items-center">
 
                             <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
@@ -744,8 +739,7 @@
                                 <polygon points="297.82 125.26 305.55 129.72 308.73 121.14 301 116.68 297.82 125.26"
                                     style="fill: rgb(224, 224, 224); transform-origin: 303.275px 123.2px;"
                                     id="eliysk1xs6wbg" class="animable"></polygon>
-                                <polygon
-                                    points="322.26 127.51 314.53 123.05 312.64 116.78 320.37 121.24 322.26 127.51"
+                                <polygon points="322.26 127.51 314.53 123.05 312.64 116.78 320.37 121.24 322.26 127.51"
                                     style="fill: rgb(224, 224, 224); transform-origin: 317.45px 122.145px;"
                                     id="elpozd886r7w" class="animable"></polygon>
                                 <path
@@ -786,8 +780,7 @@
                                 <polygon points="247.97 122.21 240.24 117.75 239.27 108.11 247 112.57 247.97 122.21"
                                     style="fill: rgb(224, 224, 224); transform-origin: 243.62px 115.16px;"
                                     id="eln4kj798o32n" class="animable"></polygon>
-                                <polygon
-                                    points="219.79 115.18 227.52 119.64 233.09 108.41 225.36 103.96 219.79 115.18"
+                                <polygon points="219.79 115.18 227.52 119.64 233.09 108.41 225.36 103.96 219.79 115.18"
                                     style="fill: rgb(224, 224, 224); transform-origin: 226.44px 111.8px;"
                                     id="elyi4fzssag2" class="animable"></polygon>
                                 <path
@@ -863,15 +856,14 @@
                                     d="M374.71,345.08a7.68,7.68,0,0,1,1.11,3.73v7.66a2.66,2.66,0,0,1-1.1,2.44l73.36-42.36a2.64,2.64,0,0,0,1.11-2.44v-7.66a7.65,7.65,0,0,0-1.11-3.72Z"
                                     style="fill: rgb(55, 71, 79); transform-origin: 411.957px 330.82px;"
                                     id="elcb71ig0pnhb" class="animable"></path>
-                                <polygon
-                                    points="339.36 310.65 380.16 334.05 447.56 295.14 406.76 271.74 339.36 310.65"
+                                <polygon points="339.36 310.65 380.16 334.05 447.56 295.14 406.76 271.74 339.36 310.65"
                                     style="fill: #90CAF9; transform-origin: 393.46px 302.895px;" id="elb0zw5r0ed2c"
                                     class="animable"></polygon>
                                 <g id="elmejo21rhfwk">
                                     <polygon
                                         points="339.36 310.65 380.16 334.05 447.56 295.14 406.76 271.74 339.36 310.65"
-                                        style="opacity: 0.35; transform-origin: 393.46px 302.895px;"
-                                        class="animable" id="elru534fbgnje"></polygon>
+                                        style="opacity: 0.35; transform-origin: 393.46px 302.895px;" class="animable"
+                                        id="elru534fbgnje"></polygon>
                                 </g>
                                 <path
                                     d="M380.62,332.27l-39.36-22.72q1.55-4.4-.21-10.27l39.11,22.48S380.9,324.24,380.62,332.27Z"
@@ -888,8 +880,8 @@
                                 <g id="elkddmj3c7d1">
                                     <path
                                         d="M378.15,318.56a8.33,8.33,0,0,1,3.78,6.55v7.65c0,2.41-1.69,3.39-3.78,2.18l-38.79-22.39v-1.9l38.27,22c1.25.72,2.26.13,2.26-1.31l0-7.09a5,5,0,0,0-2.27-3.93l-38.23-22v-2.15Z"
-                                        style="opacity: 0.25; transform-origin: 360.645px 315.814px;"
-                                        class="animable" id="el1teoux05j0p"></path>
+                                        style="opacity: 0.25; transform-origin: 360.645px 315.814px;" class="animable"
+                                        id="el1teoux05j0p"></path>
                                 </g>
                                 <path
                                     d="M339.36,296.17l67.4-38.92,38.79,22.39a8.39,8.39,0,0,1,3.78,6.55v7.66a2.64,2.64,0,0,1-1.11,2.44l-67.4,38.92a2.68,2.68,0,0,0,1.11-2.45V325.1a8.36,8.36,0,0,0-3.78-6.55Z"
@@ -898,8 +890,8 @@
                                 <g id="elxnkom87njwd">
                                     <path
                                         d="M380.83,321.38a7.74,7.74,0,0,1,1.1,3.72v7.66a2.68,2.68,0,0,1-1.11,2.45l67.4-38.92a2.64,2.64,0,0,0,1.11-2.44v-7.66a7.76,7.76,0,0,0-1.11-3.72Z"
-                                        style="opacity: 0.15; transform-origin: 415.082px 308.84px;"
-                                        class="animable" id="el4vmjwheqogo"></path>
+                                        style="opacity: 0.15; transform-origin: 415.082px 308.84px;" class="animable"
+                                        id="el4vmjwheqogo"></path>
                                 </g>
                             </g>
                         </g>
@@ -920,8 +912,8 @@
                                 <g id="el0pytutv3hg4c">
                                     <path
                                         d="M381.88,399.78l0,0,.07.06,0,0,.12.12h0a1.81,1.81,0,0,1,.42.91.71.71,0,0,1,0,.2v1.7a1.9,1.9,0,0,1-.84,1.46L287.4,458.76a1.77,1.77,0,0,1-.84.2v-3.64a1.56,1.56,0,0,0,.84-.2l94.35-54.47a.65.65,0,0,0,.31-.33.43.43,0,0,0-.1-.46A.3.3,0,0,0,381.88,399.78Z"
-                                        style="opacity: 0.15; transform-origin: 334.529px 429.37px;"
-                                        class="animable" id="elal5rve1fotl"></path>
+                                        style="opacity: 0.15; transform-origin: 334.529px 429.37px;" class="animable"
+                                        id="elal5rve1fotl"></path>
                                 </g>
                                 <path
                                     d="M357,375.73c0-.63-.38-1.26-1.4-1.85a6.27,6.27,0,0,0-3-.8h-.26c-2.63,0-5.37,1.22-7.7,1.56h-.1c-3.27.45-5-.57-6.6-.73a7.15,7.15,0,0,0-.78,0c-.36,0-.71,0-1.1,0a22.75,22.75,0,0,1-4.26-.09c-1.13-.12-2-.18-2.59-.19H329a3.41,3.41,0,0,0-1.91.37l-3.78,2.19v1.25l28.32,16.36,3.78-2.19a1.11,1.11,0,0,0,.64-1.15v-1.24a5.31,5.31,0,0,0-.31-1.6,6.49,6.49,0,0,1-.22-.94,6.46,6.46,0,0,0,.12-.89c0-.15,0-1,0-1.28a1.39,1.39,0,0,0-.07-.44c-.18-.64-1.07-1.31-1.36-2.27a2.79,2.79,0,0,1,.12-.34c.59-1.36,2.71-3,2.71-4.47C357,376.8,357,376,357,375.73Zm-5.82,3.62a7.27,7.27,0,0,1-2.05.79,5.68,5.68,0,0,1-3.85-.3,1.8,1.8,0,0,1-.68-.66,3.64,3.64,0,0,1,1.53-1.48,7.18,7.18,0,0,1,5.18-.78,3,3,0,0,1,.71.29,1.8,1.8,0,0,1,.68.66A3.55,3.55,0,0,1,351.22,379.35Z"
@@ -1081,8 +1073,8 @@
                                 <g id="el0s147grvnw9d">
                                     <path
                                         d="M449.39,341.77a2.19,2.19,0,0,0,.64-2.39c0-.12-.06-.25-.1-.38l-52.44,31.67L385,376a.35.35,0,0,0,.33.09l2.54-.57,9.36-2.08h0Z"
-                                        style="opacity: 0.15; transform-origin: 417.577px 357.55px;"
-                                        class="animable" id="el7xdl8vfl2j3"></path>
+                                        style="opacity: 0.15; transform-origin: 417.577px 357.55px;" class="animable"
+                                        id="el7xdl8vfl2j3"></path>
                                 </g>
                             </g>
                         </g>
@@ -1105,8 +1097,8 @@
                                 <g id="elfo8x63z4xvk">
                                     <path
                                         d="M104.52,382.65,60,359.8h0l-.13-.08c-13.41-7-22.27-22.82-23.39-45.84-1-20.63,4.37-43.54,14.06-64.82L96,272.44C86.33,293.72,81,316.63,82,337.26,83.08,359.82,91.58,375.45,104.52,382.65Z"
-                                        style="opacity: 0.1; transform-origin: 70.4406px 315.855px;"
-                                        class="animable" id="eljaigdu0pdxh"></path>
+                                        style="opacity: 0.1; transform-origin: 70.4406px 315.855px;" class="animable"
+                                        id="eljaigdu0pdxh"></path>
                                 </g>
                                 <g id="elhz166q886tc">
                                     <ellipse cx="152.48" cy="291.87" rx="102.69" ry="59.29"
@@ -1157,8 +1149,8 @@
                                 <g id="elez59hqdx2a">
                                     <path
                                         d="M142.12,126.47s-1.33,7.27-.12,13.4,2.1,11.34,2.1,11.34-3.71,4.25-10.73,3.28c-7.64-1.06-5.31-19.19-.92-23.64A14.42,14.42,0,0,1,142.12,126.47Z"
-                                        style="opacity: 0.5; transform-origin: 136.242px 140.552px;"
-                                        class="animable" id="el7jm644lm0xm"></path>
+                                        style="opacity: 0.5; transform-origin: 136.242px 140.552px;" class="animable"
+                                        id="el7jm644lm0xm"></path>
                                 </g>
                                 <path d="M141.34,272.65l1-.16c0-3-.23-5.8.5-7.24l-1.46-3.69Z"
                                     style="fill: rgb(38, 50, 56); transform-origin: 142.09px 267.105px;"
@@ -1294,8 +1286,7 @@
                                     points="124.41 179.49 124.69 179.66 132.02 184.03 145.28 176.63 145.56 176.48 137.95 171.94 124.41 179.49"
                                     style="fill: rgb(224, 224, 224); transform-origin: 134.985px 177.985px;"
                                     id="el37zox8sa5oa" class="animable"></polygon>
-                                <polygon
-                                    points="124.69 179.66 132.02 184.03 145.28 176.63 137.94 172.25 124.69 179.66"
+                                <polygon points="124.69 179.66 132.02 184.03 145.28 176.63 137.94 172.25 124.69 179.66"
                                     style="fill: rgb(230, 230, 230); transform-origin: 134.985px 178.14px;"
                                     id="eln27ef5sjm5" class="animable"></polygon>
                                 <path
@@ -1381,40 +1372,47 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  col-lg-9">
-                <section class="p-0">
-                    <div class="card bg-none border-0 m-0 p-0 mb-1">
-                        <select name=""   wire:model="state" class="input-recherche form-control border" id=""
-                            class="col-3">
-                            <option value="">__Selectionner le status__</option>
-                            <option value="1">Assigner</option>
-                            <option value="2">En traitement</option>
-                            <option value="3">resolu</option>
-                            <option value="4">Fermer</option>
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  col-lg-9 border-start" style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
 
-                        </select>
+                   <h5 class="fw-bold m-2 ">Ticket</h5>
+                    <span class="text-muted m-2 mt-2 py-2">Visualisation globale de vos ticket</span> <br>
 
-                    </div>
-                    <div class="list-group mt-2 " style="overflow-y: none">
-                        <a href="#"
-                            class="list-group-item border shadow-sm bg-light   bg-gradient list-group-item-action "
-                            aria-current="true">
-                            
-                            <div class="d-flex active w-100 justify-content-between">
-                                <h5 class="mb-1">Liste de votre ticket</h5>
-                                <small>
-                                    <input type="text" wire:model="recherche"
-                                        class="input-recherche border p-1 py-2 px-5 rounded-2"
-                                        placeholder="Recherche par sujet..">
-                                </small>
+                
+                <section class="p-0 py-3">
+                    <h5 class="border-top py-2 px-2">Recente</h5>
+                    <div class="row p-3">
+                        <div class="col-lg-3 shadow-0 card border">
+                            <div class="card-title border-bottom p-0">
+                                Nom du ticket de las
                             </div>
-                        </a>
+                            <div class="card-body">
+                                description de ticket
+                            </div>
+                        </div>
+                       
+                    </div>
+                   
+                    <strong href="#"
+                        class=" border-0 py-2 m-2"
+                        aria-current="true">
+
+                        <div class="d-flex active w-100 justify-content-between">
+                            <h5 class="mb-1 fw-bold">Liste de votre ticket</h5>
+                            <small>
+                                <input type="text" wire:model="recherche"
+                                    class="input-recherche border-0 border-bottom rounded-0 border-3 p-1 py-2 px-5 rounded-2"
+                                    placeholder="Recherche par sujet..">
+                            </small>
+                        </div>
+                    </strong>
+                    <div class="list-group text-muted "  style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
                         @foreach ($tickets as $ticket)
                             <a wire:click="visualiser('{{ $ticket->id }}')" href="#" 
-                              data-aos="fade-down"
-                               data-aos-duration="400" 
-                               data-aos-delay="{{ $loop->index * 200 }}"
-                                class="list-group-item list-group-item-action border">
+                                {{-- data-aos="fade-down" --}}
+                                {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
+                                class="list-group-item list-group-item-action border-0 border-bottom"
+                               
+                                >
                                 <div class="d-flex w-100 justify-content-between">
                                     <b class="mb-1 text-black-50"># {{ $ticket->id }} - {{ $ticket->sujet }}</b>
                                     <small
@@ -1457,7 +1455,7 @@
 
 
                         <div class="mt-4 d-flex justify-content-center">
-                            {{ $tickets->links() }}
+                            {{-- {{ $tickets->links() }} --}}
 
                         </div>
 

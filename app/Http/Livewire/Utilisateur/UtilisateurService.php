@@ -139,7 +139,7 @@ class UtilisateurService extends Component
                     ->where("state","like","%" . $this->state . "%")
                     ->where("sujet","like","%".$this->recherche."%")
                     ->orderBy("created_at", "desc")
-                ->paginate(4),
+                ->get(),
          "chats"=> chat::all(),
          "responsables" => User::all(),
            ]);

@@ -157,10 +157,10 @@
                                 src="https://ui-avatars.com/api/?name={{ $checkouts->responsable->name ?? 'Guest' }}"
                                 alt="Profil" width="40" height="40" class="shadow rounded-circle me-2">
                             @if ($checkouts->materiel_type == 'Telephone')
-                                ⮕ {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
+                                ⮕ {{ $checkouts->telephone != null ?? $checkouts->telephone->nom }} {{ $checkouts->telephone != null ?? $checkouts->telephone->marque }}
                             @else
-                                ⮕ {{ $checkouts->ordinateur->nom }} {{ $checkouts->ordinateur->modele }}
-                                {{ $checkouts->ordinateur->os_version }}
+                                ⮕ {{$checkouts->ordinateur != null ?? $checkouts->ordinateur->nom }} {{ $checkouts->ordinateur != null ?? $checkouts->ordinateur->modele }}
+                                {{$checkouts->ordinateur != null ?? $checkouts->ordinateur->os_version }}
                             @endif
                         </p>
                         <label for="" class="fw-bold mb-2 d-flex justify-content-center">Lier une equipement

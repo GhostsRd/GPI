@@ -42,4 +42,9 @@ class ordinateur extends Model
     {
         return $this->belongsTo(Utilisateur::class, 'usager_id');
     }
+
+      public function reservedCheckout()
+    {
+        return $this->belongsTo(checkoutreserver::class,'equipement_id');
+    }
 }

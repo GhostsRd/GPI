@@ -37,6 +37,9 @@ Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\Utilisa
 Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');
 Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
 Route::get('/utilisateur-checkout', [App\Http\Controllers\Utilisateur\checkout\Checkout::class, 'index'])->name('checkout');
+Route::get('/utilisateur-checkout-{id}-{type}', [App\Http\Controllers\Utilisateur\checkout\CalendrierReservationCheckout::class, 'index'])->name('checkout.calendrier');
+
+
 Route::get('/moniteur', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');
 Route::get('/logiciel', [App\Http\Controllers\equipement\logiciel::class, 'index'])->name('logiciel');
 Route::get('/ordinateur', [App\Http\Controllers\equipement\ordinateur::class, 'index'])->name('ordinateur');
@@ -59,6 +62,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/ticket-view-{id}', [App\Http\Controllers\admin\ticket\Ticketview::class, 'ticketview'])->name('checkTicketview');
     Route::get('/admin/checkout',[App\Http\Controllers\admin\checkout\Checkout::class,'index'])->name('checkoutadmin');
     Route::get('/admin/checkout-view-{id}',[App\Http\Controllers\admin\checkout\CheckoutView::class,'index'])->name('checkoutview');
+    Route::get('/admin/checkout-reservation',[App\Http\Controllers\admin\checkout\CheckoutReservation::class,'index'])->name('checkout.reservation');
+    Route::get('/admin/checkout-reservation-list',[App\Http\Controllers\admin\checkout\CheckoutReservationList::class,'index'])->name('checkout.reservation.list');
+    
     Route::get('/admin/utilisateur',[App\Http\Controllers\admin\profile\UtilisateurListe::class,'index'])->name('listeutilisateur');    
     Route::get('/admin/utilisateur/profile-{id}',[App\Http\Controllers\admin\profile\Profile::class,'index'])->name('userprofile');
 

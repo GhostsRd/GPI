@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Utilisateur\Checkout;
 
+use App\Models\checkoutreserver;
 use Livewire\Component;
 use App\Models\chat;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use App\Models\ordinateur;
 use App\Models\moniteur;
 use \App\Models\Checkout as modelchekout;
 use App\Models\ticket;
+use App\Models\checkoutreserver as ReservationEquipement;
 //use Livewire\WithPagination;
 
 
@@ -23,6 +25,7 @@ class Checkout extends Component
     public $recherche;
     public $search = "";
 
+    public $type_materiel;
     public $state;
     public $filteredMateriels = [];
 
@@ -30,10 +33,12 @@ class Checkout extends Component
     public $valeur1;
     public $valeur2;
     public $valeur3;
+
     public $valeur4;
 
-
+  
     public $filtrerMateriel = "";
+    public $events = [];
 
     public $selectedMateriels = [];
     public $etape = [
@@ -43,6 +48,15 @@ class Checkout extends Component
         4=> "remove",
         5=> "remove"
     ] ;
+    
+    public $selectedEquipements;
+
+
+public function openCalendrier($type,$id){
+     return redirect()->to(route('checkout.calendrier',['type'=>$type,'id'=>$id]));
+}
+
+  
 
     public function visiterTicket()
     {
@@ -102,9 +116,12 @@ class Checkout extends Component
         $this->recherche;
         $this->filtrerMateriel;
         $ordinateur = ordinateur::find(1);
-        
+        $this->selectedEquipements;
+        $this->type_materiel;
+        //$this->events;
         // dd(gettype($ordinateur->statut));
-
+       // $this->events = ReservationEquipement::where('equipement_id',$this->equipement_id)
+         //   ->where('equipement_type',$this->type_materiel)->get();
         // dd($this->state);
     }
 
@@ -125,12 +142,15 @@ class Checkout extends Component
         
         return view('livewire.utilisateur.checkout.checkout', [
         
-            'ordinateurs' => ordinateur::where("statut","En stock")->paginate(10),
+            'ordinateurs' => ordinateur::paginate(100),
             "moniteurs" => moniteur::where("statut", "En stock")->paginate(10),
             'equipements' => $this->filteredEquipements,
             "checkouts" => modelchekout::where("utilisateur_id",$user_ID)
             ->orderBy("created_at","desc")
-            ->paginate(5),
+            ->paginate(105),
+            "events" => ReservationEquipement::get(),
+           
+        
 
         ]);
     }

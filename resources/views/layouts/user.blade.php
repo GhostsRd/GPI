@@ -13,14 +13,10 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('/monjs.js') }}"></script>
-
-
     <!-- Fonts -->
     {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
     {{-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -31,16 +27,16 @@
 
     <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
-
-
-
+       <link href='{{ asset('css/calendrier/assets/css/fullcalendar.css') }}' rel='stylesheet' />
+    <link href='{{ asset('css/calendrier/assets/css/fullcalendar.print.css') }}' rel='stylesheet' media='print' />
+    <script src='{{ asset('css/calendrier/assets/js/jquery-1.10.2.js') }}' type="text/javascript"></script>
+    <script src='{{ asset('css/calendrier/assets/js/jquery-ui.custom.min.js') }}' type="text/javascript"></script>
+    <script src='{{ asset('css/calendrier/assets/js/fullcalendar.js') }}' type="text/javascript"></script>
 
     <!-- Bootstrap CSS -->
     {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/push.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fluxticket.css') }}">
-
-
 
     <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
 
@@ -51,10 +47,9 @@
     {{-- aos --}}
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+  
     <style>
         /* === Navbar === */
-
         .hero {
             background: url('https://picsum.photos/1200/500') center/cover no-repeat;
             /*color: white;*/
@@ -194,7 +189,7 @@
             border: none;
         }
 
-        .btn-two:hover{
+        .btn-two:hover {
             color: #000 !important;
         }
 
@@ -306,10 +301,7 @@
         .blob-bg {
             background: url("blob.jpg");
         }
-    </style>
 
-    
-    <style>
         .etap.remove {
             display: none;
         }
@@ -321,8 +313,7 @@
     @livewireStyles
 </head>
 
-<body>
-
+<body class="bg-white">
     <nav class="navbar navbar-expand-lg fixed-top sh ">
         <div class="container">
             <a class="navbar-brand text-white " href="{{ route('utilisateur') }}">
@@ -342,30 +333,34 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('checkout') }}">• Checkout</a></li>
                     <li class="nav-item"><a class="nav-link" href="#apropos">• À propos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">• Contact</a></li>
-                    <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle"  id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <a href="#"
-                            class="btn btn-one  text-white fw-bold text-sm rounded-pill px-3">
+                    <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle" id="userDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="btn btn-one  text-white fw-bold text-sm rounded-pill px-3">
                             <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
                                 src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
                                 alt="Profil" width="20" height="20" class="rounded-circle me-2">
                             {{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</a>
-                         
-                            <ul class="dropdown-menu bg-white border-0 shadow-sm" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{{ route("utilisateurProfile") }}"><i class="bi bi-person-fill me-2"></i>Profil</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    
-                                            <a class="dropdown-item-modern text-danger" href="{{ route('logout') }}"
-                                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                                <i class="bi bi-box-arrow-right me-2"></i> Se déconnecter
-                                            </a>
 
-                                            <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
-                                                @csrf
-                                            </form>
-                                </li>
-                            </ul>
-                        
+                        <ul class="dropdown-menu bg-white border-0 shadow-sm" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ route('utilisateurProfile') }}"><i
+                                        class="bi bi-person-fill me-2"></i>Profil</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+
+                                <a class="dropdown-item-modern text-danger" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Se déconnecter
+                                </a>
+
+                                <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST"
+                                    class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+
                     </li>
 
 
@@ -373,22 +368,12 @@
             </div>
         </div>
     </nav>
-
-
     <div>
         <main>
             {{ $slot }}
         </main>
     </div>
-
-    </div>
-
-
-
-
-
-
-
+   
     @livewireScripts
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
@@ -410,7 +395,7 @@
         });
     </script>
     <script src="{{ asset('js/modalview.js') }}"></script>
-    
+
     <script>
         const toggleBtn = document.getElementById('toggleSidebar');
         const closeBtn = document.getElementById('closeSidebar');
@@ -427,50 +412,67 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.ajaxchimp.min.js') }}"></script>
-    <script src="{{ asset('js/mail-script.js') }}"></script>
+
     <script>
-    const toggle = document.getElementById('chatToggle');
-    const popup = document.getElementById('chatPopup');
-    const closeBtn = document.getElementById('chatClose');
-    const messages = document.getElementById('messages');
-    const input = document.getElementById('input');
-    const sendBtn = document.getElementById('sendBtn');
+        const toggle = document.getElementById('chatToggle');
+        const popup = document.getElementById('chatPopup');
+        const closeBtn = document.getElementById('chatClose');
+        const messages = document.getElementById('messages');
+        const input = document.getElementById('input');
+        const sendBtn = document.getElementById('sendBtn');
 
-    function openChat(){popup.classList.add('open');toggle.style.display='none';input.focus();scrollToBottom()}
-    function closeChat(){popup.classList.remove('open');toggle.style.display='flex'}
+        function openChat() {
+            popup.classList.add('open');
+            toggle.style.display = 'none';
+            input.focus();
+            scrollToBottom()
+        }
 
-    toggle.addEventListener('click',openChat);
-    closeBtn.addEventListener('click',closeChat);
+        function closeChat() {
+            popup.classList.remove('open');
+            toggle.style.display = 'flex'
+        }
 
-    // send message
-    function appendMessage(text,who){
-      const el = document.createElement('div');
-      el.className = 'msg ' + (who === 'user' ? 'user' : 'agent');
-      const now = new Date();
-      const hh = now.getHours().toString().padStart(2,'0');
-      const mm = now.getMinutes().toString().padStart(2,'0');
-      el.innerHTML = text + '<small>' + (who === 'user' ? 'Vous' : 'Support') + ' · ' + hh + ':' + mm + '</small>';
-      messages.appendChild(el);
-      scrollToBottom();
-    }
+        toggle.addEventListener('click', openChat);
+        closeBtn.addEventListener('click', closeChat);
 
-    function scrollToBottom(){messages.scrollTop = messages.scrollHeight}
+        // send message
+        function appendMessage(text, who) {
+            const el = document.createElement('div');
+            el.className = 'msg ' + (who === 'user' ? 'user' : 'agent');
+            const now = new Date();
+            const hh = now.getHours().toString().padStart(2, '0');
+            const mm = now.getMinutes().toString().padStart(2, '0');
+            el.innerHTML = text + '<small>' + (who === 'user' ? 'Vous' : 'Support') + ' · ' + hh + ':' + mm + '</small>';
+            messages.appendChild(el);
+            scrollToBottom();
+        }
 
-    
+        function scrollToBottom() {
+            messages.scrollTop = messages.scrollHeight
+        }
 
-    // simple escape to avoid injection when inserting HTML
-    function escapeHtml(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;")}
 
-    // allow enter to send (shift+enter for newline)
-    input.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter' && !e.shiftKey){e.preventDefault();sendBtn.click();}
-    });
 
-    // accessibility: close with escape
-    document.addEventListener('keydown', (e)=>{if(e.key === 'Escape' && popup.classList.contains('open')) closeChat();});
-  </script>
+        // simple escape to avoid injection when inserting HTML
+        function escapeHtml(s) {
+            return s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+                .replaceAll("'", "&#39;")
+        }
+
+        // allow enter to send (shift+enter for newline)
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendBtn.click();
+            }
+        });
+
+        // accessibility: close with escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && popup.classList.contains('open')) closeChat();
+        });
+    </script>
 
 </body>
 

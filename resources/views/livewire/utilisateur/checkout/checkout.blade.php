@@ -1,6 +1,5 @@
-<div style="margin-top:5% " class=" container-fluid mt-5   parallax-section">
-
-    <div wire:ignore.self class="sidebar rounded-3 p-0 shadow colg-lg-3 bg-white py-4 card mt-5 " id="sidebar">
+<div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section">
+    <div wire:ignore.self class="sidebar shadow rounded-3 p-0  col-lg-2 bg-white py-4 card mt-5 " id="sidebar">
         <div>
             <div>
                 <div>
@@ -10,32 +9,13 @@
                     </div>
 
                     <!-- Formulaire Livewire -->
-                    <form >
-                        <div class="modal-body p-2 row" style="overflow-y: scroll">
+                    <form>
+                        <div class="modal-body p-2 row" style="max-height:400px;overflow-y: scroll">
                             <!-- Sujet -->
                             {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
                                 obligatoires</p> --}}
 
                             <div class="mb-3 col-lg-6 position-relative">
-                                {{-- <label for="sujet" class="form-label text-dark ">
-                                    Tapez ici le matériel <span class="text-danger">*</span>
-                                </label>
-
-                                <input type="text" wire:model="search" class="form-control"
-                                    placeholder="Cherchez un matériel (ex: HP Elitebook, Dell 24 pouces...)"> --}}
-
-                                {{-- @if (!empty($filteredMateriels))
-                                    <ul class="list-group mt-2 shadow-sm">
-                                        @foreach ($filteredMateriels as $materiel)
-                                            <li class="list-group-item list-group-item-action"
-                                                wire:click="selectMateriel('{{ $materiel->label }}')">
-                                                {{ $materiel->label }}
-                                                <span
-                                                    class="badge bg-secondary float-end">{{ ucfirst($materiel->type) }}</span>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endif --}}
 
                                 @error('sujet')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -43,7 +23,7 @@
                             </div>
 
 
-                            <div class="etap_validation  ">
+                            <div class="etap_validation">
                                 <label for="sujet" class="form-label text-dark">
                                     Choisir le matériel <span class="text-danger">*</span>
                                 </label>
@@ -57,9 +37,7 @@
                                             <label class="text-dark"># Ordinateur </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
-
                                     </a>
-
                                     <a href="#" wire:click="$set('valeur1', 'Telephone')" data-aos-duration="400"
                                         class=" {{ $valeur1 == 'Telephone' ? 'bg-secondary shadow ' : 'shadow-sm' }} nav-link text-dark card border-0 rounded-2 mb-1">
 
@@ -69,7 +47,6 @@
                                         </div>
 
                                     </a>
-
                                     <a href="#" wire:click="$set('valeur1', 'Peripherique')"
                                         data-aos-duration="400"
                                         class=" {{ $valeur1 == 'Peripherique' ? 'bg-secondary shadow ' : 'shadow-sm' }} card text-dark border rounded-2 mb-1 nav-link">
@@ -81,13 +58,10 @@
 
                                     </a>
 
-
                                     <div class="">
                                         <button wire:click="next_form(2)"
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮞</button>
                                     </div>
-
-
                                 </div>
 
                                 {{-- etape 2 page telephone --}}
@@ -133,7 +107,7 @@
                                 {{-- etape 4 peripherique --}}
 
 
-                                <div class="etap {{ $etape[4] }}" >
+                                <div class="etap {{ $etape[4] }}">
                                     <a wire:click="$set('valeur2', 'Regulateur')" href="#"
                                         class="{{ $valeur2 == 'Regulateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
@@ -145,7 +119,7 @@
 
                                     </a>
 
-                                    <div class="list-group" >
+                                    <div class="list-group">
 
                                         <!-- Ordinateur -->
                                         <a wire:click="$set('valeur2', 'Ordinateur')" href="#"
@@ -299,7 +273,7 @@
 
                                     </a>
 
-                                    
+
                                     <a href="#" data-aos="fade-down" data-aos-duration="400"
                                         class="{{ $valeur2 ?? 'collapse' }} py-2 list-group-item list-group-item-action border rounded-2 mb-1">
 
@@ -314,26 +288,21 @@
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
                                         <button type="submit" wire:click="EnvoyerCheckout"
                                             class="btn btn-two  fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
-                                           
-                                            <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-1">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+
+                                            <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="size-1">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
 
                                         </button>
                                     </div>
                                 </div>
 
-
-
-
                             </div>
 
                             <!-- Étape 1 -->
-
-
-
-
-
 
                         </div>
 
@@ -346,16 +315,16 @@
                     </form>
                 </div>
             </div>
-
-
         </div>
     </div>
 
 
 
     <div wire:ignore.self class="container-fluid main-content mt-4">
+
         <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
-            <div class="col-lg-3 bg-white py-1 px-0 shadow-sm">
+            {{-- ici le menu --}}
+            <div class="col-lg-3 bg-white py-1 px-0 ">
 
 
                 <ul style="list-style: none " class="px-2 py-4 ">
@@ -385,9 +354,8 @@
                         Nouveau Checkout
 
                     </li>
-                
-                    <li style="cursor: pointer" 
-                        class="mt-1 d-flex justify-content-between align-items-center pl-4">
+
+                    <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center pl-4">
                         <div class="d-flex align-items-center">
 
                             <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
@@ -399,7 +367,20 @@
                         </div>
                         <div class="text-end">
                             <span class=" text-danger small me-2 fw-bold "></span>
+                        </div>
+                    </li>
+                    <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center pl-4">
+                        <div class="d-flex align-items-center">
 
+                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
+                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                            </svg> Reservation materiel
+                        </div>
+                        <div class="text-end">
+                            <span class=" text-danger small me-2 fw-bold "></span>
                         </div>
                     </li>
 
@@ -421,9 +402,8 @@
                     </li>
 
                 </ul>
-
                 <div class="justify-content-center">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                         x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;"
                         xml:space="preserve">
                         <g id="BACKGROUND">
@@ -750,86 +730,383 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 p-xs-0  p-0 p-md-0 p-xl-2  col-lg-9">
-                <section class="p-0">
-                    <div class="card bg-none border-0 m-0 p-0 mb-1">
-                        <select class="form-select" wire:init wire:model="state">
-                            <option value="">Tous</option>
-                            <option value="En service">En service</option>
-                            <option value="En stock">En stock</option>
-                            <option value="Disponible">Disponible</option>
-                            <option value="Hors service">Hors service</option>
-                            <option value="En réparation">En réparation</option>
-                        </select>
-                    </div>
-                    <div class="list-group mt-2 border-0 bg-white shadow-sm" style="overflow-y: none">
-                        <a href="#"
-                            class="list-group-item  border  bg-secondary-light   bg-gradient list-group-item-action "
-                            aria-current="true">
-                            <div class="d-flex active w-100 justify-content-between">
-                                <h5 class="mb-1">Liste de checkout</h5>
-                                <small>
-                                    <input type="text" wire:model="recherche"
-                                        class="input-recherche border  py-2 px-5 rounded-2"
-                                        placeholder="Recherche par sujet..">
-                                </small>
-                            </div>
-                        </a>
+
+            {{-- ici le contente right --}}
+
+            <div class="border-start col-lg-9">
+                <div class="col-lg-12 p-2">
+
+
+                </div>
+
+                <div class="col-lg-12 ">
+                    
+                    <h5 class="fw-bold m-2 ">Checkout</h5>
+                    <span class="text-muted m-2 mt-2 pb-2">Visualisation globale de chekout</span> <br>
 
 
 
-                        {{-- checkout form step by step --}}
+                </div>
+                <div class="col-lg-12">
+                    <div class="mt-4   p-0">
+                        <ul class="nav nav-tabs  text-secondary" id="myTab" role="tablist">
+                            <li class="nav-item text-dark" role="presentation">
+                                <button class="nav-link  active" style="color: rgb(53, 53, 53) !important" id="active-tab" data-bs-toggle="tab"
+                                    data-bs-target="#active" type="button" role="tab" aria-controls="active"
+                                    aria-selected="true">
+                                    Check in/out
+                                </button>
+                            </li>
+                            <li class="nav-item  active text-dark" role="presentation">
+                                <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important" id="link1-tab" data-bs-toggle="tab"
+                                    data-bs-target="#link1" type="button" role="tab" aria-controls="link1"
+                                    aria-selected="false">
+                                    Reservation d'equipement
+                                </button>
+                            </li>
 
 
+                        </ul>
 
+                        <div class="tab-content border-0 p-3  border-top-0" id="myTabContent">
+                            <div class="tab-pane fade show active " id="active" role="tabpanel"
+                                aria-labelledby="active-tab">
 
-
-                        @foreach ($checkouts as $checkout)
-                            <a  href="#" data-aos="fade-down"
-                                data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}"
-                                class="list-group-item py- list-group-item-action border">
-
-                                <div class="d-flex w-100 justify-content-between">
-                                    <b class="mb-1 text-black-50"># {{ $checkout->id }} - {{ $checkout->materiel_type }} :
-                                       </b>
-                                    <small class="text-body-secondary">
-                                        {{ \Carbon\Carbon::parse($checkout->created_at)->translatedFormat('d M Y H:i') }}
-                                    </small>
+                                <div class="">
+                                    <h5>Historique de votre checkout</h5>
                                 </div>
+                                <div class="list-group mt-2  bg-white " style="max-height:400px;overflow-y: scroll">
+                                    @if ($checkouts)
+                                    
+                                       <p class="mt-4 text-center p-4">
+                                     
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="80" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                            </svg>    
+                                           <br>
+                                           <br>
+                                       
+                                            <span class="my-4">Aucun checkout trouvé </span>
+                                           <br>
+                                          
+                                           <br>
+                                           <button class="btn btn-light px-4">Nouveau chekout</button>
+                                    </p>
 
-                                <div class="d-flex w-100 mt-2 justify-content-between">
-                                    <p class="mb-1 text-capitalize"> {{ $checkout->materiel_details }}</p>
-                                     {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
-                                        {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
-                                    </small> --}}
-                                    <div class="d-flex justify-content-end">
-                                        <small class="text-muted mx-2">{{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}</small>
-                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                               src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
-                                               alt="Profil" width="20" height="20"
-                                               class="rounded-circle me-2">
+                                    @foreach ($checkouts as $checkout)
+                                        <a href="#" data-aos="fade-down" data-aos-duration="400"
+                                            data-aos-delay="{{ $loop->index * 200 }}"
+                                            class="list-group-item border-0 list-group-item-action ">
+
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <b class="mb-1 text-black-50"># {{ $checkout->id }} -
+                                                    {{ $checkout->materiel_type }} 
+                                                </b>
+                                                <small class="text-body-secondary">
+                                                    {{ \Carbon\Carbon::parse($checkout->created_at)->translatedFormat('d M Y H:i') }}
+                                                </small>
+                                            </div>
+
+                                            <div class="d-flex w-100 mt-2 justify-content-between">
+                                                <p class="mb-1 text-capitalize">
+                                                    {{ $checkout->materiel_details }}</p>
+                                                {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
+                                                        {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
+                                                    </small> --}}
+                                                <div class="d-flex justify-content-end">
+                                                    <small
+                                                        class="text-muted mx-2">{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : 'Fermer') }}</small>
+                                                    <img class="dropdown-toggle  p-0 m-0 rounded-pill"
+                                                        data-toggle="dropdown"
+                                                        src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
+                                                        alt="Profil" width="20" height="20"
+                                                        class="rounded-circle me-2">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex w-100 justify-content-between">
+                                            </div>
+                                        </a>
+                                    @endforeach
+
+                                    @endif
+                                    <div class="mt-4 text-small d-flex justify-content-center">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="tab-pane fade border-0 " id="link1" role="tabpanel"
+                                aria-labelledby="link1-tab">
+                                <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
-                                <div class="d-flex w-100 justify-content-between">
-                                   
+                                    <div class="">
+                                        <h5>Liste de materiel</h5>
+                                    </div>
+
+
+                                    <div class="list-group mt-2 " style="max-height: 400px;overflow-y: scroll">
+                                        @foreach ($ordinateurs as $ordinateur)
+                                            <a class="list-group-item list-group-item-action border-0">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <b class="mb-1 text-black-50"># {{ $ordinateur->nom }}</b>
+                                                    <small class="text-body-secondary"></small>
+                                                </div>
+
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <p class="mb-1 text-capitalize"> </p>
+                                                    <small
+                                                        class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
+                                                    </small>
+                                                </div>
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <small class="text-body-secondary">
+                                                        <svg width="12" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                            stroke="currentColor" class="size-6 text-success">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                                        </svg>
+                                                        4 {{ $ordinateur->state }} {{ $ordinateur->os_version }}
+                                                    </small>
+                                                    <small class="text-body-secondary  ">
+                                                        
+                                                        <button type="button"
+                                                            wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
+                                                            class="btn btn-sm btn-primary btn-light"
+                                                            data-bs-toggle="modal" data-bs-target="#calendarModal">
+                                                            📅 Voir le disponibite
+                                                        </button>
+                                                       
+                                                    </small>
+                                                </div>
+
+                                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
+                                            </a>
+                                        @endforeach
+
+
+                                    </div>
+
+
                                 </div>
-                            </a>
-                        @endforeach
+
+                            </div>
 
 
-
-
-                        <div class="mt-4 d-flex justify-content-center">
-                            {{ $checkouts->links() }}
 
                         </div>
 
                     </div>
+                </div>
+                <div class="col-lg-12">
 
-                </section>
+                </div>
             </div>
         </div>
     </div>
 
+
+
+
+    <!-- Modal -->
+
+
+
+
+ 
 </div>
+
+<style>
+    #wrap {
+        width: 1100px;
+        margin: 0 auto;
+    }
+
+    #external-events {
+        float: left;
+        width: 150px;
+        padding: 0 10px;
+        text-align: left;
+    }
+
+    #external-events h4 {
+        font-size: 16px;
+        margin-top: 0;
+        padding-top: 1em;
+    }
+
+    .external-event {
+        /* try to mimick the look of a real event */
+        margin: 10px 0;
+        padding: 2px 4px;
+        background: #3366CC;
+        color: #fff;
+        font-size: .85em;
+        cursor: pointer;
+    }
+
+    #external-events p {
+        margin: 1.5em 0;
+        font-size: 11px;
+        color: #666;
+    }
+
+    #external-events p input {
+        margin: 0;
+        vertical-align: middle;
+    }
+
+    #calendar {
+        /* 		float: right; */
+        margin: 0 auto;
+        width: 900px;
+        background-color: #FFFFFF;
+        border-radius: 6px;
+        box-shadow: 0 1px 2px #C3C3C3;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+
+        /*  className colors
+
+        className: default(transparent), important(red), chill(pink), success(green), info(blue)
+
+        */
+
+
+        /* initialize the external events
+        -----------------------------------------------------------------*/
+
+        $('#external-events div.external-event').each(function() {
+
+            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+            // it doesn't need to have a start or end
+            var eventObject = {
+                title: $.trim($(this).text()) // use the element's text as the event title
+            };
+
+            // store the Event Object in the DOM element so we can get to it later
+            $(this).data('eventObject', eventObject);
+
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+                zIndex: 999,
+                revert: true, // will cause the event to go back to its
+                revertDuration: 0 //  original position after the drag
+            });
+
+        });
+
+
+        /* initialize the calendar
+        -----------------------------------------------------------------*/
+
+        var calendar = $('#calendar').fullCalendar({
+            header: {
+                left: 'title',
+                center: 'agendaDay,agendaWeek,month',
+                right: 'prev,next today'
+            },
+            editable: true,
+            firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+            selectable: true,
+            defaultView: 'month',
+
+            axisFormat: 'h:mm',
+            columnFormat: {
+                month: 'ddd', // Mon
+                week: 'ddd d', // Mon 7
+                day: 'dddd M/d', // Monday 9/7
+                agendaDay: 'dddd d'
+            },
+            titleFormat: {
+                month: 'MMMM yyyy', // September 2009
+                week: "MMMM yyyy", // September 2009
+                day: 'MMMM yyyy' // Tuesday, Sep 8, 2009
+            },
+            allDaySlot: false,
+            selectHelper: true,
+            select: function(start, end, allDay) {
+                var title = prompt('Event Title:');
+                if (title) {
+                    calendar.fullCalendar('renderEvent', {
+                            title: title,
+                            start: start,
+                            end: end,
+                            allDay: allDay
+                        },
+                        true // make the event "stick"
+                    );
+                }
+                calendar.fullCalendar('unselect');
+            },
+            droppable: true, // this allows things to be dropped onto the calendar !!!
+            drop: function(date, allDay) { // this function is called when something is dropped
+
+                // retrieve the dropped element's stored Event Object
+                var originalEventObject = $(this).data('eventObject');
+
+                // we need to copy it, so that multiple events don't have a reference to the same object
+                var copiedEventObject = $.extend({}, originalEventObject);
+
+                // assign it the date that was reported
+                copiedEventObject.start = date;
+                copiedEventObject.allDay = allDay;
+
+                // render the event on the calendar
+                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+                // is the "remove after drop" checkbox checked?
+                if ($('#drop-remove').is(':checked')) {
+                    // if so, remove the element from the "Draggable Events" list
+                    $(this).remove();
+                }
+
+            },
+
+            events: [
+
+
+                @foreach ($events as $event)
+                    {
+
+
+                        title: "{{ $event->ordinateur->nom }}",
+                        start: "{{ $event->date_debut }}",
+                        end: "{{ $event->date_fin }}",
+                        url: "{{ $event->url ?? '#' }}",
+                        className: "success"
+
+
+                    }
+                    @if (!$loop->last)
+                        ,
+                    @endif
+                @endforeach
+
+            ],
+        });
+
+
+    });
+</script>
+
+<script>
+    document.addEventListener('livewire:load', () => {
+        Livewire.on('openModal', () => {
+            const modal = new bootstrap.Modal(document.getElementById('centeredModalreservation'));
+            modal.show();
+        });
+    });
+
+    document.addEventListener('livewire:load', () => {
+        Livewire.on('openCalendrier', () => {
+            const modal = new bootstrap.Modal(document.getElementById('calendarModal'));
+            modal.show();
+        });
+    });
+</script>
