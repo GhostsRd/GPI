@@ -324,10 +324,10 @@
 
         <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
             {{-- ici le menu --}}
-            <div class="col-lg-3 bg-white py-1 px-0 ">
+            <div class="col-lg-2 bg-white py-1 px-0 ">
 
 
-                <ul style="list-style: none " class="px-2 py-4 ">
+                <ul style="list-style: none " class="px-2  ">
                     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                         <div class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none"
@@ -351,7 +351,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
-                        Nouveau Checkout
+                        Nouveau projet
 
                     </li>
 
@@ -363,26 +363,13 @@
                                 class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-                            </svg> Mes checkout
+                            </svg> <span class="mx-2">Mes checkout</span>
                         </div>
                         <div class="text-end">
                             <span class=" text-danger small me-2 fw-bold "></span>
                         </div>
                     </li>
-                    <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center pl-4">
-                        <div class="d-flex align-items-center">
 
-                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-                            </svg> Reservation materiel
-                        </div>
-                        <div class="text-end">
-                            <span class=" text-danger small me-2 fw-bold "></span>
-                        </div>
-                    </li>
 
                     <li style="cursor: pointer" wire:click="visiterTicket"
                         class="mt-1 d-flex justify-content-between align-items-center ">
@@ -393,10 +380,27 @@
                                 class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-                            </svg> Mes tickets
+                            </svg><span class="mx-2"> Mes tickets</span>
                         </div>
                         <div class="text-end">
                             <span class="text-muted small me-2">#12</span>
+
+                        </div>
+                    </li>
+
+                    <li style="cursor: pointer"
+                        class="mt-1 d-flex justify-content-between align-items-center ">
+                        <div class="d-flex align-items-center">
+
+                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
+                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                            </svg><span class="mx-2"> Incident</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="text-muted small me-2">#10</span>
 
                         </div>
                     </li>
@@ -733,34 +737,125 @@
 
             {{-- ici le contente right --}}
 
-            <div class="border-start col-lg-9">
-                <div class="col-lg-12 p-2">
-
-
-                </div>
-
+            <div class="border-start col-lg-9 mx-2">
                 <div class="col-lg-12 ">
-                    
-                    <h5 class="fw-bold m-2 ">Checkout</h5>
+                    <h5 class="fw-bold m-2 ">Checkout / Reservation d'equipement</h5>
                     <span class="text-muted m-2 mt-2 pb-2">Visualisation globale de chekout</span> <br>
-
-
-
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 mx-4 ">
+                    <div class="row border-top mt-4">
+                        <div class="col-lg-6 ">
+
+                            <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
+                        </div>
+
+                        <div class="col-lg-6">
+
+                            <span class="d-flex justify-content-end py-3 px-2 text-primary">Afficher tous les reservations</span>
+                        </div>
+
+
+                    </div>
+                    <div class="row p-0 mx-3 ">
+                        @foreach ($checkoutrecentes as $checkoutrecente)
+                        
+                        <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                            {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                                Nom du ticket de las
+                            </div> --}}
+                            
+                            <div class="card-body m-0 p-0 ">
+                                 <div class="pb-2 fw-bold text-muted" >
+                                    Checkout 
+                                </div>
+                                <strong class="d-flex justify-content-between">
+                                    <div class="bg-light rounded-start-pill">
+                                        <img  class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src="https://ui-avatars.com/api/?name={{ $checkoutrecente->utilisateur->nom ?? 'none' }}"
+                                            alt="Profil" width="40" height="40"
+                                            class="rounded-circle me-2">
+                                            <span class="mx-2 ">{{ $checkoutrecente->materiel_type ?? 'Aucun' }}</span></div> 
+                                </strong>
+                                 {{-- <div class="d-flex justify-content-end">
+                                        <small> 10 Nov 2025</small>
+                                </div> --}}
+                                <div class="mt-2 ">
+                                    <p>{{ $checkoutrecente->materiel_details ?? 'Aucun' }}</p>
+                                </div>
+                                <div>
+                                    
+                                    <div class="d-flex justify-content-end">
+                                        <span class="text-muted mx-2">
+                                               {{ \Carbon\Carbon::parse($checkoutrecente->created_at)->translatedFormat('d M Y H:i') }}
+                                        </span>
+                                        <img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src="https://ui-avatars.com/api/?name={{ $checkoutrecente->responsable->name ?? 'none' }}"
+                                            alt="Profil" width="20" height="20"
+                                            class="rounded-circle me-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+
+                        @foreach ($reservationRecentes as $reservationRecent )
+                             <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                            {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                                Nom du ticket de las
+                            </div> --}}
+                            <div class="card-body m-0 p-0 " title="Reservation de materiel">
+                                <div class="pb-2 fw-bold text-muted" >
+                                    Reservation 
+                                </div>
+                                 
+                                <strong class="d-flex justify-content-between">
+                                    <div class="bg-light rounded-start-pill">
+                                        <img  class="dropdown-toggle border border-success border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src="https://ui-avatars.com/api/?name={{ $reservationRecent->responsable->nom ?? 'none' }}"
+                                            alt="Profil" width="40" height="40"
+                                            class="rounded-circle  me-2">
+                                            <span class="mx-2 text-capitalize ">{{ $reservationRecent->equipement_type?? 'Auccun' }}</span></div> 
+                                </strong>
+                                 {{-- <div class="d-flex justify-content-end">
+                                        <small> 10 Nov 2025</small>
+                                </div> --}}
+                                <div class="mt-2">
+                                    <p>{{ \Carbon\Carbon::parse($reservationRecent->date_debut)->translatedFormat('d M Y') }} - {{ \Carbon\Carbon::parse($reservationRecent->date_fin)->translatedFormat('d M Y') }}</p>
+                                </div>
+                                <div>
+                                    
+                                    <div class="d-flex justify-content-end"><img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name ?? 'none' }}"
+                                            alt="Profil" width="20" height="20"
+                                            class="rounded-circle me-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        <div class="col-lg-3  mx-2  p-0 m-0   ">
+                            
+                            <div class="card-body m-0  ">
+                                 
+                                <span id="toggleSidebar"  class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 " style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
+                                    + Nouveau  
+                                </span>
+                               
+                               
+                            </div>
+                        </div>
+                    </div>
                     <div class="mt-4   p-0">
                         <ul class="nav nav-tabs  text-secondary" id="myTab" role="tablist">
                             <li class="nav-item text-dark" role="presentation">
-                                <button class="nav-link  active" style="color: rgb(53, 53, 53) !important" id="active-tab" data-bs-toggle="tab"
-                                    data-bs-target="#active" type="button" role="tab" aria-controls="active"
-                                    aria-selected="true">
+                                <button class="nav-link  active" style="color: rgb(53, 53, 53) !important"
+                                    id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"
+                                    role="tab" aria-controls="active" aria-selected="true">
                                     Check in/out
                                 </button>
                             </li>
                             <li class="nav-item  active text-dark" role="presentation">
-                                <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important" id="link1-tab" data-bs-toggle="tab"
-                                    data-bs-target="#link1" type="button" role="tab" aria-controls="link1"
-                                    aria-selected="false">
+                                <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important"
+                                    id="link1-tab" data-bs-toggle="tab" data-bs-target="#link1" type="button"
+                                    role="tab" aria-controls="link1" aria-selected="false">
                                     Reservation d'equipement
                                 </button>
                             </li>
@@ -777,56 +872,60 @@
                                 </div>
                                 <div class="list-group mt-2  bg-white " style="max-height:400px;overflow-y: scroll">
                                     @if ($checkouts)
-                                    
-                                       <p class="mt-4 text-center p-4">
-                                     
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="80" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                            </svg>    
-                                           <br>
-                                           <br>
-                                       
-                                            <span class="my-4">Aucun checkout trouvé </span>
-                                           <br>
-                                          
-                                           <br>
-                                           <button class="btn btn-light px-4">Nouveau chekout</button>
-                                    </p>
+                                         @foreach ($checkouts as $checkout)
+                                            <a  data-aos="fade-down" data-aos-duration="400"
+                                                data-aos-delay="{{ $loop->index * 200 }}"
+                                                class="list-group-item border-0 list-group-item-action ">
 
-                                    @foreach ($checkouts as $checkout)
-                                        <a href="#" data-aos="fade-down" data-aos-duration="400"
-                                            data-aos-delay="{{ $loop->index * 200 }}"
-                                            class="list-group-item border-0 list-group-item-action ">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <b class="mb-1 text-black-50"> {{ $checkout->id }} -
+                                                        {{ $checkout->materiel_type }}
+                                                    </b>
+                                                    <small class="text-body-secondary">
+                                                        {{ \Carbon\Carbon::parse($checkout->created_at)->translatedFormat('d M Y H:i') }}
+                                                    </small>
+                                                </div>
 
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <b class="mb-1 text-black-50"># {{ $checkout->id }} -
-                                                    {{ $checkout->materiel_type }} 
-                                                </b>
-                                                <small class="text-body-secondary">
-                                                    {{ \Carbon\Carbon::parse($checkout->created_at)->translatedFormat('d M Y H:i') }}
-                                                </small>
-                                            </div>
-
-                                            <div class="d-flex w-100 mt-2 justify-content-between">
-                                                <p class="mb-1 text-capitalize">
-                                                    {{ $checkout->materiel_details }}</p>
-                                                {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
+                                                <div class="d-flex w-100 mt-2 justify-content-between">
+                                                    <p class="mb-1 text-capitalize">
+                                                        {{ $checkout->materiel_details }}</p>
+                                                    {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
                                                         {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
                                                     </small> --}}
-                                                <div class="d-flex justify-content-end">
-                                                    <small
-                                                        class="text-muted mx-2">{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : 'Fermer') }}</small>
-                                                    <img class="dropdown-toggle  p-0 m-0 rounded-pill"
-                                                        data-toggle="dropdown"
-                                                        src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
-                                                        alt="Profil" width="20" height="20"
-                                                        class="rounded-circle me-2">
+                                                    <div class="d-flex justify-content-end">
+                                                        <small
+                                                            class="text-muted mx-2">{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : 'Fermer') }}</small>
+                                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill"
+                                                            data-toggle="dropdown"
+                                                            src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
+                                                            alt="Profil" width="20" height="20"
+                                                            class="rounded-circle me-2">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="d-flex w-100 justify-content-between">
-                                            </div>
-                                        </a>
-                                    @endforeach
+                                                <div class="d-flex w-100 justify-content-between">
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                        
+                                    @else
+                                        <p class="mt-4 text-center p-4">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning"
+                                                width="80" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                            </svg>
+                                            <br>
+                                            <br>
+
+                                            <span class="my-4">Aucun checkout trouvé </span>
+                                            <br>
+
+                                            <br>
+                                            <button class="btn btn-light px-4">Nouveau chekout</button>
+                                        </p>
+                                       
 
                                     @endif
                                     <div class="mt-4 text-small d-flex justify-content-center">
@@ -844,9 +943,9 @@
 
                                     <div class="list-group mt-2 " style="max-height: 400px;overflow-y: scroll">
                                         @foreach ($ordinateurs as $ordinateur)
-                                            <a class="list-group-item list-group-item-action border-0">
+                                            <a href="#" wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})" title="Voir la disonibilite" class="list-group-item list-group-item-action border-0 border-bottom ">
                                                 <div class="d-flex w-100 justify-content-between">
-                                                    <b class="mb-1 text-black-50"># {{ $ordinateur->nom }}</b>
+                                                    <b class="mb-1 text-black-50"> {{ $ordinateur->nom }}</b>
                                                     <small class="text-body-secondary"></small>
                                                 </div>
 
@@ -867,14 +966,14 @@
                                                         4 {{ $ordinateur->state }} {{ $ordinateur->os_version }}
                                                     </small>
                                                     <small class="text-body-secondary  ">
-                                                        
+{{-- 
                                                         <button type="button"
                                                             wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
-                                                            class="btn btn-sm btn-primary btn-light"
+                                                            class="btn btn-sm border-0 btn-light"
                                                             data-bs-toggle="modal" data-bs-target="#calendarModal">
                                                             📅 Voir le disponibite
-                                                        </button>
-                                                       
+                                                        </button> --}}
+
                                                     </small>
                                                 </div>
 
@@ -911,10 +1010,12 @@
 
 
 
- 
+
 </div>
 
 <style>
+
+    
     #wrap {
         width: 1100px;
         margin: 0 auto;

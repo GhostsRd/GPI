@@ -1,3 +1,25 @@
+    
+    /* pour les icon dans le champ */
+    
+      /* Supprimer le hover gris natif de Bootstrap */
+    #categorie option:hover {
+        background-color: #fff;
+        color: #000;
+    }
+    .input-icon {
+      position: relative;
+    }
+    .input-icon i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+    .input-icon input {
+      padding-left: 100px !important; /* espace pour l’icône */
+    }
+    
     .content-flex {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -20,11 +42,16 @@
       transition: left 0.6s ease;
       z-index: 100;
       overflow-y: auto;
-      /* box-shadow: 5px 0 20px rgba(0,0,0,0.3); */
-    }
+      max-height: 700px;
 
+      
+       
+        
+    }
+    
     .sidebar.active {
       left: 20%;
+         box-shadow: 50px 12px 100px 5000px  rgba(0, 0, 0, 0.296) !important; 
     }
 
 
@@ -43,6 +70,7 @@
       width: 60%;
       transform: translateX(50%);
       filter: blur(0px);
+      box-shadow: 5px 0 20px rgba(0,0,0,0.3) !important; 
     }
 
     @media (max-width: 991px) {

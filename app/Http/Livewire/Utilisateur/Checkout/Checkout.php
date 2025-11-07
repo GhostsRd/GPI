@@ -148,7 +148,12 @@ public function openCalendrier($type,$id){
             "checkouts" => modelchekout::where("utilisateur_id",$user_ID)
             ->orderBy("created_at","desc")
             ->paginate(105),
+            "checkoutrecentes" => modelchekout::where("utilisateur_id",$user_ID)
+            ->orderBy("created_at","desc")
+            ->limit(1)->get(),
             "events" => ReservationEquipement::get(),
+            "reservationRecentes" => ReservationEquipement::where('responsable_id',$user_ID)->
+            limit(1)->get()
            
         
 

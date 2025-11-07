@@ -1,16 +1,20 @@
-<div class="container-fluid row " style="margin-top: 5% ;scrollbar-width: none; -ms-overflow-style: none;" style="height:40vh;">
+<div class="container-fluid row " style="margin-top: 5% ;scrollbar-width: none; -ms-overflow-style: none;"
+    style="height:40vh;">
     <div class="col-lg-2 offset-1 bg-white py-1 px-0 ">
 
         <ul style="list-style: none " class="px-2 py-4 ">
             <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-                <div class="d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="me-2 text-gradient text-secondary">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-                    </svg>
-                    <h class="fw-bold text-dark mb-0">Acceuil / Checkout</h>
-                </div>
+                <a href="{{ url('/utilisateur-checkout') }}" class="nav-link">
+
+                    <div class="d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="me-2 text-gradient text-secondary">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                        </svg>
+                        <h class="fw-bold text-dark mb-0">Acceuil / Checkout</h>
+                    </div>
+                </a>
 
                 <div class="text-end">
                     {{-- <span class="text-muted small me-2">#12</span> --}}
@@ -23,7 +27,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-                Nouveau Checkout
+                Nouveau projet
 
             </li>
 
@@ -40,6 +44,23 @@
                     <span class=" text-danger small me-2 fw-bold "></span>
                 </div>
             </li>
+
+            <li style="cursor: pointer"
+                        class="mt-1 d-flex justify-content-between align-items-center ">
+                        <div class="d-flex align-items-center">
+
+                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
+                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                            </svg><span class="mx-2"> Incident</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="text-muted small me-2">#10</span>
+
+                        </div>
+                    </li>
             <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center pl-4">
                 <div class="d-flex align-items-center">
 
@@ -405,13 +426,14 @@
                 {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
                 {{ $firsts?->os_version ?? 'Aucun matériel trouvé' }}</label>
             <div class="d-flex  justify-content-end">
-                <div class="btn border-0 py-0  btn-primary p-0 mx-2 btn-sm"
-                    wire:click="openReservationModal('ordinateur',{{ $reserverId }})" data-bs-toggle="modal"
+                <div class="btn border-0  py-0 fw-bold rounded-3 text-white  btn-two p-0 mx-2 btn-sm"
+                    wire:click="openReservationModal('ordinateur',{{ $reserverId }})" 
+                    data-bs-toggle="modal"
                     data-bs-target="#centeredModalreservation">
-                    Nouveau
+                    <i class="bi bi-plus"></i> Nouveau
                 </div>
 
-              
+
 
 
             </div>
@@ -462,13 +484,10 @@
             <div class="list-group mt-2  bg-white "
                 style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
                 @foreach ($historiques as $event)
-                    <a href="#" style="--bs-bg-opacity: .5;" class="list-group-item list-group-item-action   {{ $event->created_at->isToday() ? 'bg-success-subtle bg-opacity-5' : '' }} "  
-            
-                        wire:click="visualiser({{ $event->id }})" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#lightModalview"
-        
-                    >
+                    <a href="#" style="--bs-bg-opacity: .5;"
+                        class="list-group-item list-group-item-action border-0 border-top  {{ $event->created_at->isToday() ? '' : '' }} "
+                        wire:click="visualiser({{ $event->id }})" data-bs-toggle="modal"
+                        data-bs-target="#lightModalview">
 
                         <div class="d-flex w-100 justify-content-between">
                             <b class="mb-1 text-black-50"># {{ $event->id }} -
@@ -496,7 +515,7 @@
                                     alt="Profil" width="30" height="30" class="rounded-circle me-2">
                             </div>
                         </div>
-                       
+
                     </a>
                 @endforeach
                 <div class="mt-4 text-small d-flex justify-content-center">
@@ -506,95 +525,12 @@
     </div>
 
     {{-- modal pour le details et modification --}}
-
-
-    <div class="modal fade" wire:ignore.self id="lightModalview" tabindex="-1" aria-labelledby="lightModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            @foreach ( $selectedMateriels as $item)
-            <div class="modal-content">
-                <div class="modal-header border-0 ">
-                    <h5 class="modal-title" id="lightModalLabel">
-                             {{ $item->ordinateur->nom }}  <small class="text-muted" style="font-size:0.8rem">cree le {{\Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y H:m') }} </small>
-                        
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-                </div>
-                <div class="modal-body">
-                    <label class="form-label mt-2 mx-1">Date de début</label>
-                    <input  class="form-control border-0 rounded-0 border-bottom" disabled value="{{\Carbon\Carbon::parse($item->date_debut)->translatedFormat('d M Y') }}">
-
-                 <label class="form-label mt-2 mx-1">Date de retour</label>
-                    <input  class="form-control border-0 rounded-0 border-bottom" disabled value="{{\Carbon\Carbon::parse($item->date_fin)->translatedFormat('d M Y') }}">
-
-                    <label class="form-label mt-2 mx-1">Nombre</label>
-                    <input type="number" class="form-control border-0 rounded-0 border-bottom " disabled value="{{ $item->equipement_nombre }}" placeholder="Ex: 1">
-
-                    <label class="form-label mt-2 mx-1">Commentaire</label>
-                    <textarea placeholder="{{ $item->commentaire != null ?  $item->commentaire : 'Aucun commentaire'  }}" disabled rows="4" class="form-control" wire:model="commentaire">
-                    </textarea> 
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    
-                    <button type="submt" data-bs-toggle="modal" 
-                         @if($item->date_debut > now() or $item->created_at->isToday())
-                        wire:click="visualiser({{ $item->id }})" 
-                        data-bs-dismiss="modal" data-bs-target="#lightModal"
-                          wire:click="visualiser({{ $item->id }})"
-                          class="d-none"
-                    @endif
-                     class="btn btn-primary">Modifier</button>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-
-    <div class="modal fade" wire:ignore.self id="lightModal" tabindex="-1" aria-labelledby="lightModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            
-            <div class="modal-content">
-                @foreach ( $selectedMateriels as $item)
-                <div class="modal-header border-0 ">
-                    <h5 class="modal-title" id="lightModalLabel">
-                            {{ $item->ordinateur->nom }}
-                       
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-                </div>
-                <div class="modal-body">
-                    <label class="form-label mt-2 mx-1">Date de début</label>
-                    <input type="date" class="form-control border-0 rounded-0 border-bottom" wire:model="datedeb" value="{{ $datedeb }}">
-
-                    <label class="form-label mt-2 mx-1">Date de retour</label>
-                    <input type="date" class="form-control border-0 rounded-0 border-bottom"  required wire:model="datefin">
-
-                    <label class="form-label mt-2 mx-1">Nombre</label>
-                    <input type="number" class="form-control border-0 rounded-0 border-bottom" required wire:model="nbequipement" placeholder="Ex: 1">
-
-                    <label class="form-label mt-2 mx-1">Commentaire</label>
-                    <textarea placeholder="Votre commentaire" rows="4" class="form-control" wire:model="commentaire">
-                    </textarea>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary"
-                     data-bs-dismiss="modal"
-                        >Annuler</button>
-                    <button type="submit" wire:click="ModifierReservation" class="btn bg-body-tertiary btn-sm">Enregistrer</button>
-                </div>
-            </div>
-             @endforeach
-        </div>
-    </div>
-
-    <div class="modal modal-lg fade" wire:ignore.self id="centeredModalreservation" tabindex="-1"
+    <div class="modal modal fade" wire:ignore.self id="centeredModalreservation" tabindex="-1"
         aria-labelledby="centeredModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content  border-0"> <!-- réduit l’ombre -->
                 <form>
-                    <h5 class="mx-2 mt-2 text-success fw-bold">Réservation d'équipement</h5>
+                    <h5 class="mx-2 mt-2 text-teal fw-bold">Réservation d'équipement</h5>
 
                     <div class="mt-1 p-2 border-top">
                         @if ($type_materiel == 'ordinateur' && $selectedEquipements)
@@ -606,35 +542,136 @@
                             </label>
                         @endif
                         <br>
+                            <p class="mt-1 p-1 text-muted fw-6">Les champs indquer <span class="text-danger">*</span> sont obligatoires</p>
+                     
 
-                        <label class="form-label mt-2 mx-1">Date de début</label>
+                        <label class="form-label mt-2 mx-1">Date de début <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" wire:model="datedeb">
 
-                        <label class="form-label mt-2 mx-1">Date de retour</label>
+                        <label class="form-label mt-2 mx-1">Date de retour <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" wire:model="datefin">
 
-                        <label class="form-label mt-2 mx-1">Nombre</label>
+                        <label class="form-label mt-2 mx-1">Nombre <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" wire:model="nbequipement" placeholder="Ex: 1">
 
-                        <label class="form-label mt-2 mx-1">Commentaire</label>
-                        <input type="text" placeholder="Votre commentaire" class="form-control"
-                            wire:model="commentaire">
+                        <div class="border-top border-2 mt-4">
+                          
+                        </div>
+                        <label class="form-label mt-2 mx-1">Commentaire ( <span class="text-muted">Optionnel</span> )</label> <br>
+                        <textarea type="text" placeholder="Commencer à écrire" class="input-recherche px-2 w-100 border rounded py-2"
+                            wire:model="commentaire"></textarea>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-sm  btn-outline-light border "
+                        <button type="button" class="btn btn-sm  btn-secondary  border "
                             data-bs-dismiss="modal">Quitter</button>
                         <button type="submit" wire:click="reserverEquipement"
-                            class="btn btn-sm btn-primary">Envoyer</button>
+                            class="btn btn-sm btn-two fw-bold text-white">Envoyer</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="modal fade" wire:ignore.self id="lightModalview" tabindex="-1" aria-labelledby="lightModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            @foreach ($selectedMateriels as $item)
+                <div class="modal-content">
+                    <div class="modal-header border-0 ">
+                        <h5 class="modal-title" id="lightModalLabel">
+                            {{ $item->ordinateur->nom }} <small class="text-muted" style="font-size:0.8rem">cree le
+                                {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y H:m') }} </small>
+
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="form-label mt-2 mx-1">Date de début</label>
+                        <input class="form-control border-0 rounded-0 border-bottom" disabled
+                            value="{{ \Carbon\Carbon::parse($item->date_debut)->translatedFormat('d M Y') }}">
+
+                        <label class="form-label mt-2 mx-1">Date de retour</label>
+                        <input class="form-control border-0 rounded-0 border-bottom" disabled
+                            value="{{ \Carbon\Carbon::parse($item->date_fin)->translatedFormat('d M Y') }}">
+
+                        <label class="form-label mt-2 mx-1">Nombre</label>
+                        <input type="number" class="form-control border-0 rounded-0 border-bottom " disabled
+                            value="{{ $item->equipement_nombre }}" placeholder="Ex: 1">
+
+                        <label class="form-label mt-2 mx-1">Commentaire</label>
+                        <textarea placeholder="{{ $item->commentaire != null ? $item->commentaire : 'Aucun commentaire' }}" disabled
+                            rows="4" class="form-control" wire:model="commentaire">
+                    </textarea>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-two text-white fw-bold" data-bs-dismiss="modal">Fermer</button>
+
+                        <button 
+                            type="submt" 
+                              
+                                data-bs-toggle="modal"
+                                data-bs-target="#lightModal"
+                            @if (($item->date_debut > now() || $item->created_at->isToday()) && $item->responsable->id == $userConnected)  
+                            wire:click="ModifierView({{ $item->id }})"
+                            @else
+                            class="d-none" @endif
+                            wire:click="ModifierView({{ $item->id }})" 
+                            class="btn btn-primary">
+                            Modifier
+                        </button>
+
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <div class="modal fade" style="z-index: 2600" wire:ignore.self id="lightModal" tabindex="-1"
+        aria-labelledby="lightModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+                @foreach ($selectedMateriels as $item)
+                    <div class="modal-header border-0 ">
+                        <h5 class="modal-title" id="lightModalLabel">
+                            {{ $item->ordinateur->nom }}
+
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="form-label mt-2 mx-1">Date de début</label>
+                        <input type="date" style="z-index: 2600" class="form-control border-0 rounded-0 border-bottom"
+                            wire:model="datedeb" value="{{ $datedeb }}">
+
+                        <label class="form-label mt-2 mx-1">Date de retour</label>
+                        <input type="date" style="z-index: 2600" class="form-control border-0 rounded-0 border-bottom" required
+                            wire:model="datefin">
+
+                        <label class="form-label mt-2 mx-1">Nombre</label>
+                        <input type="number" style="z-index: 2600" class="form-control border-0 rounded-0 border-bottom" required
+                            wire:model="nbequipement" placeholder="Ex: 1">
+
+                        <label class="form-label mt-2 mx-1">Commentaire</label>
+                        <textarea placeholder="Votre commentaire" style="z-index: 2600" rows="4" class="form-control" wire:model="commentaire">
+                    </textarea>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" wire:click="ModifierReservation"
+                            class="btn btn-two text-white fw-bold btn-sm">Enregistrer</button>
+                    </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
 
 </div>
-
+</div>
 
 <style>
     .modal-content {
@@ -738,17 +775,18 @@
         -----------------------------------------------------------------*/
 
         var calendar = $('#calendar').fullCalendar({
-          
+
             header: {
                 left: 'title',
                 center: 'agendaDay,agendaWeek,month',
                 right: 'prev,next today'
             },
-            editable: false,
+            editable: true,
+
             firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
             selectable: false,
             defaultView: 'month',
-        
+
 
             axisFormat: 'h:mm',
             columnFormat: {
@@ -778,30 +816,9 @@
                 }
                 calendar.fullCalendar('unselect');
             },
-            droppable: false, // this allows things to be dropped onto the calendar !!!
-            drop: function(date, allDay) { // this function is called when something is dropped
 
-                // retrieve the dropped element's stored Event Object
-                var originalEventObject = $(this).data('eventObject');
 
-                // we need to copy it, so that multiple events don't have a reference to the same object
-                var copiedEventObject = $.extend({}, originalEventObject);
 
-                // assign it the date that was reported
-                copiedEventObject.start = date;
-                copiedEventObject.allDay = allDay;
-
-                // render the event on the calendar
-                // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-                $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
-                // is the "remove after drop" checkbox checked?
-                if ($('#drop-remove').is(':checked')) {
-                    // if so, remove the element from the "Draggable Events" list
-                    $(this).remove();
-                }
-
-            },
 
             events: [
 
@@ -809,13 +826,13 @@
                 @foreach ($events as $event)
                     {
 
-
+                        id: "{{ $event->id }}",
                         title: "{{ $event->ordinateur->nom }}",
                         start: "{{ \Carbon\Carbon::parse($event->date_debut)->toIso8601String() }}",
                         end: "{{ \Carbon\Carbon::parse($event->date_fin)->toIso8601String() }}",
                         url: "{{ $event->url ?? '#' }}",
-                        allDay: false,
-                        className: "info"
+                        allDay: true,
+                        className: "{{ $event->responsable->id == $userConnected ? 'info' : 'success' }}"
 
 
                     }
@@ -825,15 +842,35 @@
                 @endforeach
 
             ],
-           eventClick: function(event, jsEvent, view) {
-        // 👈 empêche la redirection
-            @this.call('visualiser', event.id);
-        }
+            eventClick: function(event, jsEvent, view) {
+                window.livewire.emit('visualiser', event.id);
+            },
+            eventDrop: function(event, delta, revertFunc) {
+                console.log(event);
+                window.livewire.emit('updateEventDate', {
+                    id: event.id,
+                    start: event.start,
+                    end: event.end
+                });
+            }
         });
 
 
     });
+</script>
+
+<script>
+    window.addEventListener('lightview', event => {
+        const myModal = new bootstrap.Modal(document.getElementById('lightModalview'));
+        myModal.show();
+    });
 
 
- 
+    window.addEventListener('closeModal', event => {
+        // Close ALL open modals
+        document.querySelectorAll('.modal.show').forEach(modalEl => {
+            const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modal.hide();
+        });
+    });
 </script>

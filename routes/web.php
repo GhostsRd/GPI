@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/checkout-view-{id}',[App\Http\Controllers\admin\checkout\CheckoutView::class,'index'])->name('checkoutview');
     Route::get('/admin/checkout-reservation',[App\Http\Controllers\admin\checkout\CheckoutReservation::class,'index'])->name('checkout.reservation');
     Route::get('/admin/checkout-reservation-list',[App\Http\Controllers\admin\checkout\CheckoutReservationList::class,'index'])->name('checkout.reservation.list');
+    Route::get('/admin/checkout-reservation-view',[App\Http\Controllers\admin\checkout\reservationView::class,'index'])->name('checkout.reservation.vew');
     
     Route::get('/admin/utilisateur',[App\Http\Controllers\admin\profile\UtilisateurListe::class,'index'])->name('listeutilisateur');    
     Route::get('/admin/utilisateur/profile-{id}',[App\Http\Controllers\admin\profile\Profile::class,'index'])->name('userprofile');

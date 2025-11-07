@@ -1,5 +1,91 @@
 <div  >
-    <div id='calendar' class="border-0 shadow" style="width: 100% !important"></div>
+	<div class="container">
+		 <div class="card border-0 bg-white shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label small fw-bold">Recherche</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-transparent">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" wire:model.live="search"
+                                   class="form-control" placeholder="Référence, Sujet, Créé par...">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label small fw-bold">Statut</label>
+                        <select wire:model.live="statut" class="form-select form-select-sm">
+                            <option value="">Tous les statuts</option>
+                            <option value="ouvert">Ouvert</option>
+                            <option value="en_cours">En Cours</option>
+                            <option value="en_attente">En Attente</option>
+                            <option value="résolu">Résolu</option>
+                            <option value="fermé">Fermé</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-bold">Priorité</label>
+                        <select wire:model.live="priorite" class="form-select form-select-sm">
+                            <option value="">Toutes les priorités</option>
+                            <option value="basse">Basse</option>
+                            <option value="moyenne">Moyenne</option>
+                            <option value="haute">Haute</option>
+                            <option value="urgente">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label small fw-bold">Type</label>
+                        <select wire:model.live="type" class="form-select form-select-sm">
+                            <option value="">Toutes les catégories</option>
+                            <option value="ordinateur">Ordinateur</option>
+                            <option value="periherique">Peripherique</option>
+                            <option value="telephone">Telephone</option>
+
+                        </select>
+                    </div>
+                      <div class="col-md-1">
+                        <label class="form-label small fw-bold">Vue</label>
+                        <select wire:change="changerVue" class="form-select form-select-sm">
+                            <option value="tableau">Tableau</option>
+                            <option value="kanban">calendrier</option>
+                        </select>
+                    </div>
+                     <div class="col-md-1">
+                        <label class="form-label small fw-bold">Archiver</label>
+                        <select wire:change="archiveActive" class="form-select form-select-sm">
+                            <option value="false">Non active</option>
+                            <option value="true">Active</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" wire:click="resetFilters"
+                                class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
+                            <i class="fa fa-times"></i> Reset
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les tickets sélectionnés"
+                            {{ empty($selectedTickets) ? 'disabled' : '' }}>
+                            <i class="fas fa-trash"></i>
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                            </svg>
+                             {{-- ({{ count($selectedTickets ?? '5') }}) --}}
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button wire:click="exportTickets" class="btn btn-success btn-sm w-100" title="Exporter les tickets">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            Exporter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div id='calendar' class="border-0 bg-light" style="width: 100% !important"></div>
 
     <div style='clear:both' class="shadow-sm border-0"></div>
 </div>
@@ -166,7 +252,9 @@
 
 			events: [
 			
-				
+
+			@if ($events)
+			
 				@foreach($events as $event)
 				{	
 					
@@ -179,7 +267,9 @@
 
 
 				}@if(!$loop->last),@endif
-				@endforeach
+				@endforeach	
+			@endif
+				
 			
 			],
 		});

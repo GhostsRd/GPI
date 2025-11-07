@@ -41,11 +41,17 @@ Author E-mail: naimlasker@gmail.com
 }
 .input-recherche:hover{
   padding: 10px 20px;
-  border: none;
+  border: 1px solid rgb(153, 150, 150);
   box-shadow: #e4e4e4 0px 0px 8px;
   /* transform: zoom(1.2); */
 }
 .input-recherche:focus{
+  border: none  !important;
+  outline: none;
+  box-shadow: #e3e3e3 0px 0px 8px;
+}
+.input-recherche:active{
+  border: none  !important;
   outline: none;
   box-shadow: #e3e3e3 0px 0px 8px;
 }

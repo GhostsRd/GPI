@@ -140,6 +140,13 @@ class UtilisateurService extends Component
                     ->where("sujet","like","%".$this->recherche."%")
                     ->orderBy("created_at", "desc")
                 ->get(),
+               "ticketrecentes" => ticket::where("utilisateur_id", $user_ID)
+                ->where("state", "like", "%" . $this->state . "%")
+                ->where("sujet", "like", "%" . $this->recherche . "%")
+                ->orderBy("created_at", "desc")
+                ->limit(2)
+                ->get(),
+              
          "chats"=> chat::all(),
          "responsables" => User::all(),
            ]);
