@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\checkoutreserver as reserverEquipement;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ordinateur;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Momemail;
 class CalendrierReservationCheckout extends Component
 {
     protected $listeners = [
@@ -131,16 +133,31 @@ class CalendrierReservationCheckout extends Component
     }
     public function reserverEquipement(reserverEquipement $resEquipement)
     {
+        if($this->datedeb >= now()){
 
-        $resEquipement->equipement_type = $this->equipement_type;
-        $resEquipement->equipement_id = $this->equipement_id;
-        $resEquipement->responsable_id = Auth::guard('utilisateur')->user()->id;
-        $resEquipement->statut = 1; //mis algo milla atao ato hiverifiena hoe mis mireserver io zavatra io
-        $resEquipement->date_debut = $this->datedeb;
-        $resEquipement->date_fin = $this->datefin;
-        $resEquipement->commentaire = $this->commentaire;
-        $resEquipement->equipement_nombre = $this->nbequipement;
-        $resEquipement->save();
+            $resEquipement->equipement_type = $this->equipement_type;
+            $resEquipement->equipement_id = $this->equipement_id;
+            $resEquipement->responsable_id = Auth::guard('utilisateur')->user()->id;
+            $resEquipement->statut = 1; //mis algo milla atao ato hiverifiena hoe mis mireserver io zavatra io
+            $resEquipement->date_debut = $this->datedeb;
+            $resEquipement->date_fin = $this->datefin;
+            $resEquipement->commentaire = $this->commentaire;
+            $resEquipement->equipement_nombre = $this->nbequipement;
+            $resEquipement->save();
+
+             $data = [
+        'title' => 'Reservation',
+        'message' => 'Vous avez une nouvelle reservation de materiels type: '. $resEquipement->equipement_type
+
+         ];
+         Mail::to('leoncerado@gmail.com')->send(new Momemail($data));
+        }else{
+            return;
+        }
+
+
+        
+
 
        return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $resEquipement->equipement_type);
         // $this->dispatchBrowserEvent('closeReservationModal');

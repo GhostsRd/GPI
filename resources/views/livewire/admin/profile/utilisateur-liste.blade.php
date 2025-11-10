@@ -19,6 +19,7 @@
                             Référence
                          
                         </th> --}}
+                        <th></th>
                          
                         <th wire:click="sortBy('sujet')" class="sortable">
                             Nom
@@ -61,8 +62,18 @@
                                        value="{{ $utilisateur->id }}"
                                        class="checkbox-modern">
                             </td>
+                            <td>
+                                <img 
+                                title="{{ $utilisateur->nom ?? 'none' }}"
+                                class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src="https://ui-avatars.com/api/?name={{ $utilisateur->nom ?? 'none' }}"
+                                            alt="Profil" width="40" height="40"
+                                            class="rounded-circle me-2">
+                            </td>
                             {{-- <td wire:click="Visualiser({{ $utilisateur->id }})"># {{ $utilisateur->id }}</td> --}}
-                            <td wire:click="Visualiser({{ $utilisateur->id }})"> {{ $utilisateur->nom }} </td>
+                            <td wire:click="Visualiser({{ $utilisateur->id }})">
+                            
+                                {{ $utilisateur->nom }} </td>
                             <td wire:click="Visualiser({{ $utilisateur->id }})">{{ $utilisateur->email }}</td>
                             <td wire:click="Visualiser({{ $utilisateur->id }})" >{{ $utilisateur->poste }}</td>
                             <td wire:click="Visualiser({{ $utilisateur->id }})">{{ $utilisateur->departement }}</td>

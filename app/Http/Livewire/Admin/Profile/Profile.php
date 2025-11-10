@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\chat;
+use App\Models\checkoutreserver as matreservations;
+use App\Models\Checkout as modelchekout;
+
 class Profile extends Component
 { 
     public $notifications = [];
@@ -35,6 +38,9 @@ class Profile extends Component
         
         $this->emit("refreshComponent");
 
+    }
+    public function Visualiser($id){
+        return redirect("/admin/checkout-reservation-view-".$id);
     }
 
     public function checkNotifications()
@@ -73,12 +79,25 @@ class Profile extends Component
             session(['last_notification_time' => $now]);
         }
     }
-    public function render()
+    public function visualiserCheckout($id)
+{
+    return redirect('/admin/checkout-view-'.$id);
+}    
+public function render()
     {
         $utilisateurs = utilisateur::findOrFail($this->profilId);
         $userId = Auth::user()->id;
         return view('livewire.admin.profile.profile',[
             "utilisateurs" => $utilisateurs,
+            "matreservations" => matreservations::where("responsable_id", $this->profilId)->get(),
+            "checkouts" => modelchekout::where("utilisateur_id",$this->profilId)
+            ->orderBy("created_at","desc")
+            ->paginate(105),
+            "tickets"=> ticket::
+                      where("utilisateur_id",$this->profilId)
+                   
+                    ->orderBy("created_at", "desc")
+                ->get(),
             "Chats" => Chat::where(function ($query) {
                     $userId = Auth::user()->id;
                     $query->where('utilisateur_id', $userId)

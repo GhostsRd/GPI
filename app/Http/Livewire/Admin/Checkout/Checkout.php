@@ -21,7 +21,7 @@ class Checkout extends Component
         return view('livewire.admin.checkout.checkout',[
             "tickets" => $tickets,
             "checkouts" => $checkouts,
-
+            
         ]);
     }
 }

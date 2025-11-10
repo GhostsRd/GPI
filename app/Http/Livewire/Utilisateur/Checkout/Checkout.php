@@ -135,6 +135,12 @@ public function openCalendrier($type,$id){
             return str_contains(strtolower($equip['type']), strtolower($this->search));
         })->values(); // values() pour réindexer le tableau
     }
+    public function visualiser($id){
+        $reservations = ReservationEquipement::findOrFail($id);
+
+         return redirect()->to(route('checkout.calendrier',['type'=>$reservations->equipement_type,'id'=>$reservations->equipement_id]));
+
+    }
 
     public function render()
     {
@@ -151,6 +157,8 @@ public function openCalendrier($type,$id){
             "checkoutrecentes" => modelchekout::where("utilisateur_id",$user_ID)
             ->orderBy("created_at","desc")
             ->limit(1)->get(),
+            "matreservations" => ReservationEquipement::where("responsable_id", $user_ID)
+            ->orderBy('id','desc')->get(),
             "events" => ReservationEquipement::get(),
             "reservationRecentes" => ReservationEquipement::where('responsable_id',$user_ID)->
             limit(1)->get()

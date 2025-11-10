@@ -856,7 +856,14 @@
                                 <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important"
                                     id="link1-tab" data-bs-toggle="tab" data-bs-target="#link1" type="button"
                                     role="tab" aria-controls="link1" aria-selected="false">
-                                    Reservation d'equipement
+                                    Reserver une equipement
+                                </button>
+                            </li>
+                            <li class="nav-item   text-dark" role="presentation">
+                                <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important"
+                                    id="link2-tab" data-bs-toggle="tab" data-bs-target="#link2" type="button"
+                                    role="tab" aria-controls="link1" aria-selected="false">
+                                    Historique de vos reservation
                                 </button>
                             </li>
 
@@ -937,7 +944,7 @@
                                 <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
                                     <div class="">
-                                        <h5>Liste de materiel</h5>
+                                        <h5>Choisir le materiel</h5>
                                     </div>
 
 
@@ -990,7 +997,58 @@
                             </div>
 
 
+                            <div class="tab-pane fade border-0 " id="link2" role="tabpanel"
+                                aria-labelledby="link2-tab">
+                                <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
+                                    <div class="">
+                                        <h5>Historique de vos reservation</h5>
+                                    </div>
+
+
+                                    <div class="list-group mt-2 " style="max-height: 400px;overflow-y: scroll">
+                                     @foreach ($matreservations as $materiel)
+                                            <a href="#" wire:click="visualiser( {{ $materiel->id }})" title="Voir le details" class="list-group-item list-group-item-action border-0 border-bottom ">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <b class="mb-1 text-black-50 text-capitalize"> {{ $materiel->equipement_type }} </b>
+                                                    <span class="text-muted fw-6">{{ \Carbon\Carbon::parse($materiel->date_debut)->translatedFormat('d M Y ') }} - {{ \Carbon\Carbon::parse($materiel->date_fin)->translatedFormat('d M Y ') }}</span>
+                                                    <small class="text-body-secondary"></small>
+                                                </div>
+
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <p class="mb-1 text-capitalize"> </p>
+                                                    <small
+                                                        class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
+                                                    </small>
+                                                </div>
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <small class="text-body-secondary">
+                                                         Le  {{ \Carbon\Carbon::parse($materiel->created_at)->translatedFormat('d M Y H:i') }}
+                                                    </small>
+                                                    <small class="text-body-secondary justify-content-end  ">
+                                                    {{ match($materiel->statut) {
+                                                            1 => 'CREE',
+                                                            2 => 'VALIDER',
+                                                            3 => 'EN COURS',
+                                                            4 => 'RENDU',
+                                                            5 => 'ARCHIVER',
+                                                            default => 'CREE',
+                                                        } }}
+
+                                                    </small>
+                                                </div>
+
+                                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
+                                            </a>
+                                        @endforeach
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>

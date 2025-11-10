@@ -1491,7 +1491,7 @@
                              <a wire:click="visualiser('{{ $ticket->id }}')" href="#" 
                                 {{-- data-aos="fade-down" --}}
                                 {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
-                                class="list-group-item  list-group-item-action border-0 border-bottom"
+                                class="list-group-item border-bottom  list-group-item-action border-0 border-bottom"
                                
                                 >
                                 <div class="d-flex w-100 py-1 justify-content-between">

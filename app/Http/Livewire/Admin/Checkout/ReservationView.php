@@ -6,20 +6,167 @@ use App\Models\Checkout;
 use App\Models\Commentaire;
 use App\Models\utilisateur;
 use Livewire\Component;
+use App\Models\checkoutreserver as matreservation;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationView extends Component
 {
-      public $checkoutId;
-      public function mount(){
-        $this->checkoutId;
-      }
-    public function render()
-    {
-        return view('livewire.admin.checkout.reservation-view',
-    [
-        'checkouts' => Checkout::get() ,
-        'utilisateurs' => utilisateur::get(),
-        'commentaires' => Commentaire::get() ,
-    ]);
+  public $reservationID;
+  public $progress;
+  public $message;
+  public $currentStep;
+  public $comments;
+  public $selectedvalsdata;
+  public $checkouts;
+  public $selectEquipement;
+  public $materiel_type;
+  public $matreservations;
+  public $current = [
+    1 => 'current',
+    2 => 'future',
+    3 => 'future',
+    4 => 'future',
+    5 => 'future',
+
+
+  ];
+  public function afficheretape()
+  {
+    $this->affichestep = !$this->affichestep;
+
+  }
+
+  public function modelstep(matreservation $checkout){
+        $checkout = matreservation::find($this->reservationID);
+        $this->currentStep = $checkout->statut;
+
+        $this->current[$this->currentStep] = "current";
+        $prog = $this->currentStep*20; 
+        $progress = 'fill_'.$prog;
+        $this->progress = $progress;
+
+        if($this->currentStep == 3){
+            for($i=1; $i<3; $i++){
+                    $this->current[$i] = "past";
+            }
+        }else{
+            for($i=1; $i<=4; $i++){
+            if($i < $this->currentStep){
+                $this->current[$i] = "past";
+            }elseif($i == $this->currentStep){
+                $this->current[$i] = "current";
+            }else{
+                $this->current[$i] = "future";
+            }
+        }
+
+        }
+
+       $this->emitSelf('refreshComponent');
     }
+
+   public function nextStep()
+    {
+        $this->modelstep(matreservation::find($this->reservationID));
+        if($this->currentStep == 4){
+            return;
+        }elseif($this->currentStep < 4){
+                matreservation::where('id', $this->reservationID)->update(['statut' => $this->currentStep + 1 ]);    
+        }
+       
+
+    }
+      public function previousStep()
+        {
+            if($this->currentStep == 1){
+                return;
+            }else{
+                for($i=4; $i>=1; $i--){
+                    if($this->current[$this->currentStep] == "current" && $i > 1){
+                        $this->current[$this->currentStep] = "future";
+                        $this->current[$this->currentStep-1] = "current";
+                        $prog = ($i-1)*20; 
+                        $progress = 'fill_'.$prog;
+                        $this->progress = $progress;
+                        break;
+                    }
+                    $this->emitSelf('refreshComponent');
+            }
+            }
+            matreservation::where('id', $this->reservationID)->update(['statut' => $this->currentStep - 1]);
+        // dd($this->current);
+         $this->emitSelf('refreshComponent');
+        }
+    public function postCommentaire(Commentaire $commentaire){
+        if(!$this->comments){
+          
+        }else{
+
+          //  $commentaire->checkout_id = $this->checkoutId;
+            $commentaire->utilisateur_id = Auth::user()->id ;
+            //$commentaire->responsable_id = Auth::user()->id ;
+
+            $commentaire->etat = $this->currentStep;
+            $commentaire->commentaire = $this->comments;
+            $commentaire->save();
+
+            $this->comments = "";
+            $this->reset(['selectedvalsdata']);
+            $this->emitSelf('refreshComponent');
+            $this->emitTo('Utilisateur.utilisateur-ticket', 'refreshComponent');
+        }
+
+       // session()->flash('message','Commentaire ajouter avec succes');
+      //  return redirect()->to('/admin-ticket-view/'.$this->ticketId);
+
+    }
+  public function changercomment()
+  {
+    $this->affichecommentaire = !$this->affichecommentaire;
+
+  }
+  public $affichecommentaire = True;
+  public $affichestep = False;
+
+  public function mount($id)
+  {
+    $this->reservationID = $id;
+     $this->matreservations = matreservation::findOrFail($this->reservationID);
+    $this->progress;
+    $this->current;
+    $this->selectEquipement;
+
+    // $this->currentStep;
+    $this->selectedvalsdata;
+    $this->affichestep;
+    $this->materiel_type;
+  }
+  public function RemoveReservation($id){
+    matreservation::destroy($id);
+    return redirect('/admin/checkout-reservation-list');
+  }
+  public function markResolved(){
+    $this->modelstep(matreservation::find($this->reservationID));
+  
+      matreservation::where('id', $this->reservationID)->update(['statut' => 4 ]);    
+      $this->emitSelf('refreshComponent');
+  }
+  public function archived(){
+     $this->modelstep(matreservation::find($this->reservationID));
+      matreservation::where('id', $this->reservationID)->update(['statut' => 5 ]);    
+      $this->emitSelf('refreshComponent');
+  }
+  public function render()
+  {
+     $this->modelstep(matreservation::find($this->reservationID));
+    return view(
+      'livewire.admin.checkout.reservation-view',
+      [
+       
+        'checkouts' => Checkout::get(),
+        'utilisateurs' => utilisateur::get(),
+        'commentaires' => Commentaire::orderBy('id','desc')->get(),
+      ]
+    );
+  }
 }

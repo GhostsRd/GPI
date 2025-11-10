@@ -17,6 +17,7 @@ class CreateCheckoutreserversTable extends Migration
             $table->id();
             $table->integer('responsable_id');
             $table->integer('equipement_id');
+            $table->integer('commentaire_id')->nullable();
             $table->string('equipement_type');
             $table->date('date_debut');
             $table->date('date_fin');
