@@ -68,6 +68,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/checkout-reservation-list',[App\Http\Controllers\admin\checkout\CheckoutReservationList::class,'index'])->name('checkout.reservation.list');
     Route::get('/admin/checkout-reservation-view-{id}',[App\Http\Controllers\admin\checkout\reservationView::class,'index'])->name('checkout.reservation.vew');
     
+     Route::get('/admin/incident',[App\Http\Controllers\admin\incident\Incident::class,'index'])->name('admin.incident.list');
+     Route::get('/admin/incident-view-{id}',[App\Http\Controllers\admin\incident\incidentView::class,'index'])->name('admin.incident.view');
+    
     Route::get('/admin/utilisateur',[App\Http\Controllers\admin\profile\UtilisateurListe::class,'index'])->name('listeutilisateur');    
     Route::get('/admin/utilisateur/profile-{id}',[App\Http\Controllers\admin\profile\Profile::class,'index'])->name('userprofile');
 

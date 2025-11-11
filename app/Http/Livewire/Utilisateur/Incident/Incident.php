@@ -28,6 +28,19 @@ class Incident extends Component
     public $selectedID;
     public $selectedIncidents;
 
+  
+    public function redicrectlink($vals){
+        if($vals == 1){
+        return redirect()->route('utilisateurService');
+
+        }
+        elseif($vals == 2){
+            return redirect()->route('checkout');
+        }
+        elseif($vals == 3){
+            return redirect()->route('utilisateur.incident');
+        }
+    }
     public function annulationDemande($id){
         $incident =IncidentModel::findOrFail($id);
         $incident->statut = 0;

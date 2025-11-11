@@ -30,6 +30,8 @@ class ReservationView extends Component
 
 
   ];
+  public $affichecommentaire = True;
+  public $affichestep = False;
   public function afficheretape()
   {
     $this->affichestep = !$this->affichestep;
@@ -104,7 +106,7 @@ class ReservationView extends Component
 
           //  $commentaire->checkout_id = $this->checkoutId;
             $commentaire->utilisateur_id = Auth::user()->id ;
-            //$commentaire->responsable_id = Auth::user()->id ;
+            $commentaire->resrvation_id = $this->reservationID;
 
             $commentaire->etat = $this->currentStep;
             $commentaire->commentaire = $this->comments;
@@ -125,8 +127,7 @@ class ReservationView extends Component
     $this->affichecommentaire = !$this->affichecommentaire;
 
   }
-  public $affichecommentaire = True;
-  public $affichestep = False;
+  
 
   public function mount($id)
   {

@@ -613,7 +613,7 @@
                               
                                 data-bs-toggle="modal"
                                 data-bs-target="#lightModal"
-                            @if (($item->date_debut > now() || $item->created_at->isToday()) && $item->responsable->id == $userConnected)  
+                            @if (($item->date_debut > now() || $item->created_at->isToday()) && $item->responsable->id == $userConnected && $item->statut == 1)  
                             wire:click="ModifierView({{ $item->id }})"
                             @else
                             class="d-none" @endif

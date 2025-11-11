@@ -1446,10 +1446,13 @@
                                 </div>
                                 <div>
                                     
-                                    <div class="d-flex justify-content-end"><img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $ticketrecent->responsable->name ?? 'none' }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2"></div>
+                                    <div class="d-flex justify-content-end">
+                                       
+                                        <img class="dropdown-toggle bg-primary-light border  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src=" {{ asset('storage/' . $ticketrecent->responsable->photo) }}"
+                                            alt="Profil" width="40" height="40"
+                                            class="rounded-circle me-2">
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -1521,10 +1524,11 @@
                                             src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
                                             alt="Profil" width="20" height="20"
                                             class="rounded-circle me-2">
-                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name ?? 'none' }}"
-                                            alt="Profil" width="20" height="20"
+                                       <img class="dropdown-toggle bg-primary-light border  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src=" {{ asset('storage/' . $ticket->responsable->photo) }}"
+                                            alt="Profil" width="30" height="30"
                                             class="rounded-circle me-2">
+                                        </div>
 
                                     </small>
                                 </div>

@@ -211,7 +211,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
-                        Nouveau Incident
+                        Nouveau projet
 
                     </li>
                     <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center">
@@ -231,7 +231,7 @@
 
                         </div>
                     </li>
-                    <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center">
+                    <li style="cursor: pointer" wire:click="redicrectlink(1)" class="mt-1 d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
 
                             <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +248,7 @@
 
                         </div>
                     </li>
-                    <li style="cursor: pointer" wire:click="visiterCheckout"
+                    <li style="cursor: pointer" wire:click="redicrectlink(2)"
                         class="mt-1 d-flex justify-content-between align-items-center ">
                         <div class="d-flex align-items-center">
 

@@ -262,6 +262,29 @@
                 </div>
             </div>
 
+             <div class="nav-item-modern">
+                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#incidentcollaps">
+                    <i class="nav-icon bi bi-arrow-left-right"></i>
+                    <span>Incident</span>
+                    <i class="nav-chevron bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse" id="incidentcollaps">
+                    <div class="nav-submenu">
+                        <a href="#" class="submenu-item">
+                            <i class=" bi bi-box-arrow-in-right"></i>
+                           Nouveau
+                        </a>
+                        <a href="{{ route('admin.incident.list') }}" class="submenu-item">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Gerer
+                        </a>
+
+                     
+                       
+                    </div>
+                </div>
+            </div>
+
         
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#gestion">
