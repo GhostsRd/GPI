@@ -1,6 +1,6 @@
 <div>
 
-  <aside wire:ignore.self class="chat-popup bg-none" id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
+  <aside wire:ignore.self class="chat-popup bg-none "  id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
     <header class="chat-header">
       <div > <img width="50" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('/images/avtar_1.png') }}" alt="Photo de profil">
         </div>
@@ -6139,7 +6139,7 @@
               <div class="card-body">
                 <h5 class="card-title">Incident</h5>
                 <p class="card-text">Expériences utilisateurs soignées et interfaces modernes.</p>
-                <a href="#" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
+                <a href="{{ url('/utilisateur-incident') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
               </div>
             </div>
           </div>
@@ -6254,10 +6254,10 @@
     /* Popup container */
     .chat-popup{
       position:fixed;right:24px;bottom:92px;z-index:1000;width:360px;max-width:92vw;height:520px;max-height:80vh;
-      display:flex;flex-direction:column;border-radius:14px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.2);overflow:hidden;
+      display:none;flex-direction:column;border-radius:14px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.2);overflow:hidden;
       transform:translateY(20px);opacity:0;pointer-events:none;transition:all .26s cubic-bezier(.2,.9,.3,1);
     }
-    .chat-popup.open{transform:translateY(0);opacity:1;pointer-events:auto}
+    .chat-popup.open{transform:translateY(0);opacity:1;pointer-events:auto; display:flex;}
 
     /* Header */
     .chat-header{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #eef2f7;background:linear-gradient(90deg,#f8fafc,#fff)}

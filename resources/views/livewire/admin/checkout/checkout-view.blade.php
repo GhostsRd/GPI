@@ -156,12 +156,12 @@
                                 title="{{ $checkouts->responsable->name ?? 'Guest' }}"
                                 src="https://ui-avatars.com/api/?name={{ $checkouts->responsable->name ?? 'Guest' }}"
                                 alt="Profil" width="40" height="40" class="shadow rounded-circle me-2">
-                            @if ($checkouts->materiel_type == 'Telephone')
-                                ⮕ {{ $checkouts->telephone != null ?? $checkouts->telephone->nom }} {{ $checkouts->telephone != null ?? $checkouts->telephone->marque }}
-                            @else
-                                ⮕ {{$checkouts->ordinateur != null ?? $checkouts->ordinateur->nom }} {{ $checkouts->ordinateur != null ?? $checkouts->ordinateur->modele }}
-                                {{$checkouts->ordinateur != null ?? $checkouts->ordinateur->os_version }}
-                            @endif
+                                    @if ($checkouts->materiel_type == 'Telephone')
+                                        ⮕ {{  $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
+                                    @else
+                                        ⮕ {{$checkouts->ordinateur->nom }} {{  $checkouts->ordinateur->modele }}
+                                        {{$checkouts->ordinateur->os_version }}
+                                    @endif
                         </p>
                         <label for="" class="fw-bold mb-2 d-flex justify-content-center">Lier une equipement
                         </label>
@@ -1203,8 +1203,8 @@
 
                     {{-- <div class="msg user">Salut, j'ai un problème avec mon compte<small>Vous · 08:56</small></div>
       
-      <div class="msg agent">D'accord, peux-tu préciser ?<small>Support · 08:57</small></div>
-      <div class="msg agent">{{$chat->message}}<small>Vous · {{$chat->created_at}}</small></div> --}}
+                    <div class="msg agent">D'accord, peux-tu préciser ?<small>Support · 08:57</small></div>
+                    <div class="msg agent">{{$chat->message}}<small>Vous · {{$chat->created_at}}</small></div> --}}
                 @endforeach
             </div>
 

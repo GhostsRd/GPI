@@ -45,6 +45,12 @@ class CheckoutReservationList extends Component
      
 
     }
+    public function supprimerDemande($id){
+        
+            matreservation::destroy($id);
+           return redirect('/admin/checkout-reservation-list');
+     
+    }
     public function render()
     {
 

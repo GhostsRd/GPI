@@ -1025,8 +1025,9 @@
                                                     <small class="text-body-secondary">
                                                          Le  {{ \Carbon\Carbon::parse($materiel->created_at)->translatedFormat('d M Y H:i') }}
                                                     </small>
-                                                    <small class="text-body-secondary justify-content-end  ">
+                                                    <small class=" {{ $materiel->statut == 0 ? 'text-danger' : 'text-body-secondary' }} justify-content-end  ">
                                                     {{ match($materiel->statut) {
+                                                            0 => 'Demande d\'annulation en cours',
                                                             1 => 'CREE',
                                                             2 => 'VALIDER',
                                                             3 => 'EN COURS',

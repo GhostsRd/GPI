@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ordinateur;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Momemail;
+use Carbon\Carbon;
 class CalendrierReservationCheckout extends Component
 {
     protected $listeners = [
@@ -131,9 +132,10 @@ class CalendrierReservationCheckout extends Component
         $resEquipement->save();
         return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $resEquipement->equipement_type);
     }
-    public function reserverEquipement(reserverEquipement $resEquipement)
+    public function SAVEreserverEquipement(reserverEquipement $resEquipement)
     {
-        if($this->datedeb >= now()){
+    
+        if(Carbon::parse($this->datedeb)->toDateString() >= now()->toDateString()) {
 
             $resEquipement->equipement_type = $this->equipement_type;
             $resEquipement->equipement_id = $this->equipement_id;
@@ -145,12 +147,12 @@ class CalendrierReservationCheckout extends Component
             $resEquipement->equipement_nombre = $this->nbequipement;
             $resEquipement->save();
 
-             $data = [
-        'title' => 'Reservation',
-        'message' => 'Vous avez une nouvelle reservation de materiels type: '. $resEquipement->equipement_type
+        //     $data = [
+       // 'title' => 'Reservation',
+        //'message' => 'Vous avez une nouvelle reservation de materiels type: '. $resEquipement->equipement_type
 
-         ];
-         Mail::to('leoncerado@gmail.com')->send(new Momemail($data));
+         //];
+         //Mail::to('leoncerado@gmail.com')->send(new Momemail($data));
         }else{
             return;
         }
@@ -162,6 +164,13 @@ class CalendrierReservationCheckout extends Component
        return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $resEquipement->equipement_type);
         // $this->dispatchBrowserEvent('closeReservationModal');
 
+    }
+    public function AnnulerReservation($id){
+         $resEquipement = reserverEquipement::findOrFail($id);
+         $resEquipement->statut = 0;
+         $resEquipement->save();
+        $this->emit('refreshComponent');
+             
     }
     public function render()
     {

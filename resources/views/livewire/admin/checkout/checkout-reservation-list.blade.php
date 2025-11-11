@@ -225,12 +225,17 @@
                                             alt="Profil" width="40" height="40"
                                             class="rounded-circle me-2"> </td>
 
-                            <td wire:click="Visualiser({{ $reservation->id }})">{{ $reservation->equipement_type }}</td>
+                            <td >{{ $reservation->equipement_type }}
+                                @if ($reservation->statut == 0 )
+                                    <span class="text-danger fw-bold"> <br> Demande annuler pour cette materiel <br> cliquer ici pour supprimer <br>
+                                        <button class="btn btn-sm  btn-outline-danger" wire:click="supprimerDemande({{ $reservation->id }})"> Supprimer</button>
+                                    </span>
+                                @endif
+                            </td>
                             <td wire:click="Visualiser({{ $reservation->id }})" >{{\Carbon\Carbon::parse($reservation->date_debut)->translatedFormat('d M Y ') }}</td>
                             <td wire:click="Visualiser({{ $reservation->id }})">{{\Carbon\Carbon::parse($reservation->date_fin)->translatedFormat('d M Y ') }}</td>
                             <td wire:click="Visualiser({{ $reservation->id }})">{{ $reservation->equipement_nombre }}</td>
 
-                         
                             <td wire:click="Visualiser({{ $reservation->id }})">{{ $reservation->created_at->format('d M Y H:i') }}</td>
                             <td wire:click="Visualiser({{ $reservation->id }})">{{ $reservation->updated_at->format('d M Y H:i') }}</td>
                             <td >

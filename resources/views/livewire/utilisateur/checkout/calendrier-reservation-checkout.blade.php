@@ -565,7 +565,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm  btn-secondary  border "
                             data-bs-dismiss="modal">Quitter</button>
-                        <button type="submit" wire:click="reserverEquipement"
+                        <button type="submit" wire:click="SAVEreserverEquipement"
                             class="btn btn-sm btn-two fw-bold text-white">Envoyer</button>
                     </div>
                 </form>
@@ -663,6 +663,8 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                         <button type="submit" wire:click="ModifierReservation"
                             class="btn btn-two text-white fw-bold btn-sm">Enregistrer</button>
+                        <button type="submit" wire:click="AnnulerReservation({{ $item->id }})" 
+                            class="btn btn-danger text-white fw-bold btn-sm">Annuler reservation</button>
                     </div>
             </div>
             @endforeach

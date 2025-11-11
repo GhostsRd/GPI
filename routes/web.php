@@ -35,6 +35,8 @@ Route::middleware(['LoginUser'])->group(function () {
 Route::get('/utilisateur-login', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'index'])->name('LoginUser');
 Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'index'])->name('utilisateurInscription');
 Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');
+Route::get('/utilisateur-incident', [App\Http\Controllers\Utilisateur\incident\Incident::class, 'index'])->name('utilisateur.incident');
+
 Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
 Route::get('/utilisateur-checkout', [App\Http\Controllers\Utilisateur\checkout\Checkout::class, 'index'])->name('checkout');
 Route::get('/utilisateur-checkout-{id}-{type}', [App\Http\Controllers\Utilisateur\checkout\CalendrierReservationCheckout::class, 'index'])->name('checkout.calendrier');
