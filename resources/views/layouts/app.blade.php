@@ -140,54 +140,84 @@
 
             <!-- Parc Informatique -->
             <div class="nav-item-modern">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#parcCollapse">
-                    <i class="nav-icon bi bi-pc-display fs-6 text-secondary"></i>
-                    <span>Parc Informatique</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse" id="parcCollapse">
-                    <div class="nav-submenu">
-                        <a href="{{ url('equipement') }}" class="submenu-item">
-                            <i class="bi bi-laptop"></i>
-                            Vue d'ensemble équipements
-                        </a>
-                        <a href="{{ url('ordinateur') }}" class="submenu-item">
-                            <i class="bi bi-laptop"></i>
-                            Ordinateurs
-                        </a>
+    <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#parcCollapse">
+        <i class="nav-icon bi bi-pc-display fs-6 text-secondary"></i>
+        <span>Parc Informatique</span>
+        <i class="nav-chevron bi bi-chevron-down"></i>
+    </a>
 
-                        <a href="{{ url('moniteur') }}" class="submenu-item">
-                            <i class="bi bi-display"></i>
-                            Moniteurs
-                        </a>
-                        <a href="{{ url('logiciel') }}" class="submenu-item">
-                            <i class="bi bi-window"></i>
-                            Logiciels
-                        </a>
+    <div class="collapse" id="parcCollapse">
+        <div class="nav-submenu">
 
-                        <a href="{{ url('/imprimante') }}" class="submenu-item">
-                            <i class="bi bi-printer"></i>
-                            Imprimantes
-                        </a>
-
-                        <a href="{{ url('materiel-reseau') }}" class="submenu-item">
-                            <i class="bi bi-hdd-network"></i>
-                            Matériel Réseaux
-                        </a>
-
-                        <a href="{{ url('telephone') }}" class="submenu-item">
-                            <i class="bi bi-telephone"></i>
-                            Téléphones
-                        </a>
-
-                        <a href="{{ url('peripherique') }}" class="submenu-item">
-                            <i class="bi bi-usb-symbol"></i>
-                            Périphériques
-                        </a>
-
-                    </div>
+            <!-- Sous-menu Équipements -->
+            <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#equipementCollapse">
+                <i class="bi bi-laptop"></i>
+                <span>Équipements</span>
+                <i class="nav-chevron bi bi-chevron-down"></i>
+            </a>
+            <div class="collapse" id="equipementCollapse">
+                <div class="nav-submenu">
+                    <a href="{{ url('equipement') }}" class="submenu-item">
+                        <i class="bi bi-laptop"></i>
+                        Vue d'ensemble équipements
+                    </a>
+                    <a href="{{ url('ordinateur') }}" class="submenu-item">
+                        <i class="bi bi-laptop"></i>
+                        Ordinateurs
+                    </a>
+                    <a href="{{ url('moniteur') }}" class="submenu-item">
+                        <i class="bi bi-display"></i>
+                        Moniteurs
+                    </a>
+                    <a href="{{ url('logiciel') }}" class="submenu-item">
+                        <i class="bi bi-window"></i>
+                        Logiciels
+                    </a>
+                    <a href="{{ url('imprimante') }}" class="submenu-item">
+                        <i class="bi bi-printer"></i>
+                        Imprimantes
+                    </a>
+                    <a href="{{ url('materiel-reseau') }}" class="submenu-item">
+                        <i class="bi bi-hdd-network"></i>
+                        Matériel Réseaux
+                    </a>
+                    <a href="{{ url('telephone') }}" class="submenu-item">
+                        <i class="bi bi-telephone"></i>
+                        Téléphones
+                    </a>
+                    <a href="{{ url('peripherique') }}" class="submenu-item">
+                        <i class="bi bi-usb-symbol"></i>
+                        Périphériques
+                    </a>
                 </div>
             </div>
+
+            <!-- Sous-menu Incidents -->
+            <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#incidentCollapse">
+                <i class="bi bi-exclamation-triangle"></i>
+                <span>Incidents</span>
+                <i class="nav-chevron bi bi-chevron-down"></i>
+            </a>
+            <div class="collapse" id="incidentCollapse">
+                <div class="nav-submenu">
+                    <a href="{{ url('incident') }}" class="submenu-item">
+                        <i class="bi bi-bug"></i>
+                        Liste des incidents
+                    </a>
+                    <a href="{{ url('accessoir') }}" class="submenu-item">
+                        <i class="bi bi-tools"></i>
+                        Accessoires
+                    </a>
+                    <a href="{{ url('historique') }}" class="submenu-item">
+                        <i class="bi bi-clock-history"></i>
+                        Historique
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
             <!-- Utilisateurs -->
             <div class="nav-item-modern">

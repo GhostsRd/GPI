@@ -6,81 +6,166 @@
             <p class="text-gray-600">Inventaire complet des équipements mobiles</p>
         </div>
 
-        <!-- Statistiques -->
-        <div class="row mb-4">
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-primary">{{ $stats['total'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Total équipements</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-mobile-alt fa-lg"></i>
-                                </div>
-                            </div>
-                        </div>
+       <!-- Statistiques -->
+@if($showStats)
+<div class="row mb-4">
+    <!-- Total Téléphones -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="stat-number text-primary mb-1">{{ $stats['total'] ?? 0 }}</h3>
+                    <p class="text-muted small mb-0 fw-medium">Total Téléphones</p>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-primary" style="width: 100%"></div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-success">{{ $stats['enService'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">En service</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-check-circle fa-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-warning">{{ $stats['enStock'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">En stock</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-box fa-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-danger">{{ $stats['horsService'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Hors service</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-times-circle fa-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat-icon-lg icon-primary ms-3">
+                    <i class="fas fa-mobile-alt"></i>
                 </div>
             </div>
         </div>
+    </div>
 
+    <!-- En service -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="stat-number text-success mb-1">{{ $stats['enService'] ?? 0 }}</h3>
+                    <p class="text-muted small mb-0 fw-medium">En service</p>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-success" 
+                             style="width: {{ $stats['total'] > 0 ? ($stats['enService'] / $stats['total'] * 100) : 0 }}%"></div>
+                    </div>
+                </div>
+                <div class="stat-icon-lg icon-success ms-3">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- En stock -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="stat-number text-warning mb-1">{{ $stats['enStock'] ?? 0 }}</h3>
+                    <p class="text-muted small mb-0 fw-medium">En stock</p>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-warning" 
+                             style="width: {{ $stats['total'] > 0 ? ($stats['enStock'] / $stats['total'] * 100) : 0 }}%"></div>
+                    </div>
+                </div>
+                <div class="stat-icon-lg icon-warning ms-3">
+                    <i class="fas fa-box"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hors service -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="stat-number text-danger mb-1">{{ $stats['horsService'] ?? 0 }}</h3>
+                    <p class="text-muted small mb-0 fw-medium">Hors service</p>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-danger" 
+                             style="width: {{ $stats['total'] > 0 ? ($stats['horsService'] / $stats['total'] * 100) : 0 }}%"></div>
+                    </div>
+                </div>
+                <div class="stat-icon-lg icon-danger ms-3">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- En réparation -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="stat-number text-info mb-1">{{ $stats['enReparation'] ?? 0 }}</h3>
+                    <p class="text-muted small mb-0 fw-medium">En réparation</p>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-info" 
+                             style="width: {{ $stats['total'] > 0 ? ($stats['enReparation'] / $stats['total'] * 100) : 0 }}%"></div>
+                    </div>
+                </div>
+                <div class="stat-icon-lg icon-info ms-3">
+                    <i class="fas fa-tools"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Taux disponibilité -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    @php
+                        $taux = $stats['tauxDisponibilite'] ?? 0;
+                    @endphp
+                    <h3 class="stat-number mb-1 {{ $taux >= 80 ? 'text-success' : ($taux >= 50 ? 'text-warning' : 'text-danger') }}">
+                        {{ $taux }}%
+                    </h3>
+                    <p class="text-muted small mb-0 fw-medium">Disponibilité</p>
+                    <div class="progress mt-2" style="height: 6px;">
+                        <div class="progress-bar {{ $taux >= 80 ? 'bg-success' : ($taux >= 50 ? 'bg-warning' : 'bg-danger') }}" 
+                             style="width: {{ min($taux, 100) }}%"></div>
+                    </div>
+                </div>
+                <div class="stat-icon-lg {{ $taux >= 80 ? 'icon-success' : ($taux >= 50 ? 'icon-warning' : 'icon-danger') }} ms-3">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- iOS -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="stat-number text-dark mb-1">{{ $stats['ios'] ?? 0 }}</h3>
+                    <p class="text-muted small mb-0 fw-medium">iOS</p>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-dark" 
+                             style="width: {{ $stats['total'] > 0 ? ($stats['ios'] / $stats['total'] * 100) : 0 }}%"></div>
+                    </div>
+                </div>
+                <div class="stat-icon-lg icon-dark ms-3">
+                    <i class="fab fa-apple"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Android -->
+    <div class="col-xl-2 col-md-4 mb-3">
+        <div class="dashboard-card stat-card h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="flex-grow-1">
+                    <h3 class="stat-number text-green mb-1">{{ $stats['android'] ?? 0 }}</h3>
+                    <p class="text-muted small mb-0 fw-medium">Android</p>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar bg-green" 
+                             style="width: {{ $stats['total'] > 0 ? ($stats['android'] / $stats['total'] * 100) : 0 }}%"></div>
+                    </div>
+                </div>
+                <div class="stat-icon-lg icon-green ms-3">
+                    <i class="fab fa-android"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
         <!-- Barre de recherche et filtres -->
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">

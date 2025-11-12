@@ -3,294 +3,334 @@
         <!-- En-tête -->
         <div class="mb-4">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">Gestion des Périphériques</h1>
-            <p class="text-gray-600">Inventaire complet des équipements périphériques</p>
+            <p class="text-gray-600 small">Inventaire complet des équipements périphériques</p>
         </div>
 
-        <!-- Statistiques -->
+        <!-- Cartes de statistiques -->
         <div class="row mb-4">
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-primary">{{ $stats['total'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Total Périphériques</p>
+            <!-- Total Périphériques -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100 icon-primary">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-primary mb-1 small">{{ $stats['total'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Total Périphériques</p>
+                            <div class="progress mt-2" style="height: 3px;">
+                                <div class="progress-bar bg-primary" style="width: 100%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-desktop fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-sm ms-2">
+                            <i class="fas fa-desktop fa-fw"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-success">{{ $stats['en_service'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">En service</p>
+            <!-- En service -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100 icon-success">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-success mb-1 small">{{ $stats['en_service'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Service</p>
+                            <div class="progress mt-2" style="height: 3px;">
+                                <div class="progress-bar bg-success" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_service'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-check-circle fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-sm ms-2">
+                            <i class="fas fa-check-circle fa-fw"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-warning">{{ $stats['en_stock'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">En stock</p>
+            <!-- En stock -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100 icon-info">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-info mb-1 small">{{ $stats['en_stock'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Stock</p>
+                            <div class="progress mt-2" style="height: 3px;">
+                                <div class="progress-bar bg-info" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_stock'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-box fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-sm ms-2">
+                            <i class="fas fa-box fa-fw"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-danger">{{ $stats['hors_service'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Hors service</p>
+            <!-- Hors service -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100 icon-danger">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-danger mb-1 small">{{ $stats['hors_service'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Hors Service</p>
+                            <div class="progress mt-2" style="height: 3px;">
+                                <div class="progress-bar bg-danger" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['hors_service'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-times-circle fa-lg"></i>
-                                </div>
+                        </div>
+                        <div class="stat-icon-sm ms-2">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- En réparation -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100 icon-warning">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-warning mb-1 small">{{ $stats['en_reparation'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Réparation</p>
+                            <div class="progress mt-2" style="height: 3px;">
+                                <div class="progress-bar bg-warning" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_reparation'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
+                        </div>
+                        <div class="stat-icon-sm ms-2">
+                            <i class="fas fa-tools fa-fw"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Taux de disponibilité -->
+            @php
+                $disponible = ($stats['en_service'] ?? 0) + ($stats['en_stock'] ?? 0);
+                $total = $stats['total'] ?? 1;
+                $taux = $total > 0 ? round(($disponible / $total) * 100) : 0;
+                $tauxClass = $taux >= 80 ? 'success' : ($taux >= 60 ? 'warning' : 'danger');
+            @endphp
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100 icon-{{ $tauxClass }}">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number mb-1 text-{{ $tauxClass }} small">
+                                {{ $taux }}%
+                            </h3>
+                            <p class="text-muted small mb-0 fw-medium">Disponibilité</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-{{ $tauxClass }}" 
+                                     style="width: {{ $taux }}%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-icon-sm ms-2">
+                            <i class="fas fa-chart-line fa-fw"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Barre de recherche et filtres -->
-         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
-                        <label class="form-label small fw-bold">Recherche</label>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-transparent">
-                                <i class="fas fa-search text-muted"></i>
-                            </span>
-                            <input type="text" wire:model.live="search"
-                                   class="form-control" placeholder="Nom, modèle, fabricant...">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Statut</label>
-                        <select wire:model.live="filterStatut" class="form-select form-select-sm">
-                            <option value="">Tous les statuts</option>
-                            @foreach($statuts as $statut)
-                                <option value="{{ $statut }}">{{ $statut }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Type</label>
-                        <select wire:model.live="filterType" class="form-select form-select-sm">
-                            <option value="">Tous les types</option>
-                            @foreach($types as $type)
-                                <option value="{{ $type }}">{{ $type }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Fabricant</label>
-                        <select wire:model.live="filterFabricant" class="form-select form-select-sm">
-                            <option value="">Tous les fabricants</option>
-                            @foreach($fabricants as $fabricant)
-                                <option value="{{ $fabricant }}">{{ $fabricant }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" wire:click="resetFilters"
-                                class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
-                            <i class="fa fa-times"></i> Reset
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <!-- AJOUT DU BOUTON IMPORT -->
-                        <button wire:click="openImportModal" class="btn btn-info btn-sm w-100" title="Importer des périphériques">
-                            <i class="fas fa-file-import"></i> Importer
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les périphériques sélectionnés"
-                            {{ empty($selectedPeripheriques) ? 'disabled' : '' }}>
-                            <i class="fas fa-trash"></i>
-                            ({{ count($selectedPeripheriques) }})
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button wire:click="exportToCsv" class="btn btn-success btn-sm w-100" title="Exporter les périphériques">
-                            <i class="fas fa-file-export"></i>
-                            Exporter
-                        </button>
-                    </div>
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-2">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <!-- Recherche -->
+            <div class="flex-grow-1" style="min-width: 200px; max-width: 300px;">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-transparent border-end-0 py-1">
+                        <i class="fas fa-search text-muted small"></i>
+                    </span>
+                    <input type="text" wire:model.live="search"
+                           class="form-control form-control-sm border-start-0 py-1" 
+                           placeholder="Rechercher...">
                 </div>
             </div>
-        </div>
 
-        <!-- Table Container -->
-        <div class="table-container border-0 fade-in-up">
-            <div class="table-header">
-                <div class="table-title">
-                    Liste des Périphériques ({{ $peripheriques->total() }})
-                </div>
+            <!-- Filtres -->
+            <select wire:model.live="filterStatut" class="form-select form-select-sm" style="width: 140px;" title="Statut">
+                <option value="">📊 Statut</option>
+                @foreach($statuts as $statut)
+                    <option value="{{ $statut }}">{{ $statut }}</option>
+                @endforeach
+            </select>
+
+            <select wire:model.live="filterType" class="form-select form-select-sm" style="width: 140px;" title="Type">
+                <option value="">🖥️ Type</option>
+                @foreach($types as $type)
+                    <option value="{{ $type }}">{{ $type }}</option>
+                @endforeach
+            </select>
+
+            <select wire:model.live="filterFabricant" class="form-select form-select-sm" style="width: 140px;" title="Fabricant">
+                <option value="">🏭 Fabricant</option>
+                @foreach($fabricants as $fabricant)
+                    <option value="{{ $fabricant }}">{{ $fabricant }}</option>
+                @endforeach
+            </select>
+
+            <!-- Actions -->
+            <div class="d-flex gap-1">
+                <button type="button" wire:click="resetFilters"
+                        class="btn btn-outline-secondary btn-sm" title="Réinitialiser">
+                    <i class="fas fa-times "></i>
+                </button>
+
+                <button wire:click="openImportModal" class="btn btn-outline-info btn-sm" title="Importer">
+                    <i class="fas fa-file-import "></i>
+                </button>
+
+                <button wire:click="exportToCsv" class="btn btn-outline-success btn-sm" title="Exporter">
+                    <i class="fas fa-file-export "></i>
+                </button>
+
+                <button wire:click="deleteSelected" class="btn btn-outline-danger btn-sm" title="Supprimer sélection"
+                    {{ empty($selectedPeripheriques) ? 'disabled' : '' }}>
+                    <i class="fas fa-trash "></i>
+                    <span class="small ms-1">{{ count($selectedPeripheriques) }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- Tableau des périphériques -->
+        <div class="dashboard-card p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="fw-semibold mb-0 small">Liste des Périphériques ({{ $peripheriques->total() }})</h5>
                 <button wire:click="showForm" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus mr-2"></i>Nouveau Périphérique
+                    <i class="fas fa-plus me-1 small"></i>
+                    <span class="small">Nouveau</span>
                 </button>
             </div>
 
-            <div class="table-wrapper p-0 border-0 w-100 compact-mode">
-                <table class="table border-0 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover">
                     <thead>
-                    <tr>
-                        <th>
-                            <input type="checkbox" wire:model="selectAll" class="checkbox-modern">
-                        </th>
-                        <th wire:click="sortBy('nom')" class="sortable">
-                            Nom
-                            @if($sortField === 'nom')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th wire:click="sortBy('type')" class="sortable">
-                            Type
-                            @if($sortField === 'type')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th wire:click="sortBy('statut')" class="sortable">
-                            Statut
-                            @if($sortField === 'statut')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th>Fabricant/Modèle</th>
-                        <th>Entité/Usager</th>
-                        <th>Lieu</th>
-                        <th wire:click="sortBy('updated_at')" class="sortable">
-                            Dernière modif.
-                            @if($sortField === 'updated_at')
-                            <i class="fas fa-sort-<?php echo e($sortDirection === 'asc' ? 'up' : 'down'); ?>"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th class="small">
+                                <input type="checkbox" wire:model="selectAll" class="form-check-input">
+                            </th>
+                            <th wire:click="sortBy('nom')" style="cursor: pointer;" class="small">
+                                Nom
+                                @if($sortField === 'nom')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('type')" style="cursor: pointer;" class="small">
+                                Type
+                                @if($sortField === 'type')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('statut')" style="cursor: pointer;" class="small">
+                                Statut
+                                @if($sortField === 'statut')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th class="small">Fabricant</th>
+                            <th class="small">Modèle</th>
+                            <th class="small">Entité</th>
+                            <th class="small">Usager</th>
+                            <th class="small">Lieu</th>
+                            <th wire:click="sortBy('updated_at')" style="cursor: pointer;" class="small">
+                                Dernière modif.
+                                @if($sortField === 'updated_at')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th class="small">Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
                     @forelse($peripheriques as $peripherique)
-                        <tr class="statut_{{ str_replace(' ', '_', $peripherique->statut) }}" style="cursor:pointer">
-                            <td>
+                        <tr class="statut_{{ str_replace(' ', '_', $peripherique->statut) }}">
+                            <td class="small">
                                 <input type="checkbox"
                                        wire:model="selectedPeripheriques"
                                        value="{{ $peripherique->id }}"
-                                       class="checkbox-modern">
+                                       class="form-check-input">
                             </td>
-                            <td wire:click="showDetails({{ $peripherique->id }})">
-                                <div class="d-flex align-items-center">
-                                    <div class="ms-3">
-                                        <p class="text-gray-900 whitespace-no-wrap fw-semibold mb-0">
-                                            {{ $peripherique->nom }}
-                                        </p>
-                                        @if($peripherique->entite)
-                                            <p class="text-gray-600 small mb-0">{{ $peripherique->entite }}</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </td>
-                            <td wire:click="showDetails({{ $peripherique->id }})">
-                                <span class="type-badge type-{{ strtolower($peripherique->type) }}">
+                            <td class="fw-medium small">{{ $peripherique->nom }}</td>
+                            <td class="small">
+                                <span class="badge bg-light text-dark border small">
                                     {{ $peripherique->type }}
                                 </span>
                             </td>
-                            <td wire:click="showDetails({{ $peripherique->id }})">
+                            <td class="small">
                                 @php
-                                    $statutClasses = [
-                                        'En service' => 'bg-green-100 text-green-800',
-                                        'En stock' => 'bg-blue-100 text-blue-800',
-                                        'Hors service' => 'bg-red-100 text-red-800',
-                                        'En maintenance' => 'bg-yellow-100 text-yellow-800'
+                                    $statusClasses = [
+                                        'En service' => 'badge bg-success badge-sm',
+                                        'En stock' => 'badge bg-info badge-sm',
+                                        'En réparation' => 'badge bg-warning badge-sm',
+                                        'Hors service' => 'badge bg-danger badge-sm'
                                     ];
-                                    $classe = $statutClasses[$peripherique->statut] ?? 'bg-gray-100 text-gray-800';
                                 @endphp
-                                <span class="status-badge {{ $classe }}">
+                                <span class="{{ $statusClasses[$peripherique->statut] ?? 'badge bg-secondary badge-sm' }}">
                                     {{ $peripherique->statut }}
                                 </span>
                             </td>
-                            <td wire:click="showDetails({{ $peripherique->id }})">
-                                <p class="text-gray-900 whitespace-no-wrap fw-medium mb-0">
-                                    {{ $peripherique->fabricant ?? 'N/A' }}
-                                </p>
-                                <p class="text-gray-600 small mb-0">{{ $peripherique->modele ?? '' }}</p>
-                            </td>
-                            <td wire:click="showDetails({{ $peripherique->id }})">
-                                <p class="text-gray-900 whitespace-no-wrap mb-0">
-                                    {{ $peripherique->entite ?? '-' }}
-                                </p>
-                                @if($peripherique->usager)
-                                    <p class="text-gray-600 small mb-0">{{ $peripherique->usager }}</p>
-                                @endif
-                            </td>
-                            <td wire:click="showDetails({{ $peripherique->id }})">
-                                <p class="text-gray-900 whitespace-no-wrap">
-                                    {{ $peripherique->lieu ?? 'N/A' }}
-                                </p>
-                            </td>
-                            <td wire:click="showDetails({{ $peripherique->id }})">
-                                {{ $peripherique->updated_at->format('d/m/Y H:i') }}
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button wire:click="edit({{ $peripherique->id }})"
-                                            class="btn-action btn-edit">
-                                        <i class="fas fa-edit"></i>
+                            <td class="small">{{ $peripherique->fabricant ?? 'N/A' }}</td>
+                            <td class="small">{{ $peripherique->modele ?? 'N/A' }}</td>
+                            <td class="small">{{ $peripherique->entite ?? '-' }}</td>
+                            <td class="small">{{ $peripherique->usager ?? '-' }}</td>
+                            <td class="small">{{ $peripherique->lieu ?? 'N/A' }}</td>
+                            <td class="small">{{ $peripherique->updated_at->format('d/m/Y H:i') }}</td>
+                            <td class="small">
+                                <div class="d-flex gap-1">
+                                    <!-- Bouton Voir Détails -->
+                                    <button wire:click="showDetails({{ $peripherique->id }})"
+                                            class="btn btn-sm btn-outline-info border-0"
+                                            title="Voir détails">
+                                        <i class="fas fa-eye small"></i>
                                     </button>
+                                    <!-- Boutons Sortie/Retour selon le statut -->
+                                    @if($peripherique->statut === 'En stock')
+                                        <button wire:click="quickSortie({{ $peripherique->id }})"
+                                                class="btn btn-sm btn-outline-success border-0"
+                                                title="Sortir le périphérique">
+                                            <i class="fas fa-sign-out-alt small"></i>
+                                        </button>
+                                    @endif
+                                    
+                                    @if($peripherique->statut === 'En service')
+                                        <button wire:click="quickRetour({{ $peripherique->id }})"
+                                                class="btn btn-sm btn-outline-warning border-0"
+                                                title="Retourner le périphérique">
+                                            <i class="fas fa-sign-in-alt small"></i>
+                                        </button>
+                                    @endif
+                                    <!-- Bouton Modifier -->
+                                    <button wire:click="edit({{ $peripherique->id }})"
+                                            class="btn btn-sm btn-outline-primary border-0"
+                                            title="Modifier">
+                                        <i class="fas fa-edit small"></i>
+                                    </button>
+                                    <!-- Bouton Supprimer -->
                                     <button wire:click="confirmDelete({{ $peripherique->id }})"
-                                            class="btn-action btn-delete">
-                                        <i class="fas fa-trash"></i>
+                                            class="btn btn-sm btn-outline-danger border-0"
+                                            title="Supprimer">
+                                        <i class="fas fa-trash small"></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10" class="text-center py-4">
-                                <i class="fas fa-desktop fa-2x text-muted mb-2"></i>
-                                <p class="text-muted">Aucun périphérique trouvé</p>
+                            <td colspan="11" class="text-center py-3">
+                                <i class="fas fa-desktop text-muted d-block mb-2 small"></i>
+                                <p class="text-muted mb-0 small">Aucun périphérique trouvé</p>
                                 @if($search || $filterStatut || $filterType || $filterFabricant)
                                     <button wire:click="resetFilters" class="btn btn-outline-primary btn-sm mt-2">
-                                        <i class="fas fa-refresh me-1"></i>
-                                        Réinitialiser les filtres
+                                        <i class="fas fa-refresh me-1 small"></i>
+                                        <span class="small">Réinitialiser</span>
                                     </button>
                                 @endif
                             </td>
@@ -301,8 +341,17 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-4 container">
-                {{ $peripheriques->links() }}
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="text-muted small">
+                    @if($peripheriques->count() > 0)
+                        Affichage de {{ $peripheriques->firstItem() }} à {{ $peripheriques->lastItem() }} sur {{ $peripheriques->total() }} périphériques
+                    @else
+                        Aucun périphérique
+                    @endif
+                </div>
+                <div class="small">
+                    {{ $peripheriques->links() }}
+                </div>
             </div>
         </div>
     </div>
@@ -310,7 +359,7 @@
     <!-- Modal Import -->
 @if($showImportModal)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -357,7 +406,7 @@
 <!-- Modal Mapping -->
 @if($showMappingModal)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -504,7 +553,7 @@
 <!-- Modal Aperçu des données importées -->
 @if($showImportedData)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -578,11 +627,10 @@
     </div>
 @endif
 
-
-    <!-- Modal Formulaire -->
-    @if($showForm)
+<!-- Modal Formulaire -->
+@if($showForm)
     <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
@@ -673,237 +721,382 @@
             </div>
         </div>
     </div>
-    @endif
+@endif
 
-    <!-- Confirmation Modal -->
-    @if($confirmingDelete)
-        <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirmer la suppression</h5>
-                        <button type="button" wire:click="$set('confirmingDelete', false)" class="btn-close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Êtes-vous sûr de vouloir supprimer ce périphérique ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button wire:click="$set('confirmingDelete', false)" class="btn btn-secondary">Annuler</button>
-                        <button wire:click="delete({{ $confirmingDelete }})" class="btn btn-danger">
-                            <i class="fas fa-trash me-1"></i>
-                            Supprimer
-                        </button>
-                    </div>
+<!-- Confirmation Modal -->
+@if($confirmingDelete)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmer la suppression</h5>
+                    <button type="button" wire:click="$set('confirmingDelete', false)" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Êtes-vous sûr de vouloir supprimer ce périphérique ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button wire:click="$set('confirmingDelete', false)" class="btn btn-secondary">Annuler</button>
+                    <button wire:click="delete({{ $confirmingDelete }})" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>
+                        Supprimer
+                    </button>
                 </div>
             </div>
         </div>
-    @endif
+    </div>
+@endif
 
-    <!-- Flash Messages -->
-    @if (session()->has('success'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<!-- Modal Détails du Périphérique -->
+@if($showDetailsModal && $selectedPeripherique)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Détails du Périphérique
+                    </h5>
+                    <button type="button" wire:click="closeDetailsModal" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Informations générales</h6>
+                            <p><strong>Nom:</strong> {{ $selectedPeripherique->nom }}</p>
+                            <p><strong>Type:</strong> {{ $selectedPeripherique->type }}</p>
+                            <p><strong>Statut:</strong> 
+                                @php
+                                    $statusClasses = [
+                                        'En service' => 'badge bg-success',
+                                        'En stock' => 'badge bg-info',
+                                        'En réparation' => 'badge bg-warning',
+                                        'Hors service' => 'badge bg-danger'
+                                    ];
+                                @endphp
+                                <span class="{{ $statusClasses[$selectedPeripherique->statut] ?? 'badge bg-secondary' }}">
+                                    {{ $selectedPeripherique->statut }}
+                                </span>
+                            </p>
+                            <p><strong>Fabricant:</strong> {{ $selectedPeripherique->fabricant ?? 'N/A' }}</p>
+                            <p><strong>Modèle:</strong> {{ $selectedPeripherique->modele ?? 'N/A' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Localisation</h6>
+                            <p><strong>Entité:</strong> {{ $selectedPeripherique->entite ?? 'N/A' }}</p>
+                            <p><strong>Lieu:</strong> {{ $selectedPeripherique->lieu ?? 'N/A' }}</p>
+                            <p><strong>Usager:</strong> {{ $selectedPeripherique->usager ?? 'N/A' }}</p>
+                            <p><strong>Date création:</strong> {{ $selectedPeripherique->created_at->format('d/m/Y H:i') }}</p>
+                            <p><strong>Dernière modification:</strong> {{ $selectedPeripherique->updated_at->format('d/m/Y H:i') }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="closeDetailsModal" class="btn btn-secondary">
+                        Fermer
+                    </button>
+                </div>
             </div>
         </div>
-    @endif
-</div>
+    </div>
+@endif
 
+<!-- Modal Sortie de Périphérique -->
+@if($showSortieModal)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                        Sortie de Périphérique
+                    </h5>
+                    <button type="button" wire:click="$set('showSortieModal', false)" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent="enregistrerSortie">
+                        <div class="mb-3">
+                            <label class="form-label">Périphérique *</label>
+                            <select class="form-select form-select-sm" wire:model="sortiePeripheriqueId" required>
+                                <option value="">Sélectionnez un périphérique</option>
+                                @foreach($this->peripheriquesEnStock as $peripherique)
+                                    <option value="{{ $peripherique->id }}">{{ $peripherique->nom }} ({{ $peripherique->type }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Usager *</label>
+                            <input type="text" class="form-control form-control-sm" wire:model="sortieUsager" required
+                                   placeholder="Nom de l'usager">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Entité/Service *</label>
+                            <input type="text" class="form-control form-control-sm" wire:model="sortieEntite" required
+                                   placeholder="Entité ou service">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Lieu d'utilisation *</label>
+                            <input type="text" class="form-control form-control-sm" wire:model="sortieLieu" required
+                                   placeholder="Lieu d'utilisation">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Date de sortie *</label>
+                            <input type="datetime-local" class="form-control form-control-sm" wire:model="sortieDate" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Commentaire</label>
+                            <textarea class="form-control form-control-sm" wire:model="sortieCommentaire" 
+                                      placeholder="Commentaire optionnel" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="$set('showSortieModal', false)" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-times me-1"></i>
+                        Annuler
+                    </button>
+                    <button type="button" wire:click="enregistrerSortie" class="btn btn-primary btn-sm">
+                        <i class="fas fa-check me-1"></i>
+                        Enregistrer la sortie
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+<!-- Modal Retour de Périphérique -->
+@if($showRetourModal)
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-sign-in-alt me-2"></i>
+                        Retour de Périphérique
+                    </h5>
+                    <button type="button" wire:click="$set('showRetourModal', false)" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <form wire:submit.prevent="enregistrerRetour">
+                        <div class="mb-3">
+                            <label class="form-label">Périphérique *</label>
+                            <select class="form-select form-select-sm" wire:model="retourPeripheriqueId" required>
+                                <option value="">Sélectionnez un périphérique</option>
+                                @foreach($this->peripheriquesEnService as $peripherique)
+                                    <option value="{{ $peripherique->id }}">{{ $peripherique->nom }} ({{ $peripherique->type }}) - {{ $peripherique->usager }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Date de retour *</label>
+                            <input type="datetime-local" class="form-control form-control-sm" wire:model="retourDate" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">État du retour</label>
+                            <select class="form-select form-select-sm" wire:model="retourEtat">
+                                <option value="Bon">Bon état</option>
+                                <option value="Usure normale">Usure normale</option>
+                                <option value="Endommagé">Endommagé</option>
+                                <option value="Hors service">Hors service</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Commentaire</label>
+                            <textarea class="form-control form-control-sm" wire:model="retourCommentaire" 
+                                      placeholder="Commentaire sur l'état ou le retour" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="$set('showRetourModal', false)" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-times me-1"></i>
+                        Annuler
+                    </button>
+                    <button type="button" wire:click="enregistrerRetour" class="btn btn-primary btn-sm">
+                        <i class="fas fa-check me-1"></i>
+                        Enregistrer le retour
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+
+<!-- Flash Messages -->
+@if (session()->has('success'))
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+@endif
+
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @push('styles')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .peripherique-dashboard {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .stats-widget {
-            border-radius: 10px;
-            transition: transform 0.2s;
-        }
-        
-        .stats-widget:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stats-number {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 0.2rem;
-        }
-        
-        .stats-label {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-        
-        .avatar-sm {
-            width: 50px;
-            height: 50px;
-        }
-        
-        .table-container {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .table-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #495057;
-        }
-        
-        .table-wrapper {
-            overflow-x: auto;
-        }
-        
-        .table th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-            font-weight: 600;
-            color: #495057;
-            padding: 0.75rem;
-        }
-        
-        .table td {
-            padding: 0.75rem;
-            vertical-align: middle;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .sortable {
-            cursor: pointer;
-            user-select: none;
-        }
-        
-        .sortable:hover {
-            background-color: #e9ecef;
-        }
-        
-        .checkbox-modern {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .btn-action {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-edit {
-            background-color: #fff3cd;
-            color: #ffc107;
-        }
-        
-        .btn-delete {
-            background-color: #f8d7da;
-            color: #dc3545;
-        }
-        
-        .btn-action:hover {
-            transform: scale(1.1);
-        }
-        
-        .status-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .type-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background-color: #e9ecef;
-            color: #495057;
-        }
-        
-        .type-ecran {
-            background-color: rgba(13, 110, 253, 0.1);
-            color: #0d6efd;
-            border: 1px solid rgba(13, 110, 253, 0.2);
-        }
-        
-        .type-imprimante {
-            background-color: rgba(111, 66, 193, 0.1);
-            color: #6f42c1;
-            border: 1px solid rgba(111, 66, 193, 0.2);
-        }
-        
-        .type-clavier {
-            background-color: rgba(253, 126, 20, 0.1);
-            color: #fd7e14;
-            border: 1px solid rgba(253, 126, 20, 0.2);
-        }
-        
-        .type-souris {
-            background-color: rgba(32, 201, 151, 0.1);
-            color: #20c997;
-            border: 1px solid rgba(32, 201, 151, 0.2);
-        }
-        
-        .type-casque {
-            background-color: rgba(214, 51, 132, 0.1);
-            color: #d63384;
-            border: 1px solid rgba(214, 51, 132, 0.2);
-        }
-        
-        .fade-in-up {
-            animation: fadeInUp 0.5s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Styles pour les lignes selon le statut */
-        .statut_En_service:hover {
-            background-color: rgba(40, 167, 69, 0.05) !important;
-        }
-        
-        .statut_En_stock:hover {
-            background-color: rgba(13, 110, 253, 0.05) !important;
-        }
-        
-        .statut_Hors_service:hover {
-            background-color: rgba(220, 53, 69, 0.05) !important;
-        }
-        
-        .statut_En_maintenance:hover {
-            background-color: rgba(255, 193, 7, 0.05) !important;
-        }
-    </style>
+<style>
+/* Styles optimisés avec taille de police réduite */
+.peripherique-dashboard {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 0.875rem;
+}
+
+.dashboard-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
+}
+
+/* Icônes plus petites pour les statistiques */
+.stat-icon-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.stat-number.small {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+/* Couleurs des icônes */
+.icon-primary .stat-icon-sm {
+    background: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+.icon-success .stat-icon-sm {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+.icon-info .stat-icon-sm {
+    background: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+}
+.icon-warning .stat-icon-sm {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+.icon-danger .stat-icon-sm {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+/* Table responsive */
+.table-sm td, .table-sm th {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.8rem;
+}
+
+.badge-sm {
+    font-size: 0.7em;
+    padding: 0.25em 0.5em;
+}
+
+.btn-sm {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+}
+
+/* Barres de progression plus fines */
+.progress {
+    height: 3px !important;
+}
+
+/* Hover states */
+.statut_En_service:hover {
+    background-color: rgba(25, 135, 84, 0.03) !important;
+}
+
+.statut_En_stock:hover {
+    background-color: rgba(13, 202, 240, 0.03) !important;
+}
+
+.statut_Hors_service:hover {
+    background-color: rgba(220, 53, 69, 0.03) !important;
+}
+
+.statut_En_réparation:hover {
+    background-color: rgba(255, 193, 7, 0.03) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .peripherique-dashboard {
+        font-size: 0.8rem;
+    }
+    
+    .stat-number.small {
+        font-size: 1.2rem;
+    }
+    
+    .stat-icon-sm {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .table-sm td, .table-sm th {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.2rem;
+    }
+    
+    .btn-sm {
+        padding: 0.15rem 0.3rem;
+        font-size: 0.75rem;
+    }
+}
+</style>
+<style>
+/* Style pour les selects avec icônes */
+.form-select-sm {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Boutons plus compacts */
+.btn-sm {
+    padding: 0.2rem 0.4rem;
+}
+
+/* Input group plus compact */
+.input-group-sm > .form-control,
+.input-group-sm > .input-group-text {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .d-flex.flex-wrap {
+        gap: 0.5rem !important;
+    }
+    
+    .flex-grow-1 {
+        min-width: 150px !important;
+        max-width: 100% !important;
+    }
+    
+    select.form-select-sm {
+        width: 120px !important;
+    }
+}
+</style>
 @endpush
