@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\checkoutreserver as matreservation;
 use Illuminate\Support\Facades\Auth;
 
+
 class ReservationView extends Component
 {
   public $reservationID;

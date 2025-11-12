@@ -35,12 +35,14 @@ class Checkout extends Component
     public $valeur3;
 
     public $valeur4;
+    public $selectcheckoutID;
 
   
     public $filtrerMateriel = "";
     public $events = [];
 
     public $selectedMateriels = [];
+    public $selectedCheckouts;
     public $etape = [
         1 => "active",
         2=> "remove",
@@ -51,10 +53,28 @@ class Checkout extends Component
     
     public $selectedEquipements;
 
+     public function redicrectlink($vals){
+        if($vals == 1){
+        return redirect()->route('utilisateurService');
 
-public function openCalendrier($type,$id){
-     return redirect()->to(route('checkout.calendrier',['type'=>$type,'id'=>$id]));
-}
+        }
+        elseif($vals == 2){
+            return redirect()->route('checkout');
+        }
+        elseif($vals == 3){
+            return redirect()->route('utilisateur.incident');
+        }
+    }
+    public function visualisercheckout($id){
+        $this->selectcheckoutID = $id;
+
+        $this->selectedCheckouts = modelchekout::findOrFail($this->selectcheckoutID);
+    }
+
+
+    public function openCalendrier($type,$id){
+        return redirect()->to(route('checkout.calendrier',['type'=>$type,'id'=>$id]));
+    }
 
   
 
@@ -118,6 +138,8 @@ public function openCalendrier($type,$id){
         $ordinateur = ordinateur::find(1);
         $this->selectedEquipements;
         $this->type_materiel;
+        $this->selectcheckoutID;
+        $this->selectedCheckouts;
         //$this->events;
         // dd(gettype($ordinateur->statut));
        // $this->events = ReservationEquipement::where('equipement_id',$this->equipement_id)

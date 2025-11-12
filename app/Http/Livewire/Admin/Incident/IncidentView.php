@@ -10,9 +10,12 @@ class IncidentView extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh'];
     public $incidentId;
+
+
     public $currentStep;
     public $affichecommentaire = True;
     public $affichestep = False;
+    public $comments;
     public $progress;
     public $incidents;
     public $current = [
@@ -24,10 +27,10 @@ class IncidentView extends Component
 
 
     ];
-    public function modelstep(Incident $checkout)
+    public function modelstep(Incident $incident)
     {
-        $checkout = Incident::find($this->incidentId);
-        $this->currentStep = $checkout->statut;
+
+        $this->currentStep = $incident->statut;
 
         $this->current[$this->currentStep] = "current";
         $prog = $this->currentStep * 20;
@@ -51,12 +54,25 @@ class IncidentView extends Component
 
         }
 
-        $this->emitSelf('refreshComponent');
+        $this->emit('refreshComponent');
+    }
+    public function afficheretape()
+    {
+        $this->affichestep = !$this->affichestep;
+
+    }
+    public function rapport_incident(){
+         $incident = Incident::findOrFail($this->incidentId);
+        return redirect('storage/' . $incident->rapport_incident);
+    }
+    public function declaration_perte(){
+         $incident = Incident::findOrFail($this->incidentId);
+        return redirect('storage/' . $incident->declaration_perte);
     }
     public function previousStep()
     {
-            $incident = Incident::findOrFail($this->incidentId);
-         $this->modelstep($incident);
+        $incident = Incident::findOrFail($this->incidentId);
+        $this->modelstep($incident);
         if ($this->currentStep == 1) {
             return;
         } else {
@@ -69,32 +85,32 @@ class IncidentView extends Component
                     $this->progress = $progress;
                     break;
                 }
-                $this->emitSelf('refreshComponent');
+                $this->emit('refreshComponent');
             }
         }
         // Incident::where('id', $this->incidentId)->update(['statut' => $this->currentStep - 1]);
         // dd($this->current);
-    
+
         $incident->statut = $this->currentStep - 1;
         $incident->save();
-       
+
 
     }
     public function changercomment()
-  {
-    $this->affichecommentaire = !$this->affichecommentaire;
+    {
+        $this->affichecommentaire = !$this->affichecommentaire;
 
-  }
-  
+    }
+
     public function nextStep()
     {
-
+        $this->modelstep(Incident::find($this->incidentId));
         if ($this->currentStep == 4) {
             return;
         } elseif ($this->currentStep < 4) {
             Incident::where('id', $this->incidentId)->update(['statut' => $this->currentStep + 1]);
         }
-        $this->modelstep(Incident::find($this->incidentId));
+
 
     }
 
@@ -113,9 +129,9 @@ class IncidentView extends Component
             $commentaire->save();
 
             $this->comments = "";
-            $this->reset(['selectedvalsdata']);
+
             $this->emitSelf('refreshComponent');
-            $this->emitTo('Utilisateur.utilisateur-ticket', 'refreshComponent');
+
         }
 
         // session()->flash('message','Commentaire ajouter avec succes');
@@ -150,8 +166,12 @@ class IncidentView extends Component
         $this->modelstep(Incident::find($this->incidentId));
         return view(
             'livewire.admin.incident.incident-view',
+
             [
-                
+                "commentaires" => $this->incidents
+                    ->commentaire()
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(2),
             ]
         );
     }

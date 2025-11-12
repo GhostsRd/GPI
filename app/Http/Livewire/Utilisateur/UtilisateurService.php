@@ -34,8 +34,17 @@ class UtilisateurService extends Component
     public function steps2(){
         $this->step2 = "active";
     }
-    public function visiterCheckout(){
-        return redirect("/utilisateur-checkout");
+     public function redicrectlink($vals){
+        if($vals == 1){
+        return redirect()->route('utilisateurService');
+
+        }
+        elseif($vals == 2){
+            return redirect()->route('checkout');
+        }
+        elseif($vals == 3){
+            return redirect()->route('utilisateur.incident');
+        }
     }
     protected $rules = [
         'sujet'      => 'required|string|min:5',

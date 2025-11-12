@@ -9,7 +9,7 @@
                     </div>
 
                     <!-- Formulaire Livewire -->
-                    <form>
+               
                         <div class="modal-body p-2 row" style="max-height:400px;overflow-y: scroll">
                             <!-- Sujet -->
                             {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
@@ -30,37 +30,37 @@
 
                                 <div class="etap {{ $etape[1] }}">
                                     <a href="#" wire:click="$set('valeur1', 'ordinateur')" data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'ordinateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} nav-link text-dark card border-0  "
+                                        class=" {{ $valeur1 == 'ordinateur' ? ' shadow-lg fw-bold' : 'shadow-sm' }} nav-link text-dark card   "
                                         aria-current="true">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"># Ordinateur </label>
+                                            <label class="text-dark"> Ordinateur </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
                                     </a>
                                     <a href="#" wire:click="$set('valeur1', 'Telephone')" data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'Telephone' ? 'bg-secondary shadow ' : 'shadow-sm' }} nav-link text-dark card border-0 rounded-2 mb-1">
+                                        class=" {{ $valeur1 == 'Telephone' ? ' shadow-lg  fw-bold' : 'shadow-sm' }} nav-link text-dark card border-0 rounded-2 mb-1">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"># Telephone </label>
+                                            <label class="text-dark"> Telephone </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
                                     <a href="#" wire:click="$set('valeur1', 'Peripherique')"
                                         data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'Peripherique' ? 'bg-secondary shadow ' : 'shadow-sm' }} card text-dark border rounded-2 mb-1 nav-link">
+                                        class=" {{ $valeur1 == 'Peripherique' ? ' shadow-lg fw-bold' : 'shadow-sm' }} card text-dark border-0 rounded-2 mb-1 nav-link">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"># Peripherique </label>
+                                            <label class="text-dark"> Peripherique </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
 
-                                    <div class="">
-                                        <button wire:click="next_form(2)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮞</button>
+                                    <div class="mt-4 border-bottom py-1">
+                                        <button wire:click.prevent="next_form(2)"
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant ⮞</button>
                                     </div>
                                 </div>
 
@@ -68,39 +68,39 @@
 
                                 <div class="etap {{ $etape[2] }}">
                                     <a href="#" data-aos-duration="400" wire:click="$set('valeur2', 'Touche')"
-                                        class="nav-link {{ $valeur2 == 'Touche' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                        class="nav-link {{ $valeur2 == 'Touche' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class=" d-flex w-100 justify-content-between">
-                                            <label class="text-dark"># Telephone Touche -</label>
+                                            <label class="text-dark"> Telephone Touche -</label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
 
                                     <a data-aos-duration="400" wire:click="$set('valeur2', 'Android')" href="#"
-                                        class="nav-link {{ $valeur2 == 'Android' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                        class="nav-link {{ $valeur2 == 'Android' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"># Telephone Android -</label>
+                                            <label class="text-dark"> Telephone Android -</label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
 
                                     <a wire:click="$set('valeur2', 'Tablette')" href="#"
-                                        class="nav-link {{ $valeur2 == 'Tablette' ? 'bg-secondary shadow text-white' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                        class="nav-link {{ $valeur2 == 'Tablette' ? 'shadow-lg fw-bold text-white' : 'shadow-sm' }} card border rounded-2 mb-1">
 
                                         <div class=" d-flex w-100 justify-content-between">
-                                            <label class="text-dark"># Telephone Tablette -</label>
+                                            <label class="text-dark"> Telephone Tablette -</label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
                                     </a>
-                                    <div class="">
+                                    <div class="mt-4 border-bottom py-1">
                                         <button wire:click="next_form(1)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜ Precedent</button>
                                         <button wire:click="next_form(5)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮞</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant ⮞</button>
                                     </div>
                                 </div>
 
@@ -109,11 +109,11 @@
 
                                 <div class="etap {{ $etape[4] }}">
                                     <a wire:click="$set('valeur2', 'Regulateur')" href="#"
-                                        class="{{ $valeur2 == 'Regulateur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                        class="{{ $valeur2 == 'Regulateur' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
 
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label># Regulateur
-                                                -</label>
+                                            <label class="text-dark"> Regulateur
+                                                </label>
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
 
@@ -122,127 +122,121 @@
                                     <div class="list-group">
 
                                         <!-- Ordinateur -->
-                                        <a wire:click="$set('valeur2', 'Ordinateur')" href="#"
-                                            class="{{ $valeur2 == 'Ordinateur' ? 'bg-secondary shadow ' : 'shadow-sm' }}  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label># Ordinateur -</label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
+                                      
 
                                         <!-- Clavier -->
-                                        <a wire:click="$set('valeur2', 'Clavier')" href="#"
-                                            class="{{ $valeur2 == 'Clavier' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                        <a wire:click="$set('valeur2', 'Clavier')" href="#" 
+                                            class="{{ $valeur2 == 'Clavier' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Clavier -</label>
+                                                <label class="text-dark"> Clavier </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Souris -->
                                         <a wire:click="$set('valeur2', 'Souris')" href="#"
-                                            class="{{ $valeur2 == 'Souris' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Souris' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Souris -</label>
+                                                <label class="text-dark"> Souris </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Webcam -->
                                         <a wire:click="$set('valeur2', 'Webcam')" href="#"
-                                            class="{{ $valeur2 == 'Webcam' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Webcam' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Webcam -</label>
+                                                <label class="text-dark"> Webcam </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Casque -->
                                         <a wire:click="$set('valeur2', 'Casque')" href="#"
-                                            class="{{ $valeur2 == 'Casque' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Casque' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Casque -</label>
+                                                <label class="text-dark"> Casque </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Scanner -->
                                         <a wire:click="$set('valeur2', 'Scanner')" href="#"
-                                            class="{{ $valeur2 == 'Scanner' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Scanner' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Scanner -</label>
+                                                <label class="text-dark"> Scanner </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Câble -->
                                         <a wire:click="$set('valeur2', 'Cable')" href="#"
-                                            class="{{ $valeur2 == 'Cable' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Cable' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Câble -</label>
+                                                <label class="text-dark"> Câble </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- USB -->
                                         <a wire:click="$set('valeur2', 'USB')" href="#"
-                                            class="{{ $valeur2 == 'USB' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'USB' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># USB -</label>
+                                                <label class="text-dark"> USB </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Jabra -->
                                         <a wire:click="$set('valeur2', 'Jabra')" href="#"
-                                            class="{{ $valeur2 == 'Jabra' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Jabra' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Jabra -</label>
+                                                <label class="text-dark"> Jabra </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Powerbank -->
                                         <a wire:click="$set('valeur2', 'Powerbank')" href="#"
-                                            class="{{ $valeur2 == 'Powerbank' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Powerbank' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Powerbank -</label>
+                                                <label class="text-dark"> Powerbank </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Chargeur -->
                                         <a wire:click="$set('valeur2', 'Chargeur')" href="#"
-                                            class="{{ $valeur2 == 'Chargeur' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Chargeur' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Chargeur -</label>
+                                                <label class="text-dark"> Chargeur </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- APN -->
                                         <a wire:click="$set('valeur2', 'APN')" href="#"
-                                            class="{{ $valeur2 == 'APN' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'APN' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># APN -</label>
+                                                <label class="text-dark"> APN </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
 
                                         <!-- Appareil Photo -->
+                                        
                                         <a wire:click="$set('valeur2', 'Appareil Photo')" href="#"
-                                            class="{{ $valeur2 == 'Appareil Photo' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Appareil Photo' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Appareil Photo -</blabel>
-                                                    <small class="text-body-secondary">En stock</small>
+                                                <label class="text-dark"> Appareil Photo </label>
+                                                <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
-
                                         <!-- Dominos -->
                                         <a wire:click="$set('valeur2', 'Dominos')" href="#"
-                                            class="{{ $valeur2 == 'Dominos' ? 'bg-secondary shadow ' : 'shadow-sm' }} card border rounded-2 mb-1">
+                                            class="{{ $valeur2 == 'Dominos' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <label># Dominos -</label>
+                                                <label class="text-dark"> Dominos </label>
                                                 <small class="text-body-secondary">En stock</small>
                                             </div>
                                         </a>
@@ -263,7 +257,7 @@
 
                                 <div class="etap py-2 {{ $etape[5] }}">
                                     <h5 class="text-dark">Vos selection</h5>
-                                    <a href="#" data-aos="fade-down" data-aos-duration="400"
+                                    <a href="#" data-aos="fade-down" data-aos-duration="400" 
                                         class="py-2 list-group-item list-group-item-action border rounded-2 mb-1">
 
                                         <div class="d-flex py-2 px-1 w-100 justify-content-between">
@@ -287,8 +281,8 @@
                                         <button wire:click="next_form(1)"
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
                                         <button type="submit" wire:click="EnvoyerCheckout"
-                                            class="btn btn-two  fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
-
+                                            class="btn btn-two btn-sm    fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
+                                            Envoyer
                                             <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                 class="size-1">
@@ -312,7 +306,7 @@
                             {{-- <button type="submit" wire:click="EnvoyerCheckout"
                                 class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button> --}}
                         </div>
-                    </form>
+               
                 </div>
             </div>
         </div>
@@ -327,7 +321,7 @@
             <div class="col-lg-2 bg-white py-1 px-0 ">
 
 
-                <ul style="list-style: none " class="px-2  ">
+                <ul style="list-style: none " class="px-2 py-2 ">
                     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                         <div class="d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none"
@@ -336,7 +330,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
                             </svg>
-                            <h class="fw-bold text-dark mb-0">Acceuil / Checkout</h>
+                            <h class="fw-bold text-dark mb-0">Acceuil / incident</h>
                         </div>
 
                         <div class="text-end">
@@ -344,18 +338,51 @@
 
                         </div>
                     </div>
-                    <li style="cursor: pointer" class="bg-light bg-gradient py-2 " id="toggleSidebar"><svg
-                            width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                            class="size-6">
+                    <li style="cursor: pointer" class="bg-light bg-gradient py-2 "><svg width="20"
+                            class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
                         Nouveau projet
 
                     </li>
+                    <li style="cursor: pointer" wire:click="redicrectlink(3)" class="mt-1 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
 
-                    <li style="cursor: pointer" class="mt-1 d-flex justify-content-between align-items-center pl-4">
+                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
+                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                            </svg> <span class="mx-2">Mes incident</span>
+                        </div>
+
+                        
+                        <div class="text-end">
+                            {{-- <span class=" text-danger small me-2 fw-bold ">{{ count($incidents) }}</span> --}}
+
+                        </div>
+                    </li>
+                    <li style="cursor: pointer" wire:click="redicrectlink(1)" class="mt-1 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+
+                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
+                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                            </svg> <span class="mx-2">Mes ticket</span>
+                        </div>
+
+                        
+                        <div class="text-end">
+                            {{-- <span class=" text-danger small me-2 fw-bold ">{{ count($incidents) }}</span> --}}
+
+                        </div>
+                    </li>
+                    <li style="cursor: pointer" wire:click="redicrectlink(2)"
+                        class="mt-1 d-flex justify-content-between align-items-center ">
                         <div class="d-flex align-items-center">
 
                             <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
@@ -366,41 +393,7 @@
                             </svg> <span class="mx-2">Mes checkout</span>
                         </div>
                         <div class="text-end">
-                            <span class=" text-danger small me-2 fw-bold "></span>
-                        </div>
-                    </li>
-
-
-                    <li style="cursor: pointer" wire:click="visiterTicket"
-                        class="mt-1 d-flex justify-content-between align-items-center ">
-                        <div class="d-flex align-items-center">
-
-                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-                            </svg><span class="mx-2"> Mes tickets</span>
-                        </div>
-                        <div class="text-end">
                             <span class="text-muted small me-2">#12</span>
-
-                        </div>
-                    </li>
-
-                    <li style="cursor: pointer"
-                        class="mt-1 d-flex justify-content-between align-items-center ">
-                        <div class="d-flex align-items-center">
-
-                            <svg width="20" class="text-danger-emphasis mr-1" xmlns="http://www.w3.org/2000/svg"
-                                fill="#FFE300" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-                            </svg><span class="mx-2"> Incident</span>
-                        </div>
-                        <div class="text-end">
-                            <span class="text-muted small me-2">#10</span>
 
                         </div>
                     </li>
@@ -881,6 +874,8 @@
                                     @if ($checkouts)
                                          @foreach ($checkouts as $checkout)
                                             <a  data-aos="fade-down" data-aos-duration="400"
+                                            wire:click="visualisercheckout({{ $checkout->id }})"
+                                                data-bs-toggle="modal" data-bs-target="#checkoutview"
                                                 data-aos-delay="{{ $loop->index * 200 }}"
                                                 class="list-group-item border-0 list-group-item-action ">
 
@@ -1008,7 +1003,9 @@
 
                                     <div class="list-group mt-2 " style="max-height: 400px;overflow-y: scroll">
                                      @foreach ($matreservations as $materiel)
-                                            <a href="#" wire:click="visualiser( {{ $materiel->id }})" title="Voir le details" class="list-group-item list-group-item-action border-0 border-bottom ">
+                                            <a href="#" wire:click="visualiser( {{ $materiel->id }})" 
+                                                
+                                                title="Voir le details" class="list-group-item list-group-item-action border-0 border-bottom ">
                                                 <div class="d-flex w-100 justify-content-between">
                                                     <b class="mb-1 text-black-50 text-capitalize"> {{ $materiel->equipement_type }} </b>
                                                     <span class="text-muted fw-6">{{ \Carbon\Carbon::parse($materiel->date_debut)->translatedFormat('d M Y ') }} - {{ \Carbon\Carbon::parse($materiel->date_fin)->translatedFormat('d M Y ') }}</span>
@@ -1066,6 +1063,76 @@
 
     <!-- Modal -->
 
+    <div wire:ignore.self class="modal fade" id="checkoutview" tabindex="-1"
+        aria-labelledby="checkoutviewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <!-- Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutviewLabel">Détails de l'incident</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Type d'équipement :</div>
+                            <div class="col-md-8" id="equipement_type">{{ $selectedCheckouts?->materiel_type }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Matériel :</div>
+                            <div class="col-md-8" id="equipement_id">
+                                {{-- @if ($selectedIncidents?->equipement_type == 'Ordinateur')
+                                    {{ $selectedIncidents?->ordinateur->nom }}
+                                    {{ $selectedIncidents?->ordinateur->os_version }}
+                                @endif  --}}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Responsable :</div>
+                            <div class="col-md-8" id="responsable">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Date de creation :</div>
+                            <div class="col-md-8" id="date_debut">{{ $selectedCheckouts?->created_at }}</div>
+                        </div>
+                        {{-- <div class="row mb-2">
+                        <div class="col-md-4 fw-bold text-muted">Date de fin :</div>
+                        <div class="col-md-8" id="date_fin">2025-11-12</div>
+                    </div> --}}
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Statut :</div>
+                            <div class="col-md-8" id="statut">EN COURS</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Commentaire :</div>
+                            <div class="col-md-8" id="commentaire">
+                                Exemple de commentaire de l'incident...
+                            </div>
+                        </div>
+                       
+                        
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer border-top py-2">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Fermer</button>
+                    {{-- @if ($selectedIncidents?->statut == 1)
+                        <button type="button" wire:click="annulationDemande({{ $selectedIncidents?->id  }})" class="btn btn-danger px-4" data-bs-dismiss="modal">
+                            Annuller la
+                            demande</button>
+                    @endif --}}
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
 
@@ -1073,6 +1140,17 @@
 </div>
 
 <style>
+    .modal-content {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .modal-backdrop.show {
+        background-color: rgba(0, 0, 0, 0.2) !important;
+        /* 0.2 = plus clair */
+    }
+
 
     
     #wrap {

@@ -29,7 +29,7 @@ class UtilisateurLogin extends Controller
     public function logout(Request $request)
     {
         Auth::guard('utilisateur')->logout();
-        $request->session()->invalidate();
+        $request->session()->forget('utilisateur');
         $request->session()->regenerateToken();
         return redirect('/utilisateur-login');
     }

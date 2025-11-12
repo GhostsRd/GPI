@@ -345,25 +345,42 @@
                                 alt="Profil" width="20" height="20" class="rounded-circle me-2">
                             {{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</a>
 
-                        <ul class="dropdown-menu bg-white border-0 shadow-sm" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="{{ route('utilisateurProfile') }}"><i
-                                        class="bi bi-person-fill me-2"></i>Profil</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
+                        <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2" aria-labelledby="userDropdown">
+                                <!-- Profil -->
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2" href="{{ url('/utilisateur-profile') }}">
+                                        <i class="bi bi-person-circle text-primary fs-5 me-2"></i>
+                                        <span>Mon profil</span>
+                                    </a>
+                                </li>
 
-                                <a class="dropdown-item-modern text-danger" href="{{ route('logout') }}"
+                                <li><hr class="dropdown-divider my-1"></li>
+
+                                <!-- Paramètres -->
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2" href="{{ url('/utilisateur-parametres') }}">
+                                        <i class="bi bi-gear text-secondary fs-5 me-2"></i>
+                                        <span>Paramètres</span>
+                                    </a>
+                                </li>
+
+                                <li><hr class="dropdown-divider my-1"></li>
+
+                                <!-- Déconnexion -->
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2 text-danger"
+                                    href="{{ route('utilisateurLogout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="bi bi-box-arrow-right me-2"></i> Se déconnecter
-                                </a>
+                                        <i class="bi bi-box-arrow-right fs-5 me-2"></i>
+                                        <span>Se déconnecter</span>
+                                    </a>
 
-                                <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST"
-                                    class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
+                                    <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+
 
                     </li>
 

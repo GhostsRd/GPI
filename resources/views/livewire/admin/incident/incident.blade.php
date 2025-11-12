@@ -91,7 +91,6 @@
                                  <a href="{{ asset('storage/' . $incident?->declaration_perte) }}"
                                                 target="_blank" class="mx-1 my-1">
                                                 <i class="bi bi-download"></i>
-                                             
                                             </a>
                             </td>
 

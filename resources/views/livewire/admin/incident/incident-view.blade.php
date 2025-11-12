@@ -21,14 +21,15 @@
                                 — </label>
                             <small class="text-capitalize"> {{ $incidents->equipement_type }}
                                 (
-                                   @if ($incidents->equipement_type == 'Ordinateur' )
-                                            {{ $incidents->ordinateur->nom }} {{ $incidents->ordinateur->os_version}}
-                                   @endif
-                                   @if ($incidents->equipement_type == 'Telephone')
-                                        {{ $incidents->telephone->nom }} {{ $incidents->telephone->marque }}
-                                   @endif
-                                )</small>
-                           
+                                @if ($incidents->equipement_type == 'Ordinateur')
+                                    {{ $incidents->ordinateur->nom }} {{ $incidents->ordinateur->os_version }}
+                                @endif
+                                @if ($incidents->equipement_type == 'Telephone')
+                                    {{ $incidents->telephone->nom }} {{ $incidents->telephone->marque }}
+                                @endif
+                                )
+                            </small>
+
                         </div>
 
                         <div class="col-lg-1 col-mg-1 col-sm-1">
@@ -78,7 +79,29 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item text-danger" href="#"
+                                    <li class="nav-item dropdown">
+                                        <a class="dropdown-toggle dropdown-item" href="#" id="downloadDropdown"
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-download text-success"></i>
+                                            <span class="text-secondary">Télécharger</span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="downloadDropdown">
+                                            <li>
+                                                <a class="dropdown-item" target="_blank" href="{{ asset('storage/' . $incidents?->rapport_incident) }}">
+                                                    Rapport d'incident
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item" wire:click="declaration_perte" target="_blank" href="{{ asset('storage/' . $incidents?->declaration_perte) }}">
+                                                    Déclaration de perte
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger" href="#"
                                             wire:click="Removeticket({{ $incidentId }})">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
                                                 fill="currentColor" class="size-6">
@@ -87,7 +110,8 @@
                                                     clip-rule="evenodd" />
                                             </svg>
 
-                                            Supprimer</a></li>
+                                            Supprimer</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -144,23 +168,22 @@
                                 <div class="fill {{ $progress }}"></div>
                             </div>
 
-                            
-                           
-                            @if ($incidents->statut == "4")
 
-                            <div class="step {{ $current[4] }} col-lg-3" data-index="2">
-                                <div class="dot">X</div>
-                                <div class="title">Non resolu</div>
-                                <div class="sub">Finale</div>
 
-                            </div>
+                            @if ($incidents->statut == '4')
+                                <div class="step {{ $current[4] }} col-lg-3" data-index="2">
+                                    <div class="dot">X</div>
+                                    <div class="title">Non resolu</div>
+                                    <div class="sub">Finale</div>
+
+                                </div>
                             @else
                                 <div class="step {{ $current[3] }} col-lg-3" data-index="2">
-                                <div class="dot"><i class="bi bi-check-circle-fill"></i></div>
-                                <div class="title">Resolu</div>
-                                <div class="sub">Finale </div>
+                                    <div class="dot"><i class="bi bi-check-circle-fill"></i></div>
+                                    <div class="title">Resolu</div>
+                                    <div class="sub">Finale </div>
 
-                            </div>
+                                </div>
                             @endif
 
                         </div>
@@ -177,29 +200,19 @@
                     </div>
 
                     <div class="container-fluid  {{ $affichecommentaire == 'False' ? 'collapse' : '' }}">
-                        <form wire:click.prevent="postCommentaire" >
+                        <form wire:submit.prevent="postCommentaire">
                             <h5 style="margin:14px 0 8px">Ajouter une commentaire pour la transition</h5>
-                            <textarea wire:model="comments" class="custom-textarea bg-white"  id="message"
-                                placeholder="Ex: Prise en main du ticket"></textarea>
+                            <textarea wire:model="comments" class="custom-textarea bg-white" placeholder="Ex: Prise en main du ticket"></textarea>
                     </div>
                     <div class="container-fluid mt-2  ">
                         <div class="row ">
                             <div class="col-lg-6">
-                                {{-- <button 
-                                    wire:click="submitForm" id="nextBtn"
-                                    class="btn btn-sm btn-primary border fw-bold relative flex items-center justify-center gap-2 px-3 py-2 rounded-md font-semibold"
-                                      >
-                                    <!-- Spinner : visible uniquement pendant le loading -->
-                                    <span wire:loading wire:target="submitForm" class="loader"></span>
 
-                                    <!-- Texte du bouton : caché pendant le loading -->
-                                    <span wire:loading.remove wire:target="submitForm">Envoyer</span>
-                                </button> --}}
 
                                 <button id="prevBtn" wire:click="previousStep"
                                     class="btn btn-sm btn-outline-warning border-0 fw-bold">Reculer</button>
-                                <button type="submit" wire:click="nextStep"
-                                    class="btn btn-sm btn-secondary border fw-bold"><span class="loader"></span>
+                                <button wire:click="nextStep" class="btn btn-sm btn-secondary border fw-bold"><span
+                                        class="loader"></span>
                                     Passer</button>
 
                             </div>
@@ -215,7 +228,68 @@
 
 
                             <!-- Item 1 -->
+                            @foreach ($commentaires as $comment)
+                                <div class="timeline-item ">
+                                    <div class="timeline-icon">
+                                        <span class="icon-wrap" title="Assign">
+                                            <!-- user assign icon -->
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zM4 20c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5v1H4v-1z"
+                                                    fill="var(--accent)" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-date">
 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M12 7v5l4 2" stroke="currentColor" stroke-width="1.6"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+
+
+                                            {{ \Carbon\Carbon::parse($comment->created_at)->translatedFormat('d M Y H:i') }}
+                                            • @if ($comment->statut == 1)
+                                                <span class="badge open">Nouveau</span>
+                                            @endif
+                                            @if ($comment->statut == 2)
+                                                <span class="badge open"
+                                                    style="background:#fff7ed;color:var(--warn)">Valider</span>
+                                            @endif
+                                            @if ($comment->statut == 3)
+                                                <span class="badge open"
+                                                    style="background:#eefbf7;color:var(--ok)">Fermer</span>
+                                            @endif
+
+
+
+                                            • <strong class="text-capitalize">
+                                                {{-- @foreach ($responsables as $resp)
+                                                        @if ($comment->utilisateur_id == $resp->id)
+                                                            {{ $resp->name }}
+                                                        @endif
+                                                    @endforeach --}}
+                                            </strong> {{ $comment->commentaire }}
+                                            {{-- <strong>{{ $checkout->type }}</strong>. --}}
+                                        </div>
+
+                                        <button wire:click="destroyComment({{ $comment->id }})" type="button"
+                                            class="btn border-0 p-0 btn-outline-danger btn-sm mx-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6 18 18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+
+                                    </div>
+
+
+                                </div>
+                            @endforeach
                             <div class="mt-4 container " style="font-size:0.8rem">
                                 {{-- {{ $commentaires->links() }} --}}
                             </div>

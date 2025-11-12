@@ -37,6 +37,20 @@ class CalendrierReservationCheckout extends Component
     public $selectedId;
 
 
+
+     public function redicrectlink($vals){
+        if($vals == 1){
+        return redirect()->route('utilisateurService');
+
+        }
+        elseif($vals == 2){
+            return redirect()->route('checkout');
+        }
+        elseif($vals == 3){
+            return redirect()->route('utilisateur.incident');
+        }
+    }
+
   
     public function  ModifierView($id){
 

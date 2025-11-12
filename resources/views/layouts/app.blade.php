@@ -103,11 +103,11 @@
 
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item-modern text-danger" href="{{ route('logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                               onclick="event.preventDefault(); document.getElementById('logout-forms').submit();">
                                 <i class="bi bi-box-arrow-right me-2"></i>Logout
                             </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            <form id="logout-forms" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </div>
