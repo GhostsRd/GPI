@@ -335,6 +335,8 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link" href="{{ route('utilisateurService') }}">• Ticket</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('checkout') }}">• Checkout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('utilisateur.incident') }}">• Incident</a></li>
+
                     <li class="nav-item"><a class="nav-link" href="#apropos">• À propos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">• Contact</a></li>
                     <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle" id="userDropdown"

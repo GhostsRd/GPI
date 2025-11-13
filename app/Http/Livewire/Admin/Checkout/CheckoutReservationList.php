@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\Momemail;
 class CheckoutReservationList extends Component
 {
+    private $listener = ['refreshComponent' => '$refresh'];
     public $checkoutId;
      public $message;
     public $currentStep;
@@ -48,7 +49,8 @@ class CheckoutReservationList extends Component
     public function supprimerDemande($id){
         
             matreservation::destroy($id);
-           return redirect('/admin/checkout-reservation-list');
+           $this->emit('refreshComponent');
+            //return redirect('/admin/checkout-reservation-list');
      
     }
     public function render()

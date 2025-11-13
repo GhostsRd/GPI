@@ -2,7 +2,6 @@
     style="height:40vh;">
     <div class="col-lg-2 offset-1 bg-white py-1 px-0 ">
 
-     
         @livewire('component.menu-utilisateur')
 
         <div class="justify-content-center">
@@ -334,14 +333,12 @@
     <div class="col-lg-9 row  mt-4 border-start"
         style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
         <div wire:ignore.self class="p-2 col-lg-12 ">
-            <h5 class="mt-2 pb-4 border-bottom fw-bold">Reservation de materiel</h5>
+            <h5 class="mt-2 pb-4 border-bottom fw-bold">calendrier de vos reservation</h5>
             <label class="text-muted  d-flex justify-content-between">Disponibilite /
-                {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
-                {{ $firsts?->os_version  }} {{ $firsts?->marque  }} </label>
+                Tous vos reservation </label>
             <div class="d-flex  justify-content-end">
                 <div class="btn border-0  py-0 fw-bold rounded-3 text-white  btn-two p-0 mx-2 btn-sm"
-                    wire:click="openReservationModal('{{$type_materiel}}',{{ $reserverId }})" data-bs-toggle="modal"
-                    data-bs-target="#centeredModalreservation">
+                    data-bs-toggle="modal" data-bs-target="#centeredModalreservation">
                     <i class="bi bi-plus"></i> Nouveau
                 </div>
 
@@ -350,55 +347,24 @@
 
             </div>
         </div>
-        <div class="col-lg-10">
+        <div class="col-lg-7">
             <div id='calendar' wire:ignore
                 style="width: 100% !important ;max-height:500px;overflow-y:scroll; scrollbar-width: none; -ms-overflow-style: none;">
             </div>
 
         </div>
-        <div class="col-lg-2   mt-4">
-            <h5 class="py-2">Dernier reservation</h5>
+        <div class="col-lg-4   mt-4">
+            <h5 class="py-2 border-bottom">Prochaine rendez-vous</h5>
 
             <div>
-
-                @if ($lastEvent)
-                    Type de materiel :<label
-                        class="text-muted text-center py-1 text-capitalize"><small>{{ $lastEvent->equipement_type }}
-                             {{ $lastEvent->equipement_type == 'ordinateur' ? $lastEvent->ordinateur->nom : $lastEvent->TelephoneTablette->nom }}</small></label>
-                    <br>
-                    Utilisateur :
-                    <label class="text-muted">
-                        <img class="dropdown-toggle p-1 m-0 rounded-pill" data-toggle="dropdown"
-                            src="https://ui-avatars.com/api/?name={{ $lastEvent->responsable->nom }}" alt="Profil"
-                            width="40" height="30">
-                        <small>{{ $lastEvent->responsable->nom }}</small>
-                    </label>
-                    <br>
-                    Date debut : <label class="text-muted text-center py-1 text-capitalize"><small>
-                            {{ \Carbon\Carbon::parse($lastEvent->date_debut)->translatedFormat('d M Y') }}
-                        </small></label>
-                    <br>
-                    Date fin : <label
-                        class="text-muted text-center py-1 text-capitalize"><small>{{ \Carbon\Carbon::parse($lastEvent->date_fin)->translatedFormat('d M Y') }}
-                        </small></label>
-                    <br>
-                @else
-                    <p class="">
-
-
-                        Aucun événement trouvé.</p>
-                @endif
-            </div>
-
-            <div class=" py-2 border-2 mt-2">
-                <label >Prochaine rendez-vous</label>
-                @if ($prochaines)
-                        <div class="py-2 ">
+                @foreach ($lastEvent as $last)
+                    @if ($last)
+                        <div class="">
                             • Le <small>
-                                {{ \Carbon\Carbon::parse($prochaines->date_debut)->translatedFormat('d M Y') }}
+                                {{ \Carbon\Carbon::parse($last->date_debut)->translatedFormat('d M Y') }}
                             </small> -
-                            <small>{{ $prochaines->equipement_type }}
-                                {{ $prochaines->equipement_type == 'ordinateur' ? $prochaines->ordinateur->nom : $prochaines->TelephoneTablette->nom }}</small>
+                            <small>{{ $last->equipement_type }}
+                                {{ $last->equipement_type == 'ordinateur' ? $last->ordinateur->nom : $last->TelephoneTablette->nom }}</small>
 
                         </div>
                         <br>
@@ -406,6 +372,11 @@
                         <p class="">
                             Aucun événement trouvé.</p>
                     @endif
+                @endforeach
+
+
+
+
             </div>
         </div>
         <div class="border-top mt-2 col-lg-12">
@@ -421,7 +392,7 @@
 
                         <div class="d-flex w-100 justify-content-between">
                             <b class="mb-1 text-black-50"># {{ $event->id }} -
-                                {{ $event->equipement_type }} ({{ $event->equipement_nombre }})
+                                {{ $event->equipement_type }} {{ $event->equipement_nombre }}
                             </b>
                             <small class="text-body-secondary">
                                 {{ \Carbon\Carbon::parse($event->date_debut)->translatedFormat('d M Y') }} -
@@ -432,17 +403,13 @@
 
                         <div class="d-flex w-100 mt-2 justify-content-between">
                             <p class="mb-1 text-capitalize">
-                                                <small class="text-muted">
-                                                {{ 
-                                                    $event->equipement_type == 'ordinateur' 
-                                                        ? $event->ordinateur->os_version 
-                                                        : (
-                                                            $event->equipement_type == 'telephone' 
-                                                                ? $event->TelephoneTablette->nom . ' ' . $event->TelephoneTablette->marque 
-                                                                : 'aucun'
-                                                        ) 
-                                                }}
-                                            </small>
+                                <small class="text-muted">
+                                    {{ $event->equipement_type == 'ordinateur'
+                                        ? $event->ordinateur->os_version
+                                        : ($event->equipement_type == 'telephone'
+                                            ? $event->TelephoneTablette->nom . ' ' . $event->TelephoneTablette->marque
+                                            : 'aucun') }}
+                                </small>
                             </p>
                             {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
                                                         {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
@@ -473,168 +440,89 @@
                 <h5 class="mx-2 mt-2 text-teal fw-bold">Réservation d'équipement</h5>
 
                 <div class="mt-1 p-2 border-top">
-                    @if ($type_materiel == 'ordinateur' && $selectedEquipements)
-                        <label class="fw-bold mx-2">
-                            @foreach ($selectedEquipements as $materiel)
-                                {{ $materiel->nom }} {{ $materiel->os }}
-                            @endforeach
-                            / État /
-                        </label>
-                    @endif
-                    @if ($type_materiel == 'telephone' && $selectedEquipements)
-                        <label class="fw-bold mx-2">
-                            @foreach ($selectedEquipements as $materiel)
-                                {{ $materiel->nom }} {{ $materiel->os }}
-                            @endforeach
-                            / État /
-                        </label>
-                    @endif
-                    
+                    <label class="fw-bold mx-2">
+                        Listes des materiels
+                    </label>
+
                     <br>
-                    <p class="mt-1 p-1 text-muted fw-6">Les champs indiquer <span class="text-danger">*</span> sont
-                        obligatoires</p>
+                    <div class="m-2">
+                        <input type="text" wire:model.debounce.500ms="recherche" placeholder="Tapez le materiel"
+                            class="px-2 w-100 py-2 rounded-0 border-2 border-0 border-bottom">
 
+                        <div>
+                            <div class="" style="max-height: 300px;overflow-y:scroll">
+                                <div wire:loading wire:target="recherche" class="text-center my-2">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                    <small class="text-muted ms-2">Recherche en cours...</small>
+                                </div>
+                                @if ($ordinateurs)
+                                    <div class="py-2">
+                                        <label for="p-4">Ordinateurs</label>
+                                    </div>
+                                    @foreach ($ordinateurs as $ordinateur)
+                                        <div class="materiel-item  bg-light py-2 mb-1 rounded-2"
+                                            wire:click="reserverMat('ordinateur',{{ $ordinateur->id }})">
 
-                    <label class="form-label mt-2 mx-1">Date de début <span class="text-danger">*</span></label>
-                    <input type="date" class="form-control" wire:model="datedeb">
+                                            <small class="m-2 mx-3">
+                                                {{ $ordinateur->nom }} {{ $ordinateur->os_version }}
+                                            </small>
+                                            <div wire:loading wire:target="reserverMat">...</div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                                @if ($telephones)
 
-                    <label class="form-label mt-2 mx-1">Date de retour <span class="text-danger">*</span></label>
-                    <input type="date" class="form-control" wire:model="datefin">
+                                    <div class="py-2">
+                                        <label for="p-4">Telephones</label>
+                                    </div>
+                                    @foreach ($telephones as $telephone)
+                                        <div class="bg-light py-2 mb-1 rounded-2"
+                                            wire:click="reserverMat('telephone',{{ $telephone->id }})">
 
-                    <label class="form-label mt-2 mx-1">Nombre <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" wire:model="nbequipement" placeholder="Ex: 1">
+                                            <small class="m-2 mx-3">
+                                                {{ $telephone->nom }} {{ $telephone->marque }}
+                                            </small>
+                                            <div wire:loading wire:target="reserverMat">...</div>
+                                        </div>
+                                    @endforeach
+                                @endif
 
-                    <div class="border-top border-2 mt-4">
+                            </div>
+                        </div>
+
 
                     </div>
-                    <label class="form-label mt-2 mx-1">Commentaire ( <span class="text-muted">Optionnel</span>
-                        )</label> <br>
-                    <textarea type="text" placeholder="Commencer à écrire" class="input-recherche px-2 w-100 border rounded py-2"
-                        wire:model="commentaire"></textarea>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm  btn-secondary  border "
-                        data-bs-dismiss="modal">Quitter</button>
-                    <button type="submit" wire:click="SAVEreserverEquipement"
-                        class="btn btn-sm btn-two fw-bold text-white">Envoyer</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm  btn-secondary  border "
+                            data-bs-dismiss="modal">Quitter</button>
+                        <button type="submit" wire:click="SAVEreserverEquipement"
+                            class="btn btn-sm btn-two fw-bold text-white">Envoyer</button>
+                    </div>
 
+                </div>
             </div>
         </div>
+
+
+
+
     </div>
-
-    <div class="modal fade" wire:ignore.self id="lightModalview" tabindex="-1" aria-labelledby="lightModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            @foreach ($selectedMateriels as $item)
-                <div class="modal-content">
-                    <div class="modal-header border-0  pb-0">
-                        <label class="modal-title fw-bold  " id="lightModalLabel">
-
-                            {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom : $item->TelephoneTablette->nom }} <small class="text-muted" style="font-size:0.8rem">cree le
-                                {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y H:m') }} </small>
-
-                            </label>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Fermer"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label class="form-label mt-2 mx-1">Date de début</label>
-                        <input class="form-control border-0 rounded-0 border-bottom" disabled
-                            value="{{ \Carbon\Carbon::parse($item->date_debut)->translatedFormat('d M Y') }}">
-
-                        <label class="form-label mt-2 mx-1">Date de retour</label>
-                        <input class="form-control border-0 rounded-0 border-bottom" disabled
-                            value="{{ \Carbon\Carbon::parse($item->date_fin)->translatedFormat('d M Y') }}">
-
-                        <label class="form-label mt-2 mx-1">Nombre</label>
-                        <input type="number" class="form-control border-0 rounded-0 border-bottom " disabled
-                            value="{{ $item->equipement_nombre }}" placeholder="Ex: 1">
-
-                        <label class="form-label mt-2 mx-1">Commentaire</label>
-                        <textarea placeholder="{{ $item->commentaire != null ? $item->commentaire : 'Aucun commentaire' }}" disabled
-                            rows="4" class="form-control" wire:model="commentaire">
-                    </textarea>
-                    </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-two text-white fw-bold"
-                            data-bs-dismiss="modal">Fermer</button>
-
-                        <button type="submt" data-bs-toggle="modal" data-bs-target="#lightModal"
-                            @if (
-                                ($item->date_debut > now() || $item->created_at->isToday()) &&
-                                    $item->responsable->id == $userConnected &&
-                                    $item->statut == 1) wire:click="ModifierView({{ $item->id }})"
-                            @else
-                            class="d-none" @endif
-                            wire:click="ModifierView({{ $item->id }})" class="btn btn-primary">
-                            Modifier
-                        </button>
-
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-    <div class="modal fade" style="z-index: 2600" wire:ignore.self id="lightModal" tabindex="-1"
-        aria-labelledby="lightModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-
-            <div class="modal-content">
-                @foreach ($selectedMateriels as $item)
-                    <div class="modal-header border-0 pb-0 ">
-                        <label class="modal-title fw-bold" id="lightModalLabel">
-                            
-                            {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom : $item->TelephoneTablette->nom }}
-
-                        </label>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Fermer"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label class="form-label mt-2 mx-1">Date de début</label>
-                        <input type="date" style="z-index: 2600"
-                            class="form-control border-0 rounded-0 border-bottom" wire:model="datedeb"
-                            value="{{ $datedeb }}">
-
-                        <label class="form-label mt-2 mx-1">Date de retour</label>
-                        <input type="date" style="z-index: 2600"
-                            class="form-control border-0 rounded-0 border-bottom" required wire:model="datefin">
-
-                        <label class="form-label mt-2 mx-1">Nombre</label>
-                        <input type="number" style="z-index: 2600"
-                            class="form-control border-0 rounded-0 border-bottom" required wire:model="nbequipement"
-                            placeholder="Ex: 1">
-
-                        <label class="form-label mt-2 mx-1">Commentaire</label>
-                        <textarea placeholder="Votre commentaire" style="z-index: 2600" rows="4" class="form-control"
-                            wire:model="commentaire">
-                    </textarea>
-                    </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button type="submit" wire:click="ModifierReservation"
-                            class="btn btn-two text-white fw-bold btn-sm">Enregistrer
-
-                        </button>
-                        <button type="submit" wire:click="AnnulerReservation({{ $item->id }})"
-                            data-bs-dismiss="modal" class="btn btn-danger text-white fw-bold btn-sm">Annuler
-                            reservation
-                            <div wire:loading wire:target="AnnulerReservation">...</div>
-                        </button>
-                    </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-
-
-</div>
 </div>
 
 <style>
+    .materiel-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .materiel-item:hover {
+        background-color: #e9ecef;
+        /* gris plus foncé */
+        transform: translateY(-2px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
     .modal-content {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         backdrop-filter: blur(8px);
@@ -795,7 +683,7 @@
                             end: "{{ \Carbon\Carbon::parse($event->date_fin)->toIso8601String() }}",
                             url: "{{ $event->url ?? '#' }}",
                             allDay: true,
-                            className: "{{ $event->responsable->id == $userConnected ? 'info' : 'success' }}"
+                            className: "success"
 
 
                         }
@@ -804,7 +692,7 @@
                         @endif
                     @endif
                     @if ($event->equipement_type == 'telephone')
-                        
+
                         {
 
                             id: "{{ $event->id }}",
@@ -813,7 +701,7 @@
                             end: "{{ \Carbon\Carbon::parse($event->date_fin)->toIso8601String() }}",
                             url: "{{ $event->url ?? '#' }}",
                             allDay: true,
-                            className: "{{ $event->responsable->id == $userConnected ? 'info' : 'success' }}"
+                            className: "info"
 
 
                         }

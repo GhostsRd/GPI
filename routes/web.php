@@ -40,6 +40,7 @@ Route::get('/utilisateur-incident', [App\Http\Controllers\Utilisateur\incident\I
 Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
 Route::get('/utilisateur-checkout', [App\Http\Controllers\Utilisateur\checkout\Checkout::class, 'index'])->name('checkout');
 Route::get('/utilisateur-checkout-{id}-{type}', [App\Http\Controllers\Utilisateur\checkout\CalendrierReservationCheckout::class, 'index'])->name('checkout.calendrier');
+Route::get('/utilisateur-calendrier', [App\Http\Controllers\Utilisateur\checkout\MesReservationCalendrier::class, 'index'])->name('mes.reservation');
 
 
 Route::get('/moniteur', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');

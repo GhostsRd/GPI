@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Utilisateur\Checkout;
 
 use App\Models\checkoutreserver;
+use App\Models\TelephoneTablette;
 use Livewire\Component;
 use App\Models\chat;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,8 @@ class Checkout extends Component
     public $type_materiel;
     public $state;
     public $filteredMateriels = [];
+    public $filtrematreservation = "";
+
 
     public $equipements = [];
     public $valeur1;
@@ -53,18 +56,7 @@ class Checkout extends Component
     
     public $selectedEquipements;
 
-     public function redicrectlink($vals){
-        if($vals == 1){
-        return redirect()->route('utilisateurService');
 
-        }
-        elseif($vals == 2){
-            return redirect()->route('checkout');
-        }
-        elseif($vals == 3){
-            return redirect()->route('utilisateur.incident');
-        }
-    }
     public function visualisercheckout($id){
         $this->selectcheckoutID = $id;
 
@@ -136,6 +128,7 @@ class Checkout extends Component
         $this->recherche;
         $this->filtrerMateriel;
         $ordinateur = ordinateur::find(1);
+        $this->filtrematreservation;
         $this->selectedEquipements;
         $this->type_materiel;
         $this->selectcheckoutID;
@@ -171,6 +164,7 @@ class Checkout extends Component
         return view('livewire.utilisateur.checkout.checkout', [
         
             'ordinateurs' => ordinateur::paginate(100),
+            'telephones' => TelephoneTablette::paginate(100),
             "moniteurs" => moniteur::where("statut", "En stock")->paginate(10),
             'equipements' => $this->filteredEquipements,
             "checkouts" => modelchekout::where("utilisateur_id",$user_ID)

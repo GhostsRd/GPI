@@ -29,18 +29,7 @@ class Incident extends Component
     public $selectedIncidents;
 
   
-    public function redicrectlink($vals){
-        if($vals == 1){
-        return redirect()->route('utilisateurService');
-
-        }
-        elseif($vals == 2){
-            return redirect()->route('checkout');
-        }
-        elseif($vals == 3){
-            return redirect()->route('utilisateur.incident');
-        }
-    }
+   
     public function annulationDemande($id){
         $incident =IncidentModel::findOrFail($id);
         $incident->statut = 0;
@@ -86,7 +75,7 @@ class Incident extends Component
         $incident->save();
         
         $this->emit('refreshComponent');
-        $this->reset(['equipement_type','incident_sujet','incident_description','declaration_perte','rapport_incident']);
+        $this->reset(['equipement_type','incident_sujet','incident_nature','incident_description','declaration_perte','rapport_incident']);
 
 
     }
@@ -95,7 +84,7 @@ class Incident extends Component
         return view('livewire.utilisateur.incident.incident',[
             'incidents' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->get(),
             'checkouts' => Checkout::where('utilisateur_id',$this->userConnected)->get(),
-            'Incidentsrecentes' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->limit(1)->get(),
+            'Incidentsrecentes' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->limit(2)->get(),
         ]);
         //////////////////////////////////////////////////checkout type eto zao e 
     }

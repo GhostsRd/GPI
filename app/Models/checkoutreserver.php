@@ -24,6 +24,6 @@ class checkoutreserver extends Model
     
 
     public function TelephoneTablette(){
-         return $this->hasMany(TelephoneTablette::class, 'equipement_id');
+         return $this->belongsTo(TelephoneTablette::class, 'equipement_id');
     }
 }

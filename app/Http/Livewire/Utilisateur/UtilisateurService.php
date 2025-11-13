@@ -34,18 +34,7 @@ class UtilisateurService extends Component
     public function steps2(){
         $this->step2 = "active";
     }
-     public function redicrectlink($vals){
-        if($vals == 1){
-        return redirect()->route('utilisateurService');
 
-        }
-        elseif($vals == 2){
-            return redirect()->route('checkout');
-        }
-        elseif($vals == 3){
-            return redirect()->route('utilisateur.incident');
-        }
-    }
     protected $rules = [
         'sujet'      => 'required|string|min:5',
         'details'    => 'required|string|min:5',
@@ -69,7 +58,7 @@ class UtilisateurService extends Component
             $this->responsable_id= 1;
 
         }elseif($this->categorie == "Logiciel"){
-            $this->responsable_id= 2;
+            $this->responsable_id= 1;
         
         }
         if($this->impact == "Utilisateur"){
@@ -108,7 +97,7 @@ class UtilisateurService extends Component
         $chat->message = "Ticket creer avec succes";
         $chat->save();
 
-        $this->reset(['sujet', 'details', 'priorite']);
+        $this->reset(['sujet', 'details', 'priorite','equipement']);
         $this->emitSelf('refreshComponent'); 
         $this->dispatchBrowserEvent('toggleSidebar');
 

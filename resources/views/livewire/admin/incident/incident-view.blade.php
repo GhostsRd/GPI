@@ -16,7 +16,7 @@
                         <div class="col-lg-11 col-md-10 col-sm-10">
                             <label class="fw-bold  mb-1 mt-0 pt-0">
                                 {{-- <i class="bi bi-ticket-detailed"></i> --}}
-                                Reservation de materiel <span class="text-warning"
+                                Incident de l'equipement : <span class="text-warning"
                                     id="ticketId">#{{ $incidentId }}</span>
                                 — </label>
                             <small class="text-capitalize"> {{ $incidents->equipement_type }}
@@ -35,12 +35,9 @@
                         <div class="col-lg-1 col-mg-1 col-sm-1">
                             <div class="dropdown " style="cursor: pointer" data-bs-toggle="dropdown">
                                 ☰
-
-
                                 <ul class="dropdown-menu border-0">
                                     <li><a class="dropdown-item" href="#" wire:click="archived">
                                             <i class="bi bi-kanban me-2"></i>
-
                                             Archiver</a>
                                     </li>
                                     <li>
@@ -48,23 +45,18 @@
                                     </li>
                                     <li><a class="dropdown-item" href="{{ route('ticket') }}">
                                             <i class="bi bi-layout-text-window fs-5"></i>
-
-
                                             Table visuel</a>
                                     </li>
-
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li><a class="dropdown-item" wire:click="openAffectationModal" href="#">
-
                                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-2" width="15"
                                                 viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                                 <path fill-rule="evenodd"
                                                     d="M15.75 4.5a3 3 0 1 1 .825 2.066l-8.421 4.679a3.002 3.002 0 0 1 0 1.51l8.421 4.679a3 3 0 1 1-.729 1.31l-8.421-4.678a3 3 0 1 1 0-4.132l8.421-4.679a3 3 0 0 1-.096-.755Z"
                                                     clip-rule="evenodd" />
                                             </svg>
-
                                             Affecter</a>
                                     </li>
                                     <li>
@@ -190,6 +182,12 @@
                     </div>
                     <hr>
 
+                    <div class="mt-4">
+                        <div class="">
+                            <label class="fw-bold">Sujet : </label> <small>{{ $incidents->incident_sujet  }}</small>
+                                <p> <span class="fw-bold text-muted">Description :</span> <small>{{ $incidents->incident_description }}</small></p>
+                        </div>
+                    </div>
 
 
                     <div>
@@ -1054,13 +1052,7 @@
         </div>
         <p>
         </p>
-
         {{-- modal pour refuser un checkout --}}
-
-
-
-
-
     </div>
 
 

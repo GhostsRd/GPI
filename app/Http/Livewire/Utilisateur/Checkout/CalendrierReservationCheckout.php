@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Utilisateur\Checkout;
 
+use App\Models\TelephoneTablette;
 use Livewire\Component;
 use App\Models\checkoutreserver as reserverEquipement;
 use Illuminate\Support\Facades\Auth;
@@ -38,18 +39,6 @@ class CalendrierReservationCheckout extends Component
 
 
 
-     public function redicrectlink($vals){
-        if($vals == 1){
-        return redirect()->route('utilisateurService');
-
-        }
-        elseif($vals == 2){
-            return redirect()->route('checkout');
-        }
-        elseif($vals == 3){
-            return redirect()->route('utilisateur.incident');
-        }
-    }
 
   
     public function  ModifierView($id){
@@ -106,16 +95,7 @@ class CalendrierReservationCheckout extends Component
         }
 
     }
-    public function mount($id, $type)
-    {
-        $this->reserverId = $id;
-        $this->type_materiel = $type;
-        $this->selectedEquipements;
-        $this->datedeb;
-        $this->userConnected = Auth::guard('utilisateur')->user()->id;
-        $this->editable;
-        //$this->;
-    }
+   
 
     public function openReservationModal($type, $id)
     {
@@ -148,10 +128,11 @@ class CalendrierReservationCheckout extends Component
     }
     public function SAVEreserverEquipement(reserverEquipement $resEquipement)
     {
-    
+
+
         if(Carbon::parse($this->datedeb)->toDateString() >= now()->toDateString()) {
 
-            $resEquipement->equipement_type = $this->equipement_type;
+            $resEquipement->equipement_type = $this->type_materiel;
             $resEquipement->equipement_id = $this->equipement_id;
             $resEquipement->responsable_id = Auth::guard('utilisateur')->user()->id;
             $resEquipement->statut = 1; //mis algo milla atao ato hiverifiena hoe mis mireserver io zavatra io
@@ -184,7 +165,17 @@ class CalendrierReservationCheckout extends Component
          $resEquipement->statut = 0;
          $resEquipement->save();
         $this->emit('refreshComponent');
-             
+       
+    }
+     public function mount($id, $type)
+    {
+        $this->reserverId = $id;
+        $this->type_materiel = $type;
+        $this->selectedEquipements;
+        $this->datedeb;
+        $this->userConnected = Auth::guard('utilisateur')->user()->id;
+        $this->editable;
+        //$this->;
     }
     public function render()
     {
@@ -198,8 +189,8 @@ class CalendrierReservationCheckout extends Component
 
         if ($this->type_materiel == "ordinateur") {
             $firstEvent = ordinateur::where('id', $this->reserverId)->first();
-        } elseif ($this->type_materiel == "imprimante") {
-            $firstEvent = ordinateur::where('id', $this->reserverId)->first();
+        } elseif ($this->type_materiel == "telephone") {
+            $firstEvent = TelephoneTablette::where('id', $this->reserverId)->first();
         }
         // ajouter d'autres types si besoin
 
@@ -208,6 +199,13 @@ class CalendrierReservationCheckout extends Component
             ->where('equipement_type', $this->type_materiel)
             ->orderBy('date_fin', 'desc') // ou ->orderBy('id', 'desc')
             ->first();
+        
+            $prochaines = reserverEquipement::where('responsable_id', Auth::guard('utilisateur')->user()->id)
+            ->where('equipement_type', $this->type_materiel)
+            ->where('date_debut','>' , now())
+            ->orderBy('date_fin', 'desc') // ou ->orderBy('id', 'desc')
+            ->first();
+        
 
 
         return view('livewire.utilisateur.checkout.calendrier-reservation-checkout', [
@@ -217,6 +215,7 @@ class CalendrierReservationCheckout extends Component
             'historiques' => reserverEquipement::where('responsable_id', Auth::guard('utilisateur')->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->get(),
+            'prochaines' => $prochaines,
             "selectedMateriels" => reserverEquipement::where('id', $this->selectedId)->get(),
         ]);
     }
