@@ -59,6 +59,28 @@ class Peripherique extends Component
     public $fabricants = [];
     public $entites = [];
 
+    // NOUVELLES PROPRIÉTES À AJOUTER
+public $showDetailsModal = false;
+public $selectedPeripherique = null;
+public $showSortieModal = false;
+public $showRetourModal = false;
+public $showHistoriqueModal = false;
+
+// Propriétés pour les sorties/retours
+public $sortiePeripheriqueId;
+public $sortieUsager;
+public $sortieEntite;
+public $sortieLieu;
+public $sortieDate;
+public $sortieCommentaire;
+
+public $retourPeripheriqueId;
+public $retourDate;
+public $retourEtat = 'Bon';
+public $retourCommentaire;
+
+public $viewMode = 'compact';
+
     // Propriétés pour l'import avec mapping
     public $importFile;
     public $importErrors = [];
@@ -97,12 +119,7 @@ class Peripherique extends Component
     /**
      * Initialisation du composant
      */
-    public function mount()
-    {
-        $this->chargerStatistiques();
-        $this->chargerFabricants();
-        $this->chargerEntites();
-    }
+   
 
     /**
      * Rendu du composant
@@ -842,4 +859,198 @@ class Peripherique extends Component
     {
         $this->resetPage();
     }
+
+    // ==================== MÉTHODES POUR LES DÉTAILS ====================
+
+/**
+ * Afficher les détails d'un périphérique
+ */
+public function showDetails($id)
+{
+    $this->selectedPeripherique = PeripheriqueModel::find($id);
+    $this->showDetailsModal = true;
+}
+
+/**
+ * Fermer le modal de détails
+ */
+public function closeDetailsModal()
+{
+    $this->showDetailsModal = false;
+    $this->selectedPeripherique = null;
+}
+
+// ==================== MÉTHODES POUR LES SORTIES/RETOURS ====================
+
+/**
+ * Ouvrir le modal de sortie
+ */
+public function openSortieModal()
+{
+    $this->resetSortieForm();
+    $this->showSortieModal = true;
+}
+
+/**
+ * Ouvrir le modal de retour
+ */
+public function openRetourModal()
+{
+    $this->resetRetourForm();
+    $this->showRetourModal = true;
+}
+
+/**
+ * Ouvrir le modal d'historique
+ */
+public function openHistoriqueModal()
+{
+    $this->showHistoriqueModal = true;
+}
+
+/**
+ * Sortie rapide d'un périphérique
+ */
+public function quickSortie($id)
+{
+    $this->sortiePeripheriqueId = $id;
+    $peripherique = PeripheriqueModel::findOrFail($id);
+    
+    // Pré-remplir certains champs
+    $this->sortieEntite = $peripherique->entite;
+    $this->sortieLieu = $peripherique->lieu;
+    $this->sortieDate = now()->format('Y-m-d\TH:i');
+    
+    $this->showSortieModal = true;
+}
+
+/**
+ * Retour rapide d'un périphérique
+ */
+public function quickRetour($id)
+{
+    $this->retourPeripheriqueId = $id;
+    $this->retourDate = now()->format('Y-m-d\TH:i');
+    $this->showRetourModal = true;
+}
+
+/**
+ * Enregistrer une sortie
+ */
+
+
+/**
+ * Enregistrer un retour
+ */
+
+
+// ==================== MÉTHODES UTILITAIRES ====================
+
+/**
+ * Réinitialiser le formulaire de sortie
+ */
+private function resetSortieForm()
+{
+    $this->reset([
+        'sortiePeripheriqueId',
+        'sortieUsager', 
+        'sortieEntite', 
+        'sortieLieu', 
+        'sortieCommentaire'
+    ]);
+    $this->sortieDate = now()->format('Y-m-d\TH:i');
+}
+
+/**
+ * Réinitialiser le formulaire de retour
+ */
+private function resetRetourForm()
+{
+    $this->reset([
+        'retourPeripheriqueId',
+        'retourCommentaire'
+    ]);
+    $this->retourDate = now()->format('Y-m-d\TH:i');
+    $this->retourEtat = 'Bon';
+}
+
+/**
+ * Changer le mode d'affichage
+ */
+public function changeViewMode($mode)
+{
+    $this->viewMode = $mode;
+}
+
+/**
+ * Charger les données pour les modals
+ */
+private function chargerDonneesModals()
+{
+    $this->peripheriquesEnStock = PeripheriqueModel::where('statut', 'En stock')->get();
+    $this->peripheriquesEnService = PeripheriqueModel::where('statut', 'En service')->get();
+}
+public function mount()
+{
+    $this->chargerStatistiques();
+    $this->chargerFabricants();
+    $this->chargerEntites();
+    $this->chargerDonneesModals(); // AJOUTÉ
+    $this->sortieDate = now()->format('Y-m-d\TH:i');
+    $this->retourDate = now()->format('Y-m-d\TH:i');
+}
+
+public function enregistrerSortie()
+{
+    $this->validate([
+        'sortiePeripheriqueId' => 'required|exists:peripheriques,id',
+        'sortieUsager' => 'required|string|max:255',
+        'sortieEntite' => 'required|string|max:255',
+        'sortieLieu' => 'required|string|max:255',
+        'sortieDate' => 'required|date',
+    ]);
+
+    DB::transaction(function () {
+        $peripherique = PeripheriqueModel::findOrFail($this->sortiePeripheriqueId);
+        $peripherique->update([
+            'statut' => 'En service',
+            'usager' => $this->sortieUsager,
+            'entite' => $this->sortieEntite,
+            'lieu' => $this->sortieLieu,
+        ]);
+    });
+
+    $this->showSortieModal = false;
+    $this->resetSortieForm();
+    $this->chargerStatistiques();
+    $this->chargerDonneesModals(); // AJOUTÉ
+    session()->flash('success', 'Sortie enregistrée avec succès.');
+}
+
+public function enregistrerRetour()
+{
+    $this->validate([
+        'retourPeripheriqueId' => 'required|exists:peripheriques,id',
+        'retourDate' => 'required|date',
+        'retourEtat' => 'required|string|max:255',
+    ]);
+
+    DB::transaction(function () {
+        $peripherique = PeripheriqueModel::findOrFail($this->retourPeripheriqueId);
+        $nouveauStatut = $this->retourEtat === 'Hors service' ? 'Hors service' : 'En stock';
+        
+        $peripherique->update([
+            'statut' => $nouveauStatut,
+            'usager' => null,
+            'entite' => null,
+            'lieu' => 'Stock',
+        ]);
+    });
+
+    $this->showRetourModal = false;
+    $this->resetRetourForm();
+    $this->chargerStatistiques();
+    $this->chargerDonneesModals(); // AJOUTÉ
+    session()->flash('success', 'Retour enregistré avec succès.');
+}
 }

@@ -313,9 +313,7 @@ class Imprimante extends Component
 
             $this->showModal = false;
             $this->resetForm();
-            $this->chargerStatistiques();
-            $this->chargerFabricants();
-            $this->chargerEntites();
+            $this->refreshTable();
 
             session()->flash('message', $message);
 
@@ -346,9 +344,7 @@ class Imprimante extends Component
                 $this->confirmingDelete = false;
                 $this->deleteId = null;
                 $this->selectedImprimanteName = '';
-                $this->chargerStatistiques();
-                $this->chargerFabricants();
-                $this->chargerEntites();
+                $this->refreshTable();
                 session()->flash('message', 'Imprimante supprimée avec succès.');
             } catch (\Exception $e) {
                 session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
@@ -381,9 +377,7 @@ class Imprimante extends Component
             
             $this->selectedImprimantes = [];
             $this->selectAll = false;
-            $this->chargerStatistiques();
-            $this->chargerFabricants();
-            $this->chargerEntites();
+            $this->refreshTable();
 
             session()->flash('message', $count . ' imprimante(s) supprimée(s) avec succès.');
 
@@ -452,13 +446,19 @@ class Imprimante extends Component
 
             // Validation du fichier
             $this->validate([
-                'importFile' => 'required|file|mimes:xlsx,xls,csv|max:10240'
+                'importFile' => 'required|file|mimes:xlsx,xls,csv,txt|max:10240'
             ]);
 
-            // Si c'est un fichier CSV, passer directement au mapping
-            $extension = $this->importFile->getClientOriginalExtension();
+            // Vérifier que le fichier est valide
+            if (!$this->importFile) {
+                throw new \Exception('Aucun fichier sélectionné');
+            }
+
+            // Obtenir l'extension du fichier
+            $extension = strtolower($this->importFile->getClientOriginalExtension());
             
             if (in_array($extension, ['csv', 'txt'])) {
+                // Pour les fichiers CSV, passer par le mapping
                 $this->storeImportFile();
             } else {
                 // Pour les fichiers Excel, utiliser l'import direct
@@ -468,9 +468,7 @@ class Imprimante extends Component
                 $this->isImporting = false;
                 $this->resetImport();
                 
-                $this->chargerStatistiques();
-                $this->chargerFabricants();
-                $this->chargerEntites();
+                $this->refreshTable();
                 
                 session()->flash('message', 'Imprimantes importées avec succès via Excel.');
             }
@@ -643,12 +641,15 @@ class Imprimante extends Component
             $this->showMappingModal = false;
             $this->showImportModal = false;
 
-            // Recharger les données pour afficher dans le tableau
-            $this->chargerStatistiques();
-            $this->chargerFabricants();
-            $this->chargerEntites();
-
-            session()->flash('message', $this->importSuccessCount . ' imprimante(s) importée(s) avec succès.');
+            // FORCER le rechargement des données
+            $this->refreshTable();
+            
+            // Afficher le message de succès
+            if (empty($this->importErrors)) {
+                session()->flash('message', $this->importSuccessCount . ' imprimante(s) importée(s) avec succès.');
+            } else {
+                session()->flash('warning', $this->importSuccessCount . ' imprimante(s) importée(s), ' . count($this->importErrors) . ' erreur(s).');
+            }
 
         } catch (\Exception $e) {
             $this->importErrors[] = 'Erreur lors du traitement des données: ' . $e->getMessage();
@@ -700,55 +701,79 @@ class Imprimante extends Component
     /**
      * Traiter une ligne de données
      */
-    private function processDataRow($record, $lineNumber)
-    {
-        $mappedData = [];
+   /**
+ * Traiter une ligne de données avec meilleur logging
+ */
+private function processDataRow($record, $lineNumber)
+{
+    $mappedData = [];
 
-        try {
-            // Appliquer le mapping
-            foreach ($this->fieldMapping as $field => $csvHeader) {
-                if (!empty($csvHeader) && isset($record[$csvHeader])) {
-                    $mappedData[$field] = trim($record[$csvHeader]);
-                } else {
-                    $mappedData[$field] = '';
-                }
+    try {
+        // Appliquer le mapping
+        foreach ($this->fieldMapping as $field => $csvHeader) {
+            if (!empty($csvHeader) && isset($record[$csvHeader])) {
+                $mappedData[$field] = trim($record[$csvHeader]);
+            } else {
+                $mappedData[$field] = '';
             }
-
-            // Validation des données requises
-            if (empty($mappedData['nom'])) {
-                $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
-                return;
-            }
-
-            // Validation de l'adresse IP
-            if (!empty($mappedData['reseau_ip']) && !filter_var($mappedData['reseau_ip'], FILTER_VALIDATE_IP)) {
-                $this->importErrors[] = "Ligne {$lineNumber}: Adresse IP invalide - {$mappedData['reseau_ip']}";
-                return;
-            }
-
-            // Nettoyer et formater les données
-            $mappedData = $this->cleanMappedData($mappedData);
-            
-            // Créer l'imprimante
-            ImprimanteModel::create([
-                'nom' => $mappedData['nom'],
-                'entite' => $mappedData['entite'] ?? null,
-                'statut' => $mappedData['statut'] ?? 'En stock',
-                'fabricant' => $mappedData['fabricant'] ?? null,
-                'numero_serie' => $mappedData['numero_serie'] ?? null,
-                'lieu' => $mappedData['lieu'] ?? null,
-                'type' => $mappedData['type'] ?? null,
-                'modele' => $mappedData['modele'] ?? null,
-                'reseau_ip' => $mappedData['reseau_ip'] ?? null,
-                'commentaires' => $mappedData['commentaires'] ?? null,
-            ]);
-
-            $this->importSuccessCount++;
-
-        } catch (\Exception $e) {
-            $this->importErrors[] = "Ligne {$lineNumber}: " . $e->getMessage();
         }
+
+        // Log pour debug
+        logger("Ligne {$lineNumber} - Données mappées: " . json_encode($mappedData));
+
+        // Validation des données requises
+        if (empty($mappedData['nom'])) {
+            $errorMsg = "Ligne {$lineNumber}: Le nom est obligatoire";
+            logger($errorMsg);
+            $this->importErrors[] = $errorMsg;
+            return;
+        }
+
+        // Validation de l'adresse IP
+        if (!empty($mappedData['reseau_ip']) && !filter_var($mappedData['reseau_ip'], FILTER_VALIDATE_IP)) {
+            $errorMsg = "Ligne {$lineNumber}: Adresse IP invalide - '{$mappedData['reseau_ip']}'";
+            logger($errorMsg);
+            $this->importErrors[] = $errorMsg;
+            
+            // Optionnel: on peut ignorer l'IP invalide et continuer
+            $mappedData['reseau_ip'] = null;
+        }
+
+        // Vérifier si l'imprimante existe déjà
+        $existing = ImprimanteModel::where('nom', $mappedData['nom'])->first();
+        if ($existing) {
+            $errorMsg = "Ligne {$lineNumber}: Une imprimante avec le nom '{$mappedData['nom']}' existe déjà";
+            logger($errorMsg);
+            $this->importErrors[] = $errorMsg;
+            return;
+        }
+
+        // Nettoyer et formater les données
+        $mappedData = $this->cleanMappedData($mappedData);
+        
+        // Créer l'imprimante
+        $imprimante = ImprimanteModel::create([
+            'nom' => $mappedData['nom'],
+            'entite' => $mappedData['entite'] ?? null,
+            'statut' => $mappedData['statut'] ?? 'En stock',
+            'fabricant' => $mappedData['fabricant'] ?? null,
+            'numero_serie' => $mappedData['numero_serie'] ?? null,
+            'lieu' => $mappedData['lieu'] ?? null,
+            'type' => $mappedData['type'] ?? null,
+            'modele' => $mappedData['modele'] ?? null,
+            'reseau_ip' => $mappedData['reseau_ip'] ?? null,
+            'commentaires' => $mappedData['commentaires'] ?? null,
+        ]);
+
+        logger("Ligne {$lineNumber} SUCCÈS: Imprimante '{$mappedData['nom']}' créée avec ID: {$imprimante->id}");
+        $this->importSuccessCount++;
+
+    } catch (\Exception $e) {
+        $errorMsg = "Ligne {$lineNumber}: " . $e->getMessage();
+        logger($errorMsg);
+        $this->importErrors[] = $errorMsg;
     }
+}
 
     /**
      * Nettoyer les données mappées
@@ -847,20 +872,48 @@ class Imprimante extends Component
         $this->resetForm();
     }
 
+    /**
+     * Afficher les détails
+     */
     public function showDetails($id)
     {
         $this->selectedImprimante = ImprimanteModel::find($id);
         $this->showDetailsModal = true;
     }
 
+    /**
+     * Fermer les détails
+     */
     public function closeDetailsModal()
     {
         $this->showDetailsModal = false;
         $this->selectedImprimante = null;
     }
 
+    /**
+     * Basculer l'affichage des filtres
+     */
+    public function toggleFilters()
+    {
+        // Implémentation pour basculer l'affichage des filtres sur mobile
+    }
+
+    /**
+     * Rafraîchir le tableau et les statistiques
+     */
+    public function refreshTable()
+    {
+        $this->resetPage();
+        $this->chargerStatistiques();
+        $this->chargerFabricants();
+        $this->chargerEntites();
+    }
+
     // ==================== MÉTHODES POUR LES STATISTIQUES ====================
 
+    /**
+     * Charger les statistiques
+     */
     public function chargerStatistiques()
     {
         $this->stats['total'] = ImprimanteModel::count();
@@ -870,6 +923,9 @@ class Imprimante extends Component
         $this->stats['en_stock'] = ImprimanteModel::where('statut', 'En stock')->count();
     }
 
+    /**
+     * Charger les fabricants
+     */
     private function chargerFabricants()
     {
         $this->fabricants = ImprimanteModel::whereNotNull('fabricant')
@@ -878,6 +934,9 @@ class Imprimante extends Component
             ->toArray();
     }
 
+    /**
+     * Charger les entités
+     */
     private function chargerEntites()
     {
         $this->entites = ImprimanteModel::whereNotNull('entite')
@@ -886,6 +945,9 @@ class Imprimante extends Component
             ->toArray();
     }
 
+    /**
+     * Basculer l'affichage des statistiques
+     */
     public function toggleStats()
     {
         $this->showStats = !$this->showStats;
@@ -896,21 +958,33 @@ class Imprimante extends Component
 
     // ==================== MÉTHODES DE PAGINATION ====================
 
+    /**
+     * Mise à jour de la recherche
+     */
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
+    /**
+     * Mise à jour du statut
+     */
     public function updatingStatut()
     {
         $this->resetPage();
     }
 
+    /**
+     * Mise à jour de l'entité
+     */
     public function updatingEntite()
     {
         $this->resetPage();
     }
 
+    /**
+     * Mise à jour du fabricant
+     */
     public function updatingFabricant()
     {
         $this->resetPage();

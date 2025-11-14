@@ -51,9 +51,10 @@ Route::get('/telephone', [App\Http\Controllers\equipement\telephone::class, 'ind
 Route::get('/peripherique', [App\Http\Controllers\equipement\Peripherique::class, 'index'])->name('peripherique');
 Route::get('/equipement', [App\Http\Controllers\equipement\equipement::class, 'index'])->name('equipement');
 Route::get('/materiel-reseau', [App\Http\Controllers\equipement\MaterielReseau::class, 'index'])->name('materiel-reseau');
+Route::get('/incident', [App\Http\Controllers\equipement\Incident::class, 'index'])->name('incident');
+Route::get('/accessoir', [App\Http\Controllers\equipement\accessoir::class, 'index'])->name('accessoir');
 Route::get('/mail', [App\Http\Livewire\Login\Utilisateur::class, 'sendEmail']);
 Route::post('/login/utilisateur/verification', [App\Http\Controllers\login\utilisateur::class, 'verification']);
-
 Route::post('/userinscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'store'])->name('userinscription');
 Route::post('/checklogin', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'login'])->name('verifierlogin');
 //Route::get('/utilisateur', [App\Http\Controllers\User\User::class, 'utilisateur'])->name('utilisateur');-

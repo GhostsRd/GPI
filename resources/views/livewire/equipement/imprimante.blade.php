@@ -1,7 +1,5 @@
 <div>
     <!-- Container pour les notifications -->
-   
-
     <div class="container-fluid py-3">
         <!-- Header -->
         <div class="row mb-3">
@@ -9,14 +7,15 @@
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
                         <h1 class="h4 fw-semibold text-dark mb-0">
-    <i class="bi bi-printer me-2 text-primary"></i> Gestion des Imprimantes
-</h1>
+                            <i class="bi bi-printer me-2 text-primary"></i> Gestion des Imprimantes
+                        </h1>
                         <p class="text-muted small">Gestion du parc d'imprimantes de l'entreprise</p>
                     </div>
                     <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-outline-primary btn-sm d-flex align-items-center" wire:click="toggleStats">
-                            <i class="fas fa-chart-bar me-1"></i>
-                            {{ $showStats ? 'Masquer' : 'Afficher' }} stats
+                        <button class="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center"
+                                wire:click="toggleStats"
+                                title="{{ $showStats ? 'Masquer les statistiques' : 'Afficher les statistiques' }}">
+                            <i class="fas fa-chart-bar"></i>
                         </button>
                     </div>
                 </div>
@@ -54,72 +53,122 @@
 
         <!-- Statistiques -->
         @if($showStats)
-        <div class="row mb-3">
+        <div class="row mb-4">
+            <!-- Total -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon icon-primary me-3">
-                            <i class="fas fa-chart-pie"></i>
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-primary mb-1">{{ $stats['total'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Total Imprimantes</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 100%"></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="stat-number mb-0">{{ $stats['total'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0">Total</p>
+                        <div class="stat-icon-lg icon-primary ms-3">
+                            <i class="bi bi-printer-fill"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- En service -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon icon-success me-3">
-                            <i class="fas fa-check-circle"></i>
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-success mb-1">{{ $stats['en_service'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Service</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-success" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_service'] / $stats['total'] * 100) : 0 }}%"></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="stat-number mb-0">{{ $stats['en_service'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0">En service</p>
+                        <div class="stat-icon-lg icon-success ms-3">
+                            <i class="bi bi-check-circle-fill"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- En maintenance -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon icon-warning me-3">
-                            <i class="fas fa-tools"></i>
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-warning mb-1">{{ $stats['en_maintenance'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Maintenance</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-warning" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_maintenance'] / $stats['total'] * 100) : 0 }}%"></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="stat-number mb-0">{{ $stats['en_maintenance'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0">En maintenance</p>
+                        <div class="stat-icon-lg icon-warning ms-3">
+                            <i class="bi bi-tools"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- En stock -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon icon-info me-3">
-                            <i class="fas fa-warehouse"></i>
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-info mb-1">{{ $stats['en_stock'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Stock</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-info" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_stock'] / $stats['total'] * 100) : 0 }}%"></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="stat-number mb-0">{{ $stats['en_stock'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0">En stock</p>
+                        <div class="stat-icon-lg icon-info ms-3">
+                            <i class="bi bi-box-seam"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Hors service -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card">
-                    <div class="d-flex align-items-center">
-                        <div class="stat-icon icon-danger me-3">
-                            <i class="fas fa-times-circle"></i>
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-danger mb-1">{{ $stats['hors_service'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Hors Service</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-danger" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['hors_service'] / $stats['total'] * 100) : 0 }}%"></div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="stat-number mb-0">{{ $stats['hors_service'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0">Hors service</p>
+                        <div class="stat-icon-lg icon-danger ms-3">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Taux de disponibilité -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            @php
+                                $disponible = $stats['en_service'] ?? 0;
+                                $total = $stats['total'] ?? 1;
+                                $taux = $total > 0 ? round(($disponible / $total) * 100) : 0;
+                            @endphp
+                            <h3 class="stat-number mb-1 {{ $taux >= 80 ? 'text-success' : ($taux >= 60 ? 'text-warning' : 'text-danger') }}">
+                                {{ $taux }}%
+                            </h3>
+                            <p class="text-muted small mb-0 fw-medium">Disponibilité</p>
+                            <div class="progress mt-2" style="height: 6px;">
+                                <div class="progress-bar {{ $taux >= 80 ? 'bg-success' : ($taux >= 60 ? 'bg-warning' : 'bg-danger') }}" 
+                                     style="width: {{ $taux }}%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-icon-lg {{ $taux >= 80 ? 'icon-success' : ($taux >= 60 ? 'icon-warning' : 'icon-danger') }} ms-3">
+                            <i class="bi bi-speedometer2"></i>
                         </div>
                     </div>
                 </div>
@@ -129,60 +178,92 @@
 
         <!-- Filtres avec boutons Import/Export -->
         <div class="dashboard-card p-3 mb-3">
-            <div class="row g-2 align-items-end">
-                <div class="col-md-2">
-                    <label class="form-label small fw-medium">Recherche</label>
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-semibold mb-0 text-dark small">Filtres et Actions</h6>
+                <div class="d-flex gap-2">
+                    <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm" title="Réinitialiser les filtres">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button wire:click="toggleFilters" class="btn btn-outline-secondary btn-sm d-md-none" title="Afficher/Masquer les filtres">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3 align-items-end" id="filters-container">
+                <!-- Recherche -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Recherche</label>
+                    <div class="search-box position-relative">
+                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted small"></i>
                         <input type="text" wire:model.live.debounce.300ms="search"
-                               class="form-control form-control-sm" placeholder="Nom, modèle, IP...">
+                               class="form-control form-control-sm ps-4 border-0 bg-light rounded-2"
+                               placeholder="Nom, modèle, IP...">
                     </div>
                 </div>
 
-                <div class="col-md-2">
-                    <label class="form-label small fw-medium">Statut</label>
-                    <select wire:model.live="statut" class="form-select form-select-sm">
-                        <option value="">Tous</option>
-                        @foreach($statuts as $statutOption)
-                            <option value="{{ $statutOption }}">{{ $statutOption }}</option>
-                        @endforeach
-                    </select>
+                <!-- Statut -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Statut</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted small">
+                            <i class="fas fa-circle"></i>
+                        </span>
+                        <select wire:model.live="statut" class="form-select border-0 bg-light rounded-2">
+                            <option value="">Tous les statuts</option>
+                            @foreach($statuts as $statutOption)
+                                <option value="{{ $statutOption }}">{{ $statutOption }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-2">
-                    <label class="form-label small fw-medium">Fabricant</label>
-                    <select wire:model.live="fabricant" class="form-select form-select-sm">
-                        <option value="">Tous</option>
-                        @foreach($fabricants as $fabricantOption)
-                            <option value="{{ $fabricantOption }}">{{ $fabricantOption }}</option>
-                        @endforeach
-                    </select>
+                <!-- Fabricant -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Fabricant</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted small">
+                            <i class="fas fa-industry"></i>
+                        </span>
+                        <select wire:model.live="fabricant" class="form-select border-0 bg-light rounded-2">
+                            <option value="">Tous les fabricants</option>
+                            @foreach($fabricants as $fabricantOption)
+                                <option value="{{ $fabricantOption }}">{{ $fabricantOption }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-2">
-                    <label class="form-label small fw-medium">Entité</label>
-                    <select wire:model.live="entite" class="form-select form-select-sm">
-                        <option value="">Toutes</option>
-                        @foreach($entites as $entiteOption)
-                            <option value="{{ $entiteOption }}">{{ $entiteOption }}</option>
-                        @endforeach
-                    </select>
+                <!-- Entité -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Entité</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted small">
+                            <i class="fas fa-building"></i>
+                        </span>
+                        <select wire:model.live="entite" class="form-select border-0 bg-light rounded-2">
+                            <option value="">Toutes les entités</option>
+                            @foreach($entites as $entiteOption)
+                                <option value="{{ $entiteOption }}">{{ $entiteOption }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Boutons d'action -->
                 <div class="col-md-4">
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-redo me-1"></i> RàZ
+                    <div class="d-flex gap-2 flex-wrap justify-content-end">
+                        <button wire:click="openImportModal" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                            <i class="fas fa-file-import me-1"></i>
+                            <span class="d-none d-sm-inline">Importer</span>
                         </button>
-                        <button wire:click="openImportModal" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-file-import me-1"></i> Importer
+                        <button wire:click="exportToCsv" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                            <i class="fas fa-file-export me-1"></i>
+                            <span class="d-none d-sm-inline">Exporter</span>
                         </button>
-                        <button wire:click="exportToCsv" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-file-export me-1"></i> Exporter
-                        </button>
-                        <button wire:click="create" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus me-1"></i> Ajouter
+                        <button wire:click="create" class="btn btn-primary btn-sm d-flex align-items-center">
+                            <i class="fas fa-plus me-1"></i>
+                            <span class="d-none d-sm-inline">Ajouter</span>
                         </button>
                     </div>
                 </div>
@@ -192,21 +273,23 @@
             @if(count($selectedImprimantes) > 0)
             <div class="row mt-3">
                 <div class="col-12">
-                    <div class="alert alert-info py-2 small">
+                    <div class="alert alert-info py-2 small border-0">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span>
+                            <span class="d-flex align-items-center">
                                 <i class="fas fa-check-circle me-2"></i>
                                 {{ count($selectedImprimantes) }} imprimante(s) sélectionnée(s)
                             </span>
                             <div class="d-flex gap-2">
                                 <button wire:click="deleteSelected" 
                                         wire:confirm="Êtes-vous sûr de vouloir supprimer les {{ count($selectedImprimantes) }} imprimantes sélectionnées ?"
-                                        class="btn btn-outline-danger btn-sm">
-                                    <i class="fas fa-trash me-1"></i> Supprimer
+                                        class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                                    <i class="fas fa-trash me-1"></i>
+                                    <span>Supprimer</span>
                                 </button>
                                 <button wire:click="$set('selectedImprimantes', [])" 
-                                        class="btn btn-outline-secondary btn-sm">
-                                    <i class="fas fa-times me-1"></i> Annuler
+                                        class="btn btn-outline-secondary btn-sm d-flex align-items-center">
+                                    <i class="fas fa-times me-1"></i>
+                                    <span>Annuler</span>
                                 </button>
                             </div>
                         </div>
@@ -307,33 +390,28 @@
                             <td class="small">{{ $imprimante->type }}</td>
                             <td class="small">{{ $imprimante->modele }}</td>
                             <td class="small">{{ $imprimante->updated_at->format('d/m/Y H:i') }}</td>
-                           
-                                
-   <td>
-    <div class="d-flex gap-1">
-        <!-- Bouton Voir Détails -->
-        <button wire:click="showDetails({{ $imprimante->id }})"
-                class="btn btn-sm btn-outline-info border-0"
-                title="Voir détails">
-            <i class="bi bi-eye"></i>
-        </button>
-        <!-- Bouton Modifier -->
-        <button wire:click="edit({{ $imprimante->id }})"
-                class="btn btn-sm btn-outline-primary border-0"
-                title="Modifier">
-            <i class="bi bi-pencil"></i>
-        </button>
-        <!-- Bouton Fichiers -->
-        <!-- Bouton Supprimer -->
-        <button wire:click="confirmDelete({{ $imprimante->id }})"
-                class="btn btn-sm btn-outline-danger border-0"
-                title="Supprimer">
-            <i class="bi bi-trash"></i>
-        </button>
-    </div>
-</td>
-
-                           
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <!-- Bouton Voir Détails -->
+                                    <button wire:click="showDetails({{ $imprimante->id }})"
+                                            class="btn btn-sm btn-outline-info border-0"
+                                            title="Voir détails">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <!-- Bouton Modifier -->
+                                    <button wire:click="edit({{ $imprimante->id }})"
+                                            class="btn btn-sm btn-outline-primary border-0"
+                                            title="Modifier">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <!-- Bouton Supprimer -->
+                                    <button wire:click="confirmDelete({{ $imprimante->id }})"
+                                            class="btn btn-sm btn-outline-danger border-0"
+                                            title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     @empty
                         <tr>
@@ -684,7 +762,95 @@
         </div>
     </div>
     @endif
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Modal de mapping pour CSV -->
+    @if($showMappingModal)
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-table me-2"></i>Mapping des colonnes CSV
+                    </h5>
+                    <button type="button" class="btn-close" wire:click="closeMappingModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info small">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Associez les colonnes de votre fichier CSV aux champs de l'application.
+                    </div>
+
+                    <!-- Aperçu des données -->
+                    @if(count($csvPreview) > 0)
+                    <div class="mb-3">
+                        <h6 class="small fw-semibold">Aperçu des données (5 premières lignes)</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered small">
+                                <thead>
+                                    <tr>
+                                        @foreach($csvHeaders as $header)
+                                            <th>{{ $header }}</th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($csvPreview as $row)
+                                        <tr>
+                                            @foreach($csvHeaders as $header)
+                                                <td>{{ $row[$header] ?? '' }}</td>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Mapping des champs -->
+                    <div class="mb-3">
+                        <h6 class="small fw-semibold">Association des colonnes</h6>
+                        <div class="row g-2">
+                            @foreach($fieldMapping as $field => $mappedValue)
+                            <div class="col-md-6">
+                                <label class="form-label small text-capitalize">{{ str_replace('_', ' ', $field) }}</label>
+                                <select class="form-select form-select-sm" wire:model="fieldMapping.{{ $field }}">
+                                    <option value="">-- Sélectionner une colonne --</option>
+                                    @foreach($csvHeaders as $header)
+                                        <option value="{{ $header }}">{{ $header }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    @if($importErrors)
+                    <div class="alert alert-danger small">
+                        <h6 class="alert-heading">Erreurs détectées</h6>
+                        <ul class="mb-0">
+                            @foreach($importErrors as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeMappingModal">Annuler</button>
+                    <button type="button" class="btn btn-primary btn-sm" wire:click="processMappedData">
+                        <i class="fas fa-play me-1"></i>Traiter les données
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         :root {
             --dark-green: #3D3E14;
@@ -710,14 +876,21 @@
             padding: 16px;
         }
         
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
+        .stat-icon-lg {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
         }
         
         .icon-primary { background: rgba(131, 175, 79, 0.1); color: var(--soft-green); }
@@ -725,12 +898,6 @@
         .icon-warning { background: rgba(227, 94, 47, 0.1); color: var(--orange); }
         .icon-info { background: rgba(61, 62, 20, 0.1); color: var(--dark-green); }
         .icon-danger { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
-        
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0;
-        }
         
         .search-box {
             position: relative;
@@ -748,25 +915,6 @@
         .search-box .form-control {
             padding-left: 30px;
             font-size: 0.875rem;
-        }
-        
-        .action-btn {
-            border: none;
-            background: none;
-            padding: 4px 6px;
-            border-radius: 4px;
-            margin: 0 1px;
-            transition: background-color 0.2s;
-            font-size: 0.9rem;
-        }
-        
-        .btn-view { color: var(--turquoise); }
-        .btn-edit { color: var(--orange); }
-        .btn-delete { color: #dc3545; }
-        .btn-secondary { color: #6c757d; }
-        
-        .action-btn:hover {
-            background: #f8f9fa;
         }
         
         .badge-sm {
@@ -829,6 +977,33 @@
         
         .modal {
             z-index: 1050;
+        }
+
+        /* Animation pour le chargement */
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Amélioration des cartes de statistiques */
+        .dashboard-card:nth-child(1):hover { border-left-color: var(--soft-green); }
+        .dashboard-card:nth-child(2):hover { border-left-color: var(--turquoise); }
+        .dashboard-card:nth-child(3):hover { border-left-color: var(--orange); }
+        .dashboard-card:nth-child(4):hover { border-left-color: var(--dark-green); }
+        .dashboard-card:nth-child(5):hover { border-left-color: #dc3545; }
+        .dashboard-card:nth-child(6):hover { border-left-color: var(--soft-green); }
+
+        .progress {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            border-radius: 10px;
         }
     </style>
 </div>

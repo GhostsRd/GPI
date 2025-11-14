@@ -6,9 +6,11 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\MaterielReseau as MaterielReseauModel;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Collection;
+use League\Csv\Reader;
+use League\Csv\Statement;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MaterielReseauImport;
 
 class MaterielReseau extends Component
 {
@@ -57,6 +59,7 @@ class MaterielReseau extends Component
     public $showMappingModal = false;
     public $csvHeaders = [];
     public $csvData = [];
+    public $isImporting = false;
 
     // Options pour les selects
     public $statutOptions = [
@@ -114,7 +117,6 @@ class MaterielReseau extends Component
     ];
 
     protected $listeners = [
-        'deleteConfirmed' => 'deleteMateriel',
         'refreshComponent' => '$refresh'
     ];
 
@@ -226,9 +228,12 @@ class MaterielReseau extends Component
             'statutFilter', 
             'typeFilter', 
             'fabricantFilter', 
-            'entiteFilter'
+            'entiteFilter',
+            'selectedMateriels',
+            'selectAll'
         ]);
         $this->resetPage();
+        session()->flash('message', 'Filtres réinitialisés avec succès.');
     }
 
     public function updatingSearch()
@@ -294,15 +299,35 @@ class MaterielReseau extends Component
             $rules['numero_serie'] .= '|unique:materiels_reseau,numero_serie';
         }
 
-        $validatedData = $this->validate($rules);
+        $this->validate($rules);
 
         try {
             if ($this->editMode) {
                 $materiel = MaterielReseauModel::findOrFail($this->materielId);
-                $materiel->update($validatedData);
+                $materiel->update([
+                    'nom' => $this->nom,
+                    'entite' => $this->entite,
+                    'statut' => $this->statut,
+                    'fabricant' => $this->fabricant,
+                    'lieu' => $this->lieu,
+                    'reseau_ip' => $this->reseau_ip,
+                    'type' => $this->type,
+                    'modele' => $this->modele,
+                    'numero_serie' => $this->numero_serie,
+                ]);
                 session()->flash('message', 'Matériel réseau modifié avec succès!');
             } else {
-                MaterielReseauModel::create($validatedData);
+                MaterielReseauModel::create([
+                    'nom' => $this->nom,
+                    'entite' => $this->entite,
+                    'statut' => $this->statut,
+                    'fabricant' => $this->fabricant,
+                    'lieu' => $this->lieu,
+                    'reseau_ip' => $this->reseau_ip,
+                    'type' => $this->type,
+                    'modele' => $this->modele,
+                    'numero_serie' => $this->numero_serie,
+                ]);
                 session()->flash('message', 'Matériel réseau créé avec succès!');
             }
 
@@ -330,7 +355,7 @@ class MaterielReseau extends Component
     public function confirmDelete($id)
     {
         $this->deleteId = $id;
-        $this->dispatchBrowserEvent('show-delete-confirmation');
+        $this->showDeleteModal = true;
     }
 
     public function deleteMateriel()
@@ -340,6 +365,7 @@ class MaterielReseau extends Component
                 MaterielReseauModel::findOrFail($this->deleteId)->delete();
                 session()->flash('message', 'Matériel réseau supprimé avec succès!');
                 $this->deleteId = null;
+                $this->showDeleteModal = false;
                 $this->emitSelf('refreshComponent');
             } catch (\Exception $e) {
                 session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
@@ -353,6 +379,7 @@ class MaterielReseau extends Component
             try {
                 MaterielReseauModel::whereIn('id', $this->selectedMateriels)->delete();
                 $this->selectedMateriels = [];
+                $this->selectAll = false;
                 session()->flash('message', 'Matériels réseau sélectionnés supprimés avec succès!');
                 $this->emitSelf('refreshComponent');
             } catch (\Exception $e) {
@@ -417,7 +444,8 @@ class MaterielReseau extends Component
             'importSuccessCount',
             'csvHeaders',
             'csvData',
-            'showMappingModal'
+            'showMappingModal',
+            'isImporting'
         ]);
         $this->initializeImportMapping();
     }
@@ -425,112 +453,347 @@ class MaterielReseau extends Component
     private function initializeImportMapping()
     {
         $this->importMapping = [
-            'nom' => 'Nom',
-            'entite' => 'Entité',
-            'statut' => 'Statut',
-            'fabricant' => 'Fabricant',
-            'type' => 'Type',
-            'modele' => 'Modèle',
-            'numero_serie' => 'Numéro de série',
-            'reseau_ip' => 'IP Réseau',
-            'lieu' => 'Lieu'
+            'nom' => '',
+            'entite' => '',
+            'statut' => '',
+            'fabricant' => '',
+            'type' => '',
+            'modele' => '',
+            'numero_serie' => '',
+            'reseau_ip' => '',
+            'lieu' => ''
         ];
     }
 
-    public function processImportFile()
+    /**
+     * Import des matériels réseau
+     */
+    public function importMateriels()
     {
-        $this->validate([
-            'importFile' => 'required|file|mimes:csv,txt,xlsx,xls|max:10240'
-        ]);
-
         try {
-            $path = $this->importFile->store('imports');
-            $fullPath = Storage::path($path);
+            $this->isImporting = true;
+            $this->importErrors = [];
+            $this->importSuccessCount = 0;
 
-            // Lire le fichier CSV
-            $file = fopen($fullPath, 'r');
-            $this->csvHeaders = fgetcsv($file);
-            $this->csvData = [];
+            // Validation du fichier
+            $this->validate([
+                'importFile' => 'required|file|mimes:xlsx,xls,csv|max:10240'
+            ]);
 
-            // Lire les premières lignes pour prévisualisation
-            $lineCount = 0;
-            while (($row = fgetcsv($file)) !== FALSE && $lineCount < 10) {
-                $this->csvData[] = $row;
-                $lineCount++;
+            // Si c'est un fichier CSV, passer directement au mapping
+            $extension = $this->importFile->getClientOriginalExtension();
+            
+            if (in_array($extension, ['csv', 'txt'])) {
+                $this->storeImportFile();
+            } else {
+                // Pour les fichiers Excel, utiliser l'import direct
+                Excel::import(new MaterielReseauImport, $this->importFile);
+                
+                $this->showImportModal = false;
+                $this->isImporting = false;
+                $this->resetImport();
+                
+                session()->flash('message', 'Matériels réseau importés avec succès via Excel.');
+                $this->emitSelf('refreshComponent');
             }
-            fclose($file);
 
+        } catch (\Exception $e) {
+            $this->isImporting = false;
+            $this->importErrors[] = 'Erreur lors de l\'import: ' . $e->getMessage();
+            session()->flash('error', 'Erreur lors de l\'import: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Stocker le fichier et préparer le mapping
+     */
+    public function storeImportFile()
+    {
+        try {
+            // Stocker le fichier
+            $extension = $this->importFile->getClientOriginalExtension();
+            $fileName = 'import_materiel_reseau_' . time() . '.' . $extension;
+            $filePath = $this->importFile->storeAs('imports/materiel-reseau', $fileName, 'public');
+
+            // Lire le fichier
+            $this->readImportFile(storage_path('app/public/' . $filePath), $extension);
+
+            // Passer à l'étape de mapping
+            $this->showImportModal = false;
             $this->showMappingModal = true;
+
+        } catch (\Exception $e) {
+            $this->importErrors[] = 'Erreur lors du stockage du fichier: ' . $e->getMessage();
+            session()->flash('error', 'Erreur lors du stockage du fichier: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Lire le fichier d'import pour extraction des en-têtes et preview
+     */
+    private function readImportFile($filePath, $extension)
+    {
+        try {
+            if ($extension === 'csv') {
+                $this->readCsvFile($filePath);
+            } else {
+                $this->readExcelFile($filePath);
+            }
+
+            // Mapping automatique basé sur la similarité des noms
+            $this->autoMapFields();
 
         } catch (\Exception $e) {
             $this->importErrors[] = 'Erreur lors de la lecture du fichier: ' . $e->getMessage();
         }
     }
 
-    public function importMateriels()
+    /**
+     * Lire le fichier CSV
+     */
+    private function readCsvFile($filePath)
     {
-        try {
-            $path = $this->importFile->store('imports');
-            $fullPath = Storage::path($path);
+        $csv = Reader::createFromPath($filePath, 'r');
+        $csv->setHeaderOffset(0);
+        $csv->setDelimiter(',');
 
-            $file = fopen($fullPath, 'r');
-            $headers = fgetcsv($file);
+        // Obtenir les en-têtes
+        $this->csvHeaders = $csv->getHeader();
+        
+        // Obtenir un aperçu des données (5 premières lignes)
+        $stmt = (new Statement())->limit(5);
+        $records = $stmt->process($csv);
+        
+        $this->csvData = [];
+        foreach ($records as $record) {
+            $this->csvData[] = $record;
+        }
+    }
+
+    /**
+     * Lire le fichier Excel
+     */
+    private function readExcelFile($filePath)
+    {
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
+        $worksheet = $spreadsheet->getActiveSheet();
+        
+        // Obtenir les en-têtes (première ligne)
+        $this->csvHeaders = [];
+        $highestColumn = $worksheet->getHighestColumn();
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+        
+        for ($col = 1; $col <= $highestColumnIndex; ++$col) {
+            $value = $worksheet->getCellByColumnAndRow($col, 1)->getValue();
+            if ($value) {
+                $this->csvHeaders[] = trim($value);
+            }
+        }
+        
+        // Obtenir un aperçu des données (5 premières lignes)
+        $this->csvData = [];
+        $highestRow = min(6, $worksheet->getHighestRow());
+        
+        for ($row = 2; $row <= $highestRow; $row++) {
+            $rowData = [];
+            for ($col = 1; $col <= $highestColumnIndex; ++$col) {
+                $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                $rowData[] = $value;
+            }
+            $this->csvData[] = array_combine($this->csvHeaders, $rowData);
+        }
+    }
+
+    /**
+     * Mapping automatique des champs
+     */
+    private function autoMapFields()
+    {
+        $fieldPatterns = [
+            'nom'          => ['nom','name','designation','libelle','materiel','equipement','it identification'],
+            'entite'       => ['entite','entity','departement','service','department','division'],
+            'statut'       => ['statut','status','etat','state','situation'],
+            'fabricant'    => ['fabricant','manufacturer','marque','brand','make','constructor'],
+            'type'         => ['type','typologie','technology','technologie'],
+            'modele'       => ['modele','model','reference','product','produit'],
+            'numero_serie' => ['numero_serie','serial','serial_number','sn','no_serie','num_serie'],
+            'reseau_ip'    => ['reseau_ip','ip','adresse_ip','ip_address','network_ip'],
+            'lieu'         => ['lieu','location','place','emplacement','site','localisation'],
+        ];
+
+        foreach ($this->csvHeaders as $header) {
+            $headerLower = strtolower(trim($header));
             
-            $importedCount = 0;
-            $errorCount = 0;
-
-            while (($row = fgetcsv($file)) !== FALSE) {
-                try {
-                    $data = [];
-                    foreach ($this->importMapping as $field => $header) {
-                        $index = array_search($header, $headers);
-                        if ($index !== false && isset($row[$index])) {
-                            $data[$field] = trim($row[$index]);
-                        }
+            foreach ($fieldPatterns as $field => $patterns) {
+                foreach ($patterns as $pattern) {
+                    if (str_contains($headerLower, $pattern) && empty($this->importMapping[$field])) {
+                        $this->importMapping[$field] = $header;
+                        break 2;
                     }
-
-                    // Validation des données requises
-                    if (empty($data['nom']) || empty($data['statut'])) {
-                        $errorCount++;
-                        continue;
-                    }
-
-                    // Vérifier si le numéro de série existe déjà
-                    if (!empty($data['numero_serie'])) {
-                        $exists = MaterielReseauModel::where('numero_serie', $data['numero_serie'])->exists();
-                        if ($exists) {
-                            $errorCount++;
-                            continue;
-                        }
-                    }
-
-                    MaterielReseauModel::create($data);
-                    $importedCount++;
-
-                } catch (\Exception $e) {
-                    $errorCount++;
                 }
             }
+        }
+    }
 
-            fclose($file);
+    /**
+     * Traiter les données avec le mapping
+     */
+    public function processMappedData()
+    {
+        try {
+            $this->importErrors = [];
+            $this->importSuccessCount = 0;
 
-            // Nettoyer le fichier temporaire
-            Storage::delete($path);
-
-            $this->importSuccessCount = $importedCount;
-            
-            if ($importedCount > 0) {
-                session()->flash('message', $importedCount . ' matériel(s) réseau importé(s) avec succès!' . ($errorCount > 0 ? ' (' . $errorCount . ' erreurs)' : ''));
-            } else {
-                session()->flash('error', 'Aucun matériel importé. Vérifiez le format du fichier.');
+            // Trouver le dernier fichier importé
+            $files = Storage::disk('public')->files('imports/materiel-reseau');
+            if (empty($files)) {
+                throw new \Exception('Aucun fichier importé trouvé');
             }
 
-            $this->closeImportModal();
+            $latestFile = last($files);
+            $filePath = storage_path('app/public/' . $latestFile);
+            $extension = pathinfo($latestFile, PATHINFO_EXTENSION);
+
+            // Lire et traiter le fichier avec le mapping
+            if ($extension === 'csv') {
+                $this->processCsvFile($filePath);
+            } else {
+                $this->processExcelFile($filePath);
+            }
+
+            $this->showMappingModal = false;
+            $this->showImportModal = false;
+
+            session()->flash('message', $this->importSuccessCount . ' matériel(s) réseau importé(s) avec succès.');
             $this->emitSelf('refreshComponent');
 
         } catch (\Exception $e) {
-            $this->importErrors[] = 'Erreur lors de l\'importation: ' . $e->getMessage();
+            $this->importErrors[] = 'Erreur lors du traitement des données: ' . $e->getMessage();
+            session()->flash('error', 'Erreur lors du traitement des données: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Traiter le fichier CSV
+     */
+    private function processCsvFile($filePath)
+    {
+        $csv = Reader::createFromPath($filePath, 'r');
+        $csv->setHeaderOffset(0);
+        $csv->setDelimiter(',');
+
+        $records = $csv->getRecords();
+        $lineNumber = 1;
+
+        foreach ($records as $record) {
+            $lineNumber++;
+            $this->processDataRow($record, $lineNumber);
+        }
+    }
+
+    /**
+     * Traiter le fichier Excel
+     */
+    private function processExcelFile($filePath)
+    {
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
+        $worksheet = $spreadsheet->getActiveSheet();
+        
+        $highestRow = $worksheet->getHighestRow();
+        $highestColumn = $worksheet->getHighestColumn();
+        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+
+        for ($row = 2; $row <= $highestRow; $row++) {
+            $record = [];
+            for ($col = 1; $col <= $highestColumnIndex; ++$col) {
+                $header = $this->csvHeaders[$col - 1] ?? '';
+                $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                $record[$header] = $value;
+            }
+            $this->processDataRow($record, $row);
+        }
+    }
+
+    /**
+     * Traiter une ligne de données
+     */
+    private function processDataRow($record, $lineNumber)
+    {
+        $mappedData = [];
+
+        try {
+            // Appliquer le mapping
+            foreach ($this->importMapping as $field => $csvHeader) {
+                if (!empty($csvHeader) && isset($record[$csvHeader])) {
+                    $mappedData[$field] = trim($record[$csvHeader]);
+                } else {
+                    $mappedData[$field] = '';
+                }
+            }
+
+            // Validation des données requises
+            if (empty($mappedData['nom'])) {
+                $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
+                return;
+            }
+
+            // Validation de l'adresse IP
+            if (!empty($mappedData['reseau_ip']) && !filter_var($mappedData['reseau_ip'], FILTER_VALIDATE_IP)) {
+                $this->importErrors[] = "Ligne {$lineNumber}: Adresse IP invalide - {$mappedData['reseau_ip']}";
+                return;
+            }
+
+            // Nettoyer et formater les données
+            $mappedData = $this->cleanMappedData($mappedData);
+            
+            // Créer le matériel réseau
+            MaterielReseauModel::create([
+                'nom' => $mappedData['nom'],
+                'entite' => $mappedData['entite'] ?? null,
+                'statut' => $mappedData['statut'] ?? 'En stock',
+                'fabricant' => $mappedData['fabricant'] ?? null,
+                'type' => $mappedData['type'] ?? null,
+                'modele' => $mappedData['modele'] ?? null,
+                'numero_serie' => $mappedData['numero_serie'] ?? null,
+                'reseau_ip' => $mappedData['reseau_ip'] ?? null,
+                'lieu' => $mappedData['lieu'] ?? null,
+            ]);
+
+            $this->importSuccessCount++;
+
+        } catch (\Exception $e) {
+            $this->importErrors[] = "Ligne {$lineNumber}: " . $e->getMessage();
+        }
+    }
+
+    /**
+     * Nettoyer les données mappées
+     */
+    private function cleanMappedData($data)
+    {
+        // Nettoyer chaque champ
+        foreach ($data as $key => $value) {
+            $data[$key] = trim($value);
+            
+            // Validation spécifique pour le statut
+            if ($key === 'statut' && !empty($value)) {
+                $statutsValides = ['En service', 'En maintenance', 'Hors service', 'En stock'];
+                if (!in_array($value, $statutsValides)) {
+                    $data[$key] = 'En stock'; // Valeur par défaut
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Fermer le modal de mapping
+     */
+    public function closeMappingModal()
+    {
+        $this->showMappingModal = false;
+        $this->resetImport();
     }
 
     public function exportToCsv()
@@ -581,11 +844,6 @@ class MaterielReseau extends Component
     {
         $this->showDeleteModal = false;
         $this->deleteId = null;
-    }
-
-    public function closeMappingModal()
-    {
-        $this->showMappingModal = false;
     }
 
     public function getStatutColor($statut)

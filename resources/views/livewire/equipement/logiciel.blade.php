@@ -1,11 +1,225 @@
-<div class="ticket-dashboard">
-    <div class="dashboard-container">
-        <!-- En-tête -->
-        <div class="mb-4">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-boxes me-2 text-primary"></i>Gestion des Logiciels
-            </h1>
-            <p class="text-gray-600">Inventaire complet des applications et licences</p>
+
+
+<div>
+    <!-- Styles CSS -->
+    <style>
+        :root {
+            --dark-green: #3D3E14;
+            --turquoise: #66C0B7;
+            --off-white: #EDEDE8;
+            --orange: #E35E2F;
+            --soft-green: #83AF4B;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .dashboard-card:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card {
+            padding: 16px;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .stat-icon-lg {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .icon-primary { background: rgba(131, 175, 79, 0.1); color: var(--soft-green); }
+        .icon-success { background: rgba(102, 192, 183, 0.1); color: var(--turquoise); }
+        .icon-warning { background: rgba(227, 94, 47, 0.1); color: var(--orange); }
+        .icon-info { background: rgba(61, 62, 20, 0.1); color: var(--dark-green); }
+        .icon-danger { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
+        .icon-secondary { background: rgba(108, 117, 125, 0.1); color: #6c757d; }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .search-box .form-control {
+            padding-left: 30px;
+            font-size: 0.875rem;
+        }
+        
+        .badge-sm {
+            font-size: 0.7rem;
+            padding: 0.25em 0.5em;
+        }
+        
+        .table th {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .table td {
+            font-size: 0.8rem;
+            vertical-align: middle;
+        }
+        
+        .btn {
+            font-size: 0.8rem;
+        }
+        
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .detail-item {
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-item strong {
+            color: #495057;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.125rem;
+        }
+        
+        /* Styles pour centrer les modales */
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            min-height: calc(100% - 1rem);
+        }
+        
+        .modal-backdrop {
+            z-index: 1040;
+        }
+        
+        .modal {
+            z-index: 1050;
+        }
+        
+        .progress {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+        }
+
+        /* Styles supplémentaires pour les filtres */
+        .search-box input:focus {
+            background-color: white !important;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+        }
+
+        .input-group:focus-within {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+        }
+
+        .form-select:focus, .form-control:focus {
+            box-shadow: none !important;
+            background-color: white !important;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+
+        .rounded-2 {
+            border-radius: 8px !important;
+        }
+
+        .btn {
+            border-radius: 6px !important;
+        }
+
+        /* Animation pour les badges de filtre */
+        .badge {
+            transition: all 0.2s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #filters-container .col-md-3,
+            #filters-container .col-md-2 {
+                margin-bottom: 1rem;
+            }
+            
+            .btn span.d-none.d-sm-inline {
+                display: inline !important;
+            }
+        }
+    </style>
+
+    <!-- Contenu principal -->
+    <div class="container-fluid py-3">
+        <!-- Header -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h1 class="h4 fw-semibold text-dark mb-0">
+                            <i class="bi bi-microsoft me-2 text-primary"></i> Gestion des Logiciels
+                        </h1>
+                        <p class="text-muted small">Gérez votre parc logiciel efficacement</p>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-outline-primary btn-sm d-flex align-items-center" wire:click="toggleStats">
+                            <i class="fas fa-chart-bar me-1"></i>
+                            {{ $showStats ? 'Masquer' : 'Afficher' }} stats
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Messages flash -->
@@ -37,87 +251,115 @@
             </div>
         @endif
 
-        <!-- Statistiques -->
+        <!-- Statistiques avec 6 cartes -->
         @if($showStats)
         <div class="row mb-4">
-            <!-- Total -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-primary">{{ $stats['total'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Total Logiciels</p>
+            <!-- Carte 1: Total Logiciels -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-primary mb-1">{{ $stats['total'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Total Logiciels</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 100%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-boxes fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-lg icon-primary ms-3">
+                            <i class="bi bi-microsoft"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Licences critiques -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-warning">{{ $stats['licences_critiques'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Licences Critiques</p>
+            <!-- Carte 2: Licences Critiques -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-danger mb-1">{{ $stats['licences_critiques'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Licences Critiques</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-danger" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['licences_critiques'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-exclamation-triangle fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-lg icon-danger ms-3">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Total installations -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-success">{{ $stats['total_installations'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Total Installations</p>
+            <!-- Carte 3: Total Installations -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-success mb-1">{{ $stats['total_installations'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Total Installations</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-success" style="width: 100%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-download fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-lg icon-success ms-3">
+                            <i class="bi bi-download"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Taux de conformité -->
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                @php
-                                    $installations = $stats['total_installations'] ?? 0;
-                                    $licences = $stats['total_licences'] ?? 1;
-                                    $taux = $licences > 0 ? round(($installations / $licences) * 100) : 0;
-                                @endphp
-                                <h3 class="stats-number mb-0 {{ $taux <= 80 ? 'text-success' : ($taux <= 100 ? 'text-warning' : 'text-danger') }}">
-                                    {{ $taux }}%
-                                </h3>
-                                <p class="stats-label text-black mb-0">Taux Conformité</p>
+            <!-- Carte 4: Total Licences -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-info mb-1">{{ $stats['total_licences'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Total Licences</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-info" style="width: 100%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle {{ $taux <= 80 ? 'bg-success bg-opacity-25 text-success' : ($taux <= 100 ? 'bg-warning bg-opacity-25 text-warning' : 'bg-danger bg-opacity-25 text-danger') }} d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-chart-line fa-lg"></i>
-                                </div>
+                        </div>
+                        <div class="stat-icon-lg icon-info ms-3">
+                            <i class="bi bi-key-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 5: Logiciels sans licences -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-warning mb-1">{{ $stats['sans_licences'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Sans Licences</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-warning" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['sans_licences'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
+                        </div>
+                        <div class="stat-icon-lg icon-warning ms-3">
+                            <i class="bi bi-x-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte 6: Taux de Conformité -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-secondary mb-1">{{ $stats['taux_conformite'] ?? 0 }}%</h3>
+                            <p class="text-muted small mb-0 fw-medium">Conformité</p>
+                            <div class="progress mt-2" style="height: 6px;">
+                                <div class="progress-bar {{ $stats['taux_conformite'] >= 80 ? 'bg-success' : ($stats['taux_conformite'] >= 60 ? 'bg-warning' : 'bg-danger') }}" 
+                                     style="width: {{ $stats['taux_conformite'] }}%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-icon-lg icon-secondary ms-3">
+                            <i class="bi bi-check-circle-fill"></i>
                         </div>
                     </div>
                 </div>
@@ -125,270 +367,254 @@
         </div>
         @endif
 
-        <!-- Barre de recherche et filtres -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Recherche</label>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-transparent">
-                                <i class="fas fa-search text-muted"></i>
-                            </span>
-                            <input type="text" wire:model.live.debounce.300ms="search"
-                                   class="form-control" placeholder="Nom, éditeur, version...">
-                        </div>
+        <!-- Filtres avec boutons Import/Export -->
+        <div class="dashboard-card p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-semibold mb-0 text-dark small">Filtres et Actions</h6>
+                <div class="d-flex gap-2">
+                    <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm" title="Réinitialiser les filtres">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                    <button wire:click="toggleFilters" class="btn btn-outline-secondary btn-sm d-md-none" title="Afficher/Masquer les filtres">
+                        <i class="bi bi-funnel"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3 align-items-end" id="filters-container">
+                <!-- Recherche -->
+                <div class="col-md-3 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Recherche</label>
+                    <div class="search-box position-relative">
+                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted small"></i>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                               class="form-control form-control-sm ps-4 border-0 bg-light rounded-2"
+                               placeholder="Nom, Éditeur, Version...">
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Éditeur</label>
-                        <select wire:model.live="editeur" class="form-select form-select-sm">
+                </div>
+
+                <!-- Éditeur -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Éditeur</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted">
+                            <i class="bi bi-building"></i>
+                        </span>
+                        <select wire:model.live="editeur" class="form-select border-0 bg-light rounded-2">
                             <option value="">Tous les éditeurs</option>
                             @foreach($editeurs as $editeurOption)
                                 <option value="{{ $editeurOption }}">{{ $editeurOption }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Système d'exploitation</label>
-                        <select wire:model.live="systeme_exploitation" class="form-select form-select-sm">
+                </div>
+
+                <!-- Système d'exploitation -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Système d'exploitation</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted">
+                            <i class="bi bi-windows"></i>
+                        </span>
+                        <select wire:model.live="systeme_exploitation" class="form-select border-0 bg-light rounded-2">
                             <option value="">Tous les systèmes</option>
                             @foreach($systemes as $systeme)
                                 <option value="{{ $systeme }}">{{ $systeme }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Statut licence</label>
-                        <select wire:model.live="statutFilter" class="form-select form-select-sm">
-                            <option value="">Tous les statuts</option>
-                            <option value="Normal">Normal</option>
-                            <option value="Attention">Attention</option>
-                            <option value="Critique">Critique</option>
-                            <option value="Aucune licence">Aucune licence</option>
+                </div>
+
+                <!-- Pagination -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Affichage</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted">
+                            <i class="bi bi-list-ul"></i>
+                        </span>
+                        <select wire:model.live="perPage" class="form-select border-0 bg-light rounded-2">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
                         </select>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" wire:click="resetFilters"
-                                class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
-                            <i class="fas fa-times"></i> Reset
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" wire:click="openImportModal" class="btn btn-info btn-sm w-100" title="Importer des logiciels">
-                            <i class="fas fa-file-import"></i> Importer
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button wire:click="deleteSelected" class="btn btn-danger btn-sm w-100" title="Supprimer les logiciels sélectionnés"
-                            {{ empty($selectedLogiciels) ? 'disabled' : '' }}>
-                            <i class="fas fa-trash"></i>
-                            ({{ count($selectedLogiciels) }})
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button wire:click="exportToCsv" class="btn btn-success btn-sm w-100" title="Exporter les logiciels">
-                            <i class="fas fa-file-export"></i>
-                            Exporter
-                        </button>
                     </div>
                 </div>
 
-                <!-- Résultats du filtre -->
-                @if($search || $editeur || $systeme_exploitation || $statutFilter)
-                <div class="mt-3 pt-2 border-top">
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="text-muted small">Filtres actifs :</span>
-                        @if($search)
-                        <span class="badge bg-light text-dark border small d-flex align-items-center">
-                            Recherche: "{{ $search }}"
-                            <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
-                        </span>
-                        @endif
-                        @if($editeur)
-                        <span class="badge bg-light text-dark border small d-flex align-items-center">
-                            Éditeur: {{ $editeur }}
-                            <button wire:click="$set('editeur', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
-                        </span>
-                        @endif
-                        @if($systeme_exploitation)
-                        <span class="badge bg-light text-dark border small d-flex align-items-center">
-                            Système: {{ $systeme_exploitation }}
-                            <button wire:click="$set('systeme_exploitation', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
-                        </span>
-                        @endif
-                        @if($statutFilter)
-                        <span class="badge bg-light text-dark border small d-flex align-items-center">
-                            Statut: {{ $statutFilter }}
-                            <button wire:click="$set('statutFilter', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
-                        </span>
-                        @endif
+                <!-- Boutons d'action -->
+                <div class="col-md-3">
+                    <div class="d-flex gap-2 flex-wrap justify-content-end">
+                        <button wire:click="openImportModal" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                            <i class="bi bi-upload me-1"></i>
+                            <span class="d-none d-sm-inline">Importer</span>
+                        </button>
+                        <button wire:click="exportLogiciel" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                            <i class="bi bi-download me-1"></i>
+                            <span class="d-none d-sm-inline">Exporter</span>
+                        </button>
+                        <button wire:click="create" class="btn btn-primary btn-sm d-flex align-items-center">
+                            <i class="bi bi-plus-lg me-1"></i>
+                            <span class="d-none d-sm-inline">Nouveau</span>
+                        </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Résultats du filtre -->
+            @if($search || $editeur || $systeme_exploitation || $statutFilter)
+            <div class="mt-3 pt-2 border-top">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="text-muted small">Filtres actifs :</span>
+                    @if($search)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Recherche: "{{ $search }}"
+                        <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                    @if($editeur)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Éditeur: {{ $editeur }}
+                        <button wire:click="$set('editeur', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                    @if($systeme_exploitation)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Système: {{ $systeme_exploitation }}
+                        <button wire:click="$set('systeme_exploitation', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                    @if($statutFilter)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Statut: {{ $statutFilter }}
+                        <button wire:click="$set('statutFilter', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                </div>
+            </div>
+            @endif
+        </div>
+
+        <!-- Tableau -->
+        <div class="dashboard-card p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h5 class="fw-semibold mb-0">Liste des Logiciels</h5>
+                @if(count($selectedLogiciels) > 0)
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small">{{ count($selectedLogiciels) }} sélectionné(s)</span>
+                    <button wire:click="deleteSelected" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash me-1"></i>Supprimer
+                    </button>
                 </div>
                 @endif
             </div>
-        </div>
 
-        <!-- Table Container -->
-        <div class="table-container border-0 fade-in-up">
-            <div class="table-header">
-                <div class="table-title">
-                    Liste des Logiciels ({{ $logiciels->total() }})
-                </div>
-                <div class="d-flex gap-2">
-                    <button wire:click="toggleStats" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                        <i class="fas fa-chart-bar me-1"></i>
-                        {{ $showStats ? 'Masquer' : 'Afficher' }} stats
-                    </button>
-                    <button wire:click="create" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus mr-2"></i>Nouveau Logiciel
-                    </button>
-                </div>
-            </div>
-
-            <div class="table-wrapper p-0 border-0 w-100 compact-mode">
-                <table class="table border-0 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover">
                     <thead>
-                    <tr>
-                        <th>
-                            <input type="checkbox" wire:model="selectAll" class="checkbox-modern">
-                        </th>
-                        <th wire:click="sortBy('nom')" class="sortable">
-                            Nom
-                            @if($sortField === 'nom')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th wire:click="sortBy('editeur')" class="sortable">
-                            Éditeur
-                            @if($sortField === 'editeur')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th>Version</th>
-                        <th>Système d'exploitation</th>
-                        <th wire:click="sortBy('nombre_installations')" class="sortable">
-                            Installations
-                            @if($sortField === 'nombre_installations')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th wire:click="sortBy('nombre_licences')" class="sortable">
-                            Licences
-                            @if($sortField === 'nombre_licences')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th wire:click="sortBy('statut_licences')" class="sortable">
-                            Statut
-                            @if($sortField === 'statut_licences')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th wire:click="sortBy('updated_at')" class="sortable">
-                            Dernière modif.
-                            @if($sortField === 'updated_at')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th style="width: 30px;">
+                                <input type="checkbox" wire:model="selectAll" class="form-check-input">
+                            </th>
+                            <th wire:click="sortBy('nom')" style="cursor: pointer;">
+                                Nom
+                                @if ($sortField === 'nom')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('editeur')" style="cursor: pointer;">
+                                Éditeur
+                                @if ($sortField === 'editeur')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th>Version</th>
+                            <th>Système d'exploitation</th>
+                            <th wire:click="sortBy('nombre_installations')" style="cursor: pointer;">
+                                Installations
+                                @if ($sortField === 'nombre_installations')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th wire:click="sortBy('nombre_licences')" style="cursor: pointer;">
+                                Licences
+                                @if ($sortField === 'nombre_licences')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th>Statut</th>
+                            <th wire:click="sortBy('updated_at')" style="cursor: pointer;">
+                                Dernière modif.
+                                @if ($sortField === 'updated_at')
+                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
+                                @else
+                                    <i class="fas fa-sort text-muted small"></i>
+                                @endif
+                            </th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
                     @forelse($logiciels as $logiciel)
-                        <tr class="statut_{{ str_replace(' ', '_', $logiciel->statut_licences) }}" style="cursor:pointer">
+                        <tr>
                             <td>
-                                <input type="checkbox"
-                                       wire:model="selectedLogiciels"
-                                       value="{{ $logiciel->id }}"
-                                       class="checkbox-modern">
+                                <input type="checkbox" wire:model="selectedLogiciels" value="{{ $logiciel->id }}" class="form-check-input">
                             </td>
-                            <td wire:click="showDetails({{ $logiciel->id }})">
-                                <div class="d-flex align-items-center">
-                                    <div class="ms-3">
-                                        <p class="text-gray-900 whitespace-no-wrap fw-semibold mb-0">
-                                            {{ $logiciel->nom }}
-                                        </p>
-                                        @if($logiciel->description)
-                                            <p class="text-gray-600 small mb-0">
-                                                {{ Str::limit($logiciel->description, 50) }}
-                                            </p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </td>
-                            <td wire:click="showDetails({{ $logiciel->id }})">{{ $logiciel->editeur ?? 'N/A' }}</td>
-                            <td wire:click="showDetails({{ $logiciel->id }})">{{ $logiciel->version_nom ?? 'N/A' }}</td>
-                            <td wire:click="showDetails({{ $logiciel->id }})">
-                                <span class="os-badge">
-                                    {{ $logiciel->version_systeme_exploitation ?? 'N/A' }}
-                                </span>
-                            </td>
-                            <td wire:click="showDetails({{ $logiciel->id }})" class="text-center">
-                                <span class="installation-badge">{{ $logiciel->nombre_installations }}</span>
-                            </td>
-                            <td wire:click="showDetails({{ $logiciel->id }})" class="text-center">
-                                <span class="licence-badge">{{ $logiciel->nombre_licences }}</span>
-                            </td>
-                            <td wire:click="showDetails({{ $logiciel->id }})">
+                            <td class="fw-medium small">{{ $logiciel->nom }}</td>
+                            <td class="small">{{ $logiciel->editeur ?? 'N/A' }}</td>
+                            <td class="small">{{ $logiciel->version_nom ?? 'N/A' }}</td>
+                            <td class="small">{{ $logiciel->version_systeme_exploitation ?? 'N/A' }}</td>
+                            <td class="small text-center">{{ $logiciel->nombre_installations }}</td>
+                            <td class="small text-center">{{ $logiciel->nombre_licences }}</td>
+                            <td>
                                 @php
-                                    $statutClasses = [
-                                        'Normal' => 'bg-green-100 text-green-800',
-                                        'Attention' => 'bg-yellow-100 text-yellow-800',
-                                        'Critique' => 'bg-red-100 text-red-800',
-                                        'Aucune licence' => 'bg-gray-100 text-gray-800'
+                                    $statusClasses = [
+                                        'Conforme' => 'badge bg-success badge-sm',
+                                        'Alerte' => 'badge bg-warning badge-sm',
+                                        'Critique' => 'badge bg-danger badge-sm',
+                                        'Aucune licence' => 'badge bg-secondary badge-sm'
                                     ];
-                                    $classe = $statutClasses[$logiciel->statut_licences] ?? 'bg-gray-100 text-gray-800';
                                 @endphp
-                                <span class="status-badge {{ $classe }}">
+                                <span class="{{ $statusClasses[$logiciel->statut_licences] ?? 'badge bg-info badge-sm' }}">
                                     {{ $logiciel->statut_licences }}
-                                    @if($logiciel->statut_licences != 'Aucune licence')
-                                        ({{ $logiciel->pourcentage_utilisation }}%)
-                                    @endif
                                 </span>
                             </td>
-                            <td wire:click="showDetails({{ $logiciel->id }})">
-                                {{ $logiciel->updated_at->format('d/m/Y H:i') }}
-                            </td>
+                            <td class="small">{{ $logiciel->updated_at->format('d/m/Y H:i') }}</td>
                             <td>
-                                <div class="action-buttons">
+                                <div class="d-flex gap-1">
+                                    <!-- Bouton Voir Détails -->
                                     <button wire:click="showDetails({{ $logiciel->id }})"
-                                            class="btn-action btn-info">
-                                        <i class="fas fa-eye"></i>
+                                            class="btn btn-sm btn-outline-info border-0"
+                                            title="Voir détails">
+                                        <i class="bi bi-eye"></i>
                                     </button>
+                                    <!-- Bouton Modifier -->
                                     <button wire:click="edit({{ $logiciel->id }})"
-                                            class="btn-action btn-edit">
-                                        <i class="fas fa-edit"></i>
+                                            class="btn btn-sm btn-outline-primary border-0"
+                                            title="Modifier">
+                                        <i class="bi bi-pencil"></i>
                                     </button>
+                                    <!-- Bouton Supprimer -->
                                     <button wire:click="confirmDelete({{ $logiciel->id }})"
-                                            class="btn-action btn-delete">
-                                        <i class="fas fa-trash"></i>
+                                            class="btn btn-sm btn-outline-danger border-0"
+                                            title="Supprimer">
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="text-center py-4">
-                                <i class="fas fa-boxes fa-2x text-muted mb-2"></i>
-                                <p class="text-muted">Aucun logiciel trouvé</p>
-                                @if($search || $editeur || $systeme_exploitation || $statutFilter)
-                                    <button wire:click="resetFilters" class="btn btn-outline-primary btn-sm mt-2">
-                                        <i class="fas fa-refresh me-1"></i>
-                                        Réinitialiser les filtres
-                                    </button>
-                                @endif
+                            <td colspan="10" class="text-center py-3">
+                                <i class="fas fa-box display-6 text-muted d-block mb-2"></i>
+                                <p class="text-muted mb-0 small">Aucun logiciel trouvé</p>
                             </td>
                         </tr>
                     @endforelse
@@ -397,199 +623,383 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-4 container">
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="text-muted small">
+                    @if($logiciels->count() > 0)
+                        Affichage de {{ $logiciels->firstItem() }} à {{ $logiciels->lastItem() }} sur {{ $logiciels->total() }} logiciels
+                    @else
+                        Aucun logiciel
+                    @endif
+                </div>
                 {{ $logiciels->links() }}
             </div>
         </div>
     </div>
 
+    <!-- Les modals restent identiques à votre code précédent -->
     <!-- Modal pour créer/modifier un logiciel -->
     @if($showModal)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas {{ $editing ? 'fa-edit' : 'fa-plus' }} me-2"></i>
-                        {{ $editing ? 'Modifier le Logiciel' : 'Nouveau Logiciel' }}
+                <div class="modal-header py-2">
+                    <h5 class="modal-title small fw-semibold">
+                        <i class="bi {{ $editMode ? 'bi-pencil' : 'bi-plus-circle' }} me-1"></i>
+                        {{ $editMode ? 'Modifier le logiciel' : 'Nouveau Logiciel' }}
                     </h5>
-                    <button type="button" wire:click="closeModal" class="btn-close"></button>
+                    <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
                 </div>
-                <div class="modal-body">
-                    <form wire:submit.prevent="save">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Nom du logiciel *</label>
-                                    <input type="text" class="form-control" wire:model="nom" required>
-                                    @error('nom') <span class="text-danger small">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Éditeur</label>
-                                    <input type="text" class="form-control" wire:model="editeur_form" placeholder="Microsoft, Adobe, Google...">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Version</label>
-                                    <input type="text" class="form-control" wire:model="version_nom" placeholder="2023, CC 2023, v2.1...">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre d'installations</label>
-                                    <input type="number" class="form-control" wire:model="nombre_installations" min="0">
-                                </div>
+                <form wire:submit.prevent="save">
+                    <div class="modal-body p-3">
+                        <div class="row g-2">
+                            <!-- Informations de base -->
+                            <div class="col-12 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-info-circle me-1 text-primary"></i>Informations de base
+                                </h6>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Système d'exploitation</label>
-                                    <input type="text" class="form-control" wire:model="version_systeme_exploitation" 
-                                           placeholder="Windows, macOS, Linux...">
-                                </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nom <span class="text-danger">*</span></label>
+                                <input type="text" wire:model="nom"
+                                       class="form-control form-control-sm @error('nom') is-invalid @enderror"
+                                       placeholder="Nom du logiciel">
+                                @error('nom') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre de licences</label>
-                                    <input type="number" class="form-control" wire:model="nombre_licences" min="0">
-                                </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Éditeur</label>
+                                <input type="text" wire:model="editeur_form"
+                                       class="form-control form-control-sm @error('editeur_form') is-invalid @enderror"
+                                       placeholder="Éditeur du logiciel">
+                                @error('editeur_form') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Date d'achat</label>
-                                    <input type="date" class="form-control" wire:model="date_achat">
-                                </div>
+                            <!-- Version et compatibilité -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-tags me-1 text-primary"></i>Version et compatibilité
+                                </h6>
+                            </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Date d'expiration</label>
-                                    <input type="date" class="form-control" wire:model="date_expiration">
-                                </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nom de version</label>
+                                <input type="text" wire:model="version_nom"
+                                       class="form-control form-control-sm"
+                                       placeholder="2023, 2.1, etc.">
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Système d'exploitation</label>
+                                <input type="text" wire:model="version_systeme_exploitation"
+                                       class="form-control form-control-sm"
+                                       placeholder="Windows, Linux, macOS...">
+                            </div>
+
+                            <!-- Licences et installations -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-key me-1 text-primary"></i>Licences et installations
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nombre d'installations</label>
+                                <input type="number" wire:model="nombre_installations"
+                                       class="form-control form-control-sm"
+                                       min="0" placeholder="0">
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nombre de licences</label>
+                                <input type="number" wire:model="nombre_licences"
+                                       class="form-control form-control-sm"
+                                       min="0" placeholder="0">
+                            </div>
+
+                            <!-- Dates importantes -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-calendar me-1 text-primary"></i>Dates importantes
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Date d'achat</label>
+                                <input type="date" wire:model="date_achat"
+                                       class="form-control form-control-sm">
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Date d'expiration</label>
+                                <input type="date" wire:model="date_expiration"
+                                       class="form-control form-control-sm @error('date_expiration') is-invalid @enderror">
+                                @error('date_expiration') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-sticky me-1 text-primary"></i>Description
+                                </h6>
+                                <textarea wire:model="description" class="form-control form-control-sm" rows="3"
+                                          placeholder="Description du logiciel, fonctionnalités..."></textarea>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" wire:model="description" rows="3" placeholder="Description du logiciel..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" wire:click="closeModal" class="btn btn-secondary">
-                                <i class="fas fa-times me-1"></i>
-                                Annuler
-                            </button>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i>
-                                {{ $editing ? 'Modifier' : 'Créer' }}
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer py-2">
+                        <button type="button" class="btn btn-secondary btn-sm" wire:click="closeModal">Annuler</button>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <span wire:loading.remove>
+                                <i class="bi {{ $editMode ? 'bi-check' : 'bi-plus' }} me-1"></i>
+                                {{ $editMode ? 'Modifier' : 'Créer' }}
+                            </span>
+                            <span wire:loading>
+                                <i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i>
+                                {{ $editMode ? 'Modification...' : 'Création...' }}
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endif
+<!-- Modal pour créer/modifier un logiciel -->
+    @if($showModal)
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header py-2">
+                    <h5 class="modal-title small fw-semibold">
+                        <i class="bi {{ $editMode ? 'bi-pencil' : 'bi-plus-circle' }} me-1"></i>
+                        {{ $editMode ? 'Modifier le logiciel' : 'Nouveau Logiciel' }}
+                    </h5>
+                    <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
                 </div>
+                <form wire:submit.prevent="save">
+                    <div class="modal-body p-3">
+                        <div class="row g-2">
+                            <!-- Informations de base -->
+                            <div class="col-12 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-info-circle me-1 text-primary"></i>Informations de base
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nom <span class="text-danger">*</span></label>
+                                <input type="text" wire:model="nom"
+                                       class="form-control form-control-sm @error('nom') is-invalid @enderror"
+                                       placeholder="Nom du logiciel">
+                                @error('nom') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Éditeur</label>
+                                <input type="text" wire:model="editeur_form"
+                                       class="form-control form-control-sm @error('editeur_form') is-invalid @enderror"
+                                       placeholder="Éditeur du logiciel">
+                                @error('editeur_form') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <!-- Version et compatibilité -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-tags me-1 text-primary"></i>Version et compatibilité
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nom de version</label>
+                                <input type="text" wire:model="version_nom"
+                                       class="form-control form-control-sm"
+                                       placeholder="2023, 2.1, etc.">
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Système d'exploitation</label>
+                                <input type="text" wire:model="version_systeme_exploitation"
+                                       class="form-control form-control-sm"
+                                       placeholder="Windows, Linux, macOS...">
+                            </div>
+
+                            <!-- Licences et installations -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-key me-1 text-primary"></i>Licences et installations
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nombre d'installations</label>
+                                <input type="number" wire:model="nombre_installations"
+                                       class="form-control form-control-sm"
+                                       min="0" placeholder="0">
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Nombre de licences</label>
+                                <input type="number" wire:model="nombre_licences"
+                                       class="form-control form-control-sm"
+                                       min="0" placeholder="0">
+                            </div>
+
+                            <!-- Dates importantes -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-calendar me-1 text-primary"></i>Dates importantes
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Date d'achat</label>
+                                <input type="date" wire:model="date_achat"
+                                       class="form-control form-control-sm">
+                            </div>
+
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label small fw-medium">Date d'expiration</label>
+                                <input type="date" wire:model="date_expiration"
+                                       class="form-control form-control-sm @error('date_expiration') is-invalid @enderror">
+                                @error('date_expiration') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12 mt-2 mb-2">
+                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                    <i class="bi bi-sticky me-1 text-primary"></i>Description
+                                </h6>
+                                <textarea wire:model="description" class="form-control form-control-sm" rows="3"
+                                          placeholder="Description du logiciel, fonctionnalités..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer py-2">
+                        <button type="button" class="btn btn-secondary btn-sm" wire:click="closeModal">Annuler</button>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <span wire:loading.remove>
+                                <i class="bi {{ $editMode ? 'bi-check' : 'bi-plus' }} me-1"></i>
+                                {{ $editMode ? 'Modifier' : 'Créer' }}
+                            </span>
+                            <span wire:loading>
+                                <i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i>
+                                {{ $editMode ? 'Modification...' : 'Création...' }}
+                            </span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     @endif
 
     <!-- Modal de détails du logiciel -->
-    @if($showDetailsModal && $selectedLogiciel)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5); z-index: 1050;" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+    @if($showDetailsModal)
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Détails du Logiciel
+                        <i class="fas fa-info-circle me-2"></i>Détails du Logiciel
                     </h5>
-                    <button type="button" wire:click="closeDetailsModal" class="btn-close btn-close-white"></button>
+                    <button type="button" class="btn-close" wire:click="closeDetailsModal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Nom</label>
-                                <p>{{ $selectedLogiciel->nom }}</p>
+                    @if($selectedLogiciel)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-cube me-1"></i>Nom</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->nom }}</p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-building me-1"></i>Éditeur</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->editeur ?? 'Non spécifié' }}</p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-tag me-1"></i>Version</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->version_nom ?? 'Non spécifiée' }}</p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-windows me-1"></i>Système d'exploitation</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->version_systeme_exploitation ?? 'Non spécifié' }}</p>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Éditeur</label>
-                                <p>{{ $selectedLogiciel->editeur ?? 'Non spécifié' }}</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Version</label>
-                                <p>{{ $selectedLogiciel->version_nom ?? 'Non spécifié' }}</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Système d'exploitation</label>
-                                <p>{{ $selectedLogiciel->version_systeme_exploitation ?? 'Non spécifié' }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Installations</label>
-                                <p>{{ $selectedLogiciel->nombre_installations }}</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Licences</label>
-                                <p>{{ $selectedLogiciel->nombre_licences }}</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Statut</label>
-                                <span class="status-badge 
-                                    @if($selectedLogiciel->statut_licences == 'Normal') bg-green-100 text-green-800
-                                    @elseif($selectedLogiciel->statut_licences == 'Attention') bg-yellow-100 text-yellow-800
-                                    @elseif($selectedLogiciel->statut_licences == 'Critique') bg-red-100 text-red-800
-                                    @else bg-gray-100 text-gray-800
-                                    @endif">
-                                    {{ $selectedLogiciel->statut_licences }}
-                                    @if($selectedLogiciel->statut_licences != 'Aucune licence')
-                                        ({{ $selectedLogiciel->pourcentage_utilisation }}%)
-                                    @endif
-                                </span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Date d'achat</label>
-                                <p>{{ $selectedLogiciel->date_achat ? $selectedLogiciel->date_achat->format('d/m/Y') : 'Non spécifiée' }}</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Date d'expiration</label>
-                                <p>{{ $selectedLogiciel->date_expiration ? $selectedLogiciel->date_expiration->format('d/m/Y') : 'Non spécifiée' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @if($selectedLogiciel->description)
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Description</label>
-                                <p>{{ $selectedLogiciel->description }}</p>
+
+                            <div class="col-md-6">
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-download me-1"></i>Installations</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->nombre_installations }}</p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-key me-1"></i>Licences</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->nombre_licences }}</p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-circle me-1"></i>Statut des licences</strong>
+                                    <p class="mb-0">
+                                        @php
+                                            $statusClasses = [
+                                                'Conforme' => 'badge bg-success badge-sm',
+                                                'Alerte' => 'badge bg-warning badge-sm',
+                                                'Critique' => 'badge bg-danger badge-sm',
+                                                'Aucune licence' => 'badge bg-secondary badge-sm'
+                                            ];
+                                        @endphp
+                                        <span class="{{ $statusClasses[$selectedLogiciel->statut_licences] ?? 'badge bg-info badge-sm' }}">
+                                            {{ $selectedLogiciel->statut_licences }}
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-calendar me-1"></i>Date d'expiration</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->date_expiration ? $selectedLogiciel->date_expiration->format('d/m/Y') : 'Non définie' }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-file-alt me-1"></i>Description</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->description ?? 'Aucune description' }}</p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-calendar-plus me-1"></i>Date de création</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->created_at->format('d/m/Y à H:i') }}</p>
+                                </div>
+
+                                <div class="detail-item mb-2">
+                                    <strong class="small"><i class="fas fa-calendar-check me-1"></i>Dernière modification</strong>
+                                    <p class="mb-0 small">{{ $selectedLogiciel->updated_at->format('d/m/Y à H:i') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="text-center py-4">
+                            <i class="fas fa-exclamation-triangle display-6 text-warning d-block mb-2"></i>
+                            <p class="text-muted small">Impossible de charger les détails du logiciel.</p>
+                        </div>
                     @endif
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Date de création</label>
-                                <p>{{ $selectedLogiciel->created_at->format('d/m/Y à H:i') }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Dernière modification</label>
-                                <p>{{ $selectedLogiciel->updated_at->format('d/m/Y à H:i') }}</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" wire:click="closeDetailsModal" class="btn btn-secondary">
-                        <i class="fas fa-times me-1"></i>
-                        Fermer
-                    </button>
-                    <button type="button" wire:click="edit({{ $selectedLogiciel->id }})" class="btn btn-primary">
-                        <i class="fas fa-edit me-1"></i>
-                        Modifier
-                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDetailsModal">Fermer</button>
+                    @if($selectedLogiciel)
+                        <button type="button" class="btn btn-primary btn-sm" wire:click="edit({{ $selectedLogiciel->id }})">
+                            <i class="fas fa-edit me-1"></i>Modifier
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -597,29 +1007,29 @@
     @endif
 
     <!-- Modal de confirmation de suppression -->
-    @if($showDeleteModal && $selectedLogiciel)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog">
+    @if($confirmingDelete)
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmer la suppression</h5>
-                    <button type="button" wire:click="closeDeleteModal" class="btn-close"></button>
+                    <h5 class="modal-title">Confirmation de suppression</h5>
+                    <button type="button" class="btn-close" wire:click="closeDeleteModal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
                         <i class="fas fa-exclamation-triangle text-danger display-5"></i>
                         <h4 class="mt-2 h5">Êtes-vous sûr ?</h4>
                         <p class="text-muted small">
-                            Vous êtes sur le point de supprimer le logiciel <strong>{{ $selectedLogiciel->nom }}</strong>. 
+                            Vous êtes sur le point de supprimer le logiciel <strong>{{ $selectedLogicielName }}</strong>. 
                             Cette action est irréversible.
                         </p>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button wire:click="closeDeleteModal" class="btn btn-secondary">Annuler</button>
-                    <button wire:click="deleteConfirmed" class="btn btn-danger">
-                        <i class="fas fa-trash me-1"></i>
-                        Supprimer
+                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDeleteModal">Annuler</button>
+                    <button type="button" class="btn btn-danger btn-sm" wire:click="deleteConfirmed">
+                        <i class="fas fa-trash me-1"></i>Supprimer
                     </button>
                 </div>
             </div>
@@ -628,498 +1038,229 @@
     @endif
 
     <!-- Modal d'import -->
-@if($showImportModal)
-<div class="modal-backdrop fade show"></div>
-<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header py-2">
-                <h5 class="modal-title small fw-semibold">
-                    <i class="fas fa-file-import me-1 text-primary"></i>
-                    Importer des Logiciels
-                </h5>
-                <button type="button" class="btn-close btn-close-sm" wire:click="closeImportModal"></button>
-            </div>
-            <div class="modal-body p-3">
-                <div class="text-center mb-3">
-                    <i class="fas fa-file-csv display-6 text-primary mb-3"></i>
-                    <h6 class="fw-semibold">Importer depuis un fichier CSV</h6>
-                    <p class="text-muted small">Téléchargez le template ou importez votre fichier CSV</p>
+    @if($showImportModal)
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-file-earmark-arrow-up me-2"></i>Importer des Logiciels
+                    </h5>
+                    <button type="button" class="btn-close" wire:click="closeImportModal"></button>
                 </div>
+                <div class="modal-body">
+                    <div class="alert alert-info small">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Formats supportés: CSV, TXT. Taille max: 10MB
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label small">Fichier à importer</label>
+                        <input type="file" wire:model="fichierExcel" class="form-control form-control-sm" accept=".csv,.txt">
+                        @error('fichierExcel') <span class="text-danger small">{{ $message }}</span> @enderror
+                    </div>
 
-                <div class="alert alert-info small">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Formats supportés: CSV, TXT. Taille max: 10MB
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label small fw-medium">Fichier CSV</label>
-                    <input type="file" wire:model="importFile" 
-                           class="form-control form-control-sm @error('importFile') is-invalid @enderror" 
-                           accept=".csv,.txt">
-                    @error('importFile') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                </div>
+                    <div class="mb-3">
+                        <button type="button" wire:click="downloadTemplate" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download me-1"></i>
+                            Télécharger le template
+                        </button>
+                    </div>
 
-                <div class="mb-3">
-                    <button type="button" wire:click="downloadImportTemplate" 
-                            class="btn btn-outline-primary btn-sm w-100">
-                        <i class="fas fa-download me-1"></i>
-                        Télécharger le template
+                    @if($importErrors && count($importErrors) > 0)
+                    <div class="alert alert-danger small">
+                        <h6 class="alert-heading">Erreurs d'importation</h6>
+                        <ul class="mb-0">
+                            @foreach($importErrors as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeImportModal">Annuler</button>
+                    <button type="button" class="btn btn-primary btn-sm" wire:click="storeImportFile" 
+                            wire:loading.attr="disabled" {{ !$fichierExcel ? 'disabled' : '' }}>
+                        <i class="bi bi-file-earmark-arrow-up me-1"></i>
+                        <span wire:loading.remove>Importer</span>
+                        <span wire:loading>
+                            <i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i>
+                            Import...
+                        </span>
                     </button>
                 </div>
-
-                @if($importErrors && count($importErrors) > 0)
-                <div class="alert alert-danger small">
-                    <h6 class="alert-heading small">Erreurs détectées</h6>
-                    <ul class="mb-0 small">
-                        @foreach($importErrors as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-            </div>
-            <div class="modal-footer py-2">
-                <button type="button" class="btn btn-secondary btn-sm" wire:click="closeImportModal">
-                    <i class="fas fa-times me-1"></i>
-                    Annuler
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" 
-                        wire:click="storeImportFile" 
-                        wire:loading.attr="disabled"
-                        {{ !$importFile ? 'disabled' : '' }}>
-                    <i class="fas fa-arrow-right me-1"></i>
-                    <span wire:loading.remove>Suivant</span>
-                    <span wire:loading>
-                        <i class="fas fa-spinner fa-spin me-1"></i>
-                        Chargement...
-                    </span>
-                </button>
             </div>
         </div>
     </div>
-</div>
-@endif
+    @endif
 
-<!-- Modal Mapping -->
-@if($showMappingModal)
-<div class="modal-backdrop fade show"></div>
-<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header py-2">
-                <h5 class="modal-title small fw-semibold">
-                    <i class="fas fa-map-marked-alt me-1 text-warning"></i>
-                    Mapping des Colonnes
-                </h5>
-                <button type="button" class="btn-close btn-close-sm" wire:click="cancelImport"></button>
-            </div>
-            <div class="modal-body p-3">
-                <div class="alert alert-warning small">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    Associez les colonnes de votre fichier aux champs du système.
+    <!-- Modal de mapping -->
+    @if($showMappingModal)
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-columns me-2"></i>Mapping des Colonnes
+                    </h5>
+                    <button type="button" wire:click="cancelImport" class="btn-close"></button>
                 </div>
+                <div class="modal-body">
+                    <div class="alert alert-info small">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Associez les colonnes de votre fichier aux champs de la base de données.
+                    </div>
 
-                <!-- Aperçu des données -->
-                @if(count($csvPreview) > 0)
-                <div class="mb-4">
-                    <h6 class="small fw-semibold">Aperçu des données (5 premières lignes):</h6>
                     <div class="table-responsive">
-                        <table class="table table-sm table-bordered small">
+                        <table class="table table-bordered table-sm">
                             <thead class="table-light">
                                 <tr>
-                                    @foreach($csvHeaders as $header)
-                                    <th>{{ $header }}</th>
-                                    @endforeach
+                                    <th class="small">Champ de la base</th>
+                                    <th class="small">Colonne dans le fichier</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($csvPreview as $row)
+                                @foreach($fieldMapping as $field => $mappedHeader)
                                 <tr>
-                                    @foreach($csvHeaders as $header)
-                                    <td>{{ $row[$header] ?? '' }}</td>
-                                    @endforeach
+                                    <td class="small fw-medium">
+                                        <span class="badge {{ $field === 'nom' ? 'bg-danger' : 'bg-secondary' }} badge-sm me-2">
+                                            {{ $field === 'nom' ? 'Obligatoire' : 'Optionnel' }}
+                                        </span>
+                                        {{ $field }}
+                                    </td>
+                                    <td>
+                                        <select class="form-select form-select-sm" wire:model="fieldMapping.{{ $field }}">
+                                            <option value="">-- Non mappé --</option>
+                                            @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                </div>
-                @endif
 
-                <!-- Formulaire de mapping -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6 class="small fw-semibold">Mapping des champs:</h6>
-                        @foreach(['nom' => 'Nom*', 'editeur' => 'Éditeur', 'version_nom' => 'Version', 'version_systeme_exploitation' => 'Système d\'exploitation'] as $field => $label)
-                        <div class="mb-3">
-                            <label class="form-label small fw-medium">{{ $label }}</label>
-                            <select wire:model="fieldMapping.{{ $field }}" 
-                                    class="form-select form-select-sm @if($field === 'nom' && empty($fieldMapping['nom'])) is-invalid @endif">
-                                <option value="">-- Sélectionner une colonne --</option>
-                                @foreach($csvHeaders as $header)
-                                <option value="{{ $header }}">{{ $header }}</option>
-                                @endforeach
-                            </select>
-                            @if($field === 'nom' && empty($fieldMapping['nom']))
-                            <div class="invalid-feedback small">Le champ nom est obligatoire</div>
-                            @endif
-                        </div>
-                        @endforeach
+                    @if($importErrors && count($importErrors) > 0)
+                    <div class="alert alert-danger small mt-3">
+                        <h6 class="alert-heading">Erreurs détectées</h6>
+                        <ul class="mb-0">
+                            @foreach($importErrors as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <h6 class="small fw-semibold">Champs optionnels :</h6>
-                        @foreach(['nombre_installations' => 'Installations', 'nombre_licences' => 'Licences', 'date_achat' => 'Date achat', 'date_expiration' => 'Date expiration'] as $field => $label)
-                        <div class="mb-3">
-                            <label class="form-label small text-muted">{{ $label }}</label>
-                            <select wire:model="fieldMapping.{{ $field }}" class="form-select form-select-sm">
-                                <option value="">-- Optionnel --</option>
-                                @foreach($csvHeaders as $header)
-                                <option value="{{ $header }}">{{ $header }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                @if($importErrors && count($importErrors) > 0)
-                <div class="alert alert-danger small mt-3">
-                    <h6 class="alert-heading small">Erreurs de mapping</h6>
-                    <ul class="mb-0 small">
-                        @foreach($importErrors as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-            </div>
-            <div class="modal-footer py-2">
-                <button type="button" class="btn btn-secondary btn-sm" wire:click="cancelImport">
-                    <i class="fas fa-arrow-left me-1"></i>
-                    Retour
-                </button>
-                <button type="button" class="btn btn-warning btn-sm" 
-                        wire:click="processMappedData"
-                        wire:loading.attr="disabled"
-                        {{ empty($fieldMapping['nom']) ? 'disabled' : '' }}>
-                    <i class="fas fa-check me-1"></i>
-                    <span wire:loading.remove>Valider le mapping</span>
-                    <span wire:loading>
-                        <i class="fas fa-spinner fa-spin me-1"></i>
-                        Traitement...
-                    </span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-@endif
-
-<!-- Modal Aperçu des données importées -->
-@if($showImportedData)
-<div class="modal-backdrop fade show"></div>
-<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header py-2">
-                <h5 class="modal-title small fw-semibold">
-                    <i class="fas fa-check-circle me-1 text-success"></i>
-                    Aperçu des Données Importées
-                </h5>
-                <button type="button" class="btn-close btn-close-sm" wire:click="cancelImport"></button>
-            </div>
-            <div class="modal-body p-3">
-                <div class="alert alert-success small">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <strong>{{ $importSuccessCount }}</strong> enregistrement(s) prêt(s) à être importés.
-                    @if(count($importErrors) > 0)
-                    - <strong>{{ count($importErrors) }}</strong> erreur(s)
                     @endif
                 </div>
-
-                @if(count($importErrors) > 0)
-                <div class="alert alert-danger small">
-                    <h6 class="alert-heading small">Erreurs d'importation:</h6>
-                    <ul class="mb-0 small">
-                        @foreach($importErrors as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <div class="modal-footer">
+                    <button type="button" wire:click="cancelImport" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-x me-1"></i>Annuler
+                    </button>
+                    <button type="button" wire:click="processMappedData" class="btn btn-primary btn-sm" 
+                            wire:loading.attr="disabled" {{ empty($fieldMapping['nom']) ? 'disabled' : '' }}>
+                        <i class="bi bi-gear me-1"></i>
+                        <span wire:loading.remove>Traiter les données</span>
+                        <span wire:loading>
+                            <i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i>
+                            Traitement...
+                        </span>
+                    </button>
                 </div>
-                @endif
-
-                <!-- Aperçu des données mappées -->
-                @if(count($importedData) > 0)
-                <div class="table-responsive">
-                    <table class="table table-sm table-bordered small">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Nom</th>
-                                <th>Éditeur</th>
-                                <th>Version</th>
-                                <th>Système d'exploitation</th>
-                                <th>Installations</th>
-                                <th>Licences</th>
-                                <th>Statut</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(array_slice($importedData, 0, 5) as $data)
-                            <tr>
-                                <td>{{ $data['nom'] }}</td>
-                                <td>{{ $data['editeur'] ?? 'N/A' }}</td>
-                                <td>{{ $data['version_nom'] ?? 'N/A' }}</td>
-                                <td>{{ $data['version_systeme_exploitation'] ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $data['nombre_installations'] ?? 0 }}</td>
-                                <td class="text-center">{{ $data['nombre_licences'] ?? 0 }}</td>
-                                <td>
-                                    @php
-                                        $installations = $data['nombre_installations'] ?? 0;
-                                        $licences = $data['nombre_licences'] ?? 0;
-                                        
-                                        if ($licences == 0) {
-                                            $statut = 'Aucune licence';
-                                            $badgeClass = 'bg-secondary';
-                                        } elseif ($installations > $licences) {
-                                            $statut = 'Critique';
-                                            $badgeClass = 'bg-danger';
-                                        } elseif ($installations == $licences) {
-                                            $statut = 'Attention';
-                                            $badgeClass = 'bg-warning';
-                                        } else {
-                                            $statut = 'Normal';
-                                            $badgeClass = 'bg-success';
-                                        }
-                                    @endphp
-                                    <span class="badge {{ $badgeClass }} badge-sm">
-                                        {{ $statut }}
-                                    </span>
-                                </td>
-                            </tr>
-                            @endforeach
-                            @if(count($importedData) > 5)
-                            <tr>
-                                <td colspan="7" class="text-center text-muted small">
-                                    ... et {{ count($importedData) - 5 }} autre(s) logiciel(s)
-                                </td>
-                            </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-                @endif
-            </div>
-            <div class="modal-footer py-2">
-                <button type="button" class="btn btn-secondary btn-sm" wire:click="cancelImport">
-                    <i class="fas fa-times me-1"></i>
-                    Annuler
-                </button>
-                <button type="button" class="btn btn-success btn-sm" 
-                        wire:click="saveImportedData"
-                        wire:loading.attr="disabled"
-                        {{ count($importedData) === 0 ? 'disabled' : '' }}>
-                    <i class="fas fa-save me-1"></i>
-                    <span wire:loading.remove>Importer ({{ count($importedData) }})</span>
-                    <span wire:loading>
-                        <i class="fas fa-spinner fa-spin me-1"></i>
-                        Import...
-                    </span>
-                </button>
             </div>
         </div>
     </div>
-</div>
-@endif
+    @endif
 
-</div>
+    <!-- Modal d'aperçu des données importées -->
+    @if($showImportedData)
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-check-circle me-2"></i>Aperçu des Données Importées
+                    </h5>
+                    <button type="button" wire:click="cancelImport" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success small">
+                        <i class="bi bi-info-circle me-2"></i>
+                        {{ $importSuccessCount }} enregistrement(s) prêt(s) à être importés.
+                        @if($importErrors && count($importErrors) > 0)
+                        <br><strong>{{ count($importErrors) }} erreur(s) détectée(s):</strong>
+                        @endif
+                    </div>
 
-@push('styles')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .ticket-dashboard {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    @if($importErrors && count($importErrors) > 0)
+                    <div class="alert alert-danger small">
+                        <h6 class="alert-heading">Erreurs d'importation:</h6>
+                        <ul class="mb-0">
+                            @foreach($importErrors as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    @if(count($importedData) > 0)
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="small">Nom</th>
+                                    <th class="small">Éditeur</th>
+                                    <th class="small">Version</th>
+                                    <th class="small">Système d'exploitation</th>
+                                    <th class="small">Installations</th>
+                                    <th class="small">Licences</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($importedData as $data)
+                                <tr>
+                                    <td class="small">{{ $data['nom'] }}</td>
+                                    <td class="small">{{ $data['editeur'] ?? 'N/A' }}</td>
+                                    <td class="small">{{ $data['version_nom'] ?? 'N/A' }}</td>
+                                    <td class="small">{{ $data['version_systeme_exploitation'] ?? 'N/A' }}</td>
+                                    <td class="small text-center">{{ $data['nombre_installations'] ?? 0 }}</td>
+                                    <td class="small text-center">{{ $data['nombre_licences'] ?? 0 }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" wire:click="cancelImport" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-x me-1"></i>Annuler
+                    </button>
+                    <button type="button" wire:click="saveImportedData" class="btn btn-success btn-sm" 
+                            {{ count($importedData) === 0 ? 'disabled' : '' }}>
+                        <i class="bi bi-save me-1"></i>
+                        Sauvegarder ({{ count($importedData) }})
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+
+    <!-- Scripts JavaScript -->
+    <script>
+        // Fonction pour basculer l'affichage des filtres sur mobile
+        function toggleFilters() {
+            const container = document.getElementById('filters-container');
+            container.classList.toggle('d-none');
         }
-        
-        .stats-widget {
-            border-radius: 10px;
-            transition: transform 0.2s;
-        }
-        
-        .stats-widget:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stats-number {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 0.2rem;
-        }
-        
-        .stats-label {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-        
-        .avatar-sm {
-            width: 50px;
-            height: 50px;
-        }
-        
-        .table-container {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .table-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #495057;
-        }
-        
-        .table-wrapper {
-            overflow-x: auto;
-        }
-        
-        .table th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-            font-weight: 600;
-            color: #495057;
-            padding: 0.75rem;
-        }
-        
-        .table td {
-            padding: 0.75rem;
-            vertical-align: middle;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .sortable {
-            cursor: pointer;
-            user-select: none;
-        }
-        
-        .sortable:hover {
-            background-color: #e9ecef;
-        }
-        
-        .checkbox-modern {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        
-        .btn-action {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        .btn-edit {
-            background-color: #fff3cd;
-            color: #ffc107;
-        }
-        
-        .btn-delete {
-            background-color: #f8d7da;
-            color: #dc3545;
-        }
-        
-        .btn-action:hover {
-            transform: scale(1.1);
-        }
-        
-        .status-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .os-badge {
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            background-color: #e9ecef;
-            color: #495057;
-        }
-        
-        .installation-badge {
-            padding: 0.3rem 0.6rem;
-            border-radius: 50px;
-            background-color: #d1ecf1;
-            color: #0c5460;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-        
-        .licence-badge {
-            padding: 0.3rem 0.6rem;
-            border-radius: 50px;
-            background-color: #e2e3e5;
-            color: #383d41;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-        
-        .fade-in-up {
-            animation: fadeInUp 0.5s ease-out;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Styles pour les lignes selon le statut */
-        .statut_Normal:hover {
-            background-color: rgba(40, 167, 69, 0.05) !important;
-        }
-        
-        .statut_Attention:hover {
-            background-color: rgba(255, 193, 7, 0.05) !important;
-        }
-        
-        .statut_Critique:hover {
-            background-color: rgba(220, 53, 69, 0.05) !important;
-        }
-        
-        .statut_Aucune_licence:hover {
-            background-color: rgba(108, 117, 125, 0.05) !important;
-        }
-    </style>
-@endpush
+    </script>
+
+    <!-- Liens CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</div>

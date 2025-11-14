@@ -8,165 +8,303 @@
 
         <!-- Statistiques -->
         <div class="row mb-4">
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-primary">{{ $stats['total'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Total matériels</p>
+            <!-- Total -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-primary mb-1">{{ $stats['total'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Total Matériel Réseau</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 100%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-primary bg-opacity-25 text-primary d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-network-wired fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-lg icon-primary ms-3">
+                            <i class="fas fa-network-wired"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-success">{{ $stats['en_service'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">En service</p>
+            <!-- En service -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-success mb-1">{{ $stats['en_service'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Service</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-success" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_service'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-success bg-opacity-25 text-success d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-check-circle fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-lg icon-success ms-3">
+                            <i class="fas fa-check-circle"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-warning">{{ $stats['en_maintenance'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">En maintenance</p>
+            <!-- En maintenance -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-warning mb-1">{{ $stats['en_maintenance'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Maintenance</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-warning" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_maintenance'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-warning bg-opacity-25 text-warning d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-tools fa-lg"></i>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="stat-icon-lg icon-warning ms-3">
+                            <i class="fas fa-tools"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6">
-                <div class="card stats-widget border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number text-danger">{{ $stats['hors_service'] ?? 0 }}</h3>
-                                <p class="stats-label text-black mb-0">Hors service</p>
+            <!-- En stock -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-info mb-1">{{ $stats['en_stock'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">En Stock</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-info" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_stock'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle bg-danger bg-opacity-25 text-danger d-flex align-items-center justify-content-center">
-                                    <i class="fas fa-times-circle fa-lg"></i>
-                                </div>
+                        </div>
+                        <div class="stat-icon-lg icon-info ms-3">
+                            <i class="fas fa-box"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hors service -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="stat-number text-danger mb-1">{{ $stats['hors_service'] ?? 0 }}</h3>
+                            <p class="text-muted small mb-0 fw-medium">Hors Service</p>
+                            <div class="progress mt-2" style="height: 4px;">
+                                <div class="progress-bar bg-danger" 
+                                     style="width: {{ $stats['total'] > 0 ? ($stats['hors_service'] / $stats['total'] * 100) : 0 }}%"></div>
                             </div>
+                        </div>
+                        <div class="stat-icon-lg icon-danger ms-3">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Taux de disponibilité -->
+            <div class="col-xl-2 col-md-4 mb-3">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="flex-grow-1">
+                            @php
+                                $disponible = $stats['en_service'] ?? 0;
+                                $total = $stats['total'] ?? 1;
+                                $taux = $total > 0 ? round(($disponible / $total) * 100) : 0;
+                            @endphp
+                            <h3 class="stat-number mb-1 {{ $taux >= 80 ? 'text-success' : ($taux >= 60 ? 'text-warning' : 'text-danger') }}">
+                                {{ $taux }}%
+                            </h3>
+                            <p class="text-muted small mb-0 fw-medium">Disponibilité</p>
+                            <div class="progress mt-2" style="height: 6px;">
+                                <div class="progress-bar {{ $taux >= 80 ? 'bg-success' : ($taux >= 60 ? 'bg-warning' : 'bg-danger') }}" 
+                                     style="width: {{ $taux }}%"></div>
+                            </div>
+                        </div>
+                        <div class="stat-icon-lg {{ $taux >= 80 ? 'icon-success' : ($taux >= 60 ? 'icon-warning' : 'icon-danger') }} ms-3">
+                            <i class="fas fa-chart-line"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Barre de recherche et filtres -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-body">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-3">
-                        <label class="form-label small fw-bold">Recherche</label>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-transparent">
-                                <i class="fas fa-search text-muted"></i>
-                            </span>
-                            <input type="text" wire:model.live="search"
-                                   class="form-control" placeholder="Nom, fabricant, modèle, série...">
-                        </div>
+        <!-- Filtres avec boutons Import/Export -->
+        <div class="dashboard-card p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-semibold mb-0 text-dark small">Filtres et Actions</h6>
+                <div class="d-flex gap-2">
+                    <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm" title="Réinitialiser les filtres">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm d-md-none" title="Afficher/Masquer les filtres">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3 align-items-end" id="filters-container">
+                <!-- Recherche -->
+                <div class="col-md-3 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Recherche</label>
+                    <div class="search-box position-relative">
+                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted small"></i>
+                        <input type="text" wire:model.live.debounce.300ms="search"
+                               class="form-control form-control-sm ps-4 border-0 bg-light rounded-2"
+                               placeholder="Nom, modèle, IP...">
                     </div>
-                    
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Statut</label>
-                        <select wire:model.live="statutFilter" class="form-select form-select-sm">
+                </div>
+
+                <!-- Statut -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Statut</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted">
+                            <i class="fas fa-circle"></i>
+                        </span>
+                        <select wire:model.live="statutFilter" class="form-select border-0 bg-light rounded-2">
                             <option value="">Tous les statuts</option>
                             @foreach($statutOptions as $option)
                                 <option value="{{ $option }}">{{ $option }}</option>
                             @endforeach
                         </select>
                     </div>
-                    
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Type</label>
-                        <select wire:model.live="typeFilter" class="form-select form-select-sm">
+                </div>
+
+                <!-- Type -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Type</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted">
+                            <i class="fas fa-network-wired"></i>
+                        </span>
+                        <select wire:model.live="typeFilter" class="form-select border-0 bg-light rounded-2">
                             <option value="">Tous les types</option>
                             @foreach($typeOptions as $option)
                                 <option value="{{ $option }}">{{ $option }}</option>
                             @endforeach
                         </select>
                     </div>
-                    
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Fabricant</label>
-                        <select wire:model.live="fabricantFilter" class="form-select form-select-sm">
+                </div>
+
+                <!-- Fabricant -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Fabricant</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted">
+                            <i class="fas fa-industry"></i>
+                        </span>
+                        <select wire:model.live="fabricantFilter" class="form-select border-0 bg-light rounded-2">
                             <option value="">Tous les fabricants</option>
-                            @foreach($fabricantOptions as $fabricant)
-                                <option value="{{ $fabricant }}">{{ $fabricant }}</option>
+                            @foreach($fabricantOptions as $option)
+                                <option value="{{ $option }}">{{ $option }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Entité</label>
-                        <select wire:model.live="entiteFilter" class="form-select form-select-sm">
-                            <option value="">Toutes les entités</option>
-                            @foreach($entiteOptions as $entite)
-                                <option value="{{ $entite }}">{{ $entite }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div class="col-md-1">
-                        <button type="button" wire:click="resetFilters"
-                                class="btn btn-outline-secondary btn-sm w-100" title="Réinitialiser les filtres">
-                            <i class="fas fa-redo"></i>
-                        </button>
                     </div>
                 </div>
-                
-                <!-- Actions groupées -->
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <button wire:click="showCreateForm" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus me-1"></i> Nouveau Matériel
-                        </button>
-                        <button wire:click="openImportModal" class="btn btn-outline-info btn-sm ms-2">
-                            <i class="fas fa-file-import me-1"></i> Importer
-                        </button>
-                        <button wire:click="exportToCsv" class="btn btn-outline-success btn-sm ms-2">
-                            <i class="fas fa-file-export me-1"></i> Exporter
-                        </button>
+
+                <!-- Entité -->
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label small fw-medium text-muted">Entité</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-0 text-muted">
+                            <i class="fas fa-building"></i>
+                        </span>
+                        <select wire:model.live="entiteFilter" class="form-select border-0 bg-light rounded-2">
+                            <option value="">Toutes les entités</option>
+                            @foreach($entiteOptions as $option)
+                                <option value="{{ $option }}">{{ $option }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="col-md-6 text-end">
-                        <button wire:click="confirmDelete" class="btn btn-danger btn-sm" 
-                                {{ empty($selectedMateriels) ? 'disabled' : '' }}>
-                            <i class="fas fa-trash me-1"></i>
-                            Supprimer ({{ count($selectedMateriels) }})
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="col-md-3">
+                    <div class="d-flex gap-2 flex-wrap justify-content-end">
+                        <button wire:click="openImportModal" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                            <i class="fas fa-file-import me-1"></i>
+                            <span class="d-none d-sm-inline">Importer</span>
+                        </button>
+                        <button wire:click="exportToCsv" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                            <i class="fas fa-file-export me-1"></i>
+                            <span class="d-none d-sm-inline">Exporter</span>
+                        </button>
+                        <button wire:click="showCreateForm" class="btn btn-primary btn-sm d-flex align-items-center">
+                            <i class="fas fa-plus me-1"></i>
+                            <span class="d-none d-sm-inline">Nouveau</span>
                         </button>
                     </div>
                 </div>
             </div>
+
+            <!-- Résultats du filtre -->
+            @if($search || $statutFilter || $typeFilter || $fabricantFilter || $entiteFilter)
+            <div class="mt-3 pt-2 border-top">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="text-muted small">Filtres actifs :</span>
+                    @if($search)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Recherche: "{{ $search }}"
+                        <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                    @if($statutFilter)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Statut: {{ $statutFilter }}
+                        <button wire:click="$set('statutFilter', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                    @if($typeFilter)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Type: {{ $typeFilter }}
+                        <button wire:click="$set('typeFilter', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                    @if($fabricantFilter)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Fabricant: {{ $fabricantFilter }}
+                        <button wire:click="$set('fabricantFilter', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                    @if($entiteFilter)
+                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                        Entité: {{ $entiteFilter }}
+                        <button wire:click="$set('entiteFilter', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    </span>
+                    @endif
+                </div>
+            </div>
+            @endif
         </div>
+
+        <!-- Sélection multiple -->
+        @if(count($selectedMateriels) > 0)
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="alert alert-info py-2 small border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="d-flex align-items-center">
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ count($selectedMateriels) }} matériel(s) sélectionné(s)
+                        </span>
+                        <div class="d-flex gap-2">
+                            <button wire:click="confirmDelete" 
+                                    class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                                <i class="fas fa-trash me-1"></i>
+                                <span>Supprimer</span>
+                            </button>
+                            <button wire:click="$set('selectedMateriels', [])" 
+                                    class="btn btn-outline-secondary btn-sm d-flex align-items-center">
+                                <i class="fas fa-times me-1"></i>
+                                <span>Annuler</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
 
         <!-- Table Container -->
         <div class="table-container border-0 fade-in-up">
@@ -288,7 +426,7 @@
         </div>
     </div>
 
-    <!-- Modal de formulaire - CENTRÉ ET AMÉLIORÉ -->
+    <!-- Modal de formulaire -->
     @if($showForm)
     <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
     <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
@@ -398,7 +536,7 @@
     </div>
     @endif
 
-    <!-- Modal de détails - CENTRÉ ET AMÉLIORÉ -->
+    <!-- Modal de détails -->
     @if($showDetailsModal)
     <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
     <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
@@ -410,7 +548,6 @@
                     </h5>
                     <button type="button" wire:click="closeDetailsModal" class="btn-close btn-close-white"></button>
                 </div>
-
                 <div class="modal-body p-4">
                     @if($selectedMateriel)
                         <div class="row g-4">
@@ -498,7 +635,6 @@
                         </div>
                     @endif
                 </div>
-
                 <div class="modal-footer bg-light">
                     <button type="button" class="btn btn-outline-secondary" wire:click="closeDetailsModal">
                         <i class="fas fa-times me-2"></i>Fermer
@@ -514,7 +650,7 @@
     </div>
     @endif
 
-    <!-- Modal de confirmation de suppression - CENTRÉ ET AMÉLIORÉ -->
+    <!-- Modal de confirmation de suppression -->
     @if($showDeleteModal)
     <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
     <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
@@ -546,7 +682,7 @@
     </div>
     @endif
 
-    <!-- Modal d'import - CENTRÉ ET AMÉLIORÉ -->
+    <!-- Modal d'import -->
     @if($showImportModal)
     <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
     <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
@@ -568,7 +704,7 @@
                         <label class="form-label fw-semibold">Fichier à importer</label>
                         <input type="file" wire:model="importFile" class="form-control" accept=".csv,.xlsx,.xls">
                         <div class="form-text text-muted">
-                            Formats supportés : CSV, Excel (.xlsx, .xls)
+                            Formats supportés : CSV, Excel (.xlsx, .xls) - Taille max : 10MB
                         </div>
                         @error('importFile') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     </div>
@@ -611,6 +747,89 @@
     </div>
     @endif
 
+    <!-- Modal de mapping -->
+    @if($showMappingModal)
+    <div class="modal-backdrop fade show" style="z-index: 1050;"></div>
+    <div class="modal fade show d-block" style="z-index: 1060;" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-gradient-info text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-table me-2"></i>Mapping des colonnes
+                    </h5>
+                    <button type="button" wire:click="closeMappingModal" class="btn-close btn-close-white"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-info border-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Associez les colonnes de votre fichier aux champs du système.
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Champ système</th>
+                                    <th>Colonne du fichier</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($importMapping as $field => $mappedHeader)
+                                <tr>
+                                    <td class="fw-bold">{{ $field }}</td>
+                                    <td>
+                                        <select wire:model="importMapping.{{ $field }}" class="form-select form-select-sm">
+                                            <option value="">Non mappé</option>
+                                            @foreach($csvHeaders as $header)
+                                                <option value="{{ $header }}">{{ $header }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if(!empty($csvData))
+                    <div class="mt-4">
+                        <h6 class="fw-semibold mb-3">Aperçu des données :</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        @foreach($csvHeaders as $header)
+                                        <th class="small">{{ $header }}</th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($csvData as $row)
+                                    <tr>
+                                        @foreach($csvHeaders as $header)
+                                        <td class="small">{{ $row[$header] ?? '' }}</td>
+                                        @endforeach
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" wire:click="closeMappingModal" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-2"></i>Annuler
+                    </button>
+                    <button type="button" wire:click="processMappedData" class="btn btn-primary">
+                        <i class="fas fa-cogs me-2"></i>Traiter les données
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Messages Flash -->
     @if (session()->has('message'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
@@ -634,40 +853,88 @@
 </div>
 
 @push('styles')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <style>
         .materiel-dashboard {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        .stats-widget {
+        .stat-icon-lg {
+            width: 60px;
+            height: 60px;
             border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
         }
-        
-        .stats-widget:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+        .icon-primary {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
         }
-        
-        .stats-number {
+
+        .icon-success {
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #198754;
+        }
+
+        .icon-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .icon-info {
+            background-color: rgba(13, 202, 240, 0.1);
+            color: #0dcaf0;
+        }
+
+        .icon-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .stat-number {
             font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.25rem;
         }
-        
-        .stats-label {
-            font-size: 0.85rem;
-            color: #6c757d;
-            font-weight: 500;
+
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
         }
-        
-        .avatar-sm {
-            width: 48px;
-            height: 48px;
+
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        
+
+        .dashboard-card:nth-child(1):hover { border-left-color: #0d6efd; }
+        .dashboard-card:nth-child(2):hover { border-left-color: #198754; }
+        .dashboard-card:nth-child(3):hover { border-left-color: #ffc107; }
+        .dashboard-card:nth-child(4):hover { border-left-color: #0dcaf0; }
+        .dashboard-card:nth-child(5):hover { border-left-color: #dc3545; }
+        .dashboard-card:nth-child(6):hover { border-left-color: #198754; }
+
+        .progress {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+
         .table-container {
             background: white;
             border-radius: 12px;
@@ -774,7 +1041,6 @@
             }
         }
         
-        /* Styles pour les lignes selon le statut */
         .statut-en-service:hover {
             background-color: rgba(40, 167, 69, 0.03) !important;
         }
@@ -796,7 +1062,6 @@
             font-size: 0.8rem;
         }
         
-        /* Styles améliorés pour les modales */
         .modal-content {
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -850,18 +1115,6 @@
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
         
-        /* Amélioration de la pagination */
-        .pagination {
-            margin-bottom: 0;
-        }
-        
-        .page-link {
-            border-radius: 6px;
-            margin: 0 2px;
-            border: 1px solid #dee2e6;
-        }
-        
-        /* Amélioration des badges */
         .badge {
             font-size: 0.75rem;
             padding: 0.35em 0.65em;

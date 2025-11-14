@@ -60,6 +60,12 @@ class Telephone extends Component
     public $csvHeaders = [];
     public $csvData = [];
     public $isImporting = false;
+    public $showStats = false; // 👈 Définit la variable par défaut
+
+    public function toggleStats()
+    {
+        $this->showStats = !$this->showStats; // 👈 Inverse la valeur (affiche / masque)
+    }
 
     protected $queryString = [
         'search' => ['except' => ''],
