@@ -3,8 +3,13 @@
         <div>
             <div class="row">
                 <div class="col-lg-2 ">
-                    <img width="100" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('/images/avtar_1.png') }}"
+                    @if (!empty($utilisateurs->photo))
+                      <img width="100" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('storage/'.$utilisateurs->photo) }}"
                         alt="Photo de profil">
+                    @else
+                    <img width="100" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('images/avtar_1.png') }}"
+                        alt="Photo de profil">
+                    @endif
 
                 </div>
                 <div class="col-lg-7 ">

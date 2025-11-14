@@ -5,7 +5,7 @@
         <!-- Header -->
         <div class=" border-bottom">
             <h5 class="modal-title mx-2 my-2 text-dark fw-bold" id="ticketModalLabel">Créer un ticket</h5>
-        
+
         </div>
 
         <!-- Formulaire Livewire -->
@@ -16,7 +16,8 @@
                     obligatoires</p>
 
                 <div class="mb-3 col-lg-8">
-                    <label for="sujet" class="form-label fw-bold text-muted ">Sujet <span class="text-danger ">*</span></label> <br>
+                    <label for="sujet" class="form-label fw-bold text-muted ">Sujet <span
+                            class="text-danger ">*</span></label> <br>
                     <textarea type="text" placeholder="Ex: J'ai perdu mon telephone .."
                         class=" input-recherche py-1  border col-lg-8  px-2 text-dark rounded-2  @error('sujet') is-invalid border-danger  @enderror"
                         id="sujet" wire:model.debounce.500ms="sujet">
@@ -29,10 +30,11 @@
 
                 <!-- Détails -->
                 <div class="mb-3 col-lg-8">
-                    <label for="details" class="form-label fw-bold text-muted">Description  <span class="text-danger">*</span></label> <br>
+                    <label for="details" class="form-label fw-bold text-muted">Description <span
+                            class="text-danger">*</span></label> <br>
                     <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
-                        class="input-recherche border col-lg-8 rounded-2  py-3 px-2  text-dark  @error('details') is-invalid border-danger @enderror" id="details"
-                        wire:model.debounce.500ms="details" rows="2"></textarea>
+                        class="input-recherche border col-lg-8 rounded-2  py-3 px-2  text-dark  @error('details') is-invalid border-danger @enderror"
+                        id="details" wire:model.debounce.500ms="details" rows="2"></textarea>
                     @error('details')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -40,16 +42,17 @@
                 <div class="border-top border-2 mb-4">
                 </div>
                 <div class="mb-3 col-lg-6 ">
-                    <label for="categorie" class="form-label fw-bold text-muted">Catégorie <span class="text-danger">*</span></label>
+                    <label for="categorie" class="form-label fw-bold text-muted">Catégorie <span
+                            class="text-danger">*</span></label>
 
-                              
+
 
 
                     <div class="position-relative">
                         <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         <select id="categorie"
-                                class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('categorie') is-invalid border-danger @enderror"
-                                wire:model="categorie" wire:change="steps2">
+                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('categorie') is-invalid border-danger @enderror"
+                            wire:model="categorie" wire:change="steps2">
                             <option value="" class="text-left"> Sélectionner une catégorie </option>
                             <option value="Réseau">Réseau</option>
                             <option value="Logiciel" class="text-left">Logiciel</option>
@@ -57,7 +60,7 @@
                             <option value="Sécurité">Sécurité</option>
                             <option value="Autre">Autre</option>
                         </select>
-                        </div>
+                    </div>
                     @error('categorie')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -65,26 +68,27 @@
 
 
                 <div class="mb-3 col-lg-6">
-                    <label for="impact" class="form-label fw-bold text-muted mb-2">Impact <span class="text-danger">*</span></label>
+                    <label for="impact" class="form-label fw-bold text-muted mb-2">Impact <span
+                            class="text-danger">*</span></label>
                     <div class="position-relative">
                         <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         <select id="categorie"
-                                class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('impact') is-invalid @enderror"
-                                wire:model="impact" wire:change="steps2">
+                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('impact') is-invalid @enderror"
+                            wire:model="impact" wire:change="steps2">
                             <option value="" class="text-left"> Sélectionner l'impact</option>
-                          
-                        <option value="Utilisateur">Un utilisateur ou un groupe</option>
-                        <option value="Service">Un service ou département</option>
-                        <option value="Organisation">Toute l’organisation</option>
-                        <option value="Autre">Autre</option>
+
+                            <option value="Utilisateur">Un utilisateur ou un groupe</option>
+                            <option value="Service">Un service ou département</option>
+                            <option value="Organisation">Toute l’organisation</option>
+                            <option value="Autre">Autre</option>
                         </select>
-                        </div>
+                    </div>
                     @error('impact')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
 
-                  
-                  
+
+
                 </div>
 
 
@@ -95,43 +99,44 @@
                     <div class="position-relative">
                         <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         <select id="priorite"
-                                class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('priorite') is-invalid @enderror"
-                                wire:model="priorite" wire:change="steps2">
+                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('priorite') is-invalid @enderror"
+                            wire:model="priorite" wire:change="steps2">
                             <option value="" class="text-left"> Sélectionner </option>
-                          
-                  
-                        <option value="Basse">Basse</option>
-                        <option value="Normale">Normale</option>
-                        <option value="Haute">Urgent</option>
-                        <option value="Critique">Critique</option>
+
+
+                            <option value="Basse">Basse</option>
+                            <option value="Normale">Normale</option>
+                            <option value="Haute">Urgent</option>
+                            <option value="Critique">Critique</option>
                         </select>
-                        </div>
-                   
+                    </div>
+
                     @error('priorite')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="mb-3 col-lg-6">
-                    <label for="equipement" class="form-label fw-bold text-muted">Équipement <span class="text-danger">*</span></label>
-                    
+                    <label for="equipement" class="form-label fw-bold text-muted">Équipement <span
+                            class="text-danger">*</span></label>
+
                     <div class="position-relative">
                         <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         <select id="priorite"
-                                class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('equipement') is-invalid @enderror"
-                                wire:model="equipement" wire:change="steps2">
+                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('equipement') is-invalid @enderror"
+                            wire:model="equipement" wire:change="steps2">
                             <option value="" class="text-left"> Sélectionner un équipement </option>
-                          
-                         <option value="PC">PC</option>
-                        <option value="Imprimante">Imprimante</option>
-                        <option value="Routeur">Routeur</option>
-                        <option value="Switch">Switch</option>
-                        <option value="Serveur">Serveur</option>
-                        <option value="autre">Autre</option>
-                        </select>
-                        </div>
 
-                  
+                            <option value="PC">PC</option>
+                            <option value="Imprimante">Imprimante</option>
+                            <option value="Routeur">Routeur</option>
+                            <option value="Switch">Switch</option>
+                            <option value="Serveur">Serveur</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+
+
                     @error('equipement')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -142,10 +147,10 @@
 
             <!-- Footer -->
             <div class="modal-footer border-top py-1 ">
-                <button type="button" class="btn btn-outline-light text-dark border px-3 " id="closeSidebar">Annuler</button>
-                <button type="submit"
-                    class="btn m-1   fw-bold border px-3  btn-two text-white  shadow-sm">Envoyer
-                  <div wire:loading wire:target="store">...</div>
+                <button type="button" class="btn btn-outline-light text-dark border px-3 "
+                    id="closeSidebar">Annuler</button>
+                <button type="submit" class="btn m-1   fw-bold border px-3  btn-two text-white  shadow-sm">Envoyer
+                    <div wire:loading wire:target="store">...</div>
                 </button>
             </div>
         </form>
@@ -155,11 +160,11 @@
 
 
     <div class="container-fluid main-content">
-        <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12" >
+        <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
             <div class="col-lg-2 bg-white py-1 px-0 ">
 
 
-              @livewire('component.menu-utilisateur')
+                @livewire('component.menu-utilisateur')
 
                 <div class="justify-content-center">
                     <svg class="animated" id="freepik_stories-time-management" xmlns="http://www.w3.org/2000/svg"
@@ -1317,8 +1322,8 @@
                         </g>
                         <defs>
                             <filter id="active" height="200%">
-                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate"
-                                    radius="2"></feMorphology>
+                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="2">
+                                </feMorphology>
                                 <feFlood flood-color="#32DFEC" flood-opacity="1" result="PINK"></feFlood>
                                 <feComposite in="PINK" in2="DILATED" operator="in" result="OUTLINE">
                                 </feComposite>
@@ -1328,8 +1333,8 @@
                                 </feMerge>
                             </filter>
                             <filter id="hover" height="200%">
-                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate"
-                                    radius="2"></feMorphology>
+                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="2">
+                                </feMorphology>
                                 <feFlood flood-color="#ff0000" flood-opacity="0.5" result="PINK"></feFlood>
                                 <feComposite in="PINK" in2="DILATED" operator="in" result="OUTLINE">
                                 </feComposite>
@@ -1345,12 +1350,13 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2   col-lg-9 border-start" style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2   col-lg-9 border-start"
+                style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
 
-                   <h5 class="fw-bold mx-4 ">Ticket</h5>
-                    <span class="text-muted mx-4 mt-2">Visualisation globale de vos ticket</span> <br>
+                <h5 class="fw-bold mx-4 ">Ticket</h5>
+                <span class="text-muted mx-4 mt-2">Visualisation globale de vos ticket</span> <br>
 
-                
+
                 <section class="p-0 py-3 mx-5">
                     <div class="row border-top mt-2">
                         <div class="col-lg-6 ">
@@ -1360,62 +1366,76 @@
 
                         <div class="col-lg-6">
 
-                            <span class="d-flex justify-content-end py-3 px-2 text-primary">Afficher tous les espaces</span>
+                            <span class="d-flex justify-content-end py-3 px-2 text-primary">Afficher tous les
+                                espaces</span>
                         </div>
 
 
                     </div>
                     <div class="row p-0 mx-3 ">
-                        @foreach ($ticketrecentes as $ticketrecent )
-                        <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
-                            {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                        @foreach ($ticketrecentes as $ticketrecent)
+                            <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
                                 Nom du ticket de las
                             </div> --}}
-                            <div class="card-body m-0 p-0 ">
-                                 
-                                <strong class="d-flex justify-content-between">
-                                    <div class="">
-                                        <img  class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $ticketrecent->utilisateur->nom ?? 'none' }}"
-                                            alt="Profil" width="40" height="40"
-                                            class="rounded-circle me-2">
-                                            <span class="mx-2 ">{{ $ticketrecent->sujet     }}</span></div> 
-                                </strong>
-                                 {{-- <div class="d-flex justify-content-end">
+                                <div class="card-body m-0 p-0 ">
+
+                                    <strong class="d-flex justify-content-between">
+                                        <div class="">
+                                          @if (!empty($ticketrecent->utilisateur->photo))
+                                            
+                                            <img width="40" height="40" class="rounded-pill my-0 py-0" src="{{ asset('storage/'.$ticketrecent->utilisateur->photo  ) }}" alt="">
+                          
+                                          @else
+                                             <img class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill"
+                                                data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $ticketrecent->utilisateur->nom ?? 'none' }}"
+                                                alt="Profil" width="30" height="30"
+                                                class="rounded-circle me-2">
+                                          @endif
+
+                                           
+                                            <span class="mx-2 ">{{ $ticketrecent->sujet }}</span>
+                                        </div>
+                                    </strong>
+                                    {{-- <div class="d-flex justify-content-end">
                                         <small> 10 Nov 2025</small>
                                 </div> --}}
-                                <div class="mt-2 ">
-                                    <small class="text-muted fw-6">{{ $ticketrecent->details         }}</small>
-                                </div>
-                                <div>
-                                    
-                                    <div class="d-flex justify-content-end">
-                                       
-                                        <img class="dropdown-toggle bg-primary-light border  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src=" {{ asset('storage/' . $ticketrecent->responsable->photo) }}"
-                                            alt="Profil" width="40" height="40"
-                                            class="rounded-circle me-2">
+                                    <div class="mt-2 ">
+                                        <small class="text-muted fw-6">{{ $ticketrecent->details }}</small>
+                                    </div>
+                                    <div>
+
+                                        <div class="d-flex justify-content-end">
+
+                                            @php
+                                                $photo = optional($ticketrecent->responsable)->photo;
+                                            @endphp
+
+                                            <img src="{{ $photo ? asset('storage/' . $photo) : asset('/images/avtar_1.png') }}"
+                                                alt="Profil" width="40" height="40"
+                                                class="dropdown-toggle bg-primary-light border p-0 m-0 rounded-pill" />
                                         </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
                         <div class="col-lg-3  mx-2  p-0 m-0   ">
-                            
+
                             <div class="card-body m-0  ">
-                                 
-                                <span id="toggleSidebar"  class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 " style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
-                                    + Nouveau  
+
+                                <span id="toggleSidebar"
+                                    class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 "
+                                    style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
+                                    + Nouveau
                                 </span>
-                               
-                               
+
+
                             </div>
                         </div>
                     </div>
-                   
-                    <strong href="#"
-                        class=" border-0 py-2 m-2"
-                        aria-current="true">
+
+                    <strong href="#" class=" border-0 py-2 m-2" aria-current="true">
 
                         <div class="d-flex active w-100 justify-content-between border-top border-3">
                             <h5 class="mb-1 fw-bold mx-3 py-2 mt-2">Liste de votre ticket</h5>
@@ -1426,20 +1446,15 @@
                             </small>
                         </div>
                     </strong>
-                    <div class="list-group "  style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
-                        
-                        
+                    <div class="list-group "
+                        style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+
+
                         <span class="mx-3 py-1 fw-normal">EN COURS</span>
                         @foreach ($tickets as $ticket)
-                  
-                                
-                         
-                             <a wire:click="visualiser('{{ $ticket->id }}')" href="#" 
-                                {{-- data-aos="fade-down" --}}
+                            <a wire:click="visualiser('{{ $ticket->id }}')" href="#" {{-- data-aos="fade-down" --}}
                                 {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
-                                class="list-group-item border-bottom  list-group-item-action border-0 border-bottom"
-                               
-                                >
+                                class="list-group-item   list-group-item-action border-0 bg-light mb-1  materiel-item rounded-2 ">
                                 <div class="d-flex w-100 py-1 justify-content-between">
                                     <b class="mb-1 text-black-50"># {{ $ticket->id }} - {{ $ticket->sujet }}</b>
                                     <small
@@ -1463,30 +1478,40 @@
 
                                         {{ $ticket->equipement }}</small>
                                     <small class="text-body-secondary  ">
-                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2">
-                                       <img class="dropdown-toggle bg-primary-light border  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src=" {{ asset('storage/' . $ticket->responsable->photo) }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2">
-                                        </div>
+                                        @php
+                                            $user = Auth::guard('utilisateur')->user();
+                                        @endphp
 
-                                    </small>
+                                        @if (is_null($user->photo))
+                                            <img width="30" height="30"
+                                                class="dropdown-toggle rounded-pill p-0 m-0" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ urlencode($user->nom ?? 'Guest') }}"
+                                                alt="Profil">
+                                        @else
+                                            <img width="30" height="30" class="rounded-pill my-0 py-0"
+                                                src="{{ asset('storage/' . $user->photo) }}" alt="Photo profil">
+                                        @endif
+
+                                        @if (!empty($ticket->responsable->photo))
+                                            <img width="20" height="20"
+                                                class="dropdown-toggle bg-primary-light border p-0 m-0 rounded-pill"
+                                                data-toggle="dropdown"
+                                                src="{{ asset('storage/' . $ticket->responsable->photo) }}"
+                                                alt="Profil responsable">
+                                        @endif
+
                                 </div>
+
+
+                                </small>
+
 
                                 {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
                             </a>
-                      
-                           
                         @endforeach
-                        {{-- @if($tickets->first()?->state > 4)
+                        {{-- @if ($tickets->first()?->state > 4)
                             <span class="mx-3 py-1 fw-normal">RESOLU</span>
                         @endif --}}
-                        
-                      
-
 
                         <div class="mt-4 d-flex justify-content-center">
                             {{-- {{ $tickets->links() }} --}}
@@ -1501,3 +1526,16 @@
     </div>
 
 </div>
+<style>
+    .materiel-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .materiel-item:hover {
+        background-color: #e9ecef;
+        /* gris plus foncé */
+        transform: translateY(-2px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>

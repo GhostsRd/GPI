@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Utilisateur\Checkout;
 
 use App\Models\TelephoneTablette;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use App\Models\checkoutreserver as reserverEquipement;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,8 @@ class CalendrierReservationCheckout extends Component
         'refreshComponent' => '$refresh', // <- écoute l’événement
         'refreshCalendar' => '$refresh',
         'updateEventDate' => 'updateEventDate',
-        'visualiser' => 'visualiser'
+        'visualiser' => 'visualiser',
+        'clearErrors' => 'clearErrorsFn'
     ];
 
 
@@ -25,6 +27,7 @@ class CalendrierReservationCheckout extends Component
     public $reserverId;
     public $selectedEquipements;
     public $userConnected;
+    public $events;
     public $type_materiel;
 
     public $datedeb;
@@ -40,11 +43,18 @@ class CalendrierReservationCheckout extends Component
 
 
 
-  
-    public function  ModifierView($id){
+
+public function clearErrorsFn()
+{
+   
+    $this->resetErrorBag();
+    return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $this->type_materiel);
+}
+    public function ModifierView($id)
+    {
 
 
-       // $this->selectedId = $id;
+        // $this->selectedId = $id;
         //$resEquipement = reserverEquipement::findOrFail($this->selectedId);
         //$this->datedeb = $resEquipement->date_deb;
         $this->dispatchBrowserEvent('closeLightModal');
@@ -65,37 +75,62 @@ class CalendrierReservationCheckout extends Component
     }
     public function updateEventDate($data)
     {
+
+
         $event = reserverEquipement::find($data['id']);
 
-        if ($event->responsable->id == $this->userConnected) {
-
-            $startDate = \Carbon\Carbon::parse($data['start'])
-                ->timezone('Indian/Antananarivo') // ou config('app.timezone')
-                ->format('Y-m-d');
-            //  dd($data['end']);
-            if (is_null($data['end'])) {
-                $endDate = \Carbon\Carbon::parse($data['start'])->timezone('Indian/Antananarivo')->format('Y-m-d');
-            } else {
-                $endDate = \Carbon\Carbon::parse($data['end'])->timezone('Indian/Antananarivo')->format('Y-m-d');
-            }
-
-            if ($event) {
-                $event->update([
-                    'date_debut' => $startDate,
-                    'date_fin' => $endDate, // si pas de fin
-                ]);
-    
-                //$this->dispatch('eventUpdated'); // Optionnel pour afficher un message
-            }
+        if ($event->responsable->id != $this->userConnected) {
             $this->emit('refreshComponent');
-            
-        }else{
-             $this->emit('refreshComponent');
-             
+            return;
         }
 
+        $startDate = Carbon::parse($data['start'])
+            ->timezone('Indian/Antananarivo')
+            ->format('Y-m-d');
+
+        $endDate = $data['end']
+            ? Carbon::parse($data['end'])->timezone('Indian/Antananarivo')->format('Y-m-d')
+            : $startDate;
+
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+
+        // Récupérer les réservations (sauf celle qu’on édite)
+        $reservedmat = reserverEquipement::where('equipement_id', $event->equipement_id)
+            ->where('equipement_type', $event->equipement_type)
+            ->where('id', '!=', $event->id)  // 🔥 IMPORTANT
+            ->get();
+
+        // Détection des conflits
+        foreach ($reservedmat as $res) {
+
+            $resStart = Carbon::parse($res->date_debut);
+            $resEnd = Carbon::parse($res->date_fin);
+
+            if (
+                $start->between($resStart, $resEnd) ||
+                $end->between($resStart, $resEnd) ||
+                $resStart->between($start, $end)
+            ) {
+                // 🔥 IMPORTANT POUR LIVEWIRE
+                //$this->emit('refreshComponent');
+                $this->addError('reservation_error', 'Ce matériel est déjà réservé sur cette période.');
+                $this->dispatchBrowserEvent('open-error-modal');
+                return;
+            }
+        }
+
+        // Mise à jour si pas de conflit
+        if ($start->toDateString() >= now()->toDateString()) {
+            $event->update([
+                'date_debut' => $startDate,
+                'date_fin' => $endDate,
+            ]);
+        }
+
+        $this->emit('refreshComponent');
     }
-   
+
 
     public function openReservationModal($type, $id)
     {
@@ -116,58 +151,105 @@ class CalendrierReservationCheckout extends Component
 
     public function ModifierReservation()
     {
+        $reservedmat = reserverEquipement::where('equipement_id', $this->equipement_id)
+            ->where('equipement_type', $this->type_materiel)
+            ->get();
 
-        $resEquipement = reserverEquipement::findOrFail($this->selectedId);
-        $resEquipement->statut = 1; //mis algo milla atao ato hiverifiena hoe mis mireserver io zavatra io
-        $resEquipement->date_debut = $this->datedeb;
-        $resEquipement->date_fin = $this->datefin;
-        $resEquipement->commentaire = $this->commentaire;
-        $resEquipement->equipement_nombre = $this->nbequipement;
-        $resEquipement->save();
-        return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $resEquipement->equipement_type);
-    }
-    public function SAVEreserverEquipement(reserverEquipement $resEquipement)
-    {
+        $start = Carbon::parse($this->datedeb);
+        $end = Carbon::parse($this->datefin);
 
+        foreach ($reservedmat as $res) {
 
-        if(Carbon::parse($this->datedeb)->toDateString() >= now()->toDateString()) {
+            $resStart = Carbon::parse($res->date_debut);
+            $resEnd = Carbon::parse($res->date_fin);
 
-            $resEquipement->equipement_type = $this->type_materiel;
-            $resEquipement->equipement_id = $this->equipement_id;
-            $resEquipement->responsable_id = Auth::guard('utilisateur')->user()->id;
+            // ❌ Si les dates se chevauchent → refuser
+            if (
+                $start->between($resStart, $resEnd) ||
+                $end->between($resStart, $resEnd) ||
+                $resStart->between($start, $end)
+            ) {
+
+                // Conflit → retour immédiat
+                return back()->with('error', 'Ce matériel est déjà réservé sur cette période.');
+            }
+        }
+
+        if ($start->toDateString() >= now()->toDateString()) {
+
+            $resEquipement = reserverEquipement::findOrFail($this->selectedId);
             $resEquipement->statut = 1; //mis algo milla atao ato hiverifiena hoe mis mireserver io zavatra io
             $resEquipement->date_debut = $this->datedeb;
             $resEquipement->date_fin = $this->datefin;
             $resEquipement->commentaire = $this->commentaire;
             $resEquipement->equipement_nombre = $this->nbequipement;
             $resEquipement->save();
+        }
 
-        //     $data = [
-       // 'title' => 'Reservation',
-        //'message' => 'Vous avez une nouvelle reservation de materiels type: '. $resEquipement->equipement_type
+        return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $this->type_materiel);
+    }
+    public function SAVEreserverEquipement(reserverEquipement $resEquipement)
+    {
 
-         //];
-         //Mail::to('leoncerado@gmail.com')->send(new Momemail($data));
-        }else{
-            return;
+        $reservedmat = reserverEquipement::where('equipement_id', $this->equipement_id)
+            ->where('equipement_type', $this->type_materiel)
+            ->get();
+
+        $start = Carbon::parse($this->datedeb);
+        $end = Carbon::parse($this->datefin);
+
+        // Vérifier si un conflit existe
+        foreach ($reservedmat as $res) {
+
+            $resStart = Carbon::parse($res->date_debut);
+            $resEnd = Carbon::parse($res->date_fin);
+
+            // ❌ Si les dates se chevauchent → refuser
+            if (
+                $start->between($resStart, $resEnd) ||
+                $end->between($resStart, $resEnd) ||
+                $resStart->between($start, $end)
+            ) {
+
+                // Conflit → retour immédiat
+                return back()->with('error', 'Ce matériel est déjà réservé sur cette période.');
+            }
+        }
+
+        // Si pas de conflit → sauvegarde
+        if ($start->toDateString() >= now()->toDateString()) {
+
+            $resEquipement->equipement_type = $this->type_materiel;
+            $resEquipement->equipement_id = $this->equipement_id;
+            $resEquipement->responsable_id = Auth::guard('utilisateur')->user()->id;
+            $resEquipement->statut = 1;
+            $resEquipement->date_debut = $this->datedeb;
+            $resEquipement->date_fin = $this->datefin;
+            $resEquipement->commentaire = $this->commentaire;
+            $resEquipement->equipement_nombre = $this->nbequipement;
+            $resEquipement->save();
         }
 
 
-        
 
 
-       return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $resEquipement->equipement_type);
+
+
+
+
+        return redirect('/utilisateur-checkout-' . $this->reserverId . '-' . $this->type_materiel);
         // $this->dispatchBrowserEvent('closeReservationModal');
 
     }
-    public function AnnulerReservation($id){
-         $resEquipement = reserverEquipement::findOrFail($id);
-         $resEquipement->statut = 0;
-         $resEquipement->save();
+    public function AnnulerReservation($id)
+    {
+        $resEquipement = reserverEquipement::findOrFail($id);
+        $resEquipement->statut = 0;
+        $resEquipement->save();
         $this->emit('refreshComponent');
-       
+
     }
-     public function mount($id, $type)
+    public function mount($id, $type)
     {
         $this->reserverId = $id;
         $this->type_materiel = $type;
@@ -180,7 +262,7 @@ class CalendrierReservationCheckout extends Component
     public function render()
     {
         // Récupère tous les événements correspondant à l'équipement
-        $events = reserverEquipement::where('equipement_id', $this->reserverId)
+        $this->events = reserverEquipement::where('equipement_id', $this->reserverId)
             ->where('equipement_type', $this->type_materiel)
             ->get();
 
@@ -199,17 +281,21 @@ class CalendrierReservationCheckout extends Component
             ->where('equipement_type', $this->type_materiel)
             ->orderBy('date_fin', 'desc') // ou ->orderBy('id', 'desc')
             ->first();
-        
-            $prochaines = reserverEquipement::where('responsable_id', Auth::guard('utilisateur')->user()->id)
+
+        $prochaines = reserverEquipement::where('responsable_id', Auth::guard('utilisateur')->user()->id)
             ->where('equipement_type', $this->type_materiel)
-            ->where('date_debut','>' , now())
-            ->orderBy('date_fin', 'desc') // ou ->orderBy('id', 'desc')
-            ->first();
-        
+            ->where('date_debut', '>', now())
+            ->where('statut', '!=', 0)
+            ->where('statut', '!=', 1)
+
+
+            ->orderBy('date_debut', 'asc') // ou ->orderBy('id', 'desc')
+            ->limit(2)->get();
+
 
 
         return view('livewire.utilisateur.checkout.calendrier-reservation-checkout', [
-            'events' => $events,
+            'events' => $this->events,
             'firsts' => $firstEvent,
             'lastEvent' => $lastEvent,
             'historiques' => reserverEquipement::where('responsable_id', Auth::guard('utilisateur')->user()->id)

@@ -15,16 +15,19 @@
                     obligatoires</p>
 
                 <div class="mb-3 col-lg-8">
-                    <label for="sujet" class="form-label fw-bold text-muted ">Sujet <span
-                            class="text-danger ">*</span></label> <br>
-                    <textarea type="text" placeholder="Ex: J'ai perdu mon telephone .."
-                        class=" input-recherche py-1  border col-lg-8  px-2 text-dark rounded-2  @error('sujet') is-invalid border-danger  @enderror"
-                        id="sujet" wire:model.debounce.500ms="incident_sujet">
+                    <div class="modern-group">
+                        <label for="sujet" class="modern-label">
+                            Sujet <span class="required">*</span>
+                        </label>
 
-                    </textarea>
-                    @error('sujet')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                        <textarea id="sujet" cols="2" placeholder="Ex : J'ai perdu mon téléphone…"
+                            class="modern-textarea @error('sujet') invalid @enderror" wire:model.debounce.500ms="incident_sujet">
+    </textarea>
+
+                        @error('sujet')
+                            <p class="error-text">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <!-- Détails -->
@@ -32,8 +35,8 @@
                     <label for="details" class="form-label fw-bold text-muted">Description <span
                             class="text-danger">*</span></label> <br>
                     <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
-                        class="input-recherche border col-lg-8 rounded-2  py-3 px-2  text-dark  @error('details') is-invalid border-danger @enderror"
-                        id="details" wire:model.debounce.500ms="incident_description" rows="2"></textarea>
+                        class="modern-textarea  @error('details') is-invalid border-danger @enderror" id="details"
+                        wire:model.debounce.500ms="incident_description" rows="2"></textarea>
                     @error('details')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -41,7 +44,7 @@
                 <div class="border-top border-2 mb-4">
                 </div>
 
-                <div class="mb-3 col-lg-6">
+                <div class="mb-3 col-lg-6 ">
                     <label for="nature" class="form-label fw-bold text-muted mb-2">Nature d'incident <span
                             class="text-danger">*</span></label>
                     <div class="position-relative">
@@ -94,8 +97,9 @@
                                 <option value="">Sélectionner </option>
 
                                 @foreach ($checkouts as $checkout)
-                                    @if ($checkout->materiel_type == 'ordinateur')
-                                        <option value="{{ $checkout->ordinateur->id }}">{{ $checkout->ordinateur->nom }}
+                                    @if ($checkout->materiel_type === 'ordinateur' && !$incidents->contains('equipement_id', $checkout->equipement_id))
+                                        <option value="{{ $checkout->ordinateur->id }}">
+                                            {{ $checkout->ordinateur->nom }}
                                         </option>
                                     @endif
                                 @endforeach
@@ -188,7 +192,7 @@
             <div class="col-lg-2 bg-white py-1 px-0 ">
 
 
-                 @livewire('component.menu-utilisateur')
+                @livewire('component.menu-utilisateur')
 
                 <div class="justify-content-center">
                     <svg class="animated" id="freepik_stories-time-management" xmlns="http://www.w3.org/2000/svg"
@@ -1288,8 +1292,7 @@
                                     points="124.41 179.49 124.69 179.66 132.02 184.03 145.28 176.63 145.56 176.48 137.95 171.94 124.41 179.49"
                                     style="fill: rgb(224, 224, 224); transform-origin: 134.985px 177.985px;"
                                     id="el37zox8sa5oa" class="animable"></polygon>
-                                <polygon
-                                    points="124.69 179.66 132.02 184.03 145.28 176.63 137.94 172.25 124.69 179.66"
+                                <polygon points="124.69 179.66 132.02 184.03 145.28 176.63 137.94 172.25 124.69 179.66"
                                     style="fill: rgb(230, 230, 230); transform-origin: 134.985px 178.14px;"
                                     id="eln27ef5sjm5" class="animable"></polygon>
                                 <path
@@ -1347,8 +1350,8 @@
                         </g>
                         <defs>
                             <filter id="active" height="200%">
-                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate"
-                                    radius="2"></feMorphology>
+                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="2">
+                                </feMorphology>
                                 <feFlood flood-color="#32DFEC" flood-opacity="1" result="PINK"></feFlood>
                                 <feComposite in="PINK" in2="DILATED" operator="in" result="OUTLINE">
                                 </feComposite>
@@ -1399,7 +1402,7 @@
                     </div>
                     <div class="row p-0 mx-3 ">
                         @foreach ($Incidentsrecentes as $incidentrecent)
-                            <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                            <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3  ">
                                 {{-- <div class="card-title border-bottom bg-light py-2 px-2">
                                 Nom du ticket de las
                             </div> --}}
@@ -1432,120 +1435,127 @@
 
                                         <div class="d-flex justify-content-center">
 
-                                           <small>
-                                             <a href="{{ asset('storage/' . $selectedIncidents?->rapport_incident) }}"
-                                                target="_blank" class="mx-1 my-1">
-                                                <i class="bi bi-download"></i> Rapport d'incident
-                                            </a> <br>
-                                            <a href="{{ asset('storage/' . $selectedIncidents?->declaration_perte) }}"
-                                                target="_blank" class="mx-1 my-1">
-                                                <i class="bi bi-download"></i>
-                                                Declaration de perte ..
-                                            </a>
-                                           </small>
+                                            <small>
+                                                <a href="{{ asset('storage/' . $selectedIncidents?->rapport_incident) }}"
+                                                    target="_blank" class="mx-1 my-1">
+                                                    <i class="bi bi-download"></i> Rapport d'incident
+                                                </a> <br>
+                                                <a href="{{ asset('storage/' . $selectedIncidents?->declaration_perte) }}"
+                                                    target="_blank" class="mx-1 my-1">
+                                                    <i class="bi bi-download"></i>
+                                                    Declaration de perte ..
+                                                </a>
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
-                                
+
+
+
                             </div>
                         @endforeach
-                    <div class="col-lg-3  mx-2  p-0 m-0   ">
+                        <div class="col-lg-3  mx-2  p-0 m-0   ">
 
-                        <div class="card-body m-0  ">
+                            <div class="card-body m-0  ">
 
-                            <span id="toggleSidebar"
-                                class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 "
-                                style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
-                                + Nouveau
-                            </span>
+                                <span id="toggleSidebar"
+                                    class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 "
+                                    style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
+                                    + Nouveau
+                                </span>
 
 
+                            </div>
                         </div>
-                    </div>
 
-                    <strong href="#" class=" border-0 py-2 m-2" aria-current="true">
+                        <strong href="#" class=" border-0 py-2 m-2" aria-current="true">
 
-                        <div class="d-flex active w-100 justify-content-between border-top border-3">
-                            <h5 class="mb-1 fw-bold mx-3 py-2 mt-2">Liste de vos incident</h5>
-                            <small>
-                                {{-- <input type="text" wire:model="recherche"
+                            <div class="d-flex active w-100 justify-content-between border-top border-3">
+                                <h5 class="mb-1 fw-bold mx-3 py-2 mt-2">Liste de vos incident</h5>
+                                <small>
+                                    {{-- <input type="text" wire:model="recherche"
                                     class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
                                     placeholder="Recherche par sujet.."> --}}
-                            </small>
-                        </div>
-                    </strong>
-                    <div class="list-group "
-                        style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                                </small>
+                            </div>
+                        </strong>
+                        <div class="list-group "
+                            style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
 
 
-                        @foreach ($incidents as $incident)
-                            <a wire:click="visualiser('{{ $incident->id }}')" href="#" {{-- data-aos="fade-down" --}}
-                                data-bs-toggle="modal" data-bs-target="#incidentDetailModal" {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
-                                class="list-group-item border-bottom  list-group-item-action border-0 border-bottom">
-                                <div class="d-flex w-100 py-1 justify-content-between">
-                                    <b class="mb-1 text-black-50">{{ $incident->id }} -
-                                        {{ $incident->incident_sujet }}
+                            @foreach ($incidents as $incident)
+                                <a wire:click="visualiser('{{ $incident->id }}')" href="#"
+                                    {{-- data-aos="fade-down" --}} data-bs-toggle="modal"
+                                    data-bs-target="#incidentDetailModal" {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
+                                    class="list-group-item bg-light mb-1 materiel-item rounded-2 list-group-item-action border-0 ">
+                                    <div class="d-flex w-100 py-1 justify-content-between">
+                                        <b class="mb-1 text-black-50">{{ $incident->id }} -
+                                            {{ $incident->incident_sujet }}
 
-                                        @if ($incident->equipement_type == 'Ordinateur')
-                                            {{ $incident->ordinateur->nom }} {{ $incident->ordinateur->os_version }}
-                                        @elseif($incident->equipement_type == 'Telephone')
-                                            {{ $incident->telephone->nom }} {{ $incident->telephone->marque }}
-                                        @endif
-                                    </b>
-                                    <small
-                                        class="text-body-secondary">{{ \Carbon\Carbon::parse($incident->created_at)->translatedFormat('d M Y H:i') }}</small>
-                                </div>
+                                            @if ($incident->equipement_type == 'Ordinateur')
+                                                {{ $incident->ordinateur->nom }}
+                                                {{ $incident->ordinateur->os_version }}
+                                            @elseif($incident->equipement_type == 'Telephone')
+                                                {{ $incident->telephone->nom }} {{ $incident->telephone->marque }}
+                                            @endif
+                                        </b>
+                                        <small
+                                            class="text-body-secondary">{{ \Carbon\Carbon::parse($incident->created_at)->translatedFormat('d M Y H:i') }}</small>
+                                    </div>
 
-                                <div class="d-flex w-100 py-1 justify-content-between">
-                                    <p class="mb-1 text-capitalize mx-3">{{ $incident->incident_description }}</p>
-                                    <small class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
+                                    <div class="d-flex w-100 py-1 justify-content-between">
+                                        <p class="mb-1 text-capitalize mx-3">{{ $incident->incident_description }}
+                                        </p>
+                                        <small
+                                            class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
 
-                                    </small>
-                                    <small class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-body-secondary' }}  rounded-pill">
-                                        {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : 'En cours de traitement') }}
-                                        {{-- <a href="{{ asset('storage/' . $incident->rapport_incident) }}" target="_blank" >
+                                        </small>
+                                        <small
+                                            class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-body-secondary' }}  rounded-pill">
+                                            {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : 'En cours de traitement') }}
+                                            {{-- <a href="{{ asset('storage/' . $incident->rapport_incident) }}" target="_blank" >
                                                     <i class="bi bi-download"></i> Voir ou Télécharger le rapport
                                                 </a>
                                             
                                         <a href="{{ asset('storage/' . $incident->declaration_perte) }}" target="_blank" >
                                                     <i class="bi bi-download"></i> Voir ou Télécharger le rapport
                                                 </a> --}}
-                                    </small>
-                                </div>
-                                <div class="d-flex w-100 justify-content-between">
-                                    <small class="text-body-secondary mx-3">
-                                        <svg width="12" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                            class="size-6 text-success">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
-                                        </svg>
+                                        </small>
+                                    </div>
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <small class="text-body-secondary mx-3">
+                                            <svg width="12" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="size-6 text-success">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                            </svg>
 
-                                        {{ $incident->equipement }}</small>
-                                    <small class="text-body-secondary  ">
-                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2">
-                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $incident->utilisateur->nom ?? 'none' }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2">
-                                    </small>
-                                </div>
+                                            {{ $incident->equipement }}</small>
+                                        <small class="text-body-secondary  ">
+                                            <img class="dropdown-toggle  p-0 m-0 rounded-pill"
+                                                data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
+                                                alt="Profil" width="20" height="20"
+                                                class="rounded-circle me-2">
+                                            <img class="dropdown-toggle  p-0 m-0 rounded-pill"
+                                                data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $incident->utilisateur->nom ?? 'none' }}"
+                                                alt="Profil" width="20" height="20"
+                                                class="rounded-circle me-2">
+                                        </small>
+                                    </div>
 
-                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
-                            </a>
-                        @endforeach
+                                    {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
+                                </a>
+                            @endforeach
 
-                        <div class="mt-4 d-flex justify-content-center">
-                            {{-- {{ $incidents->links() }} --}}
+                            <div class="mt-4 d-flex justify-content-center">
+                                {{-- {{ $incidents->links() }} --}}
+
+                            </div>
 
                         </div>
-
-                    </div>
 
                 </section>
             </div>
@@ -1636,7 +1646,8 @@
                 <div class="modal-footer border-top py-2">
                     <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Fermer</button>
                     @if ($selectedIncidents?->statut == 1)
-                        <button type="button" wire:click="annulationDemande({{ $selectedIncidents?->id  }})" class="btn btn-danger px-4" data-bs-dismiss="modal">
+                        <button type="button" wire:click="annulationDemande({{ $selectedIncidents?->id }})"
+                            class="btn btn-danger px-4" data-bs-dismiss="modal">
                             Annuller la
                             demande</button>
                     @endif
@@ -1648,6 +1659,18 @@
 
 </div>
 <style>
+    .materiel-item {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .materiel-item:hover {
+        background-color: #e9ecef;
+        /* gris plus foncé */
+        transform: translateY(-2px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
     .modal-content {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         backdrop-filter: blur(8px);
@@ -1657,5 +1680,54 @@
     .modal-backdrop.show {
         background-color: rgba(0, 0, 0, 0.2) !important;
         /* 0.2 = plus clair */
+    }
+
+    .modern-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-width: 550px;
+    }
+
+    .modern-label {
+        font-weight: 600;
+        color: #5f6a73;
+        font-size: 15px;
+    }
+
+    .required {
+        color: #e63946;
+    }
+
+    .modern-textarea {
+        width: 100%;
+        min-height: 10px;
+        padding: 10px 14px;
+        border: none;
+        border-bottom: 1px solid #d0d7dd;
+        /* border-radius: 8px; */
+        font-size: 15px;
+        resize: vertical;
+        outline: none;
+        transition: all .25s ease;
+        background: #fff;
+        color: #2d2d2d;
+    }
+
+    .modern-textarea:focus {
+        border: 0;
+        border-bottom: 1px solid #5BC4BF;
+        /* box-shadow: 0 0 0 2px rgba(11, 170, 79, 0.15); */
+    }
+
+    .modern-textarea.invalid {
+        border-color: #e63946;
+        background: #fff8f8;
+    }
+
+    .error-text {
+        font-size: 13px;
+        color: #e63946;
+        margin: 0;
     }
 </style>

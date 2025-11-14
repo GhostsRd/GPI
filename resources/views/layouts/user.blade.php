@@ -31,7 +31,7 @@
 
     <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
-       <link href='{{ asset('css/calendrier/assets/css/fullcalendar.css') }}' rel='stylesheet' />
+    <link href='{{ asset('css/calendrier/assets/css/fullcalendar.css') }}' rel='stylesheet' />
     <link href='{{ asset('css/calendrier/assets/css/fullcalendar.print.css') }}' rel='stylesheet' media='print' />
     <script src='{{ asset('css/calendrier/assets/js/jquery-1.10.2.js') }}' type="text/javascript"></script>
     <script src='{{ asset('css/calendrier/assets/js/jquery-ui.custom.min.js') }}' type="text/javascript"></script>
@@ -51,7 +51,7 @@
     {{-- aos --}}
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  
+
     <style>
         /* === Navbar === */
         .hero {
@@ -335,53 +335,77 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link" href="{{ route('utilisateurService') }}">• Ticket</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('checkout') }}">• Checkout</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('utilisateur.incident') }}">• Incident</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('utilisateur.incident') }}">• Incident</a>
+                    </li>
 
                     <li class="nav-item"><a class="nav-link" href="#apropos">• À propos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">• Contact</a></li>
                     <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle" id="userDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <a href="#" class="btn btn-one  text-white fw-bold text-sm rounded-pill px-3">
-                            <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
-                                alt="Profil" width="20" height="20" class="rounded-circle me-2">
-                            {{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</a>
+                        <a href="#" class="btn btn-one py-0 text-white fw-bold text-sm rounded-pill px-3">
+                            @if (empty(Auth::guard('utilisateur')->user()->photo))
+                                <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                    src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
+                                    alt="Profil" width="20" height="20" class="rounded-circle me-2">
+                            @else
+                                <img width="30" height="30" class="rounded-pill my-0 py-0"
+                                    src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
+                                    alt="">
+                            @endif
+                            {{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}
+                        </a>
 
-                        <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2" aria-labelledby="userDropdown">
-                                <!-- Profil -->
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center px-3 py-2" href="{{ url('/utilisateur-profile') }}">
-                                        <i class="bi bi-person-circle text-primary fs-5 me-2"></i>
-                                        <span>Mon profil</span>
-                                    </a>
-                                </li>
+                        <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2"
+                            aria-labelledby="userDropdown">
+                            <!-- Profil -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center px-3 py-2"
+                                    href="{{ url('/utilisateur-profile') }}">
+                                    @if (empty(Auth::guard('utilisateur')->user()->photo))
+                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                            src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
+                                            alt="Profil" width="20" height="20" class="rounded-circle me-2">
+                                    @else
+                                        <img width="30" height="30" class="rounded-pill my-0 py-0"
+                                            src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
+                                            alt="">
+                                    @endif
+                                    <span>Mon profil</span>
+                                </a>
+                            </li>
 
-                                <li><hr class="dropdown-divider my-1"></li>
+                            <li>
+                                <hr class="dropdown-divider my-1">
+                            </li>
 
-                                <!-- Paramètres -->
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center px-3 py-2" href="{{ url('/utilisateur-parametres') }}">
-                                        <i class="bi bi-gear text-secondary fs-5 me-2"></i>
-                                        <span>Paramètres</span>
-                                    </a>
-                                </li>
+                            <!-- Paramètres -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center px-3 py-2"
+                                    href="{{ url('/utilisateur-parametres') }}">
+                                    <i class="bi bi-gear text-secondary fs-5 me-2"></i>
+                                    <span>Paramètres</span>
+                                </a>
+                            </li>
 
-                                <li><hr class="dropdown-divider my-1"></li>
+                            <li>
+                                <hr class="dropdown-divider my-1">
+                            </li>
 
-                                <!-- Déconnexion -->
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center px-3 py-2 text-danger"
+                            <!-- Déconnexion -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center px-3 py-2 text-danger"
                                     href="{{ route('utilisateurLogout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="bi bi-box-arrow-right fs-5 me-2"></i>
-                                        <span>Se déconnecter</span>
-                                    </a>
+                                    <i class="bi bi-box-arrow-right fs-5 me-2"></i>
+                                    <span>Se déconnecter</span>
+                                </a>
 
-                                    <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </li>
-                            </ul>
+                                <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST"
+                                    class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
 
 
                     </li>
@@ -396,7 +420,7 @@
             {{ $slot }}
         </main>
     </div>
-   
+
     @livewireScripts
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 

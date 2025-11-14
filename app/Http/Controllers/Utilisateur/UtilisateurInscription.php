@@ -34,6 +34,7 @@ class UtilisateurInscription extends Controller
             'terms' => 'required|accepted',
         ]);
 
+        
         try {
             // Générer le matricule
             $matricule = Utilisateur::max('matricule') + 1;
@@ -41,7 +42,7 @@ class UtilisateurInscription extends Controller
             // Gestion de l'upload de la photo
             $photoPath = null;
             if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('photos', 'public');
+                $photoPath = $request->file('photo')->store('profiles', 'public');
             }
 
             // Création de l'utilisateur
@@ -61,7 +62,7 @@ class UtilisateurInscription extends Controller
                 'password' => Hash::make($validatedData['password']),
                 'role' => 'user',
             ]);
-
+        
             return redirect()->route('LoginUser')
     ->with('success', 'Inscription réussie ! Vous pouvez maintenant vous connecter.');
 

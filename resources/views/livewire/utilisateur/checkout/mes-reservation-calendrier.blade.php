@@ -357,23 +357,20 @@
             <h5 class="py-2 border-bottom">Prochaine rendez-vous</h5>
 
             <div>
-                @foreach ($lastEvent as $last)
-                    @if ($last)
-                        <div class="">
-                            • Le <small>
-                                {{ \Carbon\Carbon::parse($last->date_debut)->translatedFormat('d M Y') }}
-                            </small> -
-                            <small>{{ $last->equipement_type }}
-                                {{ $last->equipement_type == 'ordinateur' ? $last->ordinateur->nom : $last->TelephoneTablette->nom }}</small>
-
-                        </div>
-                        <br>
-                    @else
-                        <p class="">
-                            Aucun événement trouvé.</p>
-                    @endif
-                @endforeach
-
+                @forelse ($lastEvent as $last)
+                    <div class="">
+                        • Le <small>
+                            {{ \Carbon\Carbon::parse($last->date_debut)->translatedFormat('d M Y') }}
+                        </small> -
+                        <small>
+                            {{ $last->equipement_type }}
+                            {{ $last->equipement_type == 'ordinateur' ? $last->ordinateur->nom : $last->TelephoneTablette->nom }}
+                        </small>
+                    </div>
+                    <br>
+                @empty
+                    <p class="">Aucun événement trouvé.</p>
+                @endforelse
 
 
 
@@ -446,8 +443,19 @@
 
                     <br>
                     <div class="m-2">
-                        <input type="text" wire:model.debounce.500ms="recherche" placeholder="Tapez le materiel"
-                            class="px-2 w-100 py-2 rounded-0 border-2 border-0 border-bottom">
+                        <div class="search-wrapper position-relative">
+                            <i class="bi bi-search search-icon text-muted "></i>
+
+                            <input type="text" wire:model.debounce.500ms="recherche"
+                                placeholder="  Tapez le matériel" class="px-4 w-100 py-2 input-model rounded-0">
+
+                            @if ($recherche)
+                                <i class="bi bi-x-circle reset-icon" wire:click="$set('recherche','')"
+                                    style="cursor:pointer"></i>
+
+                                    
+                            @endif
+                        </div>
 
                         <div>
                             <div class="" style="max-height: 300px;overflow-y:scroll">
@@ -463,10 +471,14 @@
                                         <div class="materiel-item  bg-light py-2 mb-1 rounded-2"
                                             wire:click="reserverMat('ordinateur',{{ $ordinateur->id }})">
 
-                                            <small class="m-2 mx-3">
+                                            <small class="m-2 mx-3" wire:loading.remove
+                                                wire:target="reserverMat('ordinateur',{{ $ordinateur->id }})">
                                                 {{ $ordinateur->nom }} {{ $ordinateur->os_version }}
                                             </small>
-                                            <div wire:loading wire:target="reserverMat">...</div>
+                                            <div wire:loading
+                                                wire:target="reserverMat('ordinateur',{{ $ordinateur->id }})">
+                                                <div class="spinner-border spinner-border-sm"></div>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @endif
@@ -479,10 +491,14 @@
                                         <div class="bg-light py-2 mb-1 rounded-2"
                                             wire:click="reserverMat('telephone',{{ $telephone->id }})">
 
-                                            <small class="m-2 mx-3">
+                                            <small class="m-2 mx-3" wire:loading.remove
+                                                wire:target="reserverMat('telephone',{{ $telephone->id }})">
                                                 {{ $telephone->nom }} {{ $telephone->marque }}
                                             </small>
-                                            <div wire:loading wire:target="reserverMat">...</div>
+                                            <div wire:loading
+                                                wire:target="reserverMat('telephone',{{ $telephone->id }})">
+                                                <div class="spinner-border spinner-border-sm"></div>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @endif
@@ -511,6 +527,52 @@
 </div>
 
 <style>
+    .search-wrapper {
+        width: 100%;
+    }
+
+    .search-icon {
+        position: absolute;
+        top: 50%;
+        left: 6px;
+        transform: translateY(-50%);
+        font-size: 17px;
+        color: #b5b3b3c1;
+        padding-right: 6px !important;
+        pointer-events: none;
+    }
+
+    .reset-icon {
+        position: absolute;
+        top: 50%;
+        right: 6px;
+        transform: translateY(-50%);
+        font-size: 17px;
+        color: #888;
+    }
+
+    .input-model {
+        border: none !important;
+        border-bottom: 1px solid #ccc !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .input-model:focus,
+    .input-model:hover {
+        border: none !important;
+        border-bottom: 2px solid #5BC4BF !important;
+        box-shadow: none !important;
+        /* Enlève le bleu du Bootstrap */
+        outline: none !important;
+    }
+
+    .input-model:active {
+        border: none !important;
+        border-bottom: 2px solid #5BC4BF !important;
+        box-shadow: none !important;
+    }
+
     .materiel-item {
         transition: all 0.3s ease;
         cursor: pointer;

@@ -2,7 +2,7 @@
     style="height:40vh;">
     <div class="col-lg-2 offset-1 bg-white py-1 px-0 ">
 
-     
+
         @livewire('component.menu-utilisateur')
 
         <div class="justify-content-center">
@@ -337,11 +337,11 @@
             <h5 class="mt-2 pb-4 border-bottom fw-bold">Reservation de materiel</h5>
             <label class="text-muted  d-flex justify-content-between">Disponibilite /
                 {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
-                {{ $firsts?->os_version  }} {{ $firsts?->marque  }} </label>
+                {{ $firsts?->os_version }} {{ $firsts?->marque }} </label>
             <div class="d-flex  justify-content-end">
                 <div class="btn border-0  py-0 fw-bold rounded-3 text-white  btn-two p-0 mx-2 btn-sm"
-                    wire:click="openReservationModal('{{$type_materiel}}',{{ $reserverId }})" data-bs-toggle="modal"
-                    data-bs-target="#centeredModalreservation">
+                    wire:click="openReservationModal('{{ $type_materiel }}',{{ $reserverId }})"
+                    data-bs-toggle="modal" data-bs-target="#centeredModalreservation">
                     <i class="bi bi-plus"></i> Nouveau
                 </div>
 
@@ -364,7 +364,7 @@
                 @if ($lastEvent)
                     Type de materiel :<label
                         class="text-muted text-center py-1 text-capitalize"><small>{{ $lastEvent->equipement_type }}
-                             {{ $lastEvent->equipement_type == 'ordinateur' ? $lastEvent->ordinateur->nom : $lastEvent->TelephoneTablette->nom }}</small></label>
+                            {{ $lastEvent->equipement_type == 'ordinateur' ? $lastEvent->ordinateur->nom : $lastEvent->TelephoneTablette->nom }}</small></label>
                     <br>
                     Utilisateur :
                     <label class="text-muted">
@@ -391,21 +391,22 @@
             </div>
 
             <div class=" py-2 border-2 mt-2">
-                <label >Prochaine rendez-vous</label>
-                @if ($prochaines)
-                        <div class="py-2 ">
-                            • Le <small>
-                                {{ \Carbon\Carbon::parse($prochaines->date_debut)->translatedFormat('d M Y') }}
-                            </small> -
-                            <small>{{ $prochaines->equipement_type }}
-                                {{ $prochaines->equipement_type == 'ordinateur' ? $prochaines->ordinateur->nom : $prochaines->TelephoneTablette->nom }}</small>
+                <label>Prochaine rendez-vous</label>
+                @forelse ($prochaines as $prochaine)
+                    <div class="py-2 ">
+                        • Le <small>
+                            {{ \Carbon\Carbon::parse($prochaine->date_debut)->translatedFormat('d M Y') }}
+                        </small> -
+                        <small>{{ $prochaine->equipement_type }}
+                            {{ $prochaine->equipement_type == 'ordinateur' ? $prochaine->ordinateur->nom : $prochaine->TelephoneTablette->nom }}</small>
 
-                        </div>
-                        <br>
-                    @else
-                        <p class="">
-                            Aucun événement trouvé.</p>
-                    @endif
+                    </div>
+
+                @empty
+                    <p class="">
+                        Aucun événement pour le moment.</p>
+                @endforelse
+
             </div>
         </div>
         <div class="border-top mt-2 col-lg-12">
@@ -432,17 +433,13 @@
 
                         <div class="d-flex w-100 mt-2 justify-content-between">
                             <p class="mb-1 text-capitalize">
-                                                <small class="text-muted">
-                                                {{ 
-                                                    $event->equipement_type == 'ordinateur' 
-                                                        ? $event->ordinateur->os_version 
-                                                        : (
-                                                            $event->equipement_type == 'telephone' 
-                                                                ? $event->TelephoneTablette->nom . ' ' . $event->TelephoneTablette->marque 
-                                                                : 'aucun'
-                                                        ) 
-                                                }}
-                                            </small>
+                                <small class="text-muted">
+                                    {{ $event->equipement_type == 'ordinateur'
+                                        ? $event->ordinateur->os_version
+                                        : ($event->equipement_type == 'telephone'
+                                            ? $event->TelephoneTablette->nom . ' ' . $event->TelephoneTablette->marque
+                                            : 'aucun') }}
+                                </small>
                             </p>
                             {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
                                                         {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
@@ -489,7 +486,7 @@
                             / État /
                         </label>
                     @endif
-                    
+
                     <br>
                     <p class="mt-1 p-1 text-muted fw-6">Les champs indiquer <span class="text-danger">*</span> sont
                         obligatoires</p>
@@ -532,12 +529,24 @@
                     <div class="modal-header border-0  pb-0">
                         <label class="modal-title fw-bold  " id="lightModalLabel">
 
-                            {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom : $item->TelephoneTablette->nom }} <small class="text-muted" style="font-size:0.8rem">cree le
+                            {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom : $item->TelephoneTablette->nom }}
+                            <small class="text-muted" style="font-size:0.8rem">cree le
                                 {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y H:m') }} </small>
 
-                            </label>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Fermer"></button>
+                        </label>
+                       
+                             <button type="submt" data-bs-toggle="modal" data-bs-target="#lightModal"
+                            @if (
+                                ($item->date_debut > now() || $item->created_at->isToday()) &&
+                                    $item->responsable->id == $userConnected &&
+                                    $item->statut == 1) wire:click="ModifierView({{ $item->id }})"
+                            @else
+                            class="d-none"
+                            @endif
+                            wire:click="ModifierView({{ $item->id }})" class="btn btn-white">
+                             <i class="bi bi-pencil"></i>
+                        </button>
+
                     </div>
                     <div class="modal-body">
                         <label class="form-label mt-2 mx-1">Date de début</label>
@@ -561,17 +570,7 @@
                         <button type="button" class="btn btn-two text-white fw-bold"
                             data-bs-dismiss="modal">Fermer</button>
 
-                        <button type="submt" data-bs-toggle="modal" data-bs-target="#lightModal"
-                            @if (
-                                ($item->date_debut > now() || $item->created_at->isToday()) &&
-                                    $item->responsable->id == $userConnected &&
-                                    $item->statut == 1) wire:click="ModifierView({{ $item->id }})"
-                            @else
-                            class="d-none" @endif
-                            wire:click="ModifierView({{ $item->id }})" class="btn btn-primary">
-                            Modifier
-                        </button>
-
+                       
                     </div>
                 </div>
             @endforeach
@@ -586,7 +585,7 @@
                 @foreach ($selectedMateriels as $item)
                     <div class="modal-header border-0 pb-0 ">
                         <label class="modal-title fw-bold" id="lightModalLabel">
-                            
+
                             {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom : $item->TelephoneTablette->nom }}
 
                         </label>
@@ -632,6 +631,43 @@
 
 
 </div>
+<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Erreur de réservation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body text-center">
+                @error('reservation_error')
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary position-relative" wire:click="clearErrorsFn"
+                    data-bs-dismiss="modal">
+
+                    <span wire:loading.remove wire:target="clearErrorsFn">
+                        Fermer
+                    </span>
+
+                    <span wire:loading wire:target="clearErrorsFn">
+                        <div class="spinner-border spinner-border-sm"></div>
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 </div>
 
 <style>
@@ -804,7 +840,7 @@
                         @endif
                     @endif
                     @if ($event->equipement_type == 'telephone')
-                        
+
                         {
 
                             id: "{{ $event->id }}",
@@ -854,5 +890,12 @@
             const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
             modal.hide();
         });
+    });
+    window.addEventListener('open-error-modal', () => {
+        let myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+        myModal.show();
+    });
+    document.getElementById('errorModal').addEventListener('hidden.bs.modal', () => {
+        Livewire.emit('clearErrors');
     });
 </script>

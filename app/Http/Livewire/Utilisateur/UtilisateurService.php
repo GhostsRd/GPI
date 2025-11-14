@@ -96,7 +96,7 @@ class UtilisateurService extends Component
         $chat->type = "agent";
         $chat->message = "Ticket creer avec succes";
         $chat->save();
-
+        usleep(1000000);
         $this->reset(['sujet', 'details', 'priorite','equipement']);
         $this->emitSelf('refreshComponent'); 
         $this->dispatchBrowserEvent('toggleSidebar');

@@ -91,6 +91,7 @@ class Checkout extends Component
                 $this->etape[$i] = "remove";
             }
         }
+        usleep(1000000);
         $this->reset(['valeur1', 'valeur2']);
         $this->emitSelf('refreshComponent'); 
     }

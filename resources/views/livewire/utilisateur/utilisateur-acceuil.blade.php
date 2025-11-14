@@ -6146,8 +6146,8 @@
           <div class="col-md-3" data-aos="fade-left" data-aos-duration="1500">
             <div class="card border-0 shadow-sm h-100">
               <div class="card-body">
-                <h5 class="card-title">Documentation</h5>
-                <p class="card-text">Expériences utilisateurs soignées et interfaces modernes.</p>
+                <h5 class="card-title">Reservation </h5>
+                <p class="card-text">Resevez un materiel pour vous des maintenant.</p>
                 <a href="#" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
               </div>
             </div>

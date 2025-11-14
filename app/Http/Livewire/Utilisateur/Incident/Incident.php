@@ -76,14 +76,13 @@ class Incident extends Component
         
         $this->emit('refreshComponent');
         $this->reset(['equipement_type','incident_sujet','incident_nature','incident_description','declaration_perte','rapport_incident']);
-
-
     }
     public function render()
     {
         return view('livewire.utilisateur.incident.incident',[
             'incidents' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->get(),
-            'checkouts' => Checkout::where('utilisateur_id',$this->userConnected)->get(),
+            'checkouts' => Checkout::where('utilisateur_id',$this->userConnected)
+            ->where('statut','!=',1)->get(),
             'Incidentsrecentes' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->limit(2)->get(),
         ]);
         //////////////////////////////////////////////////checkout type eto zao e 
