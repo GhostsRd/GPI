@@ -19,8 +19,11 @@
                                 Reservation de materiel <span class="text-warning" id="ticketId">#{{ $reservationID }}</span>
                                 — </label>
                                 <span class="text-capitalize"> {{ $matreservations->equipement_type }} ({{ $matreservations->equipement_nombre }}) 
-                                    @if ($matreservations->equipement_type == "Ordinateur")
-
+                                    @if ($matreservations->equipement_type == "ordinateur")
+                                        {{ $matreservations->ordinateur->nom }}
+                                        <small class="badge badge-primary text-primary shadow-sm"> 
+                                        {{ $matreservations->ordinateur->statut  }}
+                                    </small>
                                     @endif
                                     @if ($matreservations->equipement_type == 'telephone')
                                         {{ $matreservations->TelephoneTablette->nom }}

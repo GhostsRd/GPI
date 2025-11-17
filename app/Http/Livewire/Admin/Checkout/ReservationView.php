@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Checkout;
 
 use App\Models\Checkout;
 use App\Models\Commentaire;
+use App\Models\ordinateur;
 use App\Models\utilisateur;
 use Livewire\Component;
 use App\Models\checkoutreserver as matreservation;
@@ -88,6 +89,20 @@ class ReservationView extends Component
             }
             if($reservations->statut == 4){
                  TelephoneTablette::where('id',$reservations->equipement_id)->update([
+                    'statut' => 'En stock',
+                ]);
+            }
+            
+        }
+
+        if($reservations->equipement_type == 'ordidnateur'){
+            if($reservations->statut == 3){
+                ordinateur::where('id',$reservations->equipement_id)->update([
+                    'statut' => 'En service',
+                ]);
+            }
+            if($reservations->statut == 4){
+                 ordinateur::where('id',$reservations->equipement_id)->update([
                     'statut' => 'En stock',
                 ]);
             }
