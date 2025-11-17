@@ -89,14 +89,16 @@
                     <li class="nav-item dropdown">
                         <div class="user-dropdown" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <div class="d-flex align-items-center">
-                                @if(Auth::user()->photo)
+                                @if(Auth::check() && Auth::user()->photo)
                                     <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="user-avatar" width="40" height="40" alt="Photo de profil">
                                 @else
-                                    <img src="{{ asset('/images/avtar_1.png') }}" class="user-avatar" width="40" height="40" alt="Photo par défaut">
+                                    <img src="{{ asset('images/avtar_1.png') }}" class="user-avatar" width="40" height="40" alt="Photo par défaut">
                                 @endif
-                                <span class="ms-2 fw-bold text-dark">{{ Auth::user()->name ?? 'Guest' }}</span>
-                            </div>
-                    
+                                <span class="ms-2 fw-bold text-dark">
+                        {{ Auth::check() ? Auth::user()->name : 'Invité' }}
+                    </span>
+                </div>
+
 
                         <div class="dropdown-menu dropdown-menu-modern dropdown-menu-end">
 
