@@ -11,16 +11,16 @@
         <form wire:submit.prevent="store">
             <div class="modal-body row">
                 <!-- Sujet -->
-                <p class="text-muted mb-3 mt-3">Les champs indiqués <span class="text-danger">*</span> sont
+                <p class="text-dark  mb-3 mt-3">Tous les champs sont
                     obligatoires</p>
 
                 <div class="mb-3 col-lg-8">
                     <div class="modern-group">
-                        <label for="sujet" class="modern-label">
+                        {{-- <label for="sujet" class="modern-label">
                             Sujet <span class="required">*</span>
-                        </label>
+                        </label> --}}
 
-                        <textarea id="sujet" cols="2" placeholder="Ex : J'ai perdu mon téléphone…"
+                        <textarea id="sujet" cols="2" placeholder="Quelle  est le sujet ? "
                             class="modern-textarea @error('sujet') invalid @enderror" wire:model.debounce.500ms="incident_sujet">
                         </textarea>
 
@@ -31,26 +31,27 @@
                 </div>
 
                 <!-- Détails -->
-                <div class="mb-3 col-lg-8">
-                    <label for="details" class="form-label fw-bold text-muted">Description <span
-                            class="text-danger">*</span></label> <br>
-                    <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
+                <div class="mb-3 col-lg-8 ">
+                    {{-- <label for="details" class="form-label fw-bold text-muted">Description <span --}}
+
+                    <textarea type="text" placeholder="Vous pouvez le detaille ici ..."
                         class="modern-textarea  @error('details') is-invalid border-danger @enderror" id="details"
                         wire:model.debounce.500ms="incident_description" rows="2"></textarea>
                     @error('details')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                @if (!empty($incident_description))
                 <div class="border-top border-2 mb-4">
                 </div>
-
-                <div class="mb-3 col-lg-6 ">
-                    <label for="nature" class="form-label fw-bold text-muted mb-2">Nature d'incident <span
-                            class="text-danger">*</span></label>
+                        
+                <div class="mb-3 col-lg-6 py-2">
+                    <label for="nature" class="form-label fw-bold text-muted mb-2">Quelle est le nature de
+                        l'incident<span class="text-danger">*</span></label>
                     <div class="position-relative">
                         <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         <select id="categorie"
-                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('impact') is-invalid @enderror"
+                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border-0 border-bottom @error('impact') is-invalid @enderror"
                             wire:model="incident_nature">
                             <option value="" class="text-left"> Sélectionner le nature</option>
 
@@ -72,7 +73,7 @@
                     <div class="position-relative">
                         <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         <select id="equipement_type"
-                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border"
+                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border-0 border-bottom"
                             wire:model="equipement_type">
                             <option value="">Sélectionner l'equipement</option>
                             <option value="Ordinateur">Ordinateur</option>
@@ -92,7 +93,7 @@
                             <i
                                 class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                             <select id="equipement_id"
-                                class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('equipement_id') is-invalid @enderror"
+                                class="input-recherche py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
                                 wire:model="equipement_id">
                                 <option value="">Sélectionner </option>
 
@@ -122,7 +123,7 @@
                             <i
                                 class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                             <select id="equipement_id"
-                                class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('equipement_id') is-invalid @enderror"
+                                class="input-recherche py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
                                 wire:model="equipement_id">
                                 <option value="">Sélectionner </option>
 
@@ -151,7 +152,7 @@
 
 
                     <input type="file" wire:model="rapport_incident"
-                        class="form-control  @error('rapport_incident') is-invalid @enderror">
+                        class="form-control border-0 border-bottom  @error('rapport_incident') is-invalid @enderror">
                     @error('rapport_incident')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -164,12 +165,12 @@
                 <div class="mb-3 col-lg-6 ">
                     <label for="categorie" class="form-label fw-bold text-muted">Declaration de perte <span
                             class="text-success">( Optionnel )</span></label>
-                    <input type="file" wire:model="declaration_perte" class="form-control">
+                    <input type="file" wire:model="declaration_perte" class="form-control border-0 border-bottom">
+                    <div wire:loading wire:target="declaration_perte">Telechargement...</div>
                 </div>
+                    @endif
 
-
-
-            </div>
+                </div>
 
             <!-- Footer -->
             <div class="modal-footer border-top py-1 ">
@@ -1361,8 +1362,8 @@
                                 </feMerge>
                             </filter>
                             <filter id="hover" height="200%">
-                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate"
-                                    radius="2"></feMorphology>
+                                <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="2">
+                                </feMorphology>
                                 <feFlood flood-color="#ff0000" flood-opacity="0.5" result="PINK"></feFlood>
                                 <feComposite in="PINK" in2="DILATED" operator="in" result="OUTLINE">
                                 </feComposite>
@@ -1512,7 +1513,7 @@
                                         </small>
                                         <small
                                             class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-teal' }} badge badge-ligth shadow-sm  rounded-pill">
-                                            {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : ($incident->statut == 1 ? 'En cours de traitement ...' : ($incident->statut == 2 ? 'Recu ' : ($incident->statut == 3 ? 'Resolu' :'Non resolu')))) }}
+                                            {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : ($incident->statut == 1 ? 'En cours de traitement ...' : ($incident->statut == 2 ? 'Recu ' : ($incident->statut == 3 ? 'Resolu' : 'Non resolu')))) }}
                                             {{-- <a href="{{ asset('storage/' . $incident->rapport_incident) }}" target="_blank" >
                                                     <i class="bi bi-download"></i> Voir ou Télécharger le rapport
                                                 </a>
@@ -1594,12 +1595,12 @@
                                     {{ $selectedIncidents?->ordinateur->nom }}
                                     {{ $selectedIncidents?->ordinateur->os_version }}
                                 @endif
-                                  @if ($selectedIncidents?->equipement_type == 'Telephone')
+                                @if ($selectedIncidents?->equipement_type == 'Telephone')
                                     {{ $selectedIncidents?->telephone->nom }}
                                     {{ $selectedIncidents?->telephone->marque }}
                                 @endif
 
-                                
+
                             </div>
                         </div>
                         <div class="row mb-2">

@@ -82,7 +82,7 @@
                         <strong>{{ $message }}</strong>
                     </div>
                     @enderror
-
+                    <br>
                     <div class="input-container ">
                         <i class="fas fa-lock"></i>
                         <input id="password" type="password" placeholder="Mot de passe" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">

@@ -179,8 +179,6 @@ class Checkout extends Component
             "events" => ReservationEquipement::get(),
             "reservationRecentes" => ReservationEquipement::where('responsable_id',$user_ID)->
             limit(1)->get()
-           
-        
 
         ]);
     }
