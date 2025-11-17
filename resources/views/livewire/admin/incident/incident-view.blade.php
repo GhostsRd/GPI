@@ -20,14 +20,14 @@
                                     id="ticketId">#{{ $incidentId }}</span>
                                 — </label>
                             <small class="text-capitalize"> {{ $incidents->equipement_type }}
-                                (
+                           
                                 @if ($incidents->equipement_type == 'Ordinateur')
-                                    {{ $incidents->ordinateur->nom }} {{ $incidents->ordinateur->os_version }}
+                                    {{ $incidents->ordinateur->nom }} {{ $incidents->ordinateur->os_version }} <span class="badge badge-light text-primary shadow-sm">{{ $incidents->ordinateur->statut }} </span> 
                                 @endif
                                 @if ($incidents->equipement_type == 'Telephone')
-                                    {{ $incidents->telephone->nom }} {{ $incidents->telephone->marque }}
+                                    {{ $incidents->telephone->nom }} {{ $incidents->telephone->marque }} <span class="badge badge-light text-primary shadow-sm">{{ $incidents->telephone->statut }}</span> 
                                 @endif
-                                )
+                                
                             </small>
 
                         </div>
@@ -164,7 +164,7 @@
 
                             @if ($incidents->statut == '4')
                                 <div class="step {{ $current[4] }} col-lg-3" data-index="2">
-                                    <div class="dot">X</div>
+                                    <div class="dot text-danger bg-white">X</div>
                                     <div class="title">Non resolu</div>
                                     <div class="sub">Finale</div>
 

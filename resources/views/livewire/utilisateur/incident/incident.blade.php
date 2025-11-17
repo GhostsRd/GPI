@@ -1511,8 +1511,8 @@
 
                                         </small>
                                         <small
-                                            class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-body-secondary' }}  rounded-pill">
-                                            {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : 'En cours de traitement') }}
+                                            class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-teal' }} badge badge-ligth shadow-sm  rounded-pill">
+                                            {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : ($incident->statut == 1 ? 'En cours de traitement ...' : ($incident->statut == 2 ? 'Recu ' : ($incident->statut == 3 ? 'Resolu' :'Non resolu')))) }}
                                             {{-- <a href="{{ asset('storage/' . $incident->rapport_incident) }}" target="_blank" >
                                                     <i class="bi bi-download"></i> Voir ou Télécharger le rapport
                                                 </a>

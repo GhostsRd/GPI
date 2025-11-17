@@ -146,13 +146,43 @@ class CheckoutView extends Component
     public function nextStep()
     {
         $this->modelstep(CheckoutModel::find($this->checkoutId));
-        if ($this->currentStep == 3) {
+        if ($this->currentStep == 4) {
             return;
-        } elseif ($this->currentStep < 3) {
+        } elseif ($this->currentStep < 4) {
             CheckoutModel::where('id', $this->checkoutId)->update(['statut' => $this->currentStep + 1]);
         }
 
+        $checkouts = CheckoutModel::find($this->checkoutId);
 
+        
+        if( $checkouts->materiel_type == 'ordinateur'){
+            if($checkouts->statut == 3){
+
+                ordinateur::where('id',$checkouts->equipement_id)->update([
+                    'statut' => 'En service'
+                ]);
+            }
+             if($checkouts->statut == 4){
+
+                ordinateur::where('id',$checkouts->equipement_id)->update([
+                    'statut' => 'Disponible'
+                ]);
+            }
+        }
+        if($checkouts->materiel_type == 'telephone')
+
+            if($checkouts->statut == 3){
+
+                TelephoneTablette::where('id',$checkouts->equipement_id)->update([
+                    'statut' => 'En service'
+                ]);
+            }
+             if($checkouts->statut == 4){
+
+                TelephoneTablette::where('id',$checkouts->equipement_id)->update([
+                    'statut' => 'Disponible'
+                ]);
+            }
     }
     public function markResolved(){
       
@@ -261,7 +291,9 @@ class CheckoutView extends Component
             "TelephoneTablettes" => TelephoneTablette::
                 where('statut', 'En stock')->
                 where("type", "like", "%" . $this->selectEquipement . "%")->get(),
-            "ordinateurs" => ordinateur::where("nom", "like", "%" . $this->selectEquipement . "%")->get(),
+            "ordinateurs" => ordinateur::
+             where('statut', 'En stock')->
+            where("nom", "like", "%" . $this->selectEquipement . "%")->get(),
             "Chats" => chat::where(function ($query) {
                 $userId = Auth::user()->id;
                 $query->where('utilisateur_id', $userId)

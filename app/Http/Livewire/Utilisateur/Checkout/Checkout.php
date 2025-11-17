@@ -164,9 +164,9 @@ class Checkout extends Component
         
         return view('livewire.utilisateur.checkout.checkout', [
         
-            'ordinateurs' => ordinateur::paginate(100),
-            'telephones' => TelephoneTablette::paginate(100),
-            "moniteurs" => moniteur::where("statut", "En stock")->paginate(10),
+            'ordinateurs' => ordinateur::where('statut','!=','Hors service')->paginate(100),
+            'telephones' => TelephoneTablette::where('statut','!=','Hors service')->paginate(100),
+            "moniteurs" => moniteur::where('statut','!=','Hors service')->paginate(10),
             'equipements' => $this->filteredEquipements,
             "checkouts" => modelchekout::where("utilisateur_id",$user_ID)
             ->orderBy("created_at","desc")

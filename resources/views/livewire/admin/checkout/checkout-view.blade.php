@@ -123,7 +123,7 @@
                     </div>
                     <div class="row  p-3 fond-bg rounded-3 {{ $affichestep == 'False' ? 'collapse' : '' }}">
                         <div class="steps-container row " style="display:flex;align-items:center;">
-                            <div class="step {{ $current[1] }} col-lg-3" data-index="0">
+                            <div class="step {{ $current[1] }} col-lg-2" data-index="0">
                                 <div class="dot ">1</div>
                                 <div class="title">Nouveau</div>
                                 <div class="sub">Création</div>
@@ -131,26 +131,35 @@
                             <div class="connector col-lg-1">
                                 <div class="fill {{ $progress }}"></div>
                             </div>
-                            <div class="step {{ $current[2] }} col-lg-3" data-index="1">
+                              <div class="step {{ $current[2] }} col-lg-2" data-index="1">
                                 <div class="dot">2</div>
+                                <div class="title">Valider</div>
+                                <div class="sub">Assigné à un materiel</div>
+
+                            </div>
+                             <div class="connector col-lg-1">
+                                <div class="fill {{ $progress }}"></div>
+                            </div>
+                            <div class="step {{ $current[3] }} col-lg-2" data-index="1">
+                                <div class="dot">3</div>
                                 <div class="title">En cours</div>
-                                <div class="sub">Assigné à une équipe</div>
+                                <div class="sub">Rendu a l'utilisateur</div>
 
                             </div>
                             <div class="connector col-lg-1">
                                 <div class="fill {{ $progress }}"></div>
                             </div>
 
-                            @if ($checkouts->statut == 4)
-                                <div class="step {{ $current[4] }} col-lg-3" data-index="2">
-                                    <div class="dot bg-danger">X</div>
+                            @if ($checkouts->statut == 5 )
+                                <div class="step {{ $current[5] }} col-lg-2" data-index="2">
+                                    <div class="dot text-danger bg-white">X</div>
                                     <div class="title">Refuser</div>
                                     <div class="sub">Decision Finale</div>
 
                                 </div>
                             @else
-                                <div class="step {{ $current[3] }} col-lg-3" data-index="2">
-                                    <div class="dot">3</div>
+                                <div class="step {{ $current[4] }} col-lg-2" data-index="2">
+                                    <div class="dot">4</div>
                                     <div class="title">Rendu</div>
                                     <div class="sub">Intervention</div>
 

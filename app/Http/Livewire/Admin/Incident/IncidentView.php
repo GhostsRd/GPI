@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Incident;
 
+use App\Models\ordinateur;
 use App\Models\TelephoneTablette;
 use Livewire\Component;
 use App\Models\Incident;
@@ -134,6 +135,24 @@ class IncidentView extends Component
                 ]);
             }
         }
+
+        if($incidentvals->equipement_type == 'Ordinateur'){
+            if($incidentvals->statut == 2){
+                ordinateur::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'En service',
+                ]);
+            }
+            if($incidentvals->statut == 3){
+                 ordinateur::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'En stock',
+                ]);
+            }
+            if($incidentvals->statut == 4){
+                 ordinateur::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'Hors service',
+                ]);
+            }
+        }
         
 
     }
@@ -166,6 +185,27 @@ class IncidentView extends Component
     {
         $this->modelstep(Incident::find($this->incidentId));
         Incident::where('id', $this->incidentId)->update(['statut' => 4]);
+
+
+          $incidentvals = Incident::find($this->incidentId);
+
+        if($incidentvals->equipement_type == 'Telephone'){
+          
+            if($incidentvals->statut == 4){
+                 TelephoneTablette::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'Hors service',
+                ]);
+            }
+        }
+
+        if($incidentvals->equipement_type == 'Ordinateur'){
+          
+            if($incidentvals->statut == 4){
+                 ordinateur::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'Hors service',
+                ]);
+            }
+        }
         $this->emitSelf('refreshComponent');
 
     }
@@ -173,6 +213,34 @@ class IncidentView extends Component
     {
         $this->modelstep(Incident::find($this->incidentId));
         Incident::where('id', $this->incidentId)->update(['statut' => 3]);
+        $incidentvals = Incident::find($this->incidentId);
+        if($incidentvals->equipement_type == 'Telephone'){
+          
+            if($incidentvals->statut == 3){
+                 TelephoneTablette::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'En stock',
+                ]);
+            }
+        
+        }
+
+        if($incidentvals->equipement_type == 'Ordinateur'){
+            if($incidentvals->statut == 2){
+                ordinateur::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'En service',
+                ]);
+            }
+            if($incidentvals->statut == 3){
+                 ordinateur::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'En stock',
+                ]);
+            }
+            if($incidentvals->statut == 4){
+                 ordinateur::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'Hors service',
+                ]);
+            }
+        }
         $this->emitSelf('refreshComponent');
     }
     public function mount($id)

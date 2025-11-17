@@ -1051,7 +1051,13 @@
 
                                                 <div class="d-flex w-100 justify-content-between">
                                                     <b class="mb-1 text-black-50"> {{ $checkout->id }} -
-                                                        {{ $checkout->materiel_type }}
+                                                      <span class="text-capitalize">  {{ $checkout->materiel_type }}</span>
+                                                     @if ($checkout->materiel_type == 'ordinateur')
+                                                        {{ $checkout->ordinateur?->nom }} 
+                                                     @endif
+                                                     @if ($checkout->materiel_type == 'telephone')
+                                                        {{ $checkout->telehpone?->nom }} 
+                                                     @endif
                                                     </b>
                                                     <small class="text-body-secondary">
                                                         {{ \Carbon\Carbon::parse($checkout->created_at)->translatedFormat('d M Y H:i') }}
@@ -1066,7 +1072,7 @@
                                                     </small> --}}
                                                     <div class="d-flex justify-content-end">
                                                         <small
-                                                            class="text-muted mx-2">{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : 'Fermer') }}</small>
+                                                            class="badge badge text-primary bg-light shadow-sm mx-2" >{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : ($checkout->statut == 3 ? 'Recu' : 'Rendu')) }}</small>
                                                         <img class="dropdown-toggle  p-0 m-0 rounded-pill"
                                                             data-toggle="dropdown"
                                                             src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
