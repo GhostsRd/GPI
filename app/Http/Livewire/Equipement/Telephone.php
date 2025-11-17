@@ -32,6 +32,7 @@ class Telephone extends Component
     public $emplacement_actuel;
     public $imei;
     public $selectedTelephones = [];
+    public $selectAll = false;
 
     // Propriétés pour les filtres et le tri
     public $search = '';
@@ -43,16 +44,19 @@ class Telephone extends Component
     public $sortDirection = 'desc';
 
     // États du composant
-    public $showForm = false;
-    public $isEditing = false;
-    public $showDeleteModal = false;
     public $showModal = false;
-    public $confirmingDelete = false;
-    public $telephoneToDelete;
-
-    // Propriétés pour l'import
     public $showImportModal = false;
     public $showMappingModal = false;
+    public $showDetailsModal = false;
+    public $showStats = true;
+
+    // Pour gérer le mode (création/édition) et la suppression
+    public $isEditing = false;
+    public $confirmingDelete = null;
+    public $telephoneToDelete = null;
+    public $selectedTelephone = null;
+
+    // Propriétés pour l'import
     public $importFile;
     public $importErrors = [];
     public $importSuccessCount = 0;
@@ -60,12 +64,6 @@ class Telephone extends Component
     public $csvHeaders = [];
     public $csvData = [];
     public $isImporting = false;
-    public $showStats = false; // 👈 Définit la variable par défaut
-
-    public function toggleStats()
-    {
-        $this->showStats = !$this->showStats; // 👈 Inverse la valeur (affiche / masque)
-    }
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -159,7 +157,6 @@ class Telephone extends Component
     {
         $this->resetForm();
         $this->isEditing = false;
-        $this->showForm = true;
         $this->showModal = true;
     }
 
@@ -182,7 +179,6 @@ class Telephone extends Component
         $this->imei = $telephone->imei;
 
         $this->isEditing = true;
-        $this->showForm = true;
         $this->showModal = true;
     }
 
@@ -214,47 +210,45 @@ class Telephone extends Component
             $message = 'Équipement créé avec succès.';
         }
 
-        $this->resetForm();
-        $this->showForm = false;
-        $this->showModal = false;
-
+        $this->closeModal();
         session()->flash('success', $message);
     }
 
     public function confirmDelete($id)
     {
+        $this->confirmingDelete = $id;
         $this->telephoneToDelete = $id;
-        $this->showDeleteModal = true;
-        $this->confirmingDelete = true;
-        $this->showModal = true;
     }
 
     public function delete()
     {
-        TelephoneModel::find($this->telephoneToDelete)->delete();
-
-        $this->showDeleteModal = false;
-        $this->confirmingDelete = false;
-        $this->showModal = false;
-        $this->telephoneToDelete = null;
-
-        session()->flash('success', 'Équipement supprimé avec succès.');
+        if ($this->confirmingDelete) {
+            TelephoneModel::find($this->confirmingDelete)->delete();
+            $this->confirmingDelete = null;
+            $this->telephoneToDelete = null;
+            session()->flash('success', 'Équipement supprimé avec succès.');
+        }
     }
 
     public function cancelDelete()
     {
-        $this->showDeleteModal = false;
-        $this->confirmingDelete = false;
-        $this->showModal = false;
+        $this->confirmingDelete = null;
         $this->telephoneToDelete = null;
+    }
+
+    public function confirmDeleteSelected()
+    {
+        if (!empty($this->selectedTelephones)) {
+            TelephoneModel::whereIn('id', $this->selectedTelephones)->delete();
+            $this->selectedTelephones = [];
+            session()->flash('success', 'Équipements sélectionnés supprimés avec succès.');
+        }
     }
 
     public function closeModal()
     {
         $this->showModal = false;
-        $this->showForm = false;
-        $this->showDeleteModal = false;
-        $this->confirmingDelete = false;
+        $this->isEditing = false;
         $this->resetForm();
     }
 
@@ -279,11 +273,25 @@ class Telephone extends Component
         $this->resetErrorBag();
     }
 
-    public function closeForm()
+    // ==================== MÉTHODES POUR LES DÉTAILS ====================
+
+    public function showDetails($id)
     {
-        $this->showForm = false;
-        $this->showModal = false;
-        $this->resetForm();
+        $this->selectedTelephone = TelephoneModel::find($id);
+        if ($this->selectedTelephone) {
+            $this->showDetailsModal = true;
+        }
+    }
+
+    public function closeDetailsModal()
+    {
+        $this->showDetailsModal = false;
+        $this->selectedTelephone = null;
+    }
+
+    public function toggleStats()
+    {
+        $this->showStats = !$this->showStats;
     }
 
     // ==================== MÉTHODES IMPORT/EXPORT ====================
@@ -308,7 +316,6 @@ class Telephone extends Component
             'importSuccessCount',
             'csvHeaders',
             'csvData',
-            'showMappingModal',
             'isImporting'
         ]);
         $this->initializeImportMapping();
@@ -332,60 +339,107 @@ class Telephone extends Component
         ];
     }
 
-    /**
-     * Import des téléphones et tablettes
-     */
-    public function importTelephones()
-    {
+   public function importTelephones()
+{
+    try {
+        $this->isImporting = true;
+        $this->importErrors = [];
+        $this->importSuccessCount = 0;
+
+        $this->validate([
+            'importFile' => 'required|file|mimes:csv,txt|max:10240'
+        ]);
+
+        // Stocker le fichier
+        $filePath = $this->importFile->storeAs(
+            'imports/telephones',
+            'import_' . time() . '.csv',
+            'public'
+        );
+
+        // Traiter le fichier directement
+        $this->processCSVFile(storage_path('app/public/' . $filePath));
+        
+        $this->showImportModal = false;
+        $this->isImporting = false;
+
+        session()->flash('success', $this->importSuccessCount . ' équipement(s) importé(s) avec succès.');
+
+    } catch (\Exception $e) {
+        $this->isImporting = false;
+        $this->importErrors[] = 'Erreur lors de l\'import: ' . $e->getMessage();
+        session()->flash('error', 'Erreur lors de l\'import: ' . $e->getMessage());
+    }
+}
+
+private function processCSVFile($filePath)
+{
+    $file = fopen($filePath, 'r');
+    
+    // Lire et ignorer les en-têtes
+    $headers = fgetcsv($file);
+    
+    $importedCount = 0;
+    $lineNumber = 1;
+    $errors = [];
+
+    while (($row = fgetcsv($file)) !== FALSE) {
+        $lineNumber++;
+        
         try {
-            $this->isImporting = true;
-            $this->importErrors = [];
-            $this->importSuccessCount = 0;
+            // Format fixe: nom, entite, usager, lieu, services, type, marque, modele, numero_serie, statut, emplacement_actuel, imei
+            $data = [
+                'nom' => trim($row[0] ?? ''),
+                'entite' => isset($row[1]) ? trim($row[1]) : null,
+                'usager' => isset($row[2]) ? trim($row[2]) : null,
+                'lieu' => isset($row[3]) ? trim($row[3]) : 'Non spécifié',
+                'services' => isset($row[4]) ? trim($row[4]) : null,
+                'type' => isset($row[5]) ? trim($row[5]) : 'Téléphone',
+                'marque' => isset($row[6]) ? trim($row[6]) : null,
+                'modele' => isset($row[7]) ? trim($row[7]) : null,
+                'numero_serie' => isset($row[8]) ? trim($row[8]) : '',
+                'statut' => isset($row[9]) ? trim($row[9]) : 'En stock',
+                'emplacement_actuel' => isset($row[10]) ? trim($row[10]) : 'Non spécifié',
+                'imei' => isset($row[11]) ? trim($row[11]) : null,
+            ];
 
-            // Validation du fichier
-            $this->validate([
-                'importFile' => 'required|file|mimes:xlsx,xls,csv|max:10240'
-            ]);
+            // Validation des données requises
+            if (empty($data['nom'])) {
+                $errors[] = "Ligne $lineNumber: Nom manquant - ignorée";
+                continue;
+            }
 
-            // Si c'est un fichier CSV, passer directement au mapping
-            $extension = $this->importFile->getClientOriginalExtension();
-            
-            if (in_array($extension, ['csv', 'txt'])) {
-                $this->storeImportFile();
-            } else {
-                // Pour les fichiers Excel, utiliser l'import direct
-                Excel::import(new TelephoneImport, $this->importFile);
-                
-                $this->showImportModal = false;
-                $this->isImporting = false;
-                $this->resetImport();
-                
-                session()->flash('success', 'Équipements importés avec succès via Excel.');
-                $this->emitSelf('refreshComponent');
+            if (empty($data['numero_serie'])) {
+                $errors[] = "Ligne $lineNumber: Numéro de série manquant - ignorée";
+                continue;
+            }
+
+            // Éviter les doublons
+            if (!TelephoneModel::where('numero_serie', $data['numero_serie'])->exists()) {
+                TelephoneModel::create($data);
+                $importedCount++;
             }
 
         } catch (\Exception $e) {
-            $this->isImporting = false;
-            $this->importErrors[] = 'Erreur lors de l\'import: ' . $e->getMessage();
-            session()->flash('error', 'Erreur lors de l\'import: ' . $e->getMessage());
+            $errors[] = "Ligne $lineNumber: " . $e->getMessage();
         }
     }
 
-    /**
-     * Stocker le fichier et préparer le mapping
-     */
-    public function storeImportFile()
+    fclose($file);
+    
+    $this->importSuccessCount = $importedCount;
+    $this->importErrors = $errors;
+}
+
+public function storeImportFile()
     {
         try {
-            // Stocker le fichier
             $extension = $this->importFile->getClientOriginalExtension();
             $fileName = 'import_telephones_' . time() . '.' . $extension;
             $filePath = $this->importFile->storeAs('imports/telephones', $fileName, 'public');
 
-            // Lire le fichier
             $this->readImportFile(storage_path('app/public/' . $filePath), $extension);
 
-            // Passer à l'étape de mapping
             $this->showImportModal = false;
             $this->showMappingModal = true;
 
@@ -395,9 +449,6 @@ class Telephone extends Component
         }
     }
 
-    /**
-     * Lire le fichier d'import pour extraction des en-têtes et preview
-     */
     private function readImportFile($filePath, $extension)
     {
         try {
@@ -406,28 +457,20 @@ class Telephone extends Component
             } else {
                 $this->readExcelFile($filePath);
             }
-
-            // Mapping automatique basé sur la similarité des noms
             $this->autoMapFields();
-
         } catch (\Exception $e) {
             $this->importErrors[] = 'Erreur lors de la lecture du fichier: ' . $e->getMessage();
         }
     }
 
-    /**
-     * Lire le fichier CSV
-     */
     private function readCsvFile($filePath)
     {
         $csv = Reader::createFromPath($filePath, 'r');
         $csv->setHeaderOffset(0);
         $csv->setDelimiter(',');
 
-        // Obtenir les en-têtes
         $this->csvHeaders = $csv->getHeader();
         
-        // Obtenir un aperçu des données (5 premières lignes)
         $stmt = (new Statement())->limit(5);
         $records = $stmt->process($csv);
         
@@ -437,15 +480,11 @@ class Telephone extends Component
         }
     }
 
-    /**
-     * Lire le fichier Excel
-     */
     private function readExcelFile($filePath)
     {
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
         $worksheet = $spreadsheet->getActiveSheet();
         
-        // Obtenir les en-têtes (première ligne)
         $this->csvHeaders = [];
         $highestColumn = $worksheet->getHighestColumn();
         $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
@@ -457,7 +496,6 @@ class Telephone extends Component
             }
         }
         
-        // Obtenir un aperçu des données (5 premières lignes)
         $this->csvData = [];
         $highestRow = min(6, $worksheet->getHighestRow());
         
@@ -471,9 +509,6 @@ class Telephone extends Component
         }
     }
 
-    /**
-     * Mapping automatique des champs
-     */
     private function autoMapFields()
     {
         $fieldPatterns = [
@@ -505,16 +540,12 @@ class Telephone extends Component
         }
     }
 
-    /**
-     * Traiter les données avec le mapping
-     */
     public function processMappedData()
     {
         try {
             $this->importErrors = [];
             $this->importSuccessCount = 0;
 
-            // Trouver le dernier fichier importé
             $files = Storage::disk('public')->files('imports/telephones');
             if (empty($files)) {
                 throw new \Exception('Aucun fichier importé trouvé');
@@ -524,7 +555,6 @@ class Telephone extends Component
             $filePath = storage_path('app/public/' . $latestFile);
             $extension = pathinfo($latestFile, PATHINFO_EXTENSION);
 
-            // Lire et traiter le fichier avec le mapping
             if ($extension === 'csv') {
                 $this->processCsvFile($filePath);
             } else {
@@ -532,10 +562,7 @@ class Telephone extends Component
             }
 
             $this->showMappingModal = false;
-            $this->showImportModal = false;
-
             session()->flash('success', $this->importSuccessCount . ' équipement(s) importé(s) avec succès.');
-            $this->emitSelf('refreshComponent');
 
         } catch (\Exception $e) {
             $this->importErrors[] = 'Erreur lors du traitement des données: ' . $e->getMessage();
@@ -543,27 +570,7 @@ class Telephone extends Component
         }
     }
 
-    /**
-     * Traiter le fichier CSV
-     */
-    private function processCsvFile($filePath)
-    {
-        $csv = Reader::createFromPath($filePath, 'r');
-        $csv->setHeaderOffset(0);
-        $csv->setDelimiter(',');
 
-        $records = $csv->getRecords();
-        $lineNumber = 1;
-
-        foreach ($records as $record) {
-            $lineNumber++;
-            $this->processDataRow($record, $lineNumber);
-        }
-    }
-
-    /**
-     * Traiter le fichier Excel
-     */
     private function processExcelFile($filePath)
     {
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filePath);
@@ -584,15 +591,11 @@ class Telephone extends Component
         }
     }
 
-    /**
-     * Traiter une ligne de données
-     */
     private function processDataRow($record, $lineNumber)
     {
         $mappedData = [];
 
         try {
-            // Appliquer le mapping
             foreach ($this->importMapping as $field => $csvHeader) {
                 if (!empty($csvHeader) && isset($record[$csvHeader])) {
                     $mappedData[$field] = trim($record[$csvHeader]);
@@ -601,7 +604,6 @@ class Telephone extends Component
                 }
             }
 
-            // Validation des données requises
             if (empty($mappedData['nom'])) {
                 $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
                 return;
@@ -612,16 +614,13 @@ class Telephone extends Component
                 return;
             }
 
-            // Vérifier si le numéro de série existe déjà
             if (TelephoneModel::where('numero_serie', $mappedData['numero_serie'])->exists()) {
                 $this->importErrors[] = "Ligne {$lineNumber}: Le numéro de série existe déjà";
                 return;
             }
 
-            // Nettoyer et formater les données
             $mappedData = $this->cleanMappedData($mappedData);
             
-            // Créer l'équipement
             TelephoneModel::create([
                 'nom' => $mappedData['nom'],
                 'entite' => $mappedData['entite'] ?? null,
@@ -644,28 +643,22 @@ class Telephone extends Component
         }
     }
 
-    /**
-     * Nettoyer les données mappées
-     */
     private function cleanMappedData($data)
     {
-        // Nettoyer chaque champ
         foreach ($data as $key => $value) {
             $data[$key] = trim($value);
             
-            // Validation spécifique pour le statut
             if ($key === 'statut' && !empty($value)) {
                 $statutsValides = ['En service', 'En stock', 'Hors service', 'En réparation'];
                 if (!in_array($value, $statutsValides)) {
-                    $data[$key] = 'En stock'; // Valeur par défaut
+                    $data[$key] = 'En stock';
                 }
             }
             
-            // Validation spécifique pour le type
             if ($key === 'type' && !empty($value)) {
                 $typesValides = ['Téléphone', 'Tablette'];
                 if (!in_array($value, $typesValides)) {
-                    $data[$key] = 'Téléphone'; // Valeur par défaut
+                    $data[$key] = 'Téléphone';
                 }
             }
         }
@@ -673,18 +666,12 @@ class Telephone extends Component
         return $data;
     }
 
-    /**
-     * Fermer le modal de mapping
-     */
     public function closeMappingModal()
     {
         $this->showMappingModal = false;
         $this->resetImport();
     }
 
-    /**
-     * Export CSV
-     */
     public function exportToCsv()
     {
         $telephones = TelephoneModel::all();
@@ -699,14 +686,12 @@ class Telephone extends Component
         $callback = function() use ($telephones) {
             $file = fopen('php://output', 'w');
             
-            // En-têtes CSV
             fputcsv($file, [
                 'Nom', 'Entité', 'Usager', 'Lieu', 'Services', 'Type', 
                 'Marque', 'Modèle', 'Numéro de série', 'Statut', 
                 'Emplacement actuel', 'IMEI', 'Date création'
             ]);
 
-            // Données
             foreach ($telephones as $telephone) {
                 fputcsv($file, [
                     $telephone->nom,
@@ -731,13 +716,19 @@ class Telephone extends Component
         return response()->stream($callback, 200, $headers);
     }
 
-    // ==================== MÉTHODES UTILITAIRES ====================
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedTelephones = $this->getTelephonesQuery()->pluck('id')->toArray();
+        } else {
+            $this->selectedTelephones = [];
+        }
+    }
 
-    public function render()
+    private function getTelephonesQuery()
     {
         $query = TelephoneModel::query();
 
-        // Appliquer les filtres
         if ($this->search) {
             $query->where(function($q) {
                 $q->where('nom', 'like', '%' . $this->search . '%')
@@ -761,12 +752,186 @@ class Telephone extends Component
             $query->where('marque', $this->filterFabricant);
         }
 
-        // Appliquer le tri
+        return $query;
+    }
+    // ==================== MÉTHODES MANQUANTES POUR L'IMPORT ====================
+
+/**
+ * Télécharger le template d'import
+ */
+public function downloadTemplate()
+{
+    $fileName = 'template_import_telephones.csv';
+
+    return response()->streamDownload(function () {
+        $file = fopen('php://output', 'w');
+        
+        // En-têtes du template
+        fputcsv($file, [
+            'nom', 
+            'entite', 
+            'usager', 
+            'lieu', 
+            'services',
+            'type', 
+            'marque', 
+            'modele', 
+            'numero_serie', 
+            'statut',
+            'emplacement_actuel', 
+            'imei'
+        ]);
+
+        // Exemples de données
+        fputcsv($file, [
+            'TEL-IT-001',
+            'Direction IT',
+            'Jean Dupont',
+            'Bureau 101',
+            'Email, VPN, Applications métier',
+            'Téléphone',
+            'Apple',
+            'iPhone 14',
+            'SN123456789',
+            'En service',
+            'Bureau 101 - Étage 1',
+            '123456789012345'
+        ]);
+
+        fputcsv($file, [
+            'TAB-ADM-001',
+            'Administration',
+            'Marie Martin',
+            'Bureau 201',
+            'Suite bureautique, Lecture PDF',
+            'Tablette',
+            'Samsung',
+            'Galaxy Tab S9',
+            'SN987654321',
+            'En service',
+            'Bureau 201 - Étage 2',
+            ''
+        ]);
+
+        fclose($file);
+    }, $fileName);
+}
+
+/**
+ * Afficher les données importées (pour preview)
+ */
+public function showImportedData()
+{
+    // Cette méthode peut être utilisée pour afficher un aperçu avant import
+    if (!empty($this->csvData)) {
+        $this->showMappingModal = false;
+        // Vous pouvez créer un état pour l'aperçu si nécessaire
+    }
+}
+
+/**
+ * Sauvegarder les données importées
+ */
+public function saveImportedData()
+{
+    try {
+        DB::beginTransaction();
+
+        $savedCount = 0;
+        $errors = [];
+
+        foreach ($this->csvData as $index => $data) {
+            try {
+                // Appliquer le mapping
+                $mappedData = [];
+                foreach ($this->importMapping as $field => $csvHeader) {
+                    if (!empty($csvHeader) && isset($data[$csvHeader])) {
+                        $mappedData[$field] = trim($data[$csvHeader]);
+                    } else {
+                        $mappedData[$field] = '';
+                    }
+                }
+
+                // Validation des données requises
+                if (empty($mappedData['nom'])) {
+                    $errors[] = "Ligne " . ($index + 1) . ": Le nom est obligatoire";
+                    continue;
+                }
+
+                if (empty($mappedData['numero_serie'])) {
+                    $errors[] = "Ligne " . ($index + 1) . ": Le numéro de série est obligatoire";
+                    continue;
+                }
+
+                // Vérifier les doublons
+                if (TelephoneModel::where('numero_serie', $mappedData['numero_serie'])->exists()) {
+                    $errors[] = "Ligne " . ($index + 1) . ": Le numéro de série existe déjà";
+                    continue;
+                }
+
+                // Nettoyer les données
+                $mappedData = $this->cleanMappedData($mappedData);
+
+                // Créer l'enregistrement
+                TelephoneModel::create([
+                    'nom' => $mappedData['nom'],
+                    'entite' => $mappedData['entite'] ?? null,
+                    'usager' => $mappedData['usager'] ?? null,
+                    'lieu' => $mappedData['lieu'] ?? 'Non spécifié',
+                    'services' => $mappedData['services'] ?? null,
+                    'type' => $mappedData['type'] ?? 'Téléphone',
+                    'marque' => $mappedData['marque'] ?? null,
+                    'modele' => $mappedData['modele'] ?? null,
+                    'numero_serie' => $mappedData['numero_serie'],
+                    'statut' => $mappedData['statut'] ?? 'En stock',
+                    'emplacement_actuel' => $mappedData['emplacement_actuel'] ?? 'Non spécifié',
+                    'imei' => $mappedData['imei'] ?? null,
+                ]);
+
+                $savedCount++;
+
+            } catch (\Exception $e) {
+                $errors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
+            }
+        }
+
+        DB::commit();
+
+        if ($savedCount > 0) {
+            session()->flash('success', $savedCount . ' équipement(s) importé(s) avec succès.');
+        }
+
+        if (!empty($errors)) {
+            session()->flash('warning', 'Import terminé avec ' . count($errors) . ' erreur(s). ' . $savedCount . ' enregistrement(s) créé(s).');
+            $this->importErrors = $errors;
+        }
+
+        $this->showMappingModal = false;
+        $this->resetImport();
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        session()->flash('error', 'Erreur lors de la sauvegarde: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Annuler l'import
+ */
+public function cancelImport()
+{
+    $this->showImportModal = false;
+    $this->showMappingModal = false;
+    $this->resetImport();
+}
+
+    public function render()
+    {
+        $query = $this->getTelephonesQuery();
         $query->orderBy($this->sortField, $this->sortDirection);
 
         $telephones = $query->paginate($this->perPage);
 
-        // Obtenir la liste des fabricants uniques pour le filtre
         $fabricants = TelephoneModel::select('marque')
             ->distinct()
             ->whereNotNull('marque')
@@ -774,13 +939,14 @@ class Telephone extends Component
             ->orderBy('marque')
             ->pluck('marque');
 
-        // Statistiques
         $stats = [
             'total' => TelephoneModel::count(),
             'enService' => TelephoneModel::where('statut', 'En service')->count(),
             'enStock' => TelephoneModel::where('statut', 'En stock')->count(),
             'horsService' => TelephoneModel::where('statut', 'Hors service')->count(),
             'enReparation' => TelephoneModel::where('statut', 'En réparation')->count(),
+            'telephones' => TelephoneModel::where('type', 'Téléphone')->count(),
+            'tablettes' => TelephoneModel::where('type', 'Tablette')->count(),
         ];
 
         return view('livewire.equipement.telephone', compact('telephones', 'stats', 'fabricants'));

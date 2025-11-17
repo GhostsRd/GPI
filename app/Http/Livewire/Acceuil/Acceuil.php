@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Acceuil;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\User;
 use App\Models\Ticket;
 use App\Models\Ordinateur;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 
 class Acceuil extends Component
 {
+    use WithPagination;
+
     public $activityFilter = 'today';
     public $stats = [];
     public $name_field = 'nom';
@@ -26,11 +29,177 @@ class Acceuil extends Component
     public $equipmentStatusData = [];
     public $monthlyTicketsData = [];
     public $monthlyCheckoutsData = [];
+    
+    // Variables pour les incidents
+    public $totalIncidents = 0;
+    public $incidentsEnCours = 0;
+    public $incidentsResolus = 0;
+    public $incidentsAnnules = 0;
+    public $chartPeriod = 'month';
+    
+    // Variables supplémentaires pour les cartes incidents
+    public $incidentsSemaine = 0;
+    public $incidentsEnAttente = 0;
+    public $incidentsMoisResolus = 0;
+    public $evolutionIncidents = 0;
+    public $tauxObjectif = 75;
+    public $incidentsPrioriteHaute = 0;
+    public $incidentsImpactEleve = 0;
+    
+    // Variables pour la recherche et tri
+    public $search = '';
+    public $sortBy = 'created_at';
+    public $sortDirection = 'desc';
+    public $selectedTickets = [];
+    public $selectAll = false;
+    public $perPage = 10;
 
     public function mount()
     {
         $this->chargerStatistiques();
         $this->chargerDonneesGraphiques();
+        $this->calculateIncidentsStatistics();
+    }
+
+    /**
+     * Propriété calculée pour les incidents paginés
+     */
+    public function getIncidentsProperty()
+    {
+        try {
+            // Si vous avez un modèle Incident, utilisez-le
+            if (class_exists('App\Models\Incident') && Schema::hasTable('incidents')) {
+                return \App\Models\Incident::with(['utilisateur', 'ordinateur', 'telephone'])
+                    ->when($this->search, function($query) {
+                        $query->where(function($q) {
+                            $q->where('id', 'like', '%'.$this->search.'%')
+                              ->orWhereHas('utilisateur', function($q) {
+                                  $q->where('nom', 'like', '%'.$this->search.'%');
+                              });
+                        });
+                    })
+                    ->orderBy($this->sortBy, $this->sortDirection)
+                    ->paginate($this->perPage);
+            } else {
+                // Sinon, utilisez les tickets paginés
+                return Ticket::with(['utilisateur'])
+                    ->when($this->search, function($query) {
+                        $query->where(function($q) {
+                            $q->where('id', 'like', '%'.$this->search.'%')
+                              ->orWhereHas('utilisateur', function($q) {
+                                  $q->where('nom', 'like', '%'.$this->search.'%');
+                              });
+                        });
+                    })
+                    ->orderBy($this->sortBy, $this->sortDirection)
+                    ->paginate($this->perPage);
+            }
+        } catch (\Exception $e) {
+            // Retournez une pagination vide en cas d'erreur
+            return Ticket::where('id', 0)->paginate($this->perPage);
+        }
+    }
+
+    /**
+     * Méthodes de tri et recherche
+     */
+    public function sortBy($field)
+    {
+        if ($this->sortBy === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+        $this->sortBy = $field;
+    }
+
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedPerPage()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedTickets = $this->Incidents->pluck('id')->toArray();
+        } else {
+            $this->selectedTickets = [];
+        }
+    }
+
+    /**
+     * Calcule les statistiques des incidents
+     */
+    private function calculateIncidentsStatistics()
+    {
+        try {
+            // Si vous avez un modèle Incident, utilisez-le
+            if (class_exists('App\Models\Incident') && Schema::hasTable('incidents')) {
+                $this->totalIncidents = \App\Models\Incident::count();
+                $this->incidentsEnCours = \App\Models\Incident::where('statut', 1)->count();
+                $this->incidentsResolus = \App\Models\Incident::where('statut', 2)->count();
+                $this->incidentsAnnules = \App\Models\Incident::where('statut', 0)->count();
+                
+                // Statistiques supplémentaires
+                $this->incidentsSemaine = \App\Models\Incident::where('created_at', '>=', now()->subWeek())->count();
+                $this->incidentsEnAttente = \App\Models\Incident::where('statut', 1)->count();
+                $this->incidentsMoisResolus = \App\Models\Incident::where('statut', 2)
+                    ->whereMonth('created_at', now()->month)
+                    ->count();
+            } else {
+                // Sinon, utilisez les tickets comme incidents
+                $this->totalIncidents = $this->stats['total_tickets'] ?? 0;
+                $this->incidentsEnCours = $this->stats['tickets_en_cours'] ?? 0;
+                $this->incidentsResolus = $this->stats['tickets_fermes'] ?? 0;
+                $this->incidentsAnnules = 0;
+                
+                // Statistiques supplémentaires basées sur les tickets
+                $this->incidentsSemaine = Ticket::where('created_at', '>=', now()->subWeek())->count();
+                $this->incidentsEnAttente = $this->stats['tickets_en_cours'] ?? 0;
+                $this->incidentsMoisResolus = Ticket::where('statut', 2)
+                    ->whereMonth('created_at', now()->month)
+                    ->count();
+            }
+            
+            // Calcul de l'évolution
+            $lastWeek = Ticket::whereBetween('created_at', [now()->subWeeks(2), now()->subWeek()])->count();
+            $this->evolutionIncidents = $lastWeek > 0 ? round((($this->incidentsSemaine - $lastWeek) / $lastWeek) * 100, 1) : 0;
+            
+            // Calcul du taux objectif
+            $this->tauxObjectif = $this->totalIncidents > 0 ? 
+                min(round(($this->incidentsResolus / $this->totalIncidents) * 100, 1), 95) : 0;
+                
+        } catch (\Exception $e) {
+            // Valeurs par défaut en cas d'erreur
+            $this->totalIncidents = $this->stats['total_tickets'] ?? 0;
+            $this->incidentsEnCours = $this->stats['tickets_en_cours'] ?? 0;
+            $this->incidentsResolus = $this->stats['tickets_fermes'] ?? 0;
+            $this->incidentsAnnules = 0;
+            $this->incidentsSemaine = 0;
+            $this->incidentsEnAttente = 0;
+            $this->incidentsMoisResolus = 0;
+            $this->evolutionIncidents = 0;
+            $this->tauxObjectif = 75;
+        }
+    }
+
+    /**
+     * Récupère les données pour le graphique des incidents
+     */
+    public function getIncidentsChartDataProperty()
+    {
+        return [
+            'Ordinateurs' => $this->equipmentChartData['Ordinateurs'] ?? 12,
+            'Téléphones' => $this->equipmentChartData['Téléphones'] ?? 8,
+            'Imprimantes' => $this->equipmentChartData['Imprimantes'] ?? 5,
+            'Périphériques' => $this->equipmentChartData['Périphériques'] ?? 3,
+            'Réseau' => $this->equipmentChartData['Réseau'] ?? 7,
+        ];
     }
 
     public function chargerStatistiques()
@@ -75,7 +244,6 @@ class Acceuil extends Component
             ];
 
         } catch (\Exception $e) {
-            // En cas d'erreur, initialiser avec des valeurs par défaut
             $this->stats = [
                 'total_equipements' => 0,
                 'total_users' => 0,
@@ -90,7 +258,6 @@ class Acceuil extends Component
                 'approved_checkouts' => 0,
                 'equipment_stats' => [],
             ];
-            $this->addError('stats', 'Erreur lors du chargement des statistiques : ' . $e->getMessage());
         }
     }
 
@@ -369,6 +536,8 @@ class Acceuil extends Component
             $tableName = (new $modelClass())->getTable();
             if (Schema::hasTable($tableName)) {
                 $data[$name] = $modelClass::count();
+            } else {
+                $data[$name] = 0;
             }
         }
 
@@ -671,18 +840,49 @@ class Acceuil extends Component
     }
 
     /**
-     * Rafraîchit les graphiques
+     * Méthodes d'action
      */
+    public function Visualiser($incidentId)
+    {
+        session()->flash('message', 'Visualisation de l\'incident #' . $incidentId);
+    }
+
+    public function SupprimerDemande($incidentId)
+    {
+        try {
+            if (class_exists('App\Models\Incident')) {
+                $incident = \App\Models\Incident::find($incidentId);
+                if ($incident) {
+                    $incident->delete();
+                    $this->calculateIncidentsStatistics();
+                }
+            } else {
+                $ticket = Ticket::find($incidentId);
+                if ($ticket) {
+                    $ticket->delete();
+                    $this->chargerStatistiques();
+                    $this->calculateIncidentsStatistics();
+                }
+            }
+            session()->flash('message', 'Incident supprimé avec succès.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression.');
+        }
+    }
+
+    public function confirmDelete($incidentId)
+    {
+        $this->dispatchBrowserEvent('confirm-delete', ['id' => $incidentId]);
+    }
+
     public function refreshCharts()
     {
         $this->chargerStatistiques();
         $this->chargerDonneesGraphiques();
+        $this->calculateIncidentsStatistics();
         $this->dispatchBrowserEvent('chartsRefreshed');
     }
 
-    /**
-     * Rend la vue avec toutes les données
-     */
     public function render()
     {
         return view('livewire.acceuil.acceuil', [
@@ -710,6 +910,23 @@ class Acceuil extends Component
             'recentTickets' => $this->recentTickets,
             'recentEquipments' => $this->recentEquipments,
             'recentActivities' => $this->recentActivities,
+
+            // Nouvelles variables pour les incidents
+            'totalIncidents' => $this->totalIncidents,
+            'incidentsEnCours' => $this->incidentsEnCours,
+            'incidentsResolus' => $this->incidentsResolus,
+            'incidentsAnnules' => $this->incidentsAnnules,
+            'incidentsChartData' => $this->incidentsChartData,
+
+            // Variables supplémentaires pour les cartes incidents
+            'incidentsSemaine' => $this->incidentsSemaine,
+            'incidentsEnAttente' => $this->incidentsEnAttente,
+            'incidentsMoisResolus' => $this->incidentsMoisResolus,
+            'evolutionIncidents' => $this->evolutionIncidents,
+            'tauxObjectif' => $this->tauxObjectif,
+
+            // Incidents paginés
+            'Incidents' => $this->Incidents,
         ]);
     }
 }
