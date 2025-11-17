@@ -29,7 +29,7 @@
                         @enderror
                     </div>
                 </div>
-
+                
                 <!-- Détails -->
                 <div class="mb-3 col-lg-8">
                     <label for="details" class="form-label fw-bold text-muted">Description <span

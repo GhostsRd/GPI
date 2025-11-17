@@ -59,8 +59,8 @@
 
                                 <div class="mt-4 border-bottom py-1">
                                     <button wire:click.prevent="next_form(2)"
-                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant
-                                        ⮞</button>
+                                        class="btn btn-two fw-bold border  px-3  btn-sm  shadow-sm">Suivant
+                                       </button>
                                 </div>
                             </div>
 
@@ -98,11 +98,11 @@
                                 </a>
                                 <div class="mt-4 border-bottom py-1">
                                     <button wire:click="next_form(1)"
-                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜
+                                        class="btn btn-two fw-bold border  px-3  btn-sm  shadow-sm">
                                         Precedent</button>
                                     <button wire:click="next_form(5)"
-                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant
-                                        ⮞</button>
+                                        class="btn btn-two fw-bold border  px-3  btn-sm  shadow-sm">Suivant
+                                        </button>
                                 </div>
                             </div>
 
@@ -249,9 +249,9 @@
 
                                 <div class="">
                                     <button wire:click="next_form(1)"
-                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
+                                        class="btn btn-two fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
                                     <button wire:click="next_form(5)" type="submit"
-                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
+                                        class="btn btn-two fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
                                 </div>
                             </div>
 
@@ -281,7 +281,7 @@
                                 </a>
                                 <div class="">
                                     <button wire:click="next_form(1)"
-                                        class="btn btn-two  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
+                                        class="btn btn-two  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
                                     <button type="submit" wire:click="EnvoyerCheckout"
                                         class="btn btn-two btn-sm    fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
                                         <span wire:loading.remove wire:target='EnvoyerCheckout'>
@@ -306,7 +306,7 @@
                         <button type="button" class="btn btn-one  text-white fw-bold text-sm rounded px-3"
                             id="closeSidebar">Annuler</button>
                         {{-- <button type="submit" wire:click="EnvoyerCheckout"
-                                class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button> --}}
+                                class="btn btn-two fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button> --}}
                     </div>
 
                 </div>
@@ -1184,7 +1184,7 @@
 
                 <!-- Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="checkoutviewLabel">Détails de l'incident</h5>
+                    <h5 class="modal-title" id="checkoutviewLabel">Détails du checkout</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
@@ -1194,23 +1194,29 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Type d'équipement :</div>
-                            <div class="col-md-8" id="equipement_type">{{ $selectedCheckouts?->materiel_type }}
+                            <div class="col-md-8 " id="equipement_type">
+                                <span class="text-capitalize">{{ $selectedCheckouts?->materiel_type }}</span>
+                                
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Matériel :</div>
                             <div class="col-md-8" id="equipement_id">
-                                {{-- @if ($selectedIncidents?->equipement_type == 'Ordinateur')
-                                    {{ $selectedIncidents?->ordinateur->nom }}
-                                    {{ $selectedIncidents?->ordinateur->os_version }}
-                                @endif  --}}
+                                @if ($selectedCheckouts?->materiel_type == 'ordinateur')
+                                    {{ $selectedCheckouts?->ordinateur->nom }}
+                                    {{ $selectedCheckouts?->ordinateur->os_version }}
+                                @endif 
+                                 @if ($selectedCheckouts?->materiel_type == 'telephone')
+                                    {{ $selectedCheckouts?->telephone->nom }}
+                                    {{ $selectedCheckouts?->telephone->marque }}
+                                @endif 
                             </div>
                         </div>
-                        <div class="row mb-2">
+                        {{-- <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Responsable :</div>
                             <div class="col-md-8" id="responsable">
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Date de creation :</div>
                             <div class="col-md-8" id="date_debut">{{ $selectedCheckouts?->created_at }}</div>
