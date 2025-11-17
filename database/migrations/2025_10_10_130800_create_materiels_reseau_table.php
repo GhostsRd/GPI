@@ -13,7 +13,7 @@ class CreateMaterielsReseauTable extends Migration
             $table->id();
             $table->string('nom', 100);
             $table->string('entite', 100)->nullable();
-            $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En maintenance'])->default('En service');
+             $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation','Disponible'])->default('En service');
             $table->string('fabricant', 100)->nullable();
             $table->string('lieu', 150)->nullable();
             $table->string('reseau_ip', 50)->nullable();

@@ -138,6 +138,10 @@ class CheckoutView extends Component
 
         //$this->emitSelf('refreshComponent');
     }
+    public function RemoveCheckout($id){
+        CheckoutModel::destroy($id);
+        return redirect('/admin/checkout');
+    }
 
     public function nextStep()
     {
@@ -150,7 +154,34 @@ class CheckoutView extends Component
 
 
     }
-
+    public function markResolved(){
+      
+        $checkouts = CheckoutModel::find($this->checkoutId);
+        $checkouts->statut = 3;
+        $checkouts->save();
+        $this->modelstep(CheckoutModel::find($this->checkoutId));
+        if($checkouts->materiel_type == 'ordinateur'){
+            ordinateur::where('id',$checkouts->equipement_id)->update(['statut'=>"En stock"]);
+        }
+        if($checkouts->materiel_type == 'telephone'){
+            TelephoneTablette::where('id',$checkouts->equipement_id)->update(['statut'=>"En stock"]);
+        }
+        $this->emit('refreshComponent');
+    }
+    public function markResolvedetabime(){
+        $checkouts = CheckoutModel::find($this->checkoutId);
+        $checkouts->statut = 4;
+        $checkouts->save();
+        $this->modelstep(CheckoutModel::find($this->checkoutId));
+        if($checkouts->materiel_type == 'ordinateur'){
+            ordinateur::where('id',$checkouts->equipement_id)->update(['statut'=>"En réparation"]);
+        }
+        if($checkouts->materiel_type == 'telephone'){
+            TelephoneTablette::where('id',$checkouts->equipement_id)->update(['statut'=>"En réparation"]);
+        }
+        $this->emit('refreshComponent');
+    
+    }
     public function previousStep()
     {
         if ($this->currentStep == 1) {

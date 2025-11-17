@@ -12,7 +12,7 @@ class CreatePeripheriquesTable extends Migration
             $table->id();
             $table->string('nom')->unique();
             $table->string('type');
-            $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation'])->default('En stock');
+             $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation','Disponible'])->default('En service');
             $table->string('fabricant')->nullable();
             $table->string('modele')->nullable();
             $table->string('numero_serie')->nullable()->unique();

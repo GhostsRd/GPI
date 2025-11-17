@@ -39,8 +39,10 @@ class MesReservationCalendrier extends Component
             ->get();
             
             
-            $ordinateurs = ordinateur::where('nom', "like","%".$this->recherche."%")->get();
-            $telephones = TelephoneTablette::where('nom', "like","%".$this->recherche."%")->get();
+            $ordinateurs = ordinateur::where('nom', "like","%".$this->recherche."%")
+            ->get();
+            $telephones = TelephoneTablette::where('nom', "like","%".$this->recherche."%")
+            ->where('statut','En stock')->get();
 
             $firstEvent = reserverEquipement::where('responsable_id', $this->userConnected)->first();
     

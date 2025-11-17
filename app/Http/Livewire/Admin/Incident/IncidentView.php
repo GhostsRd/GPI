@@ -28,6 +28,9 @@ class IncidentView extends Component
 
 
     ];
+    public function refuserIncindent(){
+    
+    }
     public function modelstep(Incident $incident)
     {
 

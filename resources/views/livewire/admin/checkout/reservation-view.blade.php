@@ -16,28 +16,31 @@
                         <div class="col-lg-11 col-md-10 col-sm-10">
                             <label class="fw-bold  mb-1 mt-0 pt-0">
                                 {{-- <i class="bi bi-ticket-detailed"></i> --}}
-                                Reservation de materiel <span class="text-warning" id="ticketId">#{{ $reservationID }}</span>
+                                Reservation de materiel <span class="text-warning"
+                                    id="ticketId">#{{ $reservationID }}</span>
                                 — </label>
-                                <span class="text-capitalize"> {{ $matreservations->equipement_type }} ({{ $matreservations->equipement_nombre }}) 
-                                    @if ($matreservations->equipement_type == "ordinateur")
-                                        {{ $matreservations->ordinateur->nom }}
-                                        <small class="badge badge-primary text-primary shadow-sm"> 
-                                        {{ $matreservations->ordinateur->statut  }}
+                            <span class="text-capitalize"> {{ $matreservations->equipement_type }}
+                                ({{ $matreservations->equipement_nombre }})
+                                @if ($matreservations->equipement_type == 'ordinateur')
+                                    {{ $matreservations->ordinateur->nom }}
+                                    <small class="badge badge-primary text-primary shadow-sm">
+                                        {{ $matreservations->ordinateur->statut }}
                                     </small>
-                                    @endif
-                                    @if ($matreservations->equipement_type == 'telephone')
-                                        {{ $matreservations->TelephoneTablette->nom }}
-                                        <small class="badge badge-primary text-primary shadow-sm"> 
-                                        {{ $matreservations->TelephoneTablette->statut  }}
+                                @endif
+                                @if ($matreservations->equipement_type == 'telephone')
+                                    {{ $matreservations->TelephoneTablette->nom }}
+                                    <small class="badge badge-primary text-primary shadow-sm">
+                                        {{ $matreservations->TelephoneTablette->statut }}
                                     </small>
-                                    @endif
-                                </span>
+                                @endif
+                            </span>
 
-                                
-                                <small class="">
-                                 —  {{ \Carbon\Carbon::parse($matreservations->date_debut)->translatedFormat('d M Y') }} -  {{ \Carbon\Carbon::parse($matreservations->date_fin)->translatedFormat('d M Y') }}
-                                    
-                                </small>
+
+                            <small class="">
+                                — {{ \Carbon\Carbon::parse($matreservations->date_debut)->translatedFormat('d M Y') }} -
+                                {{ \Carbon\Carbon::parse($matreservations->date_fin)->translatedFormat('d M Y') }}
+
+                            </small>
                         </div>
 
                         <div class="col-lg-1 col-mg-1 col-sm-1">
@@ -102,17 +105,16 @@
                         </div>
                     </div>
                     </span>
-                    <div class="meta mt-2">Créé par <strong></strong> • <span
-                            id="createdAt">
-                           <img class="dropdown-toggle shadow-sm  p-0 m-0 rounded-pill " data-bs-toggle="modal"
+                    <div class="meta mt-2">Créé par <strong></strong> • <span id="createdAt">
+                            <img class="dropdown-toggle shadow-sm  p-0 m-0 rounded-pill " data-bs-toggle="modal"
                                 data-bs-target="#centeredModal" data-toggle="dropdown"
                                 title="{{ $matreservations->responsable->nom }}"
                                 src="https://ui-avatars.com/api/?name={{ $matreservations->responsable->nom }}"
                                 alt="Profil" width="30" height="30" class="rounded-circle me-2">
-                             {{ $matreservations->responsable->nom }}
-                            le  •
+                            {{ $matreservations->responsable->nom }}
+                            le •
                             {{ \Carbon\Carbon::parse($matreservations->created_at)->translatedFormat('d M Y') }}
-                         
+
                         </span>
                         •
                         {{-- @if ($checkouts->statut == 'En cours')
@@ -155,27 +157,38 @@
                             </div>
 
                             <div class="step {{ $current[3] }} col-lg-2" data-index="2">
-                                    <div class="dot">3</div>
-                                    <div class="title">En cours</div>
-                                    <div class="sub">Attribué </div>
+                                <div class="dot">3</div>
+                                <div class="title">En cours</div>
+                                <div class="sub">Attribué </div>
 
-                                </div>
-                                <div class="connector col-lg-1">
+                            </div>
+                            <div class="connector col-lg-1">
                                 <div class="fill {{ $progress }}"></div>
                             </div>
-                                
 
-                               <div class="step {{ $current[4] }} col-lg-2" data-index="2">
-                                    <div class="dot"><i class="bi bi-check-circle-fill"></i></div>
-                                    <div class="title">Rendu</div>
-                                    <div class="sub">Finale</div>
+                            @if ($current[4] == 'current')
 
-                                </div>
+                            <div class="step {{ $current[4] }} col-lg-2" data-index="2">
+                                <div class="dot"><i class="bi bi-check-circle-fill"></i></div>
+                                <div class="title">Rendu</div>
+                                <div class="sub">Finale</div>
+
+                            </div>
+                            @endif
+                            @if ($current[5] == 'current')
+                            
+                            <div class="step {{ $current[5] }} col-lg-2" data-index="2">
+                                <div class="dot bg-danger">x</div>
+                                <div class="title">Rendu et abime</div>
+                                <div class="sub">Finale</div>
+
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <hr>
 
-            
+
 
                     <div>
                         <button wire:click="changercomment" class="btn btn-sm btn-secondary border-0 bg-white  "><span
@@ -221,9 +234,9 @@
 
                         <div class="timeline">
 
-                            
+
                             <!-- Item 1 -->
-                                @foreach ($commentaires as $comment)
+                            @foreach ($commentaires as $comment)
                                 <div class="timeline-item ">
                                     <div class="timeline-icon">
                                         <span class="icon-wrap" title="Assign">
@@ -285,7 +298,7 @@
 
                                 </div>
                             @endforeach
-                      
+
                             <div class="mt-4 container " style="font-size:0.8rem">
                                 {{-- {{ $commentaires->links() }} --}}
                             </div>
@@ -309,8 +322,7 @@
                         <div class="info"><span class="text-muted fw-bold" style="font-size: 0.8rem;">Assigné
                                 à:</span> Tech Support</div>
                         <div class="info" style="margin-top:6px"><span class="text-muted fw-bold"
-                                style="font-size: 0.8rem;">Dernière mise à jour:</span> <span
-                                id="lastUpdate">
+                                style="font-size: 0.8rem;">Dernière mise à jour:</span> <span id="lastUpdate">
                                 {{-- {{ \Carbon\Carbon::parse($checkouts->updated_at)->translatedFormat('d M Y') }} --}}
                             </span></div>
                     </div>
@@ -319,13 +331,14 @@
                         <label style="margin:0 0 8px" class="fw-bold">Actions rapides</label>
                         <div style="display:flex;flex-direction:column;gap:8px">
                             {{-- <button class="btn-ghost" id="markResolved" --}}
-                                {{-- wire:click="RenouvelerCheckout({{ $checkouts->id }}) --}}
-                                {{-- >Renouveler</button> --}}
+                            {{-- wire:click="RenouvelerCheckout({{ $checkouts->id }}) --}}
+                            {{-- >Renouveler</button> --}}
                             <button class="btn-ghost" id="markResolved" wire:click="markResolved">
                                 Marquer comme rendu</button>
-                            <button class="btn-ghost" id="markClosed"
-                                {{-- wire:click="RefuserCheckout({{ $checkouts->id }})" --}}
-                                >Refuser</button>
+                            <button class="btn-ghost" id="markResolvedWithErrorMAt"
+                                wire:click="markResolvedWithErrorMAt">
+                                Rendu et abîmé</button>
+                            <button class="btn-ghost" id="markClosed" {{-- wire:click="RefuserCheckout({{ $checkouts->id }})" --}}>Refuser</button>
                         </div>
                     </div>
 
@@ -340,7 +353,7 @@
                     </div> --}}
 
                     <div>
-                    <svg class="animated" id="freepik_stories-dashboard" xmlns="http://www.w3.org/2000/svg"
+                        <svg class="animated" id="freepik_stories-dashboard" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 500 500" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                             xmlns:svgjs="http://svgjs.com/svgjs">
                             <style>
@@ -1055,7 +1068,7 @@
         {{-- modal pour refuser un checkout --}}
 
 
-     
+
 
 
     </div>
@@ -1257,19 +1270,19 @@
         }
     </style>
 
-@if(session('success'))
-<script>
-    Swal.fire({
-        title: 'Êtes-vous sûr ?',
-        text: "Cette action est irréversible !",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer !'
-    });
-</script>
-@endif
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer !'
+            });
+        </script>
+    @endif
 
     <script>
         const toggle = document.getElementById('chatToggle');

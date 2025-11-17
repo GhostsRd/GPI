@@ -20,7 +20,7 @@ class CreateTelephonesTablettesTable extends Migration
             $table->string('marque', 100);
             $table->string('modele', 100);
             $table->string('numero_serie', 100)->unique();
-            $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation'])->default('En service');
+            $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation', 'Disponible'])->default('En service');
             $table->string('emplacement_actuel', 150);
             $table->string('imei', 50)->nullable();
             $table->timestamps();

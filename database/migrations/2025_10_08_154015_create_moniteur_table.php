@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom', 100)->unique();
             $table->string('entite', 100)->nullable();
-            $table->string(column: 'statut', length: 100) ->nullable();
+           $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation','Disponible'])->default('En service');
             $table->string('fabricant', 100)->nullable();
             $table->string('numero_serie', 100)->unique()->nullable();
 

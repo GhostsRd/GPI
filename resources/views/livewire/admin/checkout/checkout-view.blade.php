@@ -17,7 +17,24 @@
                             <label class="fw-bold  mb-1 mt-0 pt-0">
                                 {{-- <i class="bi bi-ticket-detailed"></i> --}}
                                 Demande de checkout <span class="text-warning" id="ticketId">#{{ $checkoutId }}</span>
-                                — {{ $checkouts->materiel_type }}</label>
+                                — {{ $checkouts->materiel_type }}
+                                <small>
+                                    @if ($checkouts->materiel_type ==  'ordinateur')
+                                        {{ $checkouts->ordinateur->nom}}
+                                    @endif
+                                     @if ($checkouts->materiel_type ==  'Telephone')
+                                        {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
+                                    @endif
+                                </small>
+                                <small class="badge text-primary badge-light shadow-sm">
+                                          @if ($checkouts->materiel_type ==  'ordinateur')
+                                        {{ $checkouts->ordinateur->statut}}
+                                    @endif
+                                     @if ($checkouts->materiel_type ==  'Telephone')
+                                        {{ $checkouts->telephone->statut }} 
+                                    @endif
+                                </small>
+                            </label>
 
                         </div>
 
@@ -69,7 +86,7 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li><a class="dropdown-item text-danger" href="#"
-                                            wire:click="RemoveReservation({{ $checkoutId }})">
+                                            wire:click="RemoveCheckout({{ $checkoutId }})">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
                                                 fill="currentColor" class="size-6">
                                                 <path fill-rule="evenodd"
@@ -86,7 +103,7 @@
                     <div class="meta mt-2">Créé par <strong>{{ $checkouts->utilisateur->nom }}</strong> • <span
                             id="createdAt">{{ \Carbon\Carbon::parse($checkouts->created_at)->translatedFormat('d M Y') }}</span>
                         •
-                        @if ($checkouts->statut == 'En cours')
+                        @if ($checkouts->statut == 2)
                             <span class="badge open">En cours</span>
                         @endif
                         @if ($checkouts->statut == 'En stock')
@@ -156,12 +173,12 @@
                                 title="{{ $checkouts->responsable->name ?? 'Guest' }}"
                                 src="https://ui-avatars.com/api/?name={{ $checkouts->responsable->name ?? 'Guest' }}"
                                 alt="Profil" width="40" height="40" class="shadow rounded-circle me-2">
-                                    @if ($checkouts->materiel_type == 'Telephone')
-                                        ⮕ {{  $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
-                                    @else
-                                        ⮕ {{$checkouts->ordinateur->nom }} {{  $checkouts->ordinateur->modele }}
-                                        {{$checkouts->ordinateur->os_version }}
-                                    @endif
+                            @if ($checkouts->materiel_type == 'Telephone')
+                                ⮕ {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
+                            @else
+                                ⮕ {{ $checkouts->ordinateur->nom }} {{ $checkouts->ordinateur->modele }}
+                                {{ $checkouts->ordinateur->os_version }}
+                            @endif
                         </p>
                         <label for="" class="fw-bold mb-2 d-flex justify-content-center">Lier une equipement
                         </label>
@@ -367,6 +384,8 @@
                                 wire:click="RenouvelerCheckout({{ $checkouts->id }})">Renouveler</button>
                             <button class="btn-ghost" id="markResolved" wire:click="markResolved">Marquer comme
                                 Rendu</button>
+                            <button class="btn-ghost" id="markResolved" wire:click="markResolvedetabime">
+                                Rendu et abîmé</button>
                             <button class="btn-ghost" id="markClosed"
                                 wire:click="RefuserCheckout({{ $checkouts->id }})">Refuser</button>
                         </div>
@@ -383,7 +402,7 @@
                     </div> --}}
 
                     <div>
-                    <svg class="animated" id="freepik_stories-dashboard" xmlns="http://www.w3.org/2000/svg"
+                        <svg class="animated" id="freepik_stories-dashboard" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 500 500" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                             xmlns:svgjs="http://svgjs.com/svgjs">
                             <style>
@@ -1412,19 +1431,19 @@
         }
     </style>
 
-@if(session('success'))
-<script>
-    Swal.fire({
-        title: 'Êtes-vous sûr ?',
-        text: "Cette action est irréversible !",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer !'
-    });
-</script>
-@endif
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer !'
+            });
+        </script>
+    @endif
 
     <script>
         const toggle = document.getElementById('chatToggle');

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom', 100);
             $table->string('entite', 100)->nullable();
-            $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En maintenance'])->default('En service');
+            $table->enum('statut', ['En service', 'En stock', 'Hors service', 'En réparation','Disponible'])->default('En service');
             $table->string('fabricant', 100)->nullable();
             $table->string('reseau_ip', 45)->nullable(); // IPv6 support
             $table->string('numero_serie', 100)->nullable()->unique();

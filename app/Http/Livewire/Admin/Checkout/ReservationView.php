@@ -14,6 +14,7 @@ use App\Models\TelephoneTablette;
 
 class ReservationView extends Component
 {
+  protected $listeners = ['refreshComponent'=> '$refresh'];
   public $reservationID;
   public $progress;
   public $message;
@@ -185,16 +186,40 @@ class ReservationView extends Component
   }
   public function markResolved()
   {
-    $this->modelstep(matreservation::find($this->reservationID));
+    
 
     matreservation::where('id', $this->reservationID)->update(['statut' => 4]);
-    $this->emitSelf('refreshComponent');
+    $this->modelstep(matreservation::find($this->reservationID));
+    $mat = matreservation::find( $this->reservationID);
+
+    if($mat->equipement_type == "ordinateur"){
+      ordinateur::where('id',$mat->equipement_id)->update(['statut'=>'En stock']);
+    }
+    if($mat->equipement_type == "telephone"){
+      TelephoneTablette::where('id',$mat->equipement_id)->update(['statut'=>'En stock']);
+    }
+    $this->emit('refreshComponent');
   }
   public function markResolvedWithErrorMAt()
   {
-    matreservation::where('id', $this->reservationID)->update(['statut' => 4]);
-    $this->emitSelf('refreshComponent');
 
+     matreservation::where('id', $this->reservationID)->update(['statut' => 5]);
+     $this->modelstep(matreservation::find($this->reservationID));
+    $mat = matreservation::find( $this->reservationID);
+
+    if($mat->equipement_type == "ordinateur"){
+      ordinateur::where('id',$mat->equipement_id)->update(['statut'=>'En réparation']);
+    }
+    if($mat->equipement_type == "telephone"){
+      TelephoneTablette::where('id',$mat->equipement_id)->update(['statut'=>'En réparation']);
+    }
+    $this->emit('refreshComponent');
+
+  }
+  public function destroyComment($id){
+    Commentaire::destroy($id);
+
+    $this->emit('refreshComponent');
   }
   public function archived()
   {
