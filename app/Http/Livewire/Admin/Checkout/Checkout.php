@@ -34,114 +34,20 @@ class Checkout extends Component
     public $selectedCheckouts = [];
     public $selectAll = false;
 
+    // Propriété pour stocker les checkouts
+    public $checkouts;
+
     public function mount()
     {
         $this->calculerStatistiques();
-    }
-
-    public function Visualiser($id)
-    {
-        return redirect("/admin/checkout-view-".$id);
+        $this->loadCheckouts();
     }
 
     /**
-     * Calcul des statistiques
+     * Charger les checkouts
      */
-    protected function calculerStatistiques()
+    protected function loadCheckouts()
     {
-        $this->totalCheckouts = CheckoutModel::count();
-        $this->enCoursCheckouts = CheckoutModel::where("statut", 1)->count();
-        $this->validerCheckouts = CheckoutModel::where("statut", 2)->count();
-        $this->fermerCheckouts = CheckoutModel::where("statut", 3)->count();
-    }
-
-    /**
-     * Gestion du tri
-     */
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-        $this->sortField = $field;
-    }
-
-    /**
-     * Sélection/désélection globale
-     */
-    public function updatedSelectAll($value)
-    {
-        if ($value) {
-            $this->selectedCheckouts = $this->checkouts->pluck('id')->toArray();
-        } else {
-            $this->selectedCheckouts = [];
-        }
-    }
-
-    /**
-     * Réinitialisation des filtres
-     */
-    public function resetFilters()
-    {
-        $this->reset([
-            'search', 
-            'statut', 
-            'type_materiel', 
-            'periode', 
-            'selectedCheckouts', 
-            'selectAll',
-            'sortField' => 'created_at',
-            'sortDirection' => 'desc'
-        ]);
-    }
-
-    /**
-     * Suppression multiple
-     */
-    public function deleteSelected()
-    {
-        if (!empty($this->selectedCheckouts)) {
-            try {
-                CheckoutModel::whereIn('id', $this->selectedCheckouts)->delete();
-                $this->selectedCheckouts = [];
-                $this->selectAll = false;
-                $this->calculerStatistiques();
-                session()->flash('message', 'Checkouts supprimés avec succès.');
-            } catch (\Exception $e) {
-                session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
-            }
-        }
-    }
-
-    /**
-     * Confirmation de suppression
-     */
-    public function confirmDelete($id)
-    {
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce checkout?')) {
-            try {
-                CheckoutModel::findOrFail($id)->delete();
-                $this->calculerStatistiques();
-                session()->flash('message', 'Checkout supprimé avec succès!');
-            } catch (\Exception $e) {
-                session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
-            }
-        }
-    }
-
-    /**
-     * Édition d'un checkout
-     */
-    public function editCheckout($id)
-    {
-        return redirect("/admin/checkout-edit-".$id);
-    }
-
-    public function render()
-    {
-        // Construction de la requête principale
         $query = CheckoutModel::with(['utilisateur']);
 
         // Application des filtres
@@ -186,14 +92,137 @@ class Checkout extends Component
             }
         }
 
-        $checkouts = $query->orderBy($this->sortField, $this->sortDirection)
-                          ->paginate(10);
+        $this->checkouts = $query->orderBy($this->sortField, $this->sortDirection)
+                                ->paginate(10);
+    }
+
+    public function Visualiser($id)
+    {
+        return redirect("/admin/checkout-view-".$id);
+    }
+
+    /**
+     * Calcul des statistiques
+     */
+    protected function calculerStatistiques()
+    {
+        $this->totalCheckouts = CheckoutModel::count();
+        $this->enCoursCheckouts = CheckoutModel::where("statut", 1)->count();
+        $this->validerCheckouts = CheckoutModel::where("statut", 2)->count();
+        $this->fermerCheckouts = CheckoutModel::where("statut", 3)->count();
+    }
+
+    /**
+     * Gestion du tri
+     */
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+        $this->sortField = $field;
+        $this->loadCheckouts();
+    }
+
+    /**
+     * Sélection/désélection globale
+     */
+    public function updatedSelectAll($value)
+    {
+        if ($value && $this->checkouts) {
+            $this->selectedCheckouts = $this->checkouts->pluck('id')->toArray();
+        } else {
+            $this->selectedCheckouts = [];
+        }
+    }
+
+    /**
+     * Réinitialisation des filtres
+     */
+    public function resetFilters()
+    {
+        $this->reset([
+            'search', 
+            'statut', 
+            'type_materiel', 
+            'periode', 
+            'selectedCheckouts', 
+            'selectAll',
+            'sortField' => 'created_at',
+            'sortDirection' => 'desc'
+        ]);
+        $this->loadCheckouts();
+        $this->calculerStatistiques();
+    }
+
+    /**
+     * Mise à jour des filtres
+     */
+    public function updated()
+    {
+        $this->loadCheckouts();
+        $this->calculerStatistiques();
+    }
+
+    /**
+     * Suppression multiple
+     */
+    public function deleteSelected()
+    {
+        if (!empty($this->selectedCheckouts)) {
+            try {
+                CheckoutModel::whereIn('id', $this->selectedCheckouts)->delete();
+                $this->selectedCheckouts = [];
+                $this->selectAll = false;
+                $this->loadCheckouts();
+                $this->calculerStatistiques();
+                session()->flash('message', 'Checkouts supprimés avec succès.');
+            } catch (\Exception $e) {
+                session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * Confirmation de suppression
+     */
+    public function confirmDelete($id)
+    {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce checkout?')) {
+            try {
+                CheckoutModel::findOrFail($id)->delete();
+                $this->loadCheckouts();
+                $this->calculerStatistiques();
+                session()->flash('message', 'Checkout supprimé avec succès!');
+            } catch (\Exception $e) {
+                session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * Édition d'un checkout
+     */
+    public function editCheckout($id)
+    {
+        return redirect("/admin/checkout-edit-".$id);
+    }
+
+    public function render()
+    {
+        // Recharger les données si nécessaire
+        if (!$this->checkouts) {
+            $this->loadCheckouts();
+        }
 
         $tickets = ticket::orderBy("created_at","desc")->paginate(5);
 
         return view('livewire.admin.checkout.checkout',[
             "tickets" => $tickets,
-            "checkouts" => $checkouts,
+            "checkouts" => $this->checkouts,
         ]);
     }
+    
 }
