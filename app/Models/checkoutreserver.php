@@ -19,7 +19,7 @@ class checkoutreserver extends Model
           return $this->belongsTo(utilisateur::class, 'responsable_id');
     }
     public function commentaires(){
-      return $this->hasMany(Commentaire::class, 'commentaire_id');
+      return $this->hasMany(Commentaire::class, 'reservation_id');
     }
     
 

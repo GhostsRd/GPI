@@ -14,26 +14,28 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\Momemail;
 
 class CheckoutView extends Component
-{   
-     public $checkoutId;
-     public $message;
+{
+    public $checkoutId;
+    public $message;
     public $currentStep;
-     public $comments;
-     public $selectedvalsdata;
-     public $checkouts;
-     public $selectEquipement;
+    public $comments;
+    public $selectedvalsdata;
+    public $checkouts;
+    public $selectEquipement;
 
-     public $affichecommentaire = True;
-     public $affichestep = False;
+    public $affichecommentaire = True;
+    public $affichestep = False;
 
 
-     public function afficheretape(){
+    public function afficheretape()
+    {
         $this->affichestep = !$this->affichestep;
 
-     }
+    }
 
 
-     public function EnvoyerMessage(Chat $chat){
+    public function EnvoyerMessage(Chat $chat)
+    {
         //$chat = Chat::find($this->profilId);
         $utilisateurs = utilisateur::findOrFail($this->checkouts->utilisateur->id);
         $chat->targetmsg_id = $utilisateurs->matricule;
@@ -44,49 +46,52 @@ class CheckoutView extends Component
 
 
         $data = [
-        'title' => 'Information',
-        'message' => 'Vous avez une nouvelle message sur GPI Pivot '. $this->message
+            'title' => 'Information',
+            'message' => 'Vous avez une nouvelle message sur GPI Pivot ' . $this->message
 
-         ];
+        ];
 
         Mail::to('leoncerado@gmail.com')->send(new Momemail($data));
 
         $this->reset(['message']);
         $this->emit("refreshComponent");
-        
+
 
     }
 
-      public function changercomment(){
+    public function changercomment()
+    {
         $this->affichecommentaire = !$this->affichecommentaire;
 
-     }
-     public function RenouvelerCheckout($id){
+    }
+    public function RenouvelerCheckout($id)
+    {
         $checkout = CheckoutModel::find($id);
         $checkout->statut = 2;
         //$ticket->archive = true;
-        
+
         $checkout->save();
 
-        $this->reset(['currentStep'] );
+        $this->reset(['currentStep']);
         $this->currentStep = 2;
         $this->emitSelf('refreshComponent');
     }
-  
 
-      public function RefuserCheckout($id){
+
+    public function RefuserCheckout($id)
+    {
         $checkout = CheckoutModel::find($id);
         $checkout->statut = 4;
         $checkout->save();
-        $this->reset(['currentStep'] );
+        $this->reset(['currentStep']);
         $this->currentStep = 4;
         $this->emitSelf('refreshComponent');
         $this->emitSelf('refreshComponent');
         return redirect()->back()->with('success', 'Vous ete sur!');
     }
-  
+
     public $progress;
-      public $current = [
+    public $current = [
         1 => 'current',
         2 => 'future',
         3 => 'future',
@@ -94,103 +99,108 @@ class CheckoutView extends Component
 
     ];
 
-    public function validerequipement(){
+    public function validerequipement()
+    {
         //dd($this->selectedvalsdata,$this->checkoutId);
         CheckoutModel::where('id', $this->checkoutId)->update([
             'equipement_id' => $this->selectedvalsdata,
         ]);
 
-          $this->emitSelf('refreshComponent');
-          return redirect('/admin/checkout-view-'.$this->checkoutId);
+        $this->emitSelf('refreshComponent');
+        return redirect('/admin/checkout-view-' . $this->checkoutId);
     }
-     public function modelstep(CheckoutModel $checkout){
+    public function modelstep(CheckoutModel $checkout)
+    {
         $checkout = CheckoutModel::find($this->checkoutId);
         $this->currentStep = $checkout->statut;
 
         $this->current[$this->currentStep] = "current";
-        $prog = $this->currentStep*20; 
-        $progress = 'fill_'.$prog;
+        $prog = $this->currentStep * 20;
+        $progress = 'fill_' . $prog;
         $this->progress = $progress;
 
-        if($this->currentStep == 3){
-            for($i=1; $i<3; $i++){
-                    $this->current[$i] = "past";
-            }
-        }else{
-            for($i=1; $i<=3; $i++){
-            if($i < $this->currentStep){
+        if ($this->currentStep == 3) {
+            for ($i = 1; $i < 3; $i++) {
                 $this->current[$i] = "past";
-            }elseif($i == $this->currentStep){
-                $this->current[$i] = "current";
-            }else{
-                $this->current[$i] = "future";
             }
-        }
+        } else {
+            for ($i = 1; $i <= 3; $i++) {
+                if ($i < $this->currentStep) {
+                    $this->current[$i] = "past";
+                } elseif ($i == $this->currentStep) {
+                    $this->current[$i] = "current";
+                } else {
+                    $this->current[$i] = "future";
+                }
+            }
 
         }
 
-       //$this->emitSelf('refreshComponent');
+        //$this->emitSelf('refreshComponent');
     }
 
     public function nextStep()
     {
         $this->modelstep(CheckoutModel::find($this->checkoutId));
-        if($this->currentStep == 3){
+        if ($this->currentStep == 3) {
             return;
-        }elseif($this->currentStep < 3){
-                CheckoutModel::where('id', $this->checkoutId)->update(['statut' => $this->currentStep + 1 ]);    
+        } elseif ($this->currentStep < 3) {
+            CheckoutModel::where('id', $this->checkoutId)->update(['statut' => $this->currentStep + 1]);
         }
-       
+
 
     }
 
     public function previousStep()
-        {
-            if($this->currentStep == 1){
-                return;
-            }else{
-                for($i=3; $i>=1; $i--){
-                    if($this->current[$this->currentStep] == "current" && $i > 1){
-                        $this->current[$this->currentStep] = "future";
-                        $this->current[$this->currentStep-1] = "current";
-                        $prog = ($i-1)*20; 
-                        $progress = 'fill_'.$prog;
-                        $this->progress = $progress;
-                        break;
-                    }
-                    $this->emitSelf('refreshComponent');
+    {
+        if ($this->currentStep == 1) {
+            return;
+        } else {
+            for ($i = 3; $i >= 1; $i--) {
+                if ($this->current[$this->currentStep] == "current" && $i > 1) {
+                    $this->current[$this->currentStep] = "future";
+                    $this->current[$this->currentStep - 1] = "current";
+                    $prog = ($i - 1) * 20;
+                    $progress = 'fill_' . $prog;
+                    $this->progress = $progress;
+                    break;
+                }
+                $this->emitSelf('refreshComponent');
             }
-            }
-            CheckoutModel::where('id', $this->checkoutId)->update(['statut' => $this->currentStep - 1]);
-        // dd($this->current);
         }
-     public function mount($id)
-     {   
-         $this->checkoutId = $id;
+        CheckoutModel::where('id', $this->checkoutId)->update(['statut' => $this->currentStep - 1]);
+        // dd($this->current);
+    }
+    public function mount($id)
+    {
+        $this->checkoutId = $id;
         $this->progress;
-         $this->current;
-         $this->selectEquipement;
-         $this->checkouts = CheckoutModel::findOrFail($this->checkoutId);
-       // $this->currentStep;
+        $this->current;
+        $this->selectEquipement;
+        $this->checkouts = CheckoutModel::findOrFail($this->checkoutId);
+        // $this->currentStep;
         $this->selectedvalsdata;
         $this->affichestep;
 
-    }   
-
-    public function destroyComment($id){
-        Commentaire::destroy($id);
-        
     }
-    public function selectevals($vals){
+
+    public function destroyComment($id)
+    {
+        Commentaire::destroy($id);
+
+    }
+    public function selectevals($vals)
+    {
         $this->selectedvalsdata = $vals;
     }
-     public function postCommentaire(Commentaire $commentaire){
-        if(!$this->comments){
-          
-        }else{
+    public function postCommentaire(Commentaire $commentaire)
+    {
+        if (!$this->comments) {
+
+        } else {
 
             $commentaire->checkout_id = $this->checkoutId;
-            $commentaire->utilisateur_id = Auth::user()->id ;
+            $commentaire->utilisateur_id = Auth::user()->id;
             //$commentaire->responsable_id = Auth::user()->id ;
 
             $commentaire->etat = $this->currentStep;
@@ -203,29 +213,29 @@ class CheckoutView extends Component
             $this->emitTo('Utilisateur.utilisateur-ticket', 'refreshComponent');
         }
 
-       // session()->flash('message','Commentaire ajouter avec succes');
-      //  return redirect()->to('/admin-ticket-view/'.$this->ticketId);
+        // session()->flash('message','Commentaire ajouter avec succes');
+        //  return redirect()->to('/admin-ticket-view/'.$this->ticketId);
 
     }
     public function render()
     {
-         $this->modelstep(CheckoutModel::find($this->checkoutId));
-          $utilisateurs = utilisateur::findOrFail($this->checkouts->utilisateur->id);
-        return view('livewire.admin.checkout.checkout-view',[
+        $this->modelstep(CheckoutModel::find($this->checkoutId));
+        $utilisateurs = utilisateur::findOrFail($this->checkouts->utilisateur->id);
+        return view('livewire.admin.checkout.checkout-view', [
             "utilisateurs" => $utilisateurs,
             "commentaires" => $this->checkouts
                 ->commentaires()
                 ->orderBy('created_at', 'desc')
                 ->paginate(2),
             "TelephoneTablettes" => TelephoneTablette::
-            where('statut','En stock')->
-            where("type","like","%" . $this->selectEquipement . "%")->get(),
-            "ordinateurs" => ordinateur::where("nom","like","%" . $this->selectEquipement . "%")->get(),
+                where('statut', 'En stock')->
+                where("type", "like", "%" . $this->selectEquipement . "%")->get(),
+            "ordinateurs" => ordinateur::where("nom", "like", "%" . $this->selectEquipement . "%")->get(),
             "Chats" => chat::where(function ($query) {
-                    $userId = Auth::user()->id;
-                    $query->where('utilisateur_id', $userId)
-                        ->orWhere('targetmsg_id', $userId);
-                })
+                $userId = Auth::user()->id;
+                $query->where('utilisateur_id', $userId)
+                    ->orWhere('targetmsg_id', $userId);
+            })
                 ->where(function ($query) use ($utilisateurs) {
                     $query->where('targetmsg_id', $utilisateurs->matricule)
                         ->orWhere('utilisateur_id', $utilisateurs->matricule);

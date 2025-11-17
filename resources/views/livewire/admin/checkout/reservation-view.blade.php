@@ -223,6 +223,68 @@
 
                             
                             <!-- Item 1 -->
+                                @foreach ($commentaires as $comment)
+                                <div class="timeline-item ">
+                                    <div class="timeline-icon">
+                                        <span class="icon-wrap" title="Assign">
+                                            <!-- user assign icon -->
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zM4 20c0-2.761 2.239-5 5-5h6c2.761 0 5 2.239 5 5v1H4v-1z"
+                                                    fill="var(--accent)" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-date">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M12 7v5l4 2" stroke="currentColor" stroke-width="1.6"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+
+
+                                            {{ \Carbon\Carbon::parse($comment->created_at)->translatedFormat('d M Y H:i') }}
+                                            • @if ($comment->statut == 1)
+                                                <span class="badge open">Nouveau</span>
+                                            @endif
+                                            @if ($comment->statut == 2)
+                                                <span class="badge open"
+                                                    style="background:#fff7ed;color:var(--warn)">Valider</span>
+                                            @endif
+                                            @if ($comment->statut == 3)
+                                                <span class="badge open"
+                                                    style="background:#eefbf7;color:var(--ok)">Fermer</span>
+                                            @endif
+
+
+
+                                            • <strong class="text-capitalize">
+                                                {{-- @foreach ($responsables as $resp)
+                                                        @if ($comment->utilisateur_id == $resp->id)
+                                                            {{ $resp->name }}
+                                                        @endif
+                                                    @endforeach --}}
+                                            </strong> {{ $comment->commentaire }}
+                                            {{-- <strong>{{ $checkout->type }}</strong>. --}}
+                                        </div>
+
+                                        <button wire:click="destroyComment({{ $comment->id }})" type="button"
+                                            class="btn border-0 p-0 btn-outline-danger btn-sm mx-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6 18 18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+
+                                    </div>
+
+
+                                </div>
+                            @endforeach
                       
                             <div class="mt-4 container " style="font-size:0.8rem">
                                 {{-- {{ $commentaires->links() }} --}}
