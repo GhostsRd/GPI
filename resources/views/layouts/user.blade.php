@@ -457,6 +457,12 @@
             sidebar.classList.remove('active');
             document.body.classList.remove('sidebar-open');
         });
+
+      window.addEventListener('toggleSidebarmodel',()=>{
+        const btn = document.getElementById('toggleSidebar');
+
+           if(btn){btn.click();}
+        })
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -1378,43 +1378,42 @@
                                 {{-- <div class="card-title border-bottom bg-light py-2 px-2">
                                 Nom du ticket de las
                             </div> --}}
-                                <div class="card-body m-0 p-0 ">
+                                <div class="card-body m-0 p-0 text-truncate " style="overflow-y:hidden; overflow-x: auto;white-space:nowrap; scrollbar-width: none; -ms-overflow-style: none;">
 
                                     <strong class="d-flex justify-content-between">
                                         <div class="">
-                                          @if (!empty($ticketrecent->utilisateur->photo))
-                                            
-                                            <img width="40" height="40" class="rounded-pill my-0 py-0" src="{{ asset('storage/'.$ticketrecent->utilisateur->photo  ) }}" alt="">
-                          
-                                          @else
-                                             <img class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill"
-                                                data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ $ticketrecent->utilisateur->nom ?? 'none' }}"
-                                                alt="Profil" width="30" height="30"
-                                                class="rounded-circle me-2">
-                                          @endif
-
-                                           
-                                            <span class="mx-2 ">{{ $ticketrecent->sujet }}</span>
-                                        </div>
-                                    </strong>
-                                    {{-- <div class="d-flex justify-content-end">
-                                        <small> 10 Nov 2025</small>
-                                </div> --}}
-                                    <div class="mt-2 ">
-                                        <small class="text-muted fw-6">{{ $ticketrecent->details }}</small>
-                                    </div>
-                                    <div>
-
-                                        <div class="d-flex justify-content-end">
-
                                             @php
                                                 $photo = optional($ticketrecent->responsable)->photo;
                                             @endphp
 
                                             <img src="{{ $photo ? asset('storage/' . $photo) : asset('/images/avtar_1.png') }}"
                                                 alt="Profil" width="40" height="40"
+                                                title="Responsable de votre ticket"
                                                 class="dropdown-toggle bg-primary-light border p-0 m-0 rounded-pill" />
+
+
+                                            <span class="mx-2 text-truncate">{{ $ticketrecent->sujet }}</span>
+                                        </div>
+                                    </strong>
+                                    {{-- <div class="d-flex justify-content-end">
+                                        <small> 10 Nov 2025</small>
+                                </div> --}}
+                                    <div class="mt-2 ">
+                                        <small class="text-muted fw-6 text-truncate">{{ $ticketrecent->details }}</small>
+                                    </div>
+                                    <div>
+
+                                        <div class=" pb-0 mt-5">
+
+                                            <small
+                                                class="text-body-secondary text-end d-flex justify-content-end border-0 badge badge-primary border-top-generic  rounded-pill">
+                                                {{ $ticketrecent->state == 1 ? 'En cours' : ($ticketrecent->state == 2 ? 'En traitement' : ($ticketrecent->state == 3 ? 'En resolution' : ($ticketrecent->state == 4 ? 'Resolu' : 'Fermer'))) }}
+                                             </small> 
+                                            <small class="d-flex justify-content-end">
+                                                {{ \Carbon\Carbon::parse($ticketrecent->created_at)->translatedFormat('d M Y H:i') }}
+
+                                            </small>
+
                                         </div>
                                     </div>
                                 </div>
@@ -1438,8 +1437,23 @@
                     <strong href="#" class=" border-0 py-2 m-2" aria-current="true">
 
                         <div class="d-flex active w-100 justify-content-between border-top border-3">
-                            <h5 class="mb-1 fw-bold mx-3 py-2 mt-2">Liste de votre ticket</h5>
-                            <small>
+                            <label class="mb-1 fw-bold  py-2 mt-4">Liste de votre ticket</label>
+                            <small class="mt-4">
+                                <div class="shadow-sm p-2 rounded-2">
+                                    
+                                    Filtre par :
+                                    <span>
+                                        <select name="" id="" class="border-0 px-2"
+                                            wire:model="filtrerticket">
+                                            <option value="">Tous</option>
+                                            <option value="1" class="border-0 ">En cours </option>
+                                            <option value="2" class="border-0 ">En traitement </option>
+                                            <option value="3" class="border-0  shadow-sm">Resolu</option>
+                                            <option value="4" class="border-0 ">Fermer</option>
+
+                                        </select>
+                                    </span>
+                                </div>
                                 {{-- <input type="text" wire:model="recherche"
                                     class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
                                     placeholder="Recherche par sujet.."> --}}
@@ -1450,21 +1464,22 @@
                         style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
 
 
-                        <span class="mx-3 py-1 fw-normal">EN COURS</span>
+
                         @foreach ($tickets as $ticket)
                             <a wire:click="visualiser('{{ $ticket->id }}')" href="#" {{-- data-aos="fade-down" --}}
                                 {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
                                 class="list-group-item   list-group-item-action border-0 bg-light mb-1  materiel-item rounded-2 ">
                                 <div class="d-flex w-100 py-1 justify-content-between">
-                                    <b class="mb-1 text-black-50"># {{ $ticket->id }} - {{ $ticket->sujet }}</b>
+                                    <b class="mb-1 text-black-50">{{ $ticket->id }} - {{ $ticket->sujet }}</b>
                                     <small
                                         class="text-body-secondary">{{ \Carbon\Carbon::parse($ticket->created_at)->translatedFormat('d M Y H:i') }}</small>
                                 </div>
 
                                 <div class="d-flex w-100 py-1 justify-content-between">
                                     <p class="mb-1 text-capitalize mx-3">{{ $ticket->details }}</p>
-                                    <small class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
-                                        {{ $ticket->state == 2 ?? 'Assigner' }}
+                                    <small
+                                        class="text-body-secondary border-0 badge badge-primary shadow-sm border-top-generic px-2  rounded-pill">
+                                        {{ $ticket->state == 1 ? 'En cours' : ($ticket->state == 2 ? 'En traitement' : ($ticket->state == 3 ? 'En resolution' : ($ticket->state == 4 ? 'Resolu' : 'Fermer'))) }}
                                     </small>
                                 </div>
                                 <div class="d-flex w-100 justify-content-between">
@@ -1539,3 +1554,4 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 </style>
+<script></script>

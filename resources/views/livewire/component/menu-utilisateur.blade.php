@@ -23,7 +23,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-                Nouveau reservation
+                Nouveau 
 
             </li>
             <li style="cursor: pointer" wire:click="redicrectlink(3)"
@@ -39,7 +39,7 @@
 
 
                 <div class="text-end">
-                    {{-- <span class=" text-danger small me-2 fw-bold ">{{ count($incidents) }}</span> --}}
+                    <span class=" text-muted small me-2 fw-bold ">{{ count($incidentcount) }}</span>
 
                 </div>
             </li>
@@ -56,7 +56,7 @@
 
 
                 <div class="text-end">
-                    {{-- <span class=" text-danger small me-2 fw-bold ">{{ count($incidents) }}</span> --}}
+                    <span class="text-muted  small me-2 fw-bold ">{{ count($ticketcounts) }}</span>
 
                 </div>
             </li>
@@ -73,7 +73,7 @@
 
 
                 <div class="text-end">
-                    {{-- <span class=" text-danger small me-2 fw-bold ">{{ count($incidents) }}</span> --}}
+                    <span class=" text-muted small me-2 fw-bold ">{{ count($reservationcount) }}</span>
 
                 </div>
             </li>
@@ -88,7 +88,7 @@
                     </svg> <span class="mx-2">Mes checkout</span>
                 </div>
                 <div class="text-end">
-                    <span class="text-muted small me-2">#12</span>
+                    <span class="text-muted  small me-2 fw-bold">{{ count($incidentcount) }}</span>
 
                 </div>
             </li>

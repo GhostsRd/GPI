@@ -819,8 +819,8 @@
                                             <span class="d-flex justify-content-start mt-2">Choisissez le materiel que
                                                 vous voulez reserver </span>
 
-                                            <span class="d-flex justify-content-end ">
-                                                <div class=" p-2 rounded-3 shadow-sm">
+                                            <small class="d-flex justify-content-end ">
+                                                <div class=" px-2 py-1 rounded-3 shadow-sm">
                                                     <span class="px-1">Filtrer par :</span>
                                                     <select name="" class="border-0 fw-bold p-1"
                                                         wire:model="filtrematreservation" id="">
@@ -833,7 +833,7 @@
 
                                                     </select>
                                                 </div>
-                                            </span>
+                                            </small>
                                         </div>
 
                                     </div>

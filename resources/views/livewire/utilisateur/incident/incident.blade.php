@@ -11,8 +11,7 @@
         <form wire:submit.prevent="store">
             <div class="modal-body row">
                 <!-- Sujet -->
-                <p class="text-dark  mb-3 mt-3">Tous les champs sont
-                    obligatoires</p>
+                <p class="text-dark  mb-3 mt-3">TVeuillez remplir tous les champs.</p>
 
                 <div class="mb-3 col-lg-8">
                     <div class="modern-group">
@@ -20,7 +19,7 @@
                             Sujet <span class="required">*</span>
                         </label> --}}
 
-                        <textarea id="sujet" cols="2" placeholder="Quelle  est le sujet ? "
+                        <textarea id="sujet" cols="2" placeholder="Quelle  est le sujet de votre incident? "
                             class="modern-textarea @error('sujet') invalid @enderror" wire:model.debounce.500ms="incident_sujet">
                         </textarea>
 
@@ -34,7 +33,7 @@
                 <div class="mb-3 col-lg-8 ">
                     {{-- <label for="details" class="form-label fw-bold text-muted">Description <span --}}
 
-                    <textarea type="text" placeholder="Vous pouvez le detaille ici ..."
+                    <textarea type="text" placeholder="Details de votre incident ..."
                         class="modern-textarea  @error('details') is-invalid border-danger @enderror" id="details"
                         wire:model.debounce.500ms="incident_description" rows="2"></textarea>
                     @error('details')
@@ -1408,15 +1407,15 @@
                                 Nom du ticket de las
                             </div> --}}
 
-                                <div class="card-body m-0 p-0 ">
+                                <div class="card-body m-0 p-0  ">
                                     <div class="pb-2 fw-bold text-muted">
                                         Incident
-                                        <small class="text-muted mx-2 justify-content-end">
+                                        <small class="small mx-2 justify-content-end">
                                             {{ \Carbon\Carbon::parse($incidentrecent->created_at)->translatedFormat('d M Y H:i') }}
                                         </small>
                                     </div>
                                     <strong class="d-flex justify-content-between">
-                                        <div class="bg-light rounded-start-pill">
+                                        <div class="card-bg rounded-start-pill ">
                                             <img class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill"
                                                 data-toggle="dropdown"
                                                 src="https://ui-avatars.com/api/?name={{ $incidentrecent->utilisateur->nom ?? 'none' }}"
@@ -1469,10 +1468,10 @@
                             </div>
                         </div>
 
-                        <strong href="#" class=" border-0 py-2 m-2" aria-current="true">
+                        <strong href="#" class=" border-0 py-2 " aria-current="true">
 
-                            <div class="d-flex active w-100 justify-content-between border-top border-3">
-                                <h5 class="mb-1 fw-bold mx-3 py-2 mt-2">Liste de vos incident</h5>
+                            <div class="d-flex active w-100 justify-content-between border-top mt-4 border-3">
+                                <h5 class="mb-1 fw-bold py-2 mt-2">Liste de vos incident</h5>
                                 <small>
                                     {{-- <input type="text" wire:model="recherche"
                                     class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
@@ -1575,7 +1574,7 @@
 
                 <!-- Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="incidentDetailModalLabel">Détails de l'incident</h5>
+                    <h5 class="modal-title" id="incidentDetailModalLabel">A propos de l'incident</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
@@ -1583,6 +1582,18 @@
                 <!-- Body -->
                 <div class="modal-body">
                     <div class="container-fluid">
+                         <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Sujet :</div>
+                            <div class="col-md-8" id="commentaire">
+                                {{$selectedIncidents?->incident_sujet}}
+                            </div>
+                        </div>
+                         <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Details :</div>
+                            <div class="col-md-8" id="commentaire">
+                                {{$selectedIncidents?->incident_description}}
+                            </div>
+                        </div>
                         <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Type d'équipement :</div>
                             <div class="col-md-8" id="equipement_type">{{ $selectedIncidents?->equipement_type }}
@@ -1620,12 +1631,7 @@
                             <div class="col-md-4 fw-bold text-muted">Statut :</div>
                             <div class="col-md-8" id="statut">EN COURS</div>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4 fw-bold text-muted">Commentaire :</div>
-                            <div class="col-md-8" id="commentaire">
-                                Exemple de commentaire de l'incident...
-                            </div>
-                        </div>
+                       
                         <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Rapport :</div>
                             <div class="col-md-8" id="rapport">

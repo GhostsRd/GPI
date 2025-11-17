@@ -19,6 +19,7 @@ class UtilisateurService extends Component
     public $recherche = "";
     public $message;
     public $total;
+    public $filtrerticket;
     public $sujet;
     public $categorie;
     public $details;
@@ -137,13 +138,11 @@ class UtilisateurService extends Component
         return view('livewire.utilisateur.utilisateur-service', [
             "tickets" => ticket::
                 where("utilisateur_id", $user_ID)
-                ->where("state", "like", "%" . $this->state . "%")
+                ->where("state", "like", "%" . $this->filtrerticket . "%")
                 ->where("sujet", "like", "%" . $this->recherche . "%")
                 ->orderBy("created_at", "desc")
                 ->get(),
             "ticketrecentes" => ticket::where("utilisateur_id", $user_ID)
-                ->where("state", "like", "%" . $this->state . "%")
-                ->where("sujet", "like", "%" . $this->recherche . "%")
                 ->orderBy("created_at", "desc")
                 ->limit(2)
                 ->get(),
