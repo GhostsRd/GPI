@@ -22,14 +22,14 @@
 
                         <textarea id="sujet" cols="2" placeholder="Ex : J'ai perdu mon téléphone…"
                             class="modern-textarea @error('sujet') invalid @enderror" wire:model.debounce.500ms="incident_sujet">
-    </textarea>
+                        </textarea>
 
                         @error('sujet')
                             <p class="error-text">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
-                
+
                 <!-- Détails -->
                 <div class="mb-3 col-lg-8">
                     <label for="details" class="form-label fw-bold text-muted">Description <span
@@ -1594,6 +1594,12 @@
                                     {{ $selectedIncidents?->ordinateur->nom }}
                                     {{ $selectedIncidents?->ordinateur->os_version }}
                                 @endif
+                                  @if ($selectedIncidents?->equipement_type == 'Telephone')
+                                    {{ $selectedIncidents?->telephone->nom }}
+                                    {{ $selectedIncidents?->telephone->marque }}
+                                @endif
+
+                                
                             </div>
                         </div>
                         <div class="row mb-2">

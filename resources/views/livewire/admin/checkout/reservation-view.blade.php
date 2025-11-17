@@ -18,7 +18,19 @@
                                 {{-- <i class="bi bi-ticket-detailed"></i> --}}
                                 Reservation de materiel <span class="text-warning" id="ticketId">#{{ $reservationID }}</span>
                                 — </label>
-                                <span class="text-capitalize"> {{ $matreservations->equipement_type }} ({{ $matreservations->equipement_nombre }})</span>
+                                <span class="text-capitalize"> {{ $matreservations->equipement_type }} ({{ $matreservations->equipement_nombre }}) 
+                                    @if ($matreservations->equipement_type == "Ordinateur")
+
+                                    @endif
+                                    @if ($matreservations->equipement_type == 'telephone')
+                                        {{ $matreservations->TelephoneTablette->nom }}
+                                        <small class="badge badge-primary text-primary shadow-sm"> 
+                                        {{ $matreservations->TelephoneTablette->statut  }}
+                                    </small>
+                                    @endif
+                                </span>
+
+                                
                                 <small class="">
                                  —  {{ \Carbon\Carbon::parse($matreservations->date_debut)->translatedFormat('d M Y') }} -  {{ \Carbon\Carbon::parse($matreservations->date_fin)->translatedFormat('d M Y') }}
                                     

@@ -8,6 +8,7 @@ use App\Models\utilisateur;
 use Livewire\Component;
 use App\Models\checkoutreserver as matreservation;
 use Illuminate\Support\Facades\Auth;
+use App\Models\TelephoneTablette;
 
 
 class ReservationView extends Component
@@ -65,7 +66,7 @@ class ReservationView extends Component
 
         }
 
-       $this->emitSelf('refreshComponent');
+       $this->emit('refreshComponent');
     }
 
    public function nextStep()
@@ -76,6 +77,23 @@ class ReservationView extends Component
         }elseif($this->currentStep < 4){
                 matreservation::where('id', $this->reservationID)->update(['statut' => $this->currentStep + 1 ]);    
         }
+
+         $reservations = matreservation::find($this->reservationID);
+
+        if($reservations->equipement_type == 'telephone'){
+            if($reservations->statut == 3){
+                TelephoneTablette::where('id',$reservations->equipement_id)->update([
+                    'statut' => 'En service',
+                ]);
+            }
+            if($reservations->statut == 4){
+                 TelephoneTablette::where('id',$reservations->equipement_id)->update([
+                    'statut' => 'En stock',
+                ]);
+            }
+            
+        }
+        
        
 
     }

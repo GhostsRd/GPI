@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Incident;
 
+use App\Models\TelephoneTablette;
 use Livewire\Component;
 use App\Models\Incident;
 use App\Models\Commentaire;
@@ -111,6 +112,26 @@ class IncidentView extends Component
             Incident::where('id', $this->incidentId)->update(['statut' => $this->currentStep + 1]);
         }
 
+        $incidentvals = Incident::find($this->incidentId);
+
+        if($incidentvals->equipement_type == 'Telephone'){
+            if($incidentvals->statut == 2){
+                TelephoneTablette::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'En réparation',
+                ]);
+            }
+            if($incidentvals->statut == 3){
+                 TelephoneTablette::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'En stock',
+                ]);
+            }
+            if($incidentvals->statut == 4){
+                 TelephoneTablette::where('id',$incidentvals->equipement_id)->update([
+                    'statut' => 'Hors service',
+                ]);
+            }
+        }
+        
 
     }
 
@@ -161,6 +182,11 @@ class IncidentView extends Component
         $this->incidentId = $id;
         $this->incidents = Incident::findOrFail($this->incidentId);
     }
+   public function destroyComment($id){
+
+    Commentaire::destroy($id);
+    $this->emit('refreshComponent');
+   }
     public function render()
     {
         $this->modelstep(Incident::find($this->incidentId));

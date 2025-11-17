@@ -217,7 +217,9 @@ class CheckoutView extends Component
                 ->commentaires()
                 ->orderBy('created_at', 'desc')
                 ->paginate(2),
-            "TelephoneTablettes" => TelephoneTablette::where("type","like","%" . $this->selectEquipement . "%")->get(),
+            "TelephoneTablettes" => TelephoneTablette::
+            where('statut','En stock')->
+            where("type","like","%" . $this->selectEquipement . "%")->get(),
             "ordinateurs" => ordinateur::where("nom","like","%" . $this->selectEquipement . "%")->get(),
             "Chats" => chat::where(function ($query) {
                     $userId = Auth::user()->id;
