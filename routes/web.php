@@ -23,24 +23,24 @@ Auth::routes();
 
 
 
+Route::get('/utilisateur', [App\Http\Controllers\Utilisateur\UtilisateurAcceuil::class, 'index'])->name('utilisateur');
 Route::middleware(['LoginUser'])->group(function () {
     //Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/utilisateur', [App\Http\Controllers\Utilisateur\UtilisateurAcceuil::class, 'index'])->name('utilisateur');
     Route::get('/utilisateur-service', [App\Http\Controllers\Utilisateur\UtilisateurService::class, 'index'])->name('utilisateurService');
     Route::get('/utilisateur-ticket-{id}', [App\Http\Controllers\Utilisateur\UtilisateurTicket::class, 'index'])->name('utilisateurTicket');
     Route::get('/utilisateur-workflow', [App\Http\Controllers\Utilisateur\Utilisateurworkflow::class, 'index'])->name('utilisateurWorkflow');
     Route::get('/utilisateur-profile', [App\Http\Controllers\Utilisateur\UtilisateurProfile::class, 'index'])->name('utilisateurProfile');
+    Route::get('/utilisateur-incident', [App\Http\Controllers\Utilisateur\incident\Incident::class, 'index'])->name('utilisateur.incident');
+    Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
+    Route::get('/utilisateur-checkout', [App\Http\Controllers\Utilisateur\checkout\Checkout::class, 'index'])->name('checkout');
+    Route::get('/utilisateur-checkout-{id}-{type}', [App\Http\Controllers\Utilisateur\checkout\CalendrierReservationCheckout::class, 'index'])->name('checkout.calendrier');
+    Route::get('/utilisateur-calendrier', [App\Http\Controllers\Utilisateur\checkout\MesReservationCalendrier::class, 'index'])->name('mes.reservation');
 });
 Route::post('/utilisateur-logout', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'logout'])->name('utilisateurLogout');
 Route::get('/utilisateur-login', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'index'])->name('LoginUser');
 Route::get('/utilisateur-inscription', [App\Http\Controllers\Utilisateur\UtilisateurInscription::class, 'index'])->name('utilisateurInscription');
 Route::get('/utilisateur-membre', [App\Http\Controllers\Utilisateur\UtilisateurMembre::class, 'index'])->name('utilisateurMembre');
-Route::get('/utilisateur-incident', [App\Http\Controllers\Utilisateur\incident\Incident::class, 'index'])->name('utilisateur.incident');
 
-Route::get('/utilisateur-dashboard', [App\Http\Controllers\Utilisateur\Dashboard::class, 'index'])->name('utilisateurDashboard');
-Route::get('/utilisateur-checkout', [App\Http\Controllers\Utilisateur\checkout\Checkout::class, 'index'])->name('checkout');
-Route::get('/utilisateur-checkout-{id}-{type}', [App\Http\Controllers\Utilisateur\checkout\CalendrierReservationCheckout::class, 'index'])->name('checkout.calendrier');
-Route::get('/utilisateur-calendrier', [App\Http\Controllers\Utilisateur\checkout\MesReservationCalendrier::class, 'index'])->name('mes.reservation');
 
 
 Route::get('/moniteur', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');

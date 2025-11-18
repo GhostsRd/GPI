@@ -9,6 +9,7 @@ use App\Models\chat;
 class UtilisateurAcceuil extends Component
 {
     public $message;
+    public $userId;
 
      public function EnvoyerMessage(Chat $chat){
         //$chat = Chat::find($this->profilId);
@@ -30,12 +31,18 @@ class UtilisateurAcceuil extends Component
 
     public function render()
     {
+        
+        if(Auth::guard('utilisateur')->user()){
+
+            $this->userId = Auth::guard('utilisateur')->user()->matricule;
+        }else{
+            $this->userID = 1111;
+        }
         return view('livewire.utilisateur.utilisateur-acceuil',[
             "chats" => Chat::where(function ($query) {
-                $userId = Auth::guard('utilisateur')->user()->matricule;
-                $query->where('targetmsg_id', $userId)
+                $query->where('targetmsg_id', $this->userId)
                
-                    ->orWhere('utilisateur_id', $userId);
+                    ->orWhere('utilisateur_id', $this->userId);
             })
             ->orderBy('created_at', 'asc')
             ->get()
