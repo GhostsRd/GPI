@@ -1470,12 +1470,27 @@
                         <strong href="#" class=" border-0 py-2 " aria-current="true">
 
                             <div class="d-flex active w-100 justify-content-between border-top mt-4 border-3">
-                                <h5 class="mb-1 fw-bold py-2 mt-2">Liste de vos incident</h5>
-                                <small>
-                                    {{-- <input type="text" wire:model="recherche"
+                                <label class="mb-1 fw-bold py-1 mt-4">Liste de vos incident</label>
+                                <small class="mt-4">
+                                <div class="shadow-sm p-2 rounded-2">
+                                    
+                                    Filtre par :
+                                    <span>
+                                        <select name="" id="" class="border-0 px-2"
+                                            wire:model="filtrerticket">
+                                            <option value="">Tous</option>
+                                            <option value="1" class="border-0 ">En cours </option>
+                                            <option value="2" class="border-0 ">En traitement </option>
+                                            <option value="3" class="border-0  shadow-sm">Resolu</option>
+                                            <option value="4" class="border-0 ">Fermer</option>
+
+                                        </select>
+                                    </span>
+                                </div>
+                                {{-- <input type="text" wire:model="recherche"
                                     class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
                                     placeholder="Recherche par sujet.."> --}}
-                                </small>
+                            </small>
                             </div>
                         </strong>
                         <div class="list-group "

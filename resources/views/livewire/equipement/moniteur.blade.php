@@ -673,7 +673,7 @@
                     </h5>
                     <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
                 </div>
-                <form wire:submit.prevent="save">
+                <form wire:submit.prevent="save" style="max-height:500px;overflow-y: scroll;  -ms-overflow-style: none;">
                     <div class="modal-body p-3">
                         <div class="row g-2">
                             <!-- Informations de base -->

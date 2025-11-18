@@ -640,7 +640,7 @@
                     <button type="button" wire:click="$set('showForm', false)" class="btn-close"></button>
                 </div>
                 <div class="modal-body">
-                    <form wire:submit.prevent="save">
+                    <form wire:submit.prevent="save" style="max-height:400px;overflow-y: scroll;  -ms-overflow-style: none;">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">

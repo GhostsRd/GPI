@@ -12,13 +12,12 @@
         <form wire:submit.prevent="store">
             <div class="modal-body row">
                 <!-- Sujet -->
-                <p class="text-muted mb-3 mt-3">Les champs indiqués <span class="text-danger">*</span> sont
+                <p class="text-muted mb-3 mt-3">Tous les champs sont
                     obligatoires</p>
 
                 <div class="mb-3 col-lg-8">
-                    <label for="sujet" class="form-label fw-bold text-muted ">Sujet <span
-                            class="text-danger ">*</span></label> <br>
-                    <textarea type="text" placeholder="Ex: J'ai perdu mon telephone .."
+                
+                    <textarea type="text" placeholder="Quelle est le sujet de votre ticket ?"
                         class=" modern-textarea  py-1  @error('sujet') is-invalid border-danger  @enderror"
                         id="sujet" wire:model.debounce.500ms="sujet">
 
@@ -30,15 +29,17 @@
 
                 <!-- Détails -->
                 <div class="mb-3 col-lg-8">
-                
-                    <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
+                    
+                    <textarea type="text" placeholder="Ex: Details de votre ticket"
                         class="modern-textarea py-1  @error('details') is-invalid border-danger @enderror"
                         id="details" wire:model.debounce.500ms="details" rows="2"></textarea>
                     @error('details')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="border-top border-2 mb-4">
+
+                @if (!empty($details))
+                    <div class="border-top border-2 mb-4">
                 </div>
                 <div class="mb-3 col-lg-6 ">
                     <label for="categorie" class="form-label fw-bold text-muted">Catégorie <span
@@ -89,9 +90,6 @@
 
 
                 </div>
-
-
-
                 <!-- Priorité -->
                 <div class="mb-3 col-lg-6">
                     <label for="priorite" class="form-label fw-bold text-muted">Priorité</label>
@@ -141,6 +139,7 @@
                     @enderror
                 </div>
 
+                @endif
 
             </div>
 

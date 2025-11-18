@@ -325,7 +325,7 @@
             {{-- <h6 class=" border-bottom rounded-0 border-secodondary border-5"></h6> --}}
              <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#settingsCollapse">
-                    <i class="nav-icon bi bi-gear-fill fs-6 text-secondary"></i>
+                    {{-- <i class="nav-icon bi bi-gear-fill fs-6 text-secondary"></i> --}}
                     <span>Carte SIM</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>

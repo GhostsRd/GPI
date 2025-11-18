@@ -221,9 +221,17 @@
                             </td>
                             <td class="py-2" wire:click="Visualiser({{ $checkout->id }})">
                                 <div class="d-flex align-items-center justify-content-center">
+                                    @if (!empty($checkout->utilisateur->photo ))
+                                          <img width="30" height="30" class="rounded-pill my-0 py-0"
+                                            src="{{ asset('storage/' . $checkout->utilisateur->photo ) }}"
+                                            alt="">
+                                         <span class="text-muted small text-capitalize">{{ $checkout->utilisateur->nom ?? 'N/A' }}</span>
+
+                                    @else
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($checkout->utilisateur->nom ?? 'Utilisateur') }}&size=24&background=random" 
                                          class="rounded-circle me-2" width="20" height="20">
-                                    <span class="text-muted small">{{ $checkout->utilisateur->nom ?? 'N/A' }}</span>
+                                         <span class="text-muted small">{{ $checkout->utilisateur->nom ?? 'N/A' }}</span>
+                                    @endif
                                 </div>
                             </td>
                             <td class="py-2" wire:click="Visualiser({{ $checkout->id }})">
@@ -233,7 +241,16 @@
                             </td>
                             <td class="py-2" wire:click="Visualiser({{ $checkout->id }})">
                                 <small class="text-muted">
-                                    {{ $checkout->materiel_details }}
+                                    @if ($checkout->materiel_type  == 'ordinateur' )
+                                        {{ $checkout->ordinateur->nom }}  {{ $checkout->ordinateur->os_version }}
+                                    @endif
+                                    @if ($checkout->materiel_type  == 'telephone')
+                                                {{ $checkout->telephone->nom }}  {{ $checkout->telephone->marque }}
+                                    @endif
+
+                                    @if (!empty($checkout->materiel_details ))
+                                    {{ $checkout->materiel_details }}                                    
+                                    @endif
                                 </small>
                             </td>
                             <td class="py-2">

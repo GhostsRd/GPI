@@ -17,6 +17,7 @@ class Incident extends Component
     public $equipement_type;
     public $equipement_id;
     public  $userConnected;
+    public $filtrerticket;
     public $incident_sujet;
     public $incident_description;
     public $incident_nature;
@@ -80,8 +81,11 @@ class Incident extends Component
     public function render()
     {
         return view('livewire.utilisateur.incident.incident',[
-            'incidents' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->get(),
+            'incidents' => IncidentModel::
+            where('statut','like','%'.$this->filtrerticket.'%')->
+            where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->get(),
             'checkouts' => Checkout::where('utilisateur_id',$this->userConnected)
+            
             ->where('statut','!=',1)->get(),
             'Incidentsrecentes' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->limit(2)->get(),
         ]);
