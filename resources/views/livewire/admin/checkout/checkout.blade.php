@@ -3,7 +3,7 @@
         <div class="table-header bg-light p-3 rounded-top">
             <div class="table-title fw-bold text-dark">
                 <i class="bi bi-cart-check me-2"></i>
-                Liste des Checkouts
+                Liste des Checkouts KSDBJVESUVESYC
             </div>
         </div>
 
