@@ -109,14 +109,14 @@ class CheckoutView extends Component
 
         $checkouts = CheckoutModel::find($this->checkoutId);
 
-        if($checkouts->materiel_type == "ordinateur"){
-            ordinateur::where('id',$checkouts->equipement_id)->update(['statut'=>'En service']);
+        if ($checkouts->materiel_type == "ordinateur") {
+            ordinateur::where('id', $checkouts->equipement_id)->update(['statut' => 'En service']);
         }
-        if($checkouts->materiel_type == "Telephone"){
-            TelephoneTablette::where('id',$checkouts->equipement_id)->update(['statut'=>'En service']);
+        if ($checkouts->materiel_type == "Telephone") {
+            TelephoneTablette::where('id', $checkouts->equipement_id)->update(['statut' => 'En service']);
         }
-        if($checkouts->materiel_type == "Peripherique"){
-            Peripherique::where('id',$checkouts->equipement_id)->update(['statut'=>'En service']);
+        if ($checkouts->materiel_type == "Peripherique") {
+            Peripherique::where('id', $checkouts->equipement_id)->update(['statut' => 'En service']);
         }
         $this->emitSelf('refreshComponent');
         return redirect('/admin/checkout-view-' . $this->checkoutId);
@@ -150,7 +150,8 @@ class CheckoutView extends Component
 
         //$this->emitSelf('refreshComponent');
     }
-    public function RemoveCheckout($id){
+    public function RemoveCheckout($id)
+    {
         CheckoutModel::destroy($id);
         return redirect('/admin/checkout');
     }
@@ -166,63 +167,85 @@ class CheckoutView extends Component
 
         $checkouts = CheckoutModel::find($this->checkoutId);
 
-        
-        if( $checkouts->materiel_type == 'ordinateur'){
-            if($checkouts->statut == 3){
+         if($checkouts->materiel_type == 'Peripherique'){
+           
+              if ($checkouts->statut == 3) {
+                  Peripherique::where('id',$checkouts->equipement_id)->update(['statut'=>"En service"]);
+              
+            }
+            if ($checkouts->statut == 4) {
 
-                ordinateur::where('id',$checkouts->equipement_id)->update([
+           
+                Peripherique::where('id',$checkouts->equipement_id)->update(['statut'=>"En stock"]);
+              
+            }
+        }
+
+
+        if ($checkouts->materiel_type == 'ordinateur') {
+            if ($checkouts->statut == 3) {
+
+                ordinateur::where('id', $checkouts->equipement_id)->update([
                     'statut' => 'En service'
                 ]);
             }
-             if($checkouts->statut == 4){
+            if ($checkouts->statut == 4) {
 
-                ordinateur::where('id',$checkouts->equipement_id)->update([
+                ordinateur::where('id', $checkouts->equipement_id)->update([
                     'statut' => 'Disponible'
                 ]);
             }
         }
-        if($checkouts->materiel_type == 'telephone')
+        if ($checkouts->materiel_type == 'Telephone'){
 
-            if($checkouts->statut == 3){
-
-                TelephoneTablette::where('id',$checkouts->equipement_id)->update([
+            if ($checkouts->statut == 3) {
+                TelephoneTablette::where('id', $checkouts->equipement_id)->update([
                     'statut' => 'En service'
                 ]);
             }
-             if($checkouts->statut == 4){
+            if ($checkouts->statut == 4) {
 
-                TelephoneTablette::where('id',$checkouts->equipement_id)->update([
-                    'statut' => 'Disponible'
+                TelephoneTablette::where('id', $checkouts->equipement_id)->update([
+                    'statut' => 'En service'
                 ]);
             }
+        }
+                
+                    
     }
-    public function markResolved(){
-      
+    public function markResolved()
+    {
+
         $checkouts = CheckoutModel::find($this->checkoutId);
         $checkouts->statut = 3;
         $checkouts->save();
         $this->modelstep(CheckoutModel::find($this->checkoutId));
-        if($checkouts->materiel_type == 'ordinateur'){
-            ordinateur::where('id',$checkouts->equipement_id)->update(['statut'=>"En stock"]);
+        if ($checkouts->materiel_type == 'ordinateur') {
+            ordinateur::where('id', $checkouts->equipement_id)->update(['statut' => "En stock"]);
         }
-        if($checkouts->materiel_type == 'telephone'){
-            TelephoneTablette::where('id',$checkouts->equipement_id)->update(['statut'=>"En stock"]);
+        if ($checkouts->materiel_type == 'Telephone') {
+            TelephoneTablette::where('id', $checkouts->equipement_id)->update(['statut' => "En stock"]);
+        }
+        if ($checkouts->materiel_type == 'Peripherique') {
+            Peripherique::where('id', $checkouts->equipement_id)->update(['statut' => "En stock"]);
+
         }
         $this->emit('refreshComponent');
     }
-    public function markResolvedetabime(){
+    public function markResolvedetabime()
+    {
         $checkouts = CheckoutModel::find($this->checkoutId);
         $checkouts->statut = 4;
         $checkouts->save();
         $this->modelstep(CheckoutModel::find($this->checkoutId));
-        if($checkouts->materiel_type == 'ordinateur'){
-            ordinateur::where('id',$checkouts->equipement_id)->update(['statut'=>"En réparation"]);
+        if ($checkouts->materiel_type == 'ordinateur') {
+            ordinateur::where('id', $checkouts->equipement_id)->update(['statut' => "En réparation"]);
         }
-        if($checkouts->materiel_type == 'telephone'){
-            TelephoneTablette::where('id',$checkouts->equipement_id)->update(['statut'=>"En réparation"]);
+        if ($checkouts->materiel_type == 'telephone') {
+            TelephoneTablette::where('id', $checkouts->equipement_id)->update(['statut' => "En réparation"]);
         }
         $this->emit('refreshComponent');
-    
+
     }
     public function previousStep()
     {
@@ -303,10 +326,10 @@ class CheckoutView extends Component
             "TelephoneTablettes" => TelephoneTablette::
                 where('statut', 'En stock')->
                 where("type", "like", "%" . $this->selectEquipement . "%")->get(),
-                "Peripheriques" => Peripherique::  where('statut', 'En stock')->get(),
+            "Peripheriques" => Peripherique::where('statut', 'En stock')->get(),
             "ordinateurs" => ordinateur::
-             where('statut', 'En stock')->
-            where("nom", "like", "%" . $this->selectEquipement . "%")->get(),
+                where('statut', 'En stock')->
+                where("nom", "like", "%" . $this->selectEquipement . "%")->get(),
             "Chats" => chat::where(function ($query) {
                 $userId = Auth::user()->id;
                 $query->where('utilisateur_id', $userId)
