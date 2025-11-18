@@ -194,28 +194,7 @@
                 </div>
             </div>
 
-            <!-- Sous-menu Incidents -->
-            <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#incidentCollapse">
-                <i class="bi bi-exclamation-triangle"></i>
-                <span>Incidents</span>
-                <i class="nav-chevron bi bi-chevron-down"></i>
-            </a>
-            <div class="collapse" id="incidentCollapse">
-                <div class="nav-submenu">
-                    <a href="{{ url('incident') }}" class="submenu-item">
-                        <i class="bi bi-bug"></i>
-                        Liste des incidents
-                    </a>
-                    <a href="{{ url('accessoir') }}" class="submenu-item">
-                        <i class="bi bi-tools"></i>
-                        Accessoires
-                    </a>
-                    <a href="{{ url('historique') }}" class="submenu-item">
-                        <i class="bi bi-clock-history"></i>
-                        Historique
-                    </a>
-                </div>
-            </div>
+     
 
         </div>
     </div>
@@ -296,7 +275,7 @@
 
              <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#incidentcollaps">
-                   <i class="bi bi-folder-fill text-secondary fs-6"></i>
+                     <i class="bi bi-exclamation-triangle-fill text-muted"></i>
                     <span>Incident</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
