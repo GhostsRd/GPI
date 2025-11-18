@@ -25,6 +25,9 @@
                                      @if ($checkouts->materiel_type ==  'Telephone')
                                         {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
                                     @endif
+                                    @if ($checkouts->materiel_type ==  'Peripherique')
+                                        {{ $checkouts->peripherique->nom }} 
+                                    @endif
                                 </small>
                                 <small class="badge text-primary badge-light shadow-sm">
                                           @if ($checkouts->materiel_type ==  'ordinateur')
@@ -32,6 +35,10 @@
                                     @endif
                                      @if ($checkouts->materiel_type ==  'Telephone')
                                         {{ $checkouts->telephone->statut }} 
+                                    @endif
+
+                                     @if ($checkouts->materiel_type ==  'Peripherique')
+                                        {{ $checkouts->peripherique->statut }} 
                                     @endif
                                 </small>
                             </label>
@@ -184,10 +191,15 @@
                                 alt="Profil" width="40" height="40" class="shadow rounded-circle me-2">
                             @if ($checkouts->materiel_type == 'Telephone')
                                 ⮕ {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
-                            @else
+                                @endif
+                            @if($checkouts->materiel_type == 'ordinateur')
                                 ⮕ {{ $checkouts->ordinateur->nom }} {{ $checkouts->ordinateur->modele }}
                                 {{ $checkouts->ordinateur->os_version }}
                             @endif
+
+                             @if ($checkouts->materiel_type  == 'Peripherique')
+                                        {{$checkouts->peripherique->nom}} {{ $checkouts->peripherique->type }}
+                             @endif
                         </p>
                         <label for="" class="fw-bold mb-2 d-flex justify-content-center">Lier une equipement
                         </label>
@@ -209,6 +221,15 @@
                                             {{ $ordinateur->marque }} {{ $ordinateur->modele }}
                                             {{ $ordinateur->os_version }} </option>
                                     @endforeach
+
+                                    @elseif ($checkouts->materiel_type  == 'Peripherique')
+                                        @foreach ($Peripheriques as $peripherique)
+                                        @if ($checkouts->materiel_details == $peripherique->type )
+                                        <option value="{{ $peripherique->id }}"> {{ $peripherique->type }} {{ $peripherique->nom }} {{ $peripherique->fabricant }}
+                                            </option>
+                                            @endif
+                                        @endforeach
+                                
                                 @else
                                     @foreach ($TelephoneTablettes as $TelephoneTablette)
                                         <option value="{{ $TelephoneTablette->id }}">{{ $TelephoneTablette->type }}

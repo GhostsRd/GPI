@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Checkout;
 
 use App\Models\chat;
 use App\Models\Checkout as CheckoutModel;
+use App\Models\Peripherique;
 use App\Models\utilisateur;
 use Livewire\Component;
 use App\Models\Commentaire;
@@ -106,6 +107,17 @@ class CheckoutView extends Component
             'equipement_id' => $this->selectedvalsdata,
         ]);
 
+        $checkouts = CheckoutModel::find($this->checkoutId);
+
+        if($checkouts->materiel_type == "ordinateur"){
+            ordinateur::where('id',$checkouts->equipement_id)->update(['statut'=>'En service']);
+        }
+        if($checkouts->materiel_type == "Telephone"){
+            TelephoneTablette::where('id',$checkouts->equipement_id)->update(['statut'=>'En service']);
+        }
+        if($checkouts->materiel_type == "Peripherique"){
+            Peripherique::where('id',$checkouts->equipement_id)->update(['statut'=>'En service']);
+        }
         $this->emitSelf('refreshComponent');
         return redirect('/admin/checkout-view-' . $this->checkoutId);
     }
@@ -291,6 +303,7 @@ class CheckoutView extends Component
             "TelephoneTablettes" => TelephoneTablette::
                 where('statut', 'En stock')->
                 where("type", "like", "%" . $this->selectEquipement . "%")->get(),
+                "Peripheriques" => Peripherique::  where('statut', 'En stock')->get(),
             "ordinateurs" => ordinateur::
              where('statut', 'En stock')->
             where("nom", "like", "%" . $this->selectEquipement . "%")->get(),

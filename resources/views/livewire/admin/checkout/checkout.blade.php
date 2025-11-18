@@ -247,7 +247,15 @@
                                     @if ($checkout->materiel_type  == 'telephone')
                                                 {{ $checkout->telephone->nom }}  {{ $checkout->telephone->marque }}
                                     @endif
-
+                                     @if ($checkout->materiel_type  == 'peripherique')
+                                        @foreach ($Peripheriques as $peripherique)
+                                        @if ($checkout->materiel_details == $peripherique->type )
+                                              {{ $peripherique->nom }} {{ $peripherique->fabricant }}
+                                            
+                                         
+                                            @endif
+                                        @endforeach
+                                    @endif
                                     @if (!empty($checkout->materiel_details ))
                                     {{ $checkout->materiel_details }}                                    
                                     @endif
