@@ -872,7 +872,7 @@
                                                                 </svg>
                                                                {{ $ordinateur->state }} {{ $ordinateur->os_version }}
                                                             </small>
-                                                            <small class="shadow-sm badge badge-light text-teal">
+                                                            <small class="shadow-sm badge badge-light text-muted">
                                                                     {{ $ordinateur->statut }}
                                                                 {{-- 
                                                             <button type="button"
@@ -920,7 +920,7 @@
                                                             </svg>
                                                  {{ $telephone->marque }}
                                                         </small>
-                                                        <small class="shadow-sm badge badge-light text-teal ">
+                                                        <small class="shadow-sm badge badge-light text-muted ">
                                                             {{ $telephone->statut }}
 
                                                             {{-- 
@@ -967,7 +967,7 @@
                                                             </svg>
                                                         {{ $ordinateur->os_version }}
                                                         </small>
-                                                        <small class="shadow-sm badge badge-light text-teal  ">
+                                                        <small class="shadow-sm badge badge-dark text-muted ">
                                                                 {{ $ordinateur->statut }} 
                                                             {{-- 
                                                         <button type="button"
@@ -990,7 +990,7 @@
                                                 <a href="#"
                                                     wire:click="openCalendrier('telephone',{{ $telephone->id }})"
                                                     title="Voir la disonibilite"
-                                                    class="list-group-item list-group-item-action border-0   materiel-item rounded-2  ">
+                                                    class="list-group-item list-group-item-actionborder-0 bg-light mb-1 materiel-item rounded-2">
                                                     <div class="d-flex w-100 justify-content-between">
                                                         <b class="mb-1 text-black-50"> {{ $telephone->nom }}</b>
                                                         <small class="text-body-secondary"></small>
@@ -1012,7 +1012,7 @@
                                                             </svg>
                                                     {{ $telephone->marque }}
                                                         </small>
-                                                        <small class="text-body-secondary badge badge-info ">
+                                                        <small class="text-body-secondary badge badge-dark shadow-sm ">
                                                              {{ $telephone->statut }} 
                                                             {{-- 
                                                         <button type="button"
