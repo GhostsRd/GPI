@@ -1,13 +1,13 @@
 <div>
      <ul style="list-style: none " class="px-2 py-2 ">
             <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center" style="cursor: pointer" wire:click="Pageacceuil">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="me-2 text-gradient text-secondary">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
                     </svg>
-                    <h class="fw-bold text-dark mb-0">Acceuil / incident</h>
+                    <h class="fw-bold text-dark mb-0" >Page d'acceuil / </h>
                 </div>
 
                 <div class="text-end">

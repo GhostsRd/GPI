@@ -12,6 +12,9 @@ use Livewire\Component;
 
 class MenuUtilisateur extends Component
 {
+    public function Pageacceuil(){
+        return redirect('/utilisateur');
+    }
     public function openReservationModal(){
 
             $this->dispatchBrowserEvent('toggleSidebarmodel');
