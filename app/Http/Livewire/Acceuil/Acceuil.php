@@ -516,7 +516,7 @@ class Acceuil extends Component
     }
 
     /**
-     * Récupère les données pour le graphique des équipements par type
+     * Récupère les données pour le graphique des équipements par type - CORRIGÉ
      */
     public function getEquipmentChartData()
     {
@@ -533,10 +533,16 @@ class Acceuil extends Component
         ];
 
         foreach ($equipmentTypes as $name => $modelClass) {
-            $tableName = (new $modelClass())->getTable();
-            if (Schema::hasTable($tableName)) {
-                $data[$name] = $modelClass::count();
-            } else {
+            try {
+                $tableName = (new $modelClass())->getTable();
+                if (Schema::hasTable($tableName)) {
+                    $count = $modelClass::count();
+                    $data[$name] = $count;
+                } else {
+                    $data[$name] = 0;
+                }
+            } catch (\Exception $e) {
+                \Log::error("Erreur pour $name: " . $e->getMessage());
                 $data[$name] = 0;
             }
         }
@@ -545,21 +551,59 @@ class Acceuil extends Component
     }
 
     /**
-     * Récupère les données pour le graphique des tickets par statut
+     * Récupère les données pour le graphique des tickets par statut - CORRIGÉ
      */
     public function getTicketStatusData()
     {
-        $data = [
-            'Ouverts' => $this->getTicketsByStatus(['ouvert', 'open']),
-            'En cours' => $this->getTicketsByStatus(['en_cours', 'in_progress', 'en cours', 'in progress']),
-            'Fermés' => $this->getTicketsByStatus(['fermé', 'closed', 'resolved', 'résolu']),
-        ];
-        
-        return $data;
+        try {
+            if (!Schema::hasTable('tickets')) {
+                return ['Ouverts' => 0, 'En cours' => 0, 'Fermés' => 0];
+            }
+
+            // Compter directement avec des requêtes séparées pour plus de fiabilité
+            $ouverts = Ticket::where(function($query) {
+                $query->where('status', 'ouvert')
+                      ->orWhere('status', 'open')
+                      ->orWhere('statut', 'ouvert')
+                      ->orWhere('statut', 'open');
+            })->count();
+
+            $enCours = Ticket::where(function($query) {
+                $query->where('status', 'en_cours')
+                      ->orWhere('status', 'in_progress')
+                      ->orWhere('status', 'en cours')
+                      ->orWhere('statut', 'en_cours')
+                      ->orWhere('statut', 'in_progress')
+                      ->orWhere('statut', 'en cours');
+            })->count();
+
+            $fermes = Ticket::where(function($query) {
+                $query->where('status', 'fermé')
+                      ->orWhere('status', 'closed')
+                      ->orWhere('status', 'resolved')
+                      ->orWhere('status', 'résolu')
+                      ->orWhere('statut', 'fermé')
+                      ->orWhere('statut', 'closed')
+                      ->orWhere('statut', 'resolved')
+                      ->orWhere('statut', 'résolu');
+            })->count();
+
+            $data = [
+                'Ouverts' => $ouverts,
+                'En cours' => $enCours,
+                'Fermés' => $fermes,
+            ];
+
+            return $data;
+            
+        } catch (\Exception $e) {
+            \Log::error('Erreur dans getTicketStatusData: ' . $e->getMessage());
+            return ['Ouverts' => 0, 'En cours' => 0, 'Fermés' => 0];
+        }
     }
 
     /**
-     * Récupère les données pour le graphique des statuts d'équipements
+     * Récupère les données pour le graphique des statuts d'équipements - CORRIGÉ
      */
     public function getEquipmentStatusData()
     {
@@ -580,14 +624,79 @@ class Acceuil extends Component
         ];
 
         foreach ($tables as $tableName => $modelClass) {
-            if (Schema::hasTable($tableName)) {
-                $model = new $modelClass();
-                $columns = Schema::getColumnListing($model->getTable());
-                
-                $data['Disponibles'] += $this->countEquipmentByStatus($modelClass, $columns, ['disponible', 'available', 'libre', 'free']);
-                $data['En utilisation'] += $this->countEquipmentByStatus($modelClass, $columns, ['utilisé', 'in_use', 'affecté', 'assigned', 'en_utilisation']);
-                $data['En maintenance'] += $this->countEquipmentByStatus($modelClass, $columns, ['maintenance', 'réparation', 'repair']);
-                $data['Hors service'] += $this->countEquipmentByStatus($modelClass, $columns, ['hors_service', 'out_of_service', 'cassé', 'broken']);
+            try {
+                if (Schema::hasTable($tableName)) {
+                    $model = new $modelClass();
+                    $columns = Schema::getColumnListing($model->getTable());
+                    
+                    // Compter avec des requêtes plus précises
+                    $disponibles = $modelClass::where(function($query) use ($columns) {
+                        if (in_array('status', $columns)) {
+                            $query->where('status', 'disponible')
+                                  ->orWhere('status', 'available')
+                                  ->orWhere('status', 'libre')
+                                  ->orWhere('status', 'free');
+                        }
+                        if (in_array('statut', $columns)) {
+                            $query->orWhere('statut', 'disponible')
+                                  ->orWhere('statut', 'available')
+                                  ->orWhere('statut', 'libre')
+                                  ->orWhere('statut', 'free');
+                        }
+                    })->count();
+
+                    $enUtilisation = $modelClass::where(function($query) use ($columns) {
+                        if (in_array('status', $columns)) {
+                            $query->where('status', 'utilisé')
+                                  ->orWhere('status', 'in_use')
+                                  ->orWhere('status', 'affecté')
+                                  ->orWhere('status', 'assigned')
+                                  ->orWhere('status', 'en_utilisation');
+                        }
+                        if (in_array('statut', $columns)) {
+                            $query->orWhere('statut', 'utilisé')
+                                  ->orWhere('statut', 'in_use')
+                                  ->orWhere('statut', 'affecté')
+                                  ->orWhere('statut', 'assigned')
+                                  ->orWhere('statut', 'en_utilisation');
+                        }
+                    })->count();
+
+                    $maintenance = $modelClass::where(function($query) use ($columns) {
+                        if (in_array('status', $columns)) {
+                            $query->where('status', 'maintenance')
+                                  ->orWhere('status', 'réparation')
+                                  ->orWhere('status', 'repair');
+                        }
+                        if (in_array('statut', $columns)) {
+                            $query->orWhere('statut', 'maintenance')
+                                  ->orWhere('statut', 'réparation')
+                                  ->orWhere('statut', 'repair');
+                        }
+                    })->count();
+
+                    $horsService = $modelClass::where(function($query) use ($columns) {
+                        if (in_array('status', $columns)) {
+                            $query->where('status', 'hors_service')
+                                  ->orWhere('status', 'out_of_service')
+                                  ->orWhere('status', 'cassé')
+                                  ->orWhere('status', 'broken');
+                        }
+                        if (in_array('statut', $columns)) {
+                            $query->orWhere('statut', 'hors_service')
+                                  ->orWhere('statut', 'out_of_service')
+                                  ->orWhere('statut', 'cassé')
+                                  ->orWhere('statut', 'broken');
+                        }
+                    })->count();
+
+                    $data['Disponibles'] += $disponibles;
+                    $data['En utilisation'] += $enUtilisation;
+                    $data['En maintenance'] += $maintenance;
+                    $data['Hors service'] += $horsService;
+                }
+            } catch (\Exception $e) {
+                \Log::error("Erreur statut équipement $tableName: " . $e->getMessage());
             }
         }
 
