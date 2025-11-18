@@ -1387,17 +1387,13 @@
                 <section class="p-0 py-3 mx-5">
                     <div class="row border-top mt-2">
                         <div class="col-lg-6 ">
-
                             <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
                         </div>
-
                         <div class="col-lg-6">
 
                             <span class="d-flex justify-content-end py-3 px-2 text-primary">Afficher tous les
                                 espaces</span>
                         </div>
-
-
                     </div>
                     <div class="row p-0 mx-3 ">
                         @foreach ($Incidentsrecentes as $incidentrecent)
@@ -1405,7 +1401,6 @@
                                 {{-- <div class="card-title border-bottom bg-light py-2 px-2">
                                 Nom du ticket de las
                             </div> --}}
-
                                 <div class="card-body m-0 p-0  ">
                                     <div class="pb-2">
                                         <span class="  fw-bold ">Incident</span>
@@ -1420,13 +1415,12 @@
                                                 src="https://ui-avatars.com/api/?name={{ $incidentrecent->utilisateur->nom ?? 'none' }}"
                                                 alt="Profil" width="40" height="40"
                                                 class="rounded-circle me-2">
-                                            <span
-                                                class="mx-2 ">{{ $incidentrecent->incident_sujet ?? 'Aucun' }}</span>
+                                            <span class="mx-2 ">{{ $incidentrecent->incident_sujet ?? 'Aucun' }}</span>
                                         </div>
                                     </strong>
                                     {{-- <div class="d-flex justify-content-end">
                                         <small> 10 Nov 2025</small>
-                                </div> --}}
+                                        </div> --}}
                                     <div class="mt-2 ">
                                         <p>{{ $incidentrecent->incident_description ?? 'Aucun' }}</p>
                                     </div>
@@ -1448,9 +1442,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         @endforeach
                         <div class="col-lg-3  mx-2  p-0 m-0   ">
