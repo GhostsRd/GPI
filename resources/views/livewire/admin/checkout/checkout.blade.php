@@ -189,9 +189,7 @@
                             Statut
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
-                        <th class="py-2" style="width: 150px;">
-                            Raison
-                        </th>
+                       
                         <th class="py-2 sortable" wire:click="sortBy('date_debut')" style="width: 100px;">
                             Date début
                             <i class="bi bi-arrow-down-up ms-1"></i>
@@ -284,9 +282,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="py-2 text-muted small" wire:click="Visualiser({{ $checkout->id }})">
-                                {{ \Illuminate\Support\Str::limit($checkout->raison, 30) }}
-                            </td>
+                            
                             <td class="py-2 text-muted small" wire:click="Visualiser({{ $checkout->id }})">
                                 {{ $checkout->date_debut?->format('d M Y') ?? 'N/A' }}
                             </td>
