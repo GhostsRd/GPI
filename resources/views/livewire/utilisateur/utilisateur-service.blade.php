@@ -19,7 +19,7 @@
                     <label for="sujet" class="form-label fw-bold text-muted ">Sujet <span
                             class="text-danger ">*</span></label> <br>
                     <textarea type="text" placeholder="Ex: J'ai perdu mon telephone .."
-                        class=" input-recherche py-1  border col-lg-8  px-2 text-dark rounded-2  @error('sujet') is-invalid border-danger  @enderror"
+                        class=" modern-textarea  py-1  @error('sujet') is-invalid border-danger  @enderror"
                         id="sujet" wire:model.debounce.500ms="sujet">
 
                     </textarea>
@@ -30,10 +30,9 @@
 
                 <!-- Détails -->
                 <div class="mb-3 col-lg-8">
-                    <label for="details" class="form-label fw-bold text-muted">Description <span
-                            class="text-danger">*</span></label> <br>
+                
                     <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
-                        class="input-recherche border col-lg-8 rounded-2  py-3 px-2  text-dark  @error('details') is-invalid border-danger @enderror"
+                        class="modern-textarea py-1  @error('details') is-invalid border-danger @enderror"
                         id="details" wire:model.debounce.500ms="details" rows="2"></textarea>
                     @error('details')
                         <div class="invalid-feedback">{{ $message }}</div>

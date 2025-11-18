@@ -1384,7 +1384,6 @@
                 <h5 class="fw-bold mx-4 ">Incident</h5>
                 <span class="text-muted mx-4 mt-2">Visualisation globale des incidents de Matériel</span> <br>
 
-
                 <section class="p-0 py-3 mx-5">
                     <div class="row border-top mt-2">
                         <div class="col-lg-6 ">
@@ -1671,76 +1670,3 @@
     </div>
 
 </div>
-<style>
-    .materiel-item {
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .materiel-item:hover {
-        background-color: #e9ecef;
-        /* gris plus foncé */
-        transform: translateY(-2px);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .modal-content {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .modal-backdrop.show {
-        background-color: rgba(0, 0, 0, 0.2) !important;
-        /* 0.2 = plus clair */
-    }
-
-    .modern-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        max-width: 550px;
-    }
-
-    .modern-label {
-        font-weight: 600;
-        color: #5f6a73;
-        font-size: 15px;
-    }
-
-    .required {
-        color: #e63946;
-    }
-
-    .modern-textarea {
-        width: 100%;
-        min-height: 10px;
-        padding: 10px 14px;
-        border: none;
-        border-bottom: 1px solid #d0d7dd;
-        /* border-radius: 8px; */
-        font-size: 15px;
-        resize: vertical;
-        outline: none;
-        transition: all .25s ease;
-        background: #fff;
-        color: #2d2d2d;
-    }
-
-    .modern-textarea:focus {
-        border: 0;
-        border-bottom: 1px solid #5BC4BF;
-        /* box-shadow: 0 0 0 2px rgba(11, 170, 79, 0.15); */
-    }
-
-    .modern-textarea.invalid {
-        border-color: #e63946;
-        background: #fff8f8;
-    }
-
-    .error-text {
-        font-size: 13px;
-        color: #e63946;
-        margin: 0;
-    }
-</style>
