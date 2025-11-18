@@ -36,4 +36,7 @@ class Checkout extends Model
     {
         return $this->belongsTo(ordinateur::class, 'equipement_id');
     }
+    public function materiel(){
+        return $this->belongsTo(ordinateur::class, 'equipement_id');
+    }
 }
