@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
 
 <head>
     <meta charset="utf-8">
@@ -53,6 +53,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
+        
         /* === Navbar === */
         .hero {
             background: url('https://picsum.photos/1200/500') center/cover no-repeat;
@@ -388,7 +389,7 @@
     @livewireStyles
 </head>
 
-<body class="bg-white">
+<body class="bg-white"   >
     <nav class="navbar navbar-expand-lg fixed-top sh ">
         <div class="container">
             <a class="navbar-brand text-white " href="{{ route('utilisateur') }}">
@@ -409,7 +410,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('utilisateur.incident') }}">• Incident</a>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="#apropos">• À propos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('mes.reservation') }}">• Reservation</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">• Contact</a></li>
                     <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle" id="userDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">

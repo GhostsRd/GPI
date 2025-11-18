@@ -1492,7 +1492,7 @@
                                 <a wire:click="visualiser('{{ $incident->id }}')" href="#"
                                     {{-- data-aos="fade-down" --}} data-bs-toggle="modal"
                                     data-bs-target="#incidentDetailModal" {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
-                                    class="list-group-item bg-light mb-1 materiel-item rounded-2 list-group-item-action border-0 ">
+                                    class="list-group-item bg-light mb-1 materiel-item rounded-2 list-group-item-action border ">
                                     <div class="d-flex w-100 py-1 justify-content-between">
                                         <b class="mb-1 text-black-50">{{ $incident->id }} -
                                             {{ $incident->incident_sujet }}
@@ -1516,7 +1516,7 @@
 
                                         </small>
                                         <small
-                                            class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-teal' }} badge badge-ligth shadow-sm  rounded-pill">
+                                            class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-muted' }} badge bage-light shadow-sm  rounded-pill">
                                             {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : ($incident->statut == 1 ? 'En cours de traitement ...' : ($incident->statut == 2 ? 'Recu ' : ($incident->statut == 3 ? 'Resolu' : 'Non resolu')))) }}
                                             {{-- <a href="{{ asset('storage/' . $incident->rapport_incident) }}" target="_blank" >
                                                     <i class="bi bi-download"></i> Voir ou Télécharger le rapport

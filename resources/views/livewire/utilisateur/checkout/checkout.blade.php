@@ -850,7 +850,7 @@
                                                     <a href="#"
                                                         wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
                                                         title="Voir la disonibilite"
-                                                        class="list-group-item list-group-item-action border-0 bg-light mb-1 materiel-item rounded-2  ">
+                                                        class="list-group-item list-group-item-action border bg-light mb-1 materiel-item rounded-2  ">
                                                         <div class="d-flex w-100 justify-content-between">
                                                             <b class="mb-1 text-black-50"> {{ $ordinateur->nom }}</b>
                                                             <small class="text-body-secondary"></small>
@@ -898,7 +898,7 @@
                                                 <a href="#"
                                                     wire:click="openCalendrier('telephone',{{ $telephone->id }})"
                                                     title="Voir la disonibilite"
-                                                    class="list-group-item list-group-item-action border-0 bg-light mb-1  materiel-item rounded-2   ">
+                                                    class="list-group-item list-group-item-action border bg-light mb-1  materiel-item rounded-2   ">
                                                     <div class="d-flex w-100 justify-content-between">
                                                         <b class="mb-1 text-black-50"> {{ $telephone->nom }}</b>
                                                         <small class="text-body-secondary"></small>
@@ -945,7 +945,7 @@
                                                 <a href="#"
                                                     wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
                                                     title="Voir la disonibilite"
-                                                    class="list-group-item list-group-item-action border-0  materiel-item rounded-2  ">
+                                                    class="list-group-item list-group-item-action border bg-light mb-1 materiel-item rounded-2    ">
                                                     <div class="d-flex w-100 justify-content-between">
                                                         <b class="mb-1 text-black-50"> {{ $ordinateur->nom }}</b>
                                                         <small class="text-body-secondary"></small>
@@ -990,7 +990,7 @@
                                                 <a href="#"
                                                     wire:click="openCalendrier('telephone',{{ $telephone->id }})"
                                                     title="Voir la disonibilite"
-                                                    class="list-group-item list-group-item-actionborder-0 bg-light mb-1 materiel-item rounded-2">
+                                                    class="list-group-item list-group-item-action border bg-light mb-1 materiel-item rounded-2">
                                                     <div class="d-flex w-100 justify-content-between">
                                                         <b class="mb-1 text-black-50"> {{ $telephone->nom }}</b>
                                                         <small class="text-body-secondary"></small>
@@ -1047,7 +1047,7 @@
                                             <a wire:click="visualisercheckout({{ $checkout->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#checkoutview"
                                                 data-aos-delay="{{ $loop->index * 200 }}"
-                                                class="list-group-item border-0 list-group-item-action bg-light mb-1  materiel-item rounded-2 ">
+                                                class="list-group-item border list-group-item-action bg-light mb-1  materiel-item rounded-2 ">
 
                                                 <div class="d-flex w-100 justify-content-between">
                                                     <b class="mb-1 text-black-50"> {{ $checkout->id }} -
@@ -1072,7 +1072,7 @@
                                                     </small> --}}
                                                     <div class="d-flex justify-content-end">
                                                         <small
-                                                            class="badge badge text-primary bg-light shadow-sm mx-2" >{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : ($checkout->statut == 3 ? 'Recu' : 'Rendu')) }}</small>
+                                                            class="badge badge text-muted bg-light shadow-sm mx-2" >{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : ($checkout->statut == 3 ? 'Recu' : 'Rendu')) }}</small>
                                                         <img class="dropdown-toggle  p-0 m-0 rounded-pill"
                                                             data-toggle="dropdown"
                                                             src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
@@ -1124,7 +1124,7 @@
                                         @foreach ($matreservations as $materiel)
                                             <a href="#" wire:click="visualiser( {{ $materiel->id }})"
                                                 title="Voir le details"
-                                                class="list-group-item list-group-item-action border-0 bg-light mb-1  materiel-item rounded-2 ">
+                                                class="list-group-item list-group-item-action border bg-light mb-1  materiel-item rounded-2 ">
                                                 <div class="d-flex w-100 justify-content-between">
                                                     <b class="mb-1 text-black-50 text-capitalize">
                                                         {{ $materiel->equipement_type }} </b>
