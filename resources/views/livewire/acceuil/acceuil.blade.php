@@ -1,797 +1,926 @@
-<div>
-    <style>
-        /* Design System Moderne */
-        :root {
-            --primary: #3b82f6;
-            --primary-dark: #1d4ed8;
-            --secondary: #8b5cf6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1f2937;
-            --light: #f8fafc;
-            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
+<div class="dashboard-container">
+    <!-- En-tête -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="dashboard-title">
+                <i class="fas fa-chart-line me-2"></i>
+                Tableau de Bord GPI
+            </h1>
+            <p class="dashboard-subtitle">Vue d'ensemble de votre activité</p>
+        </div>
+        <div class="header-actions">
+            <select class="period-select" wire:model="activityFilter">
+                <option value="today">Aujourd'hui</option>
+                <option value="week">Cette semaine</option>
+                <option value="month">Ce mois</option>
+                <option value="year">Cette année</option>
+            </select>
+            <button class="refresh-btn" wire:click="refreshCharts">
+                <i class="fas fa-sync-alt"></i>
+                Actualiser
+            </button>
+        </div>
+    </div>
 
-        .dashboard {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 100vh;
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-
-        /* Cartes avec effet néomorphisme amélioré */
-        .neo-card {
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            border-radius: 24px;
-            box-shadow: 
-                20px 20px 60px #d9d9d9,
-                -20px -20px 60px #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .neo-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 
-                25px 25px 80px #c9c9c9,
-                -25px -25px 80px #ffffff;
-        }
-
-        /* Cartes statistiques avec dégradés */
-        .stat-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.08),
-                0 2px 10px rgba(0, 0, 0, 0.03);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient);
-        }
-
-        .stat-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            background: var(--gradient);
-            color: white;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-            transition: all 0.4s ease;
-        }
-
-        .stat-card:hover .stat-icon {
-            transform: scale(1.1) rotate(8deg);
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Barres de progression animées */
-        .progress-track {
-            background: rgba(226, 232, 240, 0.6);
-            border-radius: 12px;
-            overflow: hidden;
-            height: 10px;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 12px;
-            background: var(--gradient);
-            position: relative;
-            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Graphiques containers */
-        .chart-wrapper {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chart-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient);
-        }
-
-        /* Badges modernes */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .badge-success { background: rgba(16, 185, 129, 0.15); color: #065f46; border-color: rgba(16, 185, 129, 0.3); }
-        .badge-warning { background: rgba(245, 158, 11, 0.15); color: #92400e; border-color: rgba(245, 158, 11, 0.3); }
-        .badge-danger { background: rgba(239, 68, 68, 0.15); color: #991b1b; border-color: rgba(239, 68, 68, 0.3); }
-        .badge-info { background: rgba(59, 130, 246, 0.15); color: #1e40af; border-color: rgba(59, 130, 246, 0.3); }
-
-        /* Cartes d'activité */
-        .activity-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 12px 0;
-            border-left: 4px solid;
-            border-image: var(--gradient) 1;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-        }
-
-        .activity-card:hover {
-            transform: translateX(8px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        /* Boutons modernes */
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            padding: 14px 28px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
-        /* Inputs et selects */
-        .input-modern {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid rgba(226, 232, 240, 0.8);
-            border-radius: 12px;
-            padding: 12px 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .input-modern:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .stagger > * {
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        .stagger > *:nth-child(1) { animation-delay: 0.1s; }
-        .stagger > *:nth-child(2) { animation-delay: 0.2s; }
-        .stagger > *:nth-child(3) { animation-delay: 0.3s; }
-        .stagger > *:nth-child(4) { animation-delay: 0.4s; }
-
-        /* Typographie */
-        .text-gradient {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-title {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 2rem;
-            font-weight: 700;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: var(--gradient);
-            border-radius: 2px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .stat-card {
-                margin-bottom: 1rem;
-            }
-            
-            .stat-card:hover {
-                transform: none;
-            }
-            
-            .activity-card:hover {
-                transform: none;
-            }
-            
-            .chart-wrapper {
-                padding: 16px;
-            }
-            
-            .section-title::after {
-                width: 40px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .dashboard {
-                padding: 1rem;
-            }
-            
-            .stat-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 1.25rem;
-            }
-            
-            .btn-primary {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            .dashboard {
-                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            }
-            
-            .neo-card,
-            .stat-card,
-            .chart-wrapper {
-                background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-                border-color: rgba(255, 255, 255, 0.1);
-                color: #f8fafc;
-            }
-            
-            .input-modern {
-                background: rgba(30, 41, 59, 0.9);
-                border-color: rgba(255, 255, 255, 0.1);
-                color: #f8fafc;
-            }
-        }
-
-        /* Scrollbar personnalisée */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--gradient);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-    </style>
-
-    <div class="dashboard">
-        <div class="container mx-auto px-4 py-6">
-            <!-- Header -->
-            <div class="text-center mb-12 fade-in-up">
-                <h1 class="text-4xl md:text-5xl font-bold text-gradient mb-4">
-                    🚀 Tableau de Bord GPI
-                </h1>
-                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                    Supervision complète de votre infrastructure informatique en temps réel
-                </p>
+    <!-- Cartes de statistiques -->
+    <div class="stats-grid">
+        <!-- Carte Utilisateurs -->
+        <div class="stat-card">
+            <div class="card-icon users">
+                <i class="fas fa-users"></i>
             </div>
-
-            <!-- Controls Bar -->
-            <div class="neo-card p-6 mb-8 fade-in-up">
-                <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
-                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-                        <div class="w-full sm:w-auto">
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                📅 Période
-                            </label>
-                            <select wire:model="activityFilter" class="input-modern w-full">
-                                <option value="today">Aujourd'hui</option>
-                                <option value="week">Cette semaine</option>
-                                <option value="month">Ce mois</option>
-                                <option value="year">Cette année</option>
-                            </select>
-                        </div>
-                        <div class="w-full sm:w-auto">
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                👁️ Affichage
-                            </label>
-                            <select class="input-modern w-full">
-                                <option>Vue d'ensemble</option>
-                                <option>Détail technique</option>
-                                <option>Rapports avancés</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button wire:click="refreshCharts" class="btn-primary flex items-center gap-3 w-full lg:w-auto justify-center">
-                        <i class="fas fa-sync-alt"></i>
-                        <span>Actualiser les données</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Statistics Grid -->
-            <div class="mb-12">
-                <h2 class="section-title text-2xl md:text-3xl text-gray-800 dark:text-white">
-                    📊 Métriques Clés
-                </h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger">
-                    <!-- Users Card -->
-                    <div class="stat-card p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-                                    👥 Utilisateurs
-                                </p>
-                                <h3 class="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-                                    {{ $totalUsers }}
-                                </h3>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-green-600 dark:text-green-400 font-semibold">
-                                    ✅ Actifs: {{ $activeUsers }}
-                                </span>
-                                <span class="text-gray-500 font-medium">
-                                    {{ $totalUsers > 0 ? round(($activeUsers / $totalUsers) * 100, 1) : 0 }}%
-                                </span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" 
-                                     style="width: {{ $totalUsers > 0 ? ($activeUsers / $totalUsers) * 100 : 0 }}%"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tickets Card -->
-                    <div class="stat-card p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-                                    🎫 Tickets
-                                </p>
-                                <h3 class="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-                                    {{ $totalTickets }}
-                                </h3>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-ticket-alt"></i>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-orange-600 dark:text-orange-400 font-semibold">
-                                    🔥 Ouverts: {{ $openTickets }}
-                                </span>
-                                <span class="text-gray-500 font-medium">
-                                    {{ $totalTickets > 0 ? round(($openTickets / $totalTickets) * 100, 1) : 0 }}%
-                                </span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" 
-                                     style="width: {{ $totalTickets > 0 ? ($openTickets / $totalTickets) * 100 : 0 }}%"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Equipment Card -->
-                    <div class="stat-card p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-                                    💻 Équipements
-                                </p>
-                                <h3 class="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-                                    {{ $totalEquipments }}
-                                </h3>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-laptop"></i>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-green-600 dark:text-green-400 font-semibold">
-                                    ✅ Disponibles: {{ $availableEquipments }}
-                                </span>
-                                <span class="text-gray-500 font-medium">
-                                    {{ $totalEquipments > 0 ? round(($availableEquipments / $totalEquipments) * 100, 1) : 0 }}%
-                                </span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" 
-                                     style="width: {{ $totalEquipments > 0 ? ($availableEquipments / $totalEquipments) * 100 : 0 }}%"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Checkouts Card -->
-                    <div class="stat-card p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
-                                    🔄 Checkouts
-                                </p>
-                                <h3 class="text-3xl font-bold text-gray-800 dark:text-white mt-2">
-                                    {{ $totalCheckouts }}
-                                </h3>
-                            </div>
-                            <div class="stat-icon">
-                                <i class="fas fa-exchange-alt"></i>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-purple-600 dark:text-purple-400 font-semibold">
-                                    ⏳ En attente: {{ $pendingCheckouts }}
-                                </span>
-                                <span class="text-gray-500 font-medium">
-                                    {{ $totalCheckouts > 0 ? round(($pendingCheckouts / $totalCheckouts) * 100, 1) : 0 }}%
-                                </span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" 
-                                     style="width: {{ $totalCheckouts > 0 ? ($pendingCheckouts / $totalCheckouts) * 100 : 0 }}%"></div>
-                            </div>
-                        </div>
+            <div class="card-content">
+                <h3>{{ $totalUsers }}</h3>
+                <p>Utilisateurs</p>
+                <div class="progress-info">
+                    <span class="progress-text">{{ $activeUsers }} actifs</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ $totalUsers > 0 ? ($activeUsers / $totalUsers) * 100 : 0 }}%"></div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Charts Section -->
-            <div class="mb-12">
-                <h2 class="section-title text-2xl md:text-3xl text-gray-800 dark:text-white mb-8">
-                    📈 Analytics
-                </h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Tickets Chart -->
-                    <div class="chart-wrapper">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-3">
-                            <i class="fas fa-chart-pie text-blue-500"></i>
-                            Répartition des Tickets
-                        </h3>
-                        <div style="height: 280px;">
-                            <canvas id="ticketsChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Equipment Chart -->
-                    <div class="chart-wrapper">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-3">
-                            <i class="fas fa-chart-bar text-green-500"></i>
-                            Inventaire des Équipements
-                        </h3>
-                        <div style="height: 280px;">
-                            <canvas id="equipmentsChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Status Chart -->
-                    <div class="chart-wrapper">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-3">
-                            <i class="fas fa-chart-pie text-purple-500"></i>
-                            Statut des Équipements
-                        </h3>
-                        <div style="height: 280px;">
-                            <canvas id="equipmentStatusChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Incidents Chart -->
-                    <div class="chart-wrapper">
-                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-3">
-                            <i class="fas fa-exclamation-triangle text-red-500"></i>
-                            Incidents par Type
-                        </h3>
-                        <div style="height: 280px;">
-                            <canvas id="incidentsChart"></canvas>
-                        </div>
+        <!-- Carte Tickets -->
+        <div class="stat-card">
+            <div class="card-icon tickets">
+                <i class="fas fa-ticket-alt"></i>
+            </div>
+            <div class="card-content">
+                <h3>{{ $totalTickets }}</h3>
+                <p>Tickets</p>
+                <div class="progress-info">
+                    <span class="progress-text">{{ $openTickets }} ouverts</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ $totalTickets > 0 ? ($openTickets / $totalTickets) * 100 : 0 }}%"></div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Recent Activity -->
-            <div class="mb-12">
-                <h2 class="section-title text-2xl md:text-3xl text-gray-800 dark:text-white mb-8">
-                    ⚡ Activité Récente
-                </h2>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Recent Tickets -->
-                    <div class="neo-card p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
-                                <i class="fas fa-ticket-alt text-blue-500"></i>
-                                Tickets Récents
-                            </h3>
-                            <span class="badge badge-info">{{ count($recentTickets) }}</span>
-                        </div>
-                        <div class="space-y-4">
-                            @forelse($recentTickets as $ticket)
-                                <div class="activity-card">
-                                    <p class="font-semibold text-gray-800 dark:text-white mb-2">
-                                        {{ $ticket['title'] }}
-                                    </p>
-                                    <div class="flex items-center justify-between">
-                                        <span class="badge badge-{{ $ticket['status_class'] }}">
-                                            {{ $ticket['status'] }}
-                                        </span>
-                                        <span class="text-xs text-gray-500">{{ $ticket['created_at'] }}</span>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="text-center py-8 text-gray-400">
-                                    <i class="fas fa-inbox text-4xl mb-3"></i>
-                                    <p>Aucun ticket récent</p>
-                                </div>
-                            @endforelse
-                        </div>
+        <!-- Carte Équipements -->
+        <div class="stat-card">
+            <div class="card-icon equipments">
+                <i class="fas fa-laptop"></i>
+            </div>
+            <div class="card-content">
+                <h3>{{ $totalEquipments }}</h3>
+                <p>Équipements</p>
+                <div class="progress-info">
+                    <span class="progress-text">{{ $availableEquipments }} disponibles</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ $totalEquipments > 0 ? ($availableEquipments / $totalEquipments) * 100 : 0 }}%"></div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Recent Equipment -->
-                    <div class="neo-card p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
-                                <i class="fas fa-laptop text-green-500"></i>
-                                Équipements Récents
-                            </h3>
-                            <span class="badge badge-success">{{ count($recentEquipments) }}</span>
-                        </div>
-                        <div class="space-y-4">
-                            @forelse($recentEquipments as $equipment)
-                                <div class="activity-card">
-                                    <p class="font-semibold text-gray-800 dark:text-white mb-2">
-                                        {{ $equipment['name'] }}
-                                    </p>
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="badge badge-{{ $equipment['status_class'] }}">
-                                            {{ $equipment['status'] }}
-                                        </span>
-                                        <span class="text-xs text-gray-500">{{ $equipment['type'] }}</span>
-                                    </div>
-                                    <p class="text-xs text-gray-500">{{ $equipment['added_date'] }}</p>
-                                </div>
-                            @empty
-                                <div class="text-center py-8 text-gray-400">
-                                    <i class="fas fa-laptop text-4xl mb-3"></i>
-                                    <p>Aucun équipement récent</p>
-                                </div>
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <!-- System Activity -->
-                    <div class="neo-card p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
-                                <i class="fas fa-history text-purple-500"></i>
-                                Journal Système
-                            </h3>
-                            <span class="badge badge-warning">{{ count($recentActivities) }}</span>
-                        </div>
-                        <div class="space-y-4">
-                            @forelse($recentActivities as $activity)
-                                <div class="activity-card">
-                                    <div class="flex items-start gap-4">
-                                        <div class="flex-shrink-0 mt-1">
-                                            <i class="fas fa-{{ $activity['icon'] }} text-blue-500 text-lg"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="font-medium text-gray-800 dark:text-white">
-                                                {{ $activity['description'] }}
-                                            </p>
-                                            <p class="text-sm text-gray-500 mt-1">{{ $activity['time'] }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="text-center py-8 text-gray-400">
-                                    <i class="fas fa-clock text-4xl mb-3"></i>
-                                    <p>Aucune activité récente</p>
-                                </div>
-                            @endforelse
-                        </div>
+        <!-- Carte Checkouts -->
+        <div class="stat-card">
+            <div class="card-icon checkouts">
+                <i class="fas fa-exchange-alt"></i>
+            </div>
+            <div class="card-content">
+                <h3>{{ $totalCheckouts }}</h3>
+                <p>Checkouts</p>
+                <div class="progress-info">
+                    <span class="progress-text">{{ $pendingCheckouts }} en attente</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ $totalCheckouts > 0 ? ($pendingCheckouts / $totalCheckouts) * 100 : 0 }}%"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Chart Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all charts
-            initializeCharts();
-            
-            // Refresh charts when Livewire updates
-            window.addEventListener('chartsRefreshed', function() {
-                initializeCharts();
-            });
+    <!-- Graphiques -->
+    <div class="charts-grid">
+        <!-- Graphique Statut des Tickets -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Statut des Tickets</h3>
+                <small>Total: {{ array_sum(array_values($ticketStatusData)) }} tickets</small>
+            </div>
+            <div class="chart-container">
+                @php
+                    $hasTicketData = !empty($ticketStatusData) && array_sum(array_values($ticketStatusData)) > 0;
+                @endphp
+                @if($hasTicketData)
+                    <canvas id="ticketsChart-{{ $this->id }}"></canvas>
+                @else
+                    <div class="empty-chart">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>Aucune donnée de tickets disponible</p>
+                        <small>Vérifiez que vous avez des tickets dans la base de données</small>
+                    </div>
+                @endif
+            </div>
+        </div>
 
-            function initializeCharts() {
-                // Tickets Chart
-                const ticketsCtx = document.getElementById('ticketsChart')?.getContext('2d');
-                if (ticketsCtx) {
-                    new Chart(ticketsCtx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: {!! json_encode(array_keys($ticketStatusData)) !!},
-                            datasets: [{
-                                data: {!! json_encode(array_values($ticketStatusData)) !!},
-                                backgroundColor: ['#f59e0b', '#3b82f6', '#10b981'],
-                                borderWidth: 2
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { position: 'bottom' }
-                            }
-                        }
-                    });
-                }
+        <!-- Graphique Répartition des Équipements -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Répartition des Équipements</h3>
+                <small>Total: {{ array_sum(array_values($equipmentChartData)) }} équipements</small>
+            </div>
+            <div class="chart-container">
+                @php
+                    $hasEquipmentData = !empty($equipmentChartData) && array_sum(array_values($equipmentChartData)) > 0;
+                @endphp
+                @if($hasEquipmentData)
+                    <canvas id="equipmentsChart-{{ $this->id }}"></canvas>
+                @else
+                    <div class="empty-chart">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>Aucune donnée d'équipement disponible</p>
+                        <small>Vérifiez que vous avez des équipements dans la base de données</small>
+                    </div>
+                @endif
+            </div>
+        </div>
 
-                // Equipment Chart
-                const equipmentsCtx = document.getElementById('equipmentsChart')?.getContext('2d');
-                if (equipmentsCtx) {
-                    new Chart(equipmentsCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: {!! json_encode(array_keys($equipmentChartData)) !!},
-                            datasets: [{
-                                label: 'Équipements',
-                                data: {!! json_encode(array_values($equipmentChartData)) !!},
-                                backgroundColor: '#3b82f6',
-                                borderRadius: 8
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: { beginAtZero: true }
-                            }
-                        }
-                    });
-                }
+        <!-- Graphique Statut des Équipements -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Statut des Équipements</h3>
+                <small>Total: {{ array_sum(array_values($equipmentStatusData)) }} équipements</small>
+            </div>
+            <div class="chart-container">
+                @php
+                    $hasStatusData = !empty($equipmentStatusData) && array_sum(array_values($equipmentStatusData)) > 0;
+                @endphp
+                @if($hasStatusData)
+                    <canvas id="equipmentStatusChart-{{ $this->id }}"></canvas>
+                @else
+                    <div class="empty-chart">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>Aucun statut d'équipement disponible</p>
+                        <small>Les équipements doivent avoir un statut défini</small>
+                    </div>
+                @endif
+            </div>
+        </div>
 
-                // Equipment Status Chart
-                const statusCtx = document.getElementById('equipmentStatusChart')?.getContext('2d');
-                if (statusCtx) {
-                    new Chart(statusCtx, {
-                        type: 'pie',
-                        data: {
-                            labels: {!! json_encode(array_keys($equipmentStatusData)) !!},
-                            datasets: [{
-                                data: {!! json_encode(array_values($equipmentStatusData)) !!},
-                                backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444']
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { position: 'bottom' }
-                            }
-                        }
-                    });
-                }
+        <!-- Graphique Tickets Mensuels -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Tickets Mensuels</h3>
+                <small>Année: {{ date('Y') }}</small>
+            </div>
+            <div class="chart-container">
+                @php
+                    $hasMonthlyData = !empty($monthlyTicketsData) && array_sum($monthlyTicketsData) > 0;
+                @endphp
+                @if($hasMonthlyData)
+                    <canvas id="monthlyTicketsChart-{{ $this->id }}"></canvas>
+                @else
+                    <div class="empty-chart">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Aucune donnée mensuelle disponible</p>
+                        <small>Les tickets de cette année apparaîtront ici</small>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 
-                // Incidents Chart
-                const incidentsCtx = document.getElementById('incidentsChart')?.getContext('2d');
-                if (incidentsCtx) {
-                    new Chart(incidentsCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: {!! json_encode(array_keys($incidentsChartData)) !!},
-                            datasets: [{
-                                label: 'Incidents',
-                                data: {!! json_encode(array_values($incidentsChartData)) !!},
-                                backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'],
-                                borderRadius: 8
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: { beginAtZero: true }
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    </script>
+    <!-- Activités récentes -->
+    <div class="activities-grid">
+        <div class="activity-card">
+            <div class="activity-header">
+                <h3><i class="fas fa-ticket-alt me-2"></i>Tickets Récents</h3>
+            </div>
+            <div class="activity-list">
+                @if($recentTickets && count($recentTickets) > 0)
+                    @foreach($recentTickets as $ticket)
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="activity-title">{{ $ticket['title'] }}</p>
+                                <div class="activity-meta">
+                                    <span class="status-badge {{ $ticket['status_class'] }}">{{ $ticket['status'] }}</span>
+                                    <span class="activity-time">{{ $ticket['created_at'] }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Aucun ticket récent</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="activity-card">
+            <div class="activity-header">
+                <h3><i class="fas fa-laptop me-2"></i>Équipements Récents</h3>
+            </div>
+            <div class="activity-list">
+                @if($recentEquipments && count($recentEquipments) > 0)
+                    @foreach($recentEquipments as $equipment)
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="activity-title">{{ $equipment['name'] }}</p>
+                                <div class="activity-meta">
+                                    <span class="status-badge {{ $equipment['status_class'] }}">{{ $equipment['status'] }}</span>
+                                    <span class="activity-type">{{ $equipment['type'] }}</span>
+                                </div>
+                                <p class="activity-date">{{ $equipment['added_date'] }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="empty-state">
+                        <i class="fas fa-laptop"></i>
+                        <p>Aucun équipement récent</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="activity-card">
+            <div class="activity-header">
+                <h3><i class="fas fa-bell me-2"></i>Activités Récentes</h3>
+            </div>
+            <div class="activity-list">
+                @if($recentActivities && count($recentActivities) > 0)
+                    @foreach($recentActivities as $activity)
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-{{ $activity['icon'] }}"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p class="activity-title">{{ $activity['description'] }}</p>
+                                <p class="activity-time">{{ $activity['time'] }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="empty-state">
+                        <i class="fas fa-bell"></i>
+                        <p>Aucune activité récente</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* En-tête */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #35b4a1ff 0%, #5eead4 100%);
+    border-radius: 15px;
+    color: white;
+}
+
+.header-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.header-content p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.period-select {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.period-select option {
+    color: #333;
+}
+
+.refresh-btn {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Cartes de statistiques */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.card-icon.users { background: linear-gradient(135deg, #667eea, #00f2fe); }
+.card-icon.tickets { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.card-icon.equipments { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.card-icon.checkouts { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+.card-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 5px;
+}
+
+.card-content p {
+    color: #718096;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.progress-info {
+    width: 100%;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    color: #4a5568;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.stat-card:nth-child(1) .progress-fill { background: #667eea; }
+.stat-card:nth-child(2) .progress-fill { background: #f093fb; }
+.stat-card:nth-child(3) .progress-fill { background: #4facfe; }
+.stat-card:nth-child(4) .progress-fill { background: #43e97b; }
+
+/* Graphiques */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.chart-header {
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f7fafc;
+}
+
+.chart-header h3 {
+    color: #2d3748;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.chart-header small {
+    color: #718096;
+    font-size: 0.85rem;
+}
+
+.chart-container {
+    padding: 20px;
+    height: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-chart {
+    text-align: center;
+    color: #a0aec0;
+    padding: 40px 20px;
+}
+
+.empty-chart i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.empty-chart p {
+    font-size: 1rem;
+    margin: 0 0 10px 0;
+}
+
+.empty-chart small {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* Activités récentes */
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.activity-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.activity-header {
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f7fafc;
+}
+
+.activity-header h3 {
+    color: #2d3748;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.activity-list {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #f7fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 5px;
+}
+
+.activity-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-warning { background: #fed7d7; color: #c53030; }
+.status-success { background: #c6f6d5; color: #276749; }
+.status-info { background: #bee3f8; color: #2c5aa0; }
+.status-danger { background: #fed7d7; color: #c53030; }
+.status-light { background: #e2e8f0; color: #4a5568; }
+
+.activity-time, .activity-type, .activity-date {
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #a0aec0;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .activities-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+</style>
+
+@script
+<script>
+    // Fonction pour initialiser tous les graphiques
+    function initializeCharts() {
+        console.log('Initialisation des graphiques...');
+        
+        // Graphique des tickets par statut
+        initializeTicketChart();
+        
+        // Graphique des équipements par type
+        initializeEquipmentChart();
+        
+        // Graphique des statuts d'équipements
+        initializeEquipmentStatusChart();
+        
+        // Graphique des tickets mensuels
+        initializeMonthlyTicketsChart();
+    }
+
+    function initializeTicketChart() {
+        const ticketsCtx = document.getElementById('ticketsChart-{{ $this->id }}');
+        if (!ticketsCtx) {
+            console.log('Canvas ticketsChart non trouvé');
+            return;
+        }
+
+        const ticketData = @json($ticketStatusData ?? []);
+        const hasData = ticketData && Object.keys(ticketData).length > 0 && Object.values(ticketData).some(val => val > 0);
+
+        if (!hasData) {
+            console.log('Aucune donnée pour le graphique des tickets');
+            return;
+        }
+
+        console.log('Données tickets:', ticketData);
+
+        try {
+            // Détruire le graphique existant s'il y en a un
+            if (ticketsCtx.chart) {
+                ticketsCtx.chart.destroy();
+            }
+
+            ticketsCtx.chart = new Chart(ticketsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(ticketData),
+                    datasets: [{
+                        data: Object.values(ticketData),
+                        backgroundColor: ['#f093fb', '#4facfe', '#43e97b', '#fed7d7'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: { 
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            console.log('Graphique tickets initialisé avec succès');
+        } catch (error) {
+            console.error('Erreur initialisation graphique tickets:', error);
+        }
+    }
+
+    function initializeEquipmentChart() {
+        const equipmentsCtx = document.getElementById('equipmentsChart-{{ $this->id }}');
+        if (!equipmentsCtx) {
+            console.log('Canvas equipmentsChart non trouvé');
+            return;
+        }
+
+        const equipmentData = @json($equipmentChartData ?? []);
+        const hasData = equipmentData && Object.keys(equipmentData).length > 0 && Object.values(equipmentData).some(val => val > 0);
+
+        if (!hasData) {
+            console.log('Aucune donnée pour le graphique des équipements');
+            return;
+        }
+
+        console.log('Données équipements:', equipmentData);
+
+        try {
+            // Détruire le graphique existant s'il y en a un
+            if (equipmentsCtx.chart) {
+                equipmentsCtx.chart.destroy();
+            }
+
+            equipmentsCtx.chart = new Chart(equipmentsCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(equipmentData),
+                    datasets: [{
+                        label: 'Nombre d\'équipements',
+                        data: Object.values(equipmentData),
+                        backgroundColor: '#667eea',
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            console.log('Graphique équipements initialisé avec succès');
+        } catch (error) {
+            console.error('Erreur initialisation graphique équipements:', error);
+        }
+    }
+
+    function initializeEquipmentStatusChart() {
+        const equipmentStatusCtx = document.getElementById('equipmentStatusChart-{{ $this->id }}');
+        if (!equipmentStatusCtx) {
+            console.log('Canvas equipmentStatusChart non trouvé');
+            return;
+        }
+
+        const equipmentStatusData = @json($equipmentStatusData ?? []);
+        const hasData = equipmentStatusData && Object.keys(equipmentStatusData).length > 0 && Object.values(equipmentStatusData).some(val => val > 0);
+
+        if (!hasData) {
+            console.log('Aucune donnée pour le graphique des statuts d\'équipements');
+            return;
+        }
+
+        console.log('Données statuts équipements:', equipmentStatusData);
+
+        try {
+            // Détruire le graphique existant s'il y en a un
+            if (equipmentStatusCtx.chart) {
+                equipmentStatusCtx.chart.destroy();
+            }
+
+            equipmentStatusCtx.chart = new Chart(equipmentStatusCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(equipmentStatusData),
+                    datasets: [{
+                        data: Object.values(equipmentStatusData),
+                        backgroundColor: ['#43e97b', '#4facfe', '#f093fb', '#fed7d7'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: { 
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            console.log('Graphique statuts équipements initialisé avec succès');
+        } catch (error) {
+            console.error('Erreur initialisation graphique statuts équipements:', error);
+        }
+    }
+
+    function initializeMonthlyTicketsChart() {
+        const monthlyTicketsCtx = document.getElementById('monthlyTicketsChart-{{ $this->id }}');
+        if (!monthlyTicketsCtx) {
+            console.log('Canvas monthlyTicketsChart non trouvé');
+            return;
+        }
+
+        const monthlyData = @json($monthlyTicketsData ?? []);
+        const hasData = monthlyData && monthlyData.length > 0 && monthlyData.some(val => val > 0);
+
+        if (!hasData) {
+            console.log('Aucune donnée pour le graphique des tickets mensuels');
+            return;
+        }
+
+        console.log('Données tickets mensuels:', monthlyData);
+
+        try {
+            // Détruire le graphique existant s'il y en a un
+            if (monthlyTicketsCtx.chart) {
+                monthlyTicketsCtx.chart.destroy();
+            }
+
+            monthlyTicketsCtx.chart = new Chart(monthlyTicketsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    datasets: [{
+                        label: 'Tickets créés',
+                        data: monthlyData,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#667eea',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+            console.log('Graphique tickets mensuels initialisé avec succès');
+        } catch (error) {
+            console.error('Erreur initialisation graphique tickets mensuels:', error);
+        }
+    }
+
+    // Initialiser les graphiques quand la page est chargée
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM chargé, initialisation des graphiques...');
+        // Petit délai pour s'assurer que Livewire est chargé
+        setTimeout(initializeCharts, 100);
+    });
+
+    // Réinitialiser les graphiques après les mises à jour Livewire
+    Livewire.hook('morph.updated', (el, component) => {
+        if (component.$wire.__instance.id === '{{ $this->id }}') {
+            console.log('Composant mis à jour, réinitialisation des graphiques...');
+            setTimeout(initializeCharts, 100);
+        }
+    });
+
+    // Écouter l'événement de rafraîchissement des graphiques
+    window.addEventListener('chartsRefreshed', function() {
+        console.log('Événement chartsRefreshed reçu, réinitialisation des graphiques...');
+        setTimeout(initializeCharts, 100);
+    });
+
+    // Réinitialiser quand on clique sur le bouton actualiser
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('refreshCharts', () => {
+            setTimeout(initializeCharts, 100);
+        });
+    });
+</script>
+@endscript
