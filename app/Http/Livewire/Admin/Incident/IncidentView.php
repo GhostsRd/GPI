@@ -209,6 +209,10 @@ class IncidentView extends Component
         $this->emitSelf('refreshComponent');
 
     }
+    public function RemoveIncident($id){
+        Incident::destroy($id);
+        return redirect('/admin/incident');
+    }
     public function markResolved()
     {
         $this->modelstep(Incident::find($this->incidentId));

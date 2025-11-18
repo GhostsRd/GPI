@@ -296,7 +296,7 @@
 
              <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#incidentcollaps">
-                    <i class="nav-icon bi bi-arrow-left-right"></i>
+                   <i class="bi bi-folder-fill text-secondary fs-6"></i>
                     <span>Incident</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>

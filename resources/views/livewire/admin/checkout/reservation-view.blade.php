@@ -91,7 +91,7 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li><a class="dropdown-item text-danger" href="#"
-                                            wire:click="Removeticket({{ $reservationID }})">
+                                            wire:click="RemoveReservation({{ $reservationID }})">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
                                                 fill="currentColor" class="size-6">
                                                 <path fill-rule="evenodd"
@@ -167,22 +167,20 @@
                             </div>
 
                             @if ($current[4] == 'current')
+                                <div class="step {{ $current[4] }} col-lg-2" data-index="2">
+                                    <div class="dot"><i class="bi bi-check-circle-fill"></i></div>
+                                    <div class="title">Rendu</div>
+                                    <div class="sub">Finale</div>
 
-                            <div class="step {{ $current[4] }} col-lg-2" data-index="2">
-                                <div class="dot"><i class="bi bi-check-circle-fill"></i></div>
-                                <div class="title">Rendu</div>
-                                <div class="sub">Finale</div>
-
-                            </div>
+                                </div>
                             @endif
                             @if ($current[5] == 'current')
-                            
-                            <div class="step {{ $current[5] }} col-lg-2" data-index="2">
-                                <div class="dot bg-danger">x</div>
-                                <div class="title">Rendu et abime</div>
-                                <div class="sub">Finale</div>
+                                <div class="step {{ $current[5] }} col-lg-2" data-index="2">
+                                    <div class="dot bg-danger">x</div>
+                                    <div class="title">Rendu et abime</div>
+                                    <div class="sub">Finale</div>
 
-                            </div>
+                                </div>
                             @endif
                         </div>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin\Checkout;
 
 use App\Models\Checkout;
+use App\Models\checkoutreserver;
 use App\Models\Commentaire;
 use App\Models\ordinateur;
 use App\Models\utilisateur;
@@ -71,6 +72,8 @@ class ReservationView extends Component
 
     $this->emit('refreshComponent');
   }
+
+
 
   public function nextStep()
   {

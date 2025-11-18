@@ -1408,14 +1408,14 @@
                             </div> --}}
 
                                 <div class="card-body m-0 p-0  ">
-                                    <div class="pb-2 fw-bold text-muted">
-                                        Incident
+                                    <div class="pb-2">
+                                        <span class="  fw-bold ">Incident</span>
                                         <small class="small mx-2 justify-content-end">
                                             {{ \Carbon\Carbon::parse($incidentrecent->created_at)->translatedFormat('d M Y H:i') }}
                                         </small>
                                     </div>
                                     <strong class="d-flex justify-content-between">
-                                        <div class="card-bg rounded-start-pill ">
+                                        <div class="bg-light rounded-start-pill ">
                                             <img class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill"
                                                 data-toggle="dropdown"
                                                 src="https://ui-avatars.com/api/?name={{ $incidentrecent->utilisateur->nom ?? 'none' }}"

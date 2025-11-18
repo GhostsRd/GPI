@@ -652,7 +652,7 @@
                     </svg>
                 </div>
             </div>
-
+            
             {{-- ici le contente right --}}
 
             <div class="border-start col-lg-9 mx-2">
