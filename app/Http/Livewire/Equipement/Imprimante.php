@@ -62,6 +62,7 @@ class Imprimante extends Component
     public $confirmingDelete = false;
     public $deleteId = null; 
     public $selectedImprimanteName = '';
+    public $isBulkDelete = false;
 
     // Données pour les selects
     public $utilisateurs;
@@ -330,6 +331,21 @@ class Imprimante extends Component
         $imprimante = ImprimanteModel::findOrFail($id);
         $this->deleteId = $id;
         $this->selectedImprimanteName = $imprimante->nom;
+        $this->isBulkDelete = false;
+        $this->confirmingDelete = true;
+    }
+
+    /**
+     * Confirmer la suppression groupée
+     */
+    public function confirmBulkDelete()
+    {
+        if (empty($this->selectedImprimantes)) {
+            session()->flash('warning', 'Veuillez sélectionner au moins une imprimante.');
+            return;
+        }
+
+        $this->isBulkDelete = true;
         $this->confirmingDelete = true;
     }
 
@@ -338,17 +354,23 @@ class Imprimante extends Component
      */
     public function deleteConfirmed()
     {
-        if ($this->deleteId) {
-            try {
+        try {
+            if ($this->isBulkDelete) {
+                $count = ImprimanteModel::whereIn('id', $this->selectedImprimantes)->delete();
+                $this->selectedImprimantes = [];
+                $this->selectAll = false;
+                session()->flash('message', $count . ' imprimante(s) supprimée(s) avec succès.');
+            } else if ($this->deleteId) {
                 ImprimanteModel::findOrFail($this->deleteId)->delete();
-                $this->confirmingDelete = false;
-                $this->deleteId = null;
-                $this->selectedImprimanteName = '';
-                $this->refreshTable();
                 session()->flash('message', 'Imprimante supprimée avec succès.');
-            } catch (\Exception $e) {
-                session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
             }
+            
+            $this->confirmingDelete = false;
+            $this->deleteId = null;
+            $this->selectedImprimanteName = '';
+            $this->refreshTable();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
     }
 
@@ -367,23 +389,7 @@ class Imprimante extends Component
      */
     public function deleteSelected()
     {
-        try {
-            if (empty($this->selectedImprimantes)) {
-                session()->flash('warning', 'Aucune imprimante sélectionnée.');
-                return;
-            }
-
-            $count = ImprimanteModel::whereIn('id', $this->selectedImprimantes)->delete();
-            
-            $this->selectedImprimantes = [];
-            $this->selectAll = false;
-            $this->refreshTable();
-
-            session()->flash('message', $count . ' imprimante(s) supprimée(s) avec succès.');
-
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
-        }
+        $this->confirmBulkDelete();
     }
 
     // ==================== MÉTHODES IMPORT/EXPORT ====================

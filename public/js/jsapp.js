@@ -286,15 +286,8 @@ document.addEventListener('livewire:load', function() {
         }
     });
 
-    // Update page title when Livewire navigation occurs
-    Livewire.hook('navigate', (event) => {
-        setTimeout(() => {
-            const activeLink = document.querySelector('.nav-link-modern.active');
-            if (activeLink && window.modernSidebar) {
-                window.modernSidebar.updatePageTitle(activeLink);
-            }
-        }, 100);
-    });
+    // Livewire v2 does not have a 'navigate' hook. 
+    // Navigation changes can be handled via 'message.processed' if needed.
 });
 
 // Export for global access

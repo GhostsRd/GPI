@@ -486,7 +486,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                 <h5 class="fw-semibold mb-0">Liste des Moniteurs ({{ $moniteurs->total() }})</h5>
                 @if(!empty($selectedMoniteurs))
-                <button wire:click="deleteSelected" class="btn btn-danger btn-sm" title="Supprimer les moniteurs sélectionnés">
+                <button wire:click="confirmBulkDelete" class="btn btn-danger btn-sm" title="Supprimer les moniteurs sélectionnés">
                     <i class="fas fa-trash me-1"></i>
                     Supprimer ({{ count($selectedMoniteurs) }})
                 </button>
@@ -939,28 +939,34 @@
 
     <!-- Modal de confirmation de suppression -->
     @if($confirmingDelete)
-    <div class="modal-backdrop fade show"></div>
-    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmation de suppression</h5>
-                    <button type="button" class="btn-close" wire:click="closeDeleteModal"></button>
+    <div class="modal fade show" 
+         style="display: block; background: rgba(0,0,0,0.5);"
+         tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Confirmation de suppression
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="$set('confirmingDelete', false)"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <i class="fas fa-exclamation-triangle text-danger display-5"></i>
-                        <h4 class="mt-2 h5">Êtes-vous sûr ?</h4>
-                        <p class="text-muted small">
-                            Vous êtes sur le point de supprimer le moniteur <strong>{{ $selectedMoniteurName }}</strong>. 
-                            Cette action est irréversible.
-                        </p>
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-trash3 text-danger" style="font-size: 3rem;"></i>
                     </div>
+                    @if($isBulkDelete)
+                        <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer les <strong>{{ count($selectedMoniteurs) }}</strong> moniteurs sélectionnés ?</p>
+                    @else
+                        <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer le moniteur <strong>{{ $selectedMoniteurName }}</strong> ?</p>
+                    @endif
+                    <p class="text-muted small">Cette action est irréversible et toutes les données associées seront définitivement perdues.</p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDeleteModal">Annuler</button>
-                    <button type="button" class="btn btn-danger btn-sm" wire:click="deleteConfirmed">
-                        <i class="fas fa-trash me-1"></i>Supprimer
+                <div class="modal-footer bg-light border-0 justify-content-center p-3">
+                    <button type="button" class="btn btn-outline-secondary px-4" wire:click="$set('confirmingDelete', false)">
+                        <i class="bi bi-x-lg me-1"></i> Annuler
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" wire:click="deleteConfirmed">
+                        <i class="bi bi-trash-fill me-1"></i> Confirmer la suppression
                     </button>
                 </div>
             </div>

@@ -24,7 +24,7 @@ class Checkout extends Model
     }
     public function responsable()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'responsable_id');
     }
 
      public function telephone()

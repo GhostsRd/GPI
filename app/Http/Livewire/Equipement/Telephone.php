@@ -52,9 +52,11 @@ class Telephone extends Component
 
     // Pour gérer le mode (création/édition) et la suppression
     public $isEditing = false;
-    public $confirmingDelete = null;
+    public $confirmingDelete = false;
     public $telephoneToDelete = null;
     public $selectedTelephone = null;
+    public $isBulkDelete = false;
+    public $telephoneName = '';
 
     // Propriétés pour l'import
     public $importFile;
@@ -216,17 +218,31 @@ class Telephone extends Component
 
     public function confirmDelete($id)
     {
-        $this->confirmingDelete = $id;
+        $telephone = TelephoneModel::findOrFail($id);
         $this->telephoneToDelete = $id;
+        $this->telephoneName = $telephone->nom;
+        $this->isBulkDelete = false;
+        $this->confirmingDelete = true;
     }
 
     public function delete()
     {
-        if ($this->confirmingDelete) {
-            TelephoneModel::find($this->confirmingDelete)->delete();
-            $this->confirmingDelete = null;
+        try {
+            if ($this->isBulkDelete) {
+                $count = TelephoneModel::whereIn('id', $this->selectedTelephones)->delete();
+                $this->selectedTelephones = [];
+                $this->selectAll = false;
+                session()->flash('success', "{$count} équipement(s) supprimé(s) avec succès.");
+            } else if ($this->telephoneToDelete) {
+                TelephoneModel::find($this->telephoneToDelete)->delete();
+                session()->flash('success', 'Équipement supprimé avec succès.');
+            }
+            
+            $this->confirmingDelete = false;
             $this->telephoneToDelete = null;
-            session()->flash('success', 'Équipement supprimé avec succès.');
+            $this->telephoneName = '';
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
     }
 
@@ -236,13 +252,15 @@ class Telephone extends Component
         $this->telephoneToDelete = null;
     }
 
-    public function confirmDeleteSelected()
+    public function confirmBulkDelete()
     {
-        if (!empty($this->selectedTelephones)) {
-            TelephoneModel::whereIn('id', $this->selectedTelephones)->delete();
-            $this->selectedTelephones = [];
-            session()->flash('success', 'Équipements sélectionnés supprimés avec succès.');
+        if (empty($this->selectedTelephones)) {
+            session()->flash('error', 'Aucun équipement sélectionné.');
+            return;
         }
+
+        $this->isBulkDelete = true;
+        $this->confirmingDelete = true;
     }
 
     public function closeModal()

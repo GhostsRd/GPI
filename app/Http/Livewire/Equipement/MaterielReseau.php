@@ -49,6 +49,8 @@ class MaterielReseau extends Component
     public $showImportModal = false;
     public $showDetailsModal = false;
     public $deleteId;
+    public $isBulkDelete = false;
+    public $selectedMaterielName = '';
     public $selectedMateriel = null;
 
     // Propriétés pour l'import
@@ -354,38 +356,51 @@ class MaterielReseau extends Component
 
     public function confirmDelete($id)
     {
-        $this->deleteId = $id;
-        $this->showDeleteModal = true;
+        $materiel = MaterielReseauModel::find($id);
+        if ($materiel) {
+            $this->deleteId = $id;
+            $this->selectedMaterielName = $materiel->nom;
+            $this->isBulkDelete = false;
+            $this->showDeleteModal = true;
+        }
     }
 
-    public function deleteMateriel()
+    public function deleteConfirmed()
     {
-        if ($this->deleteId) {
-            try {
+        try {
+            if ($this->isBulkDelete) {
+                $count = MaterielReseauModel::whereIn('id', $this->selectedMateriels)->delete();
+                $this->selectedMateriels = [];
+                $this->selectAll = false;
+                session()->flash('message', "{$count} matériel(s) réseau supprimé(s) avec succès !");
+            } else if ($this->deleteId) {
                 MaterielReseauModel::findOrFail($this->deleteId)->delete();
-                session()->flash('message', 'Matériel réseau supprimé avec succès!');
-                $this->deleteId = null;
-                $this->showDeleteModal = false;
-                $this->emitSelf('refreshComponent');
-            } catch (\Exception $e) {
-                session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+                session()->flash('message', 'Matériel réseau supprimé avec succès !');
             }
+            
+            $this->showDeleteModal = false;
+            $this->deleteId = null;
+            $this->selectedMaterielName = '';
+            $this->emitSelf('refreshComponent');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
+    }
+
+    public function confirmBulkDelete()
+    {
+        if (empty($this->selectedMateriels)) {
+            session()->flash('warning', 'Aucun matériel sélectionné.');
+            return;
+        }
+
+        $this->isBulkDelete = true;
+        $this->showDeleteModal = true;
     }
 
     public function deleteSelected()
     {
-        if (!empty($this->selectedMateriels)) {
-            try {
-                MaterielReseauModel::whereIn('id', $this->selectedMateriels)->delete();
-                $this->selectedMateriels = [];
-                $this->selectAll = false;
-                session()->flash('message', 'Matériels réseau sélectionnés supprimés avec succès!');
-                $this->emitSelf('refreshComponent');
-            } catch (\Exception $e) {
-                session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
-            }
-        }
+        $this->confirmBulkDelete();
     }
 
     public function updatedSelectAll($value)

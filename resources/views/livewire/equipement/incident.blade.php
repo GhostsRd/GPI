@@ -98,9 +98,7 @@
                         <span>➕ Nouvel Incident</span>
                     </button>
                     @if(count($selectedIncidents) > 0)
-                    <button wire:click="deleteSelected" 
-                            wire:confirm="Êtes-vous sûr de vouloir supprimer les {{ count($selectedIncidents) }} incidents sélectionnés ?"
-                            class="btn-export danger">
+                    <button wire:click="confirmBulkDelete" class="btn-export danger">
                         <span>🗑️ Supprimer ({{ count($selectedIncidents) }})</span>
                     </button>
                     @endif
@@ -222,31 +220,38 @@
     </main>
 </div>
 
-<!-- Modal de suppression -->
+<!-- Modal de confirmation de suppression -->
 @if($showDeleteModal)
-<div class="modal-overlay">
-    <div class="modal-container">
-        <div class="modal-header">
-            <div class="modal-icon danger">
-                <svg class="modal-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                </svg>
+<div class="modal fade show" 
+     style="display: block; background: rgba(0,0,0,0.5);"
+     tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="background: white;">
+            <div class="modal-header bg-danger text-white border-0 p-3">
+                <h5 class="modal-title fw-bold m-0" style="color: white;">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Confirmation de suppression
+                </h5>
+                <button type="button" class="btn-close btn-close-white" wire:click="cancelDelete"></button>
             </div>
-            <h3 class="modal-title">Confirmer la suppression</h3>
-        </div>
-        <div class="modal-body">
-            <p class="modal-text">Êtes-vous sûr de vouloir supprimer cet incident ? Cette action est irréversible.</p>
-        </div>
-        <div class="modal-actions">
-            <button wire:click="cancelDelete" class="btn-secondary">
-                Annuler
-            </button>
-            <button wire:click="deleteIncident" class="btn-danger">
-                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                </svg>
-                Supprimer
-            </button>
+            <div class="modal-body p-4 text-center">
+                <div class="mb-3">
+                    <i class="bi bi-trash3 text-danger" style="font-size: 3rem;"></i>
+                </div>
+                @if($isBulkDelete)
+                    <p class="fs-5 mb-1" style="color: #1e293b;">Êtes-vous sûr de vouloir supprimer les <strong>{{ count($selectedIncidents) }}</strong> incidents sélectionnés ?</p>
+                @else
+                    <p class="fs-5 mb-1" style="color: #1e293b;">Êtes-vous sûr de vouloir supprimer l'incident <strong>{{ $selectedIncidentNature }}</strong> ?</p>
+                @endif
+                <p class="text-muted small">Cette action est irréversible et toutes les données associées seront définitivement perdues.</p>
+            </div>
+            <div class="modal-footer bg-light border-0 justify-content-center p-3">
+                <button type="button" class="btn btn-secondary px-4 me-2" wire:click="cancelDelete">
+                    <i class="bi bi-x-lg me-1"></i> Annuler
+                </button>
+                <button type="button" class="btn btn-danger px-4" wire:click="deleteConfirmed">
+                    <i class="bi bi-trash-fill me-1"></i> Confirmer la suppression
+                </button>
+            </div>
         </div>
     </div>
 </div>

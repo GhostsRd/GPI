@@ -52,7 +52,11 @@
     {{-- aos --}}
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     @livewireStyles
+    @stack('styles')
 </head>
 <body>
 <div id="app">
@@ -295,6 +299,27 @@
                     </div>
                 </div>
             </div>
+            <div class="nav-item-modern">
+    <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#documentationCollapse">
+        <i class="bi bi-journal-text text-muted"></i>
+        <span>Documentation</span>
+        <i class="nav-chevron bi bi-chevron-down"></i>
+    </a>
+
+    <div class="collapse" id="documentationCollapse">
+        <div class="nav-submenu">
+            <a href="#" class="submenu-item">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Nouveau
+            </a>
+            <a href="{{ route('documentation.admin-doc') }}" class="submenu-item">
+                <i class="bi bi-box-arrow-right"></i>
+                Gerer
+            </a>
+        </div>
+    </div>
+</div>
+
 
         
             <div class="nav-item-modern">
@@ -387,6 +412,7 @@
     AOS.refresh(); // réactive les animations pour les nouveaux éléments
   });
 </script>
+@stack('scripts')
 {{-- <script src="{{ asset('js/modalview.js') }}"></script> --}}
 <script>
     window.addEventListener('openAffectationModal', () => {
@@ -399,6 +425,9 @@
         modal.hide();
     });
 </script>
+<style>
+    
+</style>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 </body>
 </html>

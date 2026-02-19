@@ -210,6 +210,15 @@
                         <p class="text-muted small">Gérez votre parc informatique efficacement</p>
                     </div>
                     <div class="d-flex gap-2 flex-wrap">
+                        @if(count($selectedOrdinateurs) > 0)
+                            <button wire:click="confirmBulkDelete" class="btn btn-danger btn-sm d-flex align-items-center">
+                                <i class="bi bi-trash me-2"></i> Supprimer ({{ count($selectedOrdinateurs) }})
+                            </button>
+                        @endif
+                        <button class="btn btn-primary btn-sm d-flex align-items-center" 
+                                wire:click="create">
+                            <i class="bi bi-plus-lg me-2"></i> Ajouter
+                        </button>
                         <button class="btn btn-outline-primary btn-sm d-flex align-items-center" wire:click="toggleStats">
                             <i class="fas fa-chart-bar me-1"></i>
                             {{ $showStats ? 'Masquer' : 'Afficher' }} stats
@@ -501,6 +510,11 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
+                            <th width="40">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" wire:model.live="selectAll">
+                                </div>
+                            </th>
                             <th>Nom</th>
                             <th wire:click="sortBy('entite')" style="cursor: pointer;">
                                 Entité
@@ -537,7 +551,12 @@
                     </thead>
                     <tbody>
                     @forelse($ordinateurs as $ordinateur)
-                        <tr>
+                        <tr wire:key="ordinateur-{{ $ordinateur->id }}">
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" wire:model.live="selectedOrdinateurs" value="{{ $ordinateur->id }}">
+                                </div>
+                            </td>
                             <td class="fw-medium small">{{ $ordinateur->nom }}</td>
                             <td class="small">{{ $ordinateur->entite }}</td>
                             <td>
@@ -935,28 +954,34 @@
 
     <!-- Modal de confirmation de suppression -->
     @if($confirmingDelete)
-    <div class="modal-backdrop fade show"></div>
-    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmation de suppression</h5>
-                    <button type="button" class="btn-close" wire:click="closeDeleteModal"></button>
+    <div class="modal fade show" 
+         style="display: block; background: rgba(0,0,0,0.5);"
+         tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Confirmation de suppression
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="closeDeleteModal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <i class="fas fa-exclamation-triangle text-danger display-5"></i>
-                        <h4 class="mt-2 h5">Êtes-vous sûr ?</h4>
-                        <p class="text-muted small">
-                            Vous êtes sur le point de supprimer l'ordinateur <strong>{{ $selectedOrdinateurName }}</strong>. 
-                            Cette action est irréversible.
-                        </p>
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-trash3 text-danger" style="font-size: 3rem;"></i>
                     </div>
+                    @if($isBulkDelete)
+                        <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer les <strong>{{ count($selectedOrdinateurs) }}</strong> ordinateurs sélectionnés ?</p>
+                    @else
+                        <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer l'ordinateur <strong>{{ $selectedOrdinateurName }}</strong> ?</p>
+                    @endif
+                    <p class="text-muted small">Cette action est irréversible et toutes les données associées seront définitivement perdues.</p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDeleteModal">Annuler</button>
-                    <button type="button" class="btn btn-danger btn-sm" wire:click="deleteConfirmed">
-                        <i class="fas fa-trash me-1"></i>Supprimer
+                <div class="modal-footer bg-light border-0 justify-content-center p-3">
+                    <button type="button" class="btn btn-outline-secondary px-4" wire:click="closeDeleteModal">
+                        <i class="bi bi-x-lg me-1"></i> Annuler
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" wire:click="deleteConfirmed">
+                        <i class="bi bi-trash-fill me-1"></i> Confirmer la suppression
                     </button>
                 </div>
             </div>

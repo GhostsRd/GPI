@@ -44,6 +44,7 @@ class Logiciel extends Component
     public $selectedLogiciel = null;
     public $confirmingDelete = false;
     public $selectedLogicielName = '';
+    public $isBulkDelete = false;
 
     // Import simple
     public $fichierExcel;
@@ -175,34 +176,42 @@ class Logiciel extends Component
 
     public function confirmDelete($id)
     {
-        $logiciel = LogicielModel::findOrFail($id);
-        $this->selectedLogicielName = $logiciel->nom;
         $this->logicielId = $id;
+        $logiciel = LogicielModel::find($id);
+        $this->selectedLogicielName = $logiciel ? $logiciel->nom : '';
+        $this->isBulkDelete = false;
         $this->confirmingDelete = true;
     }
 
     public function deleteConfirmed()
     {
         try {
-            LogicielModel::findOrFail($this->logicielId)->delete();
-            session()->flash('message', 'Logiciel supprimé avec succès.');
-            $this->chargerStatistiques();
+            if ($this->isBulkDelete) {
+                $count = LogicielModel::whereIn('id', $this->selectedLogiciels)->delete();
+                $this->selectedLogiciels = [];
+                $this->selectAll = false;
+                session()->flash('message', "{$count} logiciel(s) supprimé(s) avec succès.");
+            } else {
+                $logiciel = LogicielModel::findOrFail($this->logicielId);
+                $logiciel->delete();
+                session()->flash('message', 'Logiciel supprimé avec succès.');
+            }
             $this->closeDeleteModal();
+            $this->chargerStatistiques();
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur: ' . $e->getMessage());
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
     }
 
     public function deleteSelected()
     {
-        try {
-            $count = LogicielModel::whereIn('id', $this->selectedLogiciels)->delete();
-            $this->selectedLogiciels = [];
-            session()->flash('message', $count . ' logiciel(s) supprimé(s).');
-            $this->chargerStatistiques();
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur: ' . $e->getMessage());
+        if (empty($this->selectedLogiciels)) {
+            session()->flash('warning', 'Aucun logiciel sélectionné.');
+            return;
         }
+
+        $this->isBulkDelete = true;
+        $this->confirmingDelete = true;
     }
 
     public function showDetails($id)

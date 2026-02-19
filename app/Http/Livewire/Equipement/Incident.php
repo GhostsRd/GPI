@@ -29,6 +29,8 @@ class Incident extends Component
     public $statut = "";
     public $showDeleteModal = false;
     public $incidentToDelete = null;
+    public $isBulkDelete = false;
+    public $selectedIncidentNature = '';
     public $sortField = 'id';
     public $sortDirection = 'asc';
     public $date_debut = '';
@@ -165,8 +167,13 @@ class Incident extends Component
 
     public function confirmDelete($incidentId)
     {
-        $this->incidentToDelete = $incidentId;
-        $this->showDeleteModal = true;
+        $incident = IncidentModel::find($incidentId);
+        if ($incident) {
+            $this->incidentToDelete = $incidentId;
+            $this->selectedIncidentNature = $incident->nature_incident;
+            $this->isBulkDelete = false;
+            $this->showDeleteModal = true;
+        }
     }
 
     public function cancelDelete()
@@ -175,26 +182,40 @@ class Incident extends Component
         $this->incidentToDelete = null;
     }
 
-    public function deleteIncident()
+    public function deleteConfirmed()
     {
-        if ($this->incidentToDelete) {
-            IncidentModel::find($this->incidentToDelete)?->delete();
+        try {
+            if ($this->isBulkDelete) {
+                $count = IncidentModel::whereIn('id', $this->selectedIncidents)->delete();
+                $this->selectedIncidents = [];
+                session()->flash('message', "{$count} incident(s) supprimé(s) avec succès.");
+            } else if ($this->incidentToDelete) {
+                IncidentModel::find($this->incidentToDelete)?->delete();
+                session()->flash('message', 'Incident supprimé avec succès.');
+            }
+            
             $this->showDeleteModal = false;
             $this->incidentToDelete = null;
-            session()->flash('message', 'Incident supprimé avec succès.');
+            $this->selectedIncidentNature = '';
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
     }
 
-    public function deleteSelected()
+    public function confirmBulkDelete()
     {
         if (empty($this->selectedIncidents)) {
             session()->flash('error', 'Aucun incident sélectionné.');
             return;
         }
 
-        IncidentModel::whereIn('id', $this->selectedIncidents)->delete();
-        $this->selectedIncidents = [];
-        session()->flash('message', 'Incidents supprimés avec succès.');
+        $this->isBulkDelete = true;
+        $this->showDeleteModal = true;
+    }
+
+    public function deleteSelected()
+    {
+        $this->confirmBulkDelete();
     }
 
     public function showCreateForm()

@@ -411,7 +411,7 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link" href="{{ route('mes.reservation') }}">• Reservation</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">• Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">• Contact</a></li>
                     <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle" id="userDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <a href="#" class="btn btn-one py-0 text-white fw-bold text-sm rounded-pill px-3">

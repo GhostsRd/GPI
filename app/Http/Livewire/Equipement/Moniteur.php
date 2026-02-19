@@ -54,6 +54,7 @@ class Moniteur extends Component
     public $showImportedData = false;
     public $confirmingDelete = false;
     public $deleteId = null;
+    public $isBulkDelete = false;
     public $selectedMoniteurName = '';
 
     // Données pour les selects
@@ -343,41 +344,47 @@ class Moniteur extends Component
         if ($moniteur) {
             $this->deleteId = $id;
             $this->selectedMoniteurName = $moniteur->nom;
+            $this->isBulkDelete = false;
             $this->confirmingDelete = true;
         }
     }
 
     public function deleteConfirmed()
     {
-        if ($this->deleteId) {
-            $this->delete($this->deleteId);
+        try {
+            if ($this->isBulkDelete) {
+                $count = MoniteurModel::whereIn('id', $this->selectedMoniteurs)->delete();
+                $this->selectedMoniteurs = [];
+                $this->selectAll = false;
+                session()->flash('success', "{$count} moniteur(s) supprimé(s) avec succès.");
+            } else if ($this->deleteId) {
+                MoniteurModel::findOrFail($this->deleteId)->delete();
+                session()->flash('success', 'Moniteur supprimé avec succès.');
+            }
+            
             $this->confirmingDelete = false;
             $this->deleteId = null;
             $this->selectedMoniteurName = '';
+            $this->chargerStatistiques();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
+    }
+
+    public function confirmBulkDelete()
+    {
+        if (empty($this->selectedMoniteurs)) {
+            session()->flash('warning', 'Aucun moniteur sélectionné.');
+            return;
+        }
+
+        $this->isBulkDelete = true;
+        $this->confirmingDelete = true;
     }
 
     public function deleteSelected()
     {
-        try {
-            if (empty($this->selectedMoniteurs)) {
-                session()->flash('warning', 'Aucun moniteur sélectionné.');
-                return;
-            }
-
-            $count = MoniteurModel::whereIn('id', $this->selectedMoniteurs)->delete();
-            
-            $this->selectedMoniteurs = [];
-            $this->selectAll = false;
-            $this->chargerStatistiques();
-            $this->chargerFabricants();
-            $this->chargerEntites();
-
-            session()->flash('success', $count . ' moniteur(s) supprimé(s) avec succès.');
-
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
-        }
+        $this->confirmBulkDelete();
     }
 
     // ==================== MÉTHODES D'IMPORT ====================

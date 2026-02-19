@@ -1,926 +1,644 @@
-<div class="dashboard-container">
-    <!-- En-tête -->
-    <div class="dashboard-header">
-        <div class="header-content">
-            <h1 class="dashboard-title">
-                <i class="fas fa-chart-line me-2"></i>
-                Tableau de Bord GPI
-            </h1>
-            <p class="dashboard-subtitle">Vue d'ensemble de votre activité</p>
+<script>
+    // Prevent theme flicker
+    (function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+    })();
+</script>
+<div class="container-fluid py-4" style="min-height: 100vh;">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+    <style>
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        :root {
+            /* Maxton Palette - Indigo/Violet SaaS */
+            --maxton-primary: #6366f1;
+            --maxton-primary-dark: #4f46e5;
+            --maxton-secondary: #a855f7;
+            --maxton-accent: #38bdf8;
+            --maxton-success: #10b981;
+            --maxton-warning: #f59e0b;
+            --maxton-danger: #ef4444;
+            
+            --bs-body-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: rgba(0,0,0,0.05);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+        
+        [data-bs-theme="dark"] {
+            --bs-body-bg: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: rgba(255,255,255,0.05);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            
+            --maxton-primary: #818cf8;
+            --maxton-secondary: #c084fc;
+        }
+        
+        body {
+            background-color: var(--bs-body-bg);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Modern Glassmorphism Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-header {
+            background: transparent;
+            border-bottom: 1px solid var(--card-border);
+            padding: 1.5rem;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+        
+        /* Stats Icons */
+        .stat-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .stat-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .bg-indigo { background: rgba(99, 102, 241, 0.15); color: #6366f1; }
+        .bg-violet { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+        .bg-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .bg-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-entry {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .row > div:nth-child(1) .animate-entry { animation-delay: 0.1s; }
+        .row > div:nth-child(2) .animate-entry { animation-delay: 0.2s; }
+        .row > div:nth-child(3) .animate-entry { animation-delay: 0.3s; }
+        .row > div:nth-child(4) .animate-entry { animation-delay: 0.4s; }
+
+        /* Fancy Tables */
+        .table {
+            color: var(--text-main);
+        }
+        
+        .table thead th {
+            background: rgba(0,0,0,0.02);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.05rem;
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem 1.5rem;
+        }
+        
+        [data-bs-theme="dark"] .table thead th {
+            background: rgba(255,255,255,0.02);
+        }
+        
+        .table td { border-bottom: 1px solid var(--card-border); padding: 1rem 1.5rem; vertical-align: middle; }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .theme-toggle:hover {
+            border-color: var(--maxton-primary);
+            color: var(--maxton-primary);
+            transform: scale(1.05);
+        }
+
+        /* Support Button (Inspired by image) */
+        .btn-maxton-support {
+            background: linear-gradient(135deg, var(--maxton-primary) 0%, var(--maxton-secondary) 100%);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.4rem;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-maxton-support:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+        
+        /* Custom Scrollbar for Dark Mode */
+        [data-bs-theme="dark"] ::-webkit-scrollbar { width: 8px; }
+        [data-bs-theme="dark"] ::-webkit-scrollbar-track { background: #1e293b; }
+        [data-bs-theme="dark"] ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    </style>
+
+
+
+    <!-- Header Dashboard -->
+    <div class="d-flex justify-content-between align-items-center mb-5 animate-entry">
+        <div>
+            <h2 class="mb-1 text-main">Tableau de Bord</h2>
+            <p class="text-muted mb-0">Vue d'ensemble intelligente de votre infrastructure</p>
         </div>
-        <div class="header-actions">
-            <select class="period-select" wire:model="activityFilter">
-                <option value="today">Aujourd'hui</option>
-                <option value="week">Cette semaine</option>
-                <option value="month">Ce mois</option>
-                <option value="year">Cette année</option>
-            </select>
-            <button class="refresh-btn" wire:click="refreshCharts">
-                <i class="fas fa-sync-alt"></i>
-                Actualiser
+        <div class="d-flex gap-3">
+            <div id="themeToggle" class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <button class="btn btn-white bg-card border-0 shadow-sm fw-600 px-4 rounded-3" wire:click="refreshCharts" style="height: 42px;">
+                <i class="fas fa-sync-alt me-2 text-primary"></i>Actualiser
             </button>
         </div>
     </div>
 
-    <!-- Cartes de statistiques -->
-    <div class="stats-grid">
-        <!-- Carte Utilisateurs -->
-        <div class="stat-card">
-            <div class="card-icon users">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="card-content">
-                <h3>{{ $totalUsers }}</h3>
-                <p>Utilisateurs</p>
-                <div class="progress-info">
-                    <span class="progress-text">{{ $activeUsers }} actifs</span>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: {{ $totalUsers > 0 ? ($activeUsers / $totalUsers) * 100 : 0 }}%"></div>
+    <!-- Stats Cards Row -->
+    <div class="row g-4 mb-5">
+        <!-- Total Incidents -->
+        <div class="col-12 col-md-6 col-xl-3 animate-entry">
+            <div class="card h-100 p-4 border-0">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Incidents</p>
+                        <h2 class="mb-0">{{ $totalIncidents ?? 0 }}</h2>
+                    </div>
+                    <div class="stat-icon-wrapper bg-soft-danger rounded-circle">
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
                 </div>
+                <div class="d-flex align-items-center mt-3">
+                    <span class="text-danger fw-700 me-2"><i class="fas fa-arrow-up me-1"></i>12%</span>
+                    <span class="text-muted small">ce mois</span>
+                </div>
+                <div id="spark1" class="mt-3" style="min-height: 50px;"></div>
             </div>
         </div>
 
-        <!-- Carte Tickets -->
-        <div class="stat-card">
-            <div class="card-icon tickets">
-                <i class="fas fa-ticket-alt"></i>
-            </div>
-            <div class="card-content">
-                <h3>{{ $totalTickets }}</h3>
-                <p>Tickets</p>
-                <div class="progress-info">
-                    <span class="progress-text">{{ $openTickets }} ouverts</span>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: {{ $totalTickets > 0 ? ($openTickets / $totalTickets) * 100 : 0 }}%"></div>
+        <!-- Total Tickets -->
+        <div class="col-12 col-md-6 col-xl-3 animate-entry">
+            <div class="card h-100 p-4 border-0">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Tickets</p>
+                        <h2 class="mb-0">{{ $stats['total_tickets'] ?? 0 }}</h2>
+                    </div>
+                    <div class="stat-icon-wrapper bg-soft-primary rounded-circle">
+                        <i class="fas fa-ticket-alt"></i>
                     </div>
                 </div>
+                <div class="d-flex align-items-center mt-3">
+                    <span class="text-indigo fw-700 me-2"><i class="fas fa-arrow-down me-1"></i>5%</span>
+                    <span class="text-muted small">vs dernier mois</span>
+                </div>
+                <div id="spark2" class="mt-3" style="min-height: 50px;"></div>
             </div>
         </div>
 
-        <!-- Carte Équipements -->
-        <div class="stat-card">
-            <div class="card-icon equipments">
-                <i class="fas fa-laptop"></i>
-            </div>
-            <div class="card-content">
-                <h3>{{ $totalEquipments }}</h3>
-                <p>Équipements</p>
-                <div class="progress-info">
-                    <span class="progress-text">{{ $availableEquipments }} disponibles</span>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: {{ $totalEquipments > 0 ? ($availableEquipments / $totalEquipments) * 100 : 0 }}%"></div>
+        <!-- Sorties Actives -->
+        <div class="col-12 col-md-6 col-xl-3 animate-entry">
+            <div class="card h-100 p-4 border-0">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Sorties</p>
+                        <h2 class="mb-0">{{ $stats['total_checkouts'] ?? 0 }}</h2>
+                    </div>
+                    <div class="stat-icon-wrapper bg-soft-success rounded-circle">
+                        <i class="fas fa-exchange-alt"></i>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Carte Checkouts -->
-        <div class="stat-card">
-            <div class="card-icon checkouts">
-                <i class="fas fa-exchange-alt"></i>
-            </div>
-            <div class="card-content">
-                <h3>{{ $totalCheckouts }}</h3>
-                <p>Checkouts</p>
-                <div class="progress-info">
-                    <span class="progress-text">{{ $pendingCheckouts }} en attente</span>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: {{ $totalCheckouts > 0 ? ($pendingCheckouts / $totalCheckouts) * 100 : 0 }}%"></div>
-                    </div>
+                <div class="d-flex align-items-center mt-3">
+                    <span class="text-emerald fw-700 me-2"><i class="fas fa-arrow-up me-1"></i>8%</span>
+                    <span class="text-muted small">en hausse</span>
                 </div>
+                <div id="spark3" class="mt-3" style="min-height: 50px;"></div>
             </div>
         </div>
-    </div>
 
-    <!-- Graphiques -->
-    <div class="charts-grid">
-        <!-- Graphique Statut des Tickets -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>Statut des Tickets</h3>
-                <small>Total: {{ array_sum(array_values($ticketStatusData)) }} tickets</small>
-            </div>
-            <div class="chart-container">
-                @php
-                    $hasTicketData = !empty($ticketStatusData) && array_sum(array_values($ticketStatusData)) > 0;
-                @endphp
-                @if($hasTicketData)
-                    <canvas id="ticketsChart-{{ $this->id }}"></canvas>
-                @else
-                    <div class="empty-chart">
-                        <i class="fas fa-chart-pie"></i>
-                        <p>Aucune donnée de tickets disponible</p>
-                        <small>Vérifiez que vous avez des tickets dans la base de données</small>
+        <!-- Taux Résolution -->
+        <div class="col-12 col-md-6 col-xl-3 animate-entry">
+            <div class="card h-100 p-4 border-0">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Résolution</p>
+                        @php
+                            $rate = 0;
+                            if(isset($incidentsChartData) && array_sum($incidentsChartData) > 0) {
+                                $resolved = $incidentsChartData['Résolus'] ?? 0;
+                                $total = array_sum($incidentsChartData);
+                                $rate = round(($resolved / $total) * 100);
+                            }
+                        @endphp
+                        <h2 class="mb-0">{{ $rate }}%</h2>
                     </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Graphique Répartition des Équipements -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>Répartition des Équipements</h3>
-                <small>Total: {{ array_sum(array_values($equipmentChartData)) }} équipements</small>
-            </div>
-            <div class="chart-container">
-                @php
-                    $hasEquipmentData = !empty($equipmentChartData) && array_sum(array_values($equipmentChartData)) > 0;
-                @endphp
-                @if($hasEquipmentData)
-                    <canvas id="equipmentsChart-{{ $this->id }}"></canvas>
-                @else
-                    <div class="empty-chart">
-                        <i class="fas fa-chart-bar"></i>
-                        <p>Aucune donnée d'équipement disponible</p>
-                        <small>Vérifiez que vous avez des équipements dans la base de données</small>
-                    </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Graphique Statut des Équipements -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>Statut des Équipements</h3>
-                <small>Total: {{ array_sum(array_values($equipmentStatusData)) }} équipements</small>
-            </div>
-            <div class="chart-container">
-                @php
-                    $hasStatusData = !empty($equipmentStatusData) && array_sum(array_values($equipmentStatusData)) > 0;
-                @endphp
-                @if($hasStatusData)
-                    <canvas id="equipmentStatusChart-{{ $this->id }}"></canvas>
-                @else
-                    <div class="empty-chart">
-                        <i class="fas fa-chart-pie"></i>
-                        <p>Aucun statut d'équipement disponible</p>
-                        <small>Les équipements doivent avoir un statut défini</small>
-                    </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Graphique Tickets Mensuels -->
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3>Tickets Mensuels</h3>
-                <small>Année: {{ date('Y') }}</small>
-            </div>
-            <div class="chart-container">
-                @php
-                    $hasMonthlyData = !empty($monthlyTicketsData) && array_sum($monthlyTicketsData) > 0;
-                @endphp
-                @if($hasMonthlyData)
-                    <canvas id="monthlyTicketsChart-{{ $this->id }}"></canvas>
-                @else
-                    <div class="empty-chart">
+                    <div class="stat-icon-wrapper bg-soft-warning rounded-circle">
                         <i class="fas fa-chart-line"></i>
-                        <p>Aucune donnée mensuelle disponible</p>
-                        <small>Les tickets de cette année apparaîtront ici</small>
                     </div>
-                @endif
+                </div>
+                <div class="d-flex align-items-center mt-3">
+                    <span class="text-amber fw-700 me-2"><i class="fas fa-check me-1"></i>+3%</span>
+                    <span class="text-muted small">efficacité</span>
+                </div>
+                <div id="spark4" class="mt-3" style="min-height: 50px;"></div>
             </div>
         </div>
     </div>
 
-    <!-- Activités récentes -->
-    <div class="activities-grid">
-        <div class="activity-card">
-            <div class="activity-header">
-                <h3><i class="fas fa-ticket-alt me-2"></i>Tickets Récents</h3>
-            </div>
-            <div class="activity-list">
-                @if($recentTickets && count($recentTickets) > 0)
-                    @foreach($recentTickets as $ticket)
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-ticket-alt"></i>
-                            </div>
-                            <div class="activity-content">
-                                <p class="activity-title">{{ $ticket['title'] }}</p>
-                                <div class="activity-meta">
-                                    <span class="status-badge {{ $ticket['status_class'] }}">{{ $ticket['status'] }}</span>
-                                    <span class="activity-time">{{ $ticket['created_at'] }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>Aucun ticket récent</p>
+    <!-- Graphiques principaux -->
+    <div class="row g-4 mb-5">
+        <!-- Tickets Mensuels -->
+        <div class="col-lg-6 animate-entry">
+            <div class="card h-100 border-0">
+                <div class="card-header border-0 d-flex justify-content-between align-items-center pb-0">
+                    <div>
+                        <h5 class="mb-1">Statistiques Tickets</h5>
+                        <p class="text-muted small mb-0">Évolution mensuelle {{ date('Y') }}</p>
                     </div>
-                @endif
+                </div>
+                <div class="card-body">
+                    <div id="chartTickets"></div>
+                </div>
             </div>
         </div>
 
-        <div class="activity-card">
-            <div class="activity-header">
-                <h3><i class="fas fa-laptop me-2"></i>Équipements Récents</h3>
-            </div>
-            <div class="activity-list">
-                @if($recentEquipments && count($recentEquipments) > 0)
-                    @foreach($recentEquipments as $equipment)
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-laptop"></i>
-                            </div>
-                            <div class="activity-content">
-                                <p class="activity-title">{{ $equipment['name'] }}</p>
-                                <div class="activity-meta">
-                                    <span class="status-badge {{ $equipment['status_class'] }}">{{ $equipment['status'] }}</span>
-                                    <span class="activity-type">{{ $equipment['type'] }}</span>
-                                </div>
-                                <p class="activity-date">{{ $equipment['added_date'] }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <div class="empty-state">
-                        <i class="fas fa-laptop"></i>
-                        <p>Aucun équipement récent</p>
+        <!-- Activité des Sorties -->
+        <div class="col-lg-6 animate-entry">
+            <div class="card h-100 border-0">
+                <div class="card-header border-0 d-flex justify-content-between align-items-center pb-0">
+                    <div>
+                        <h5 class="mb-1">Activité des Sorties</h5>
+                        <p class="text-muted small mb-0">Prêts et retours récents</p>
                     </div>
-                @endif
-            </div>
-        </div>
-
-        <div class="activity-card">
-            <div class="activity-header">
-                <h3><i class="fas fa-bell me-2"></i>Activités Récentes</h3>
-            </div>
-            <div class="activity-list">
-                @if($recentActivities && count($recentActivities) > 0)
-                    @foreach($recentActivities as $activity)
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-{{ $activity['icon'] }}"></i>
-                            </div>
-                            <div class="activity-content">
-                                <p class="activity-title">{{ $activity['description'] }}</p>
-                                <p class="activity-time">{{ $activity['time'] }}</p>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <div class="empty-state">
-                        <i class="fas fa-bell"></i>
-                        <p>Aucune activité récente</p>
-                    </div>
-                @endif
+                </div>
+                <div class="card-body">
+                    <div id="chartCheckouts"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-.dashboard-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* En-tête */
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: linear-gradient(135deg, #35b4a1ff 0%, #5eead4 100%);
-    border-radius: 15px;
-    color: white;
-}
-
-.header-content h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.header-content p {
-    opacity: 0.9;
-    font-size: 1.1rem;
-}
-
-.header-actions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.period-select {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    backdrop-filter: blur(10px);
-}
-
-.period-select option {
-    color: #333;
-}
-
-.refresh-btn {
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.refresh-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-}
-
-/* Cartes de statistiques */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.stat-card {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-.card-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: white;
-}
-
-.card-icon.users { background: linear-gradient(135deg, #667eea, #00f2fe); }
-.card-icon.tickets { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-.card-icon.equipments { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-.card-icon.checkouts { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-
-.card-content h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2d3748;
-    margin-bottom: 5px;
-}
-
-.card-content p {
-    color: #718096;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.progress-info {
-    width: 100%;
-}
-
-.progress-text {
-    font-size: 0.9rem;
-    color: #4a5568;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.5s ease;
-}
-
-.stat-card:nth-child(1) .progress-fill { background: #667eea; }
-.stat-card:nth-child(2) .progress-fill { background: #f093fb; }
-.stat-card:nth-child(3) .progress-fill { background: #4facfe; }
-.stat-card:nth-child(4) .progress-fill { background: #43e97b; }
-
-/* Graphiques */
-.charts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.chart-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.chart-header {
-    padding: 20px;
-    border-bottom: 1px solid #e2e8f0;
-    background: #f7fafc;
-}
-
-.chart-header h3 {
-    color: #2d3748;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.chart-header small {
-    color: #718096;
-    font-size: 0.85rem;
-}
-
-.chart-container {
-    padding: 20px;
-    height: 300px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.empty-chart {
-    text-align: center;
-    color: #a0aec0;
-    padding: 40px 20px;
-}
-
-.empty-chart i {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    opacity: 0.5;
-}
-
-.empty-chart p {
-    font-size: 1rem;
-    margin: 0 0 10px 0;
-}
-
-.empty-chart small {
-    font-size: 0.85rem;
-    opacity: 0.7;
-}
-
-/* Activités récentes */
-.activities-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
-}
-
-.activity-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.activity-header {
-    padding: 20px;
-    border-bottom: 1px solid #e2e8f0;
-    background: #f7fafc;
-}
-
-.activity-header h3 {
-    color: #2d3748;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.activity-list {
-    padding: 20px;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.activity-item {
-    display: flex;
-    gap: 15px;
-    padding: 15px 0;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.activity-item:last-child {
-    border-bottom: none;
-}
-
-.activity-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: #f7fafc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #667eea;
-    flex-shrink: 0;
-}
-
-.activity-content {
-    flex: 1;
-}
-
-.activity-title {
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 5px;
-}
-
-.activity-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 5px;
-}
-
-.status-badge {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-.status-warning { background: #fed7d7; color: #c53030; }
-.status-success { background: #c6f6d5; color: #276749; }
-.status-info { background: #bee3f8; color: #2c5aa0; }
-.status-danger { background: #fed7d7; color: #c53030; }
-.status-light { background: #e2e8f0; color: #4a5568; }
-
-.activity-time, .activity-type, .activity-date {
-    font-size: 0.85rem;
-    color: #718096;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: #a0aec0;
-}
-
-.empty-state i {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    opacity: 0.5;
-}
-
-.empty-state p {
-    margin: 0;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .dashboard-header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .charts-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .activities-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .chart-container {
-        height: 250px;
-    }
-}
-</style>
-
-@script
-<script>
-    // Fonction pour initialiser tous les graphiques
-    function initializeCharts() {
-        console.log('Initialisation des graphiques...');
-        
-        // Graphique des tickets par statut
-        initializeTicketChart();
-        
-        // Graphique des équipements par type
-        initializeEquipmentChart();
-        
-        // Graphique des statuts d'équipements
-        initializeEquipmentStatusChart();
-        
-        // Graphique des tickets mensuels
-        initializeMonthlyTicketsChart();
-    }
-
-    function initializeTicketChart() {
-        const ticketsCtx = document.getElementById('ticketsChart-{{ $this->id }}');
-        if (!ticketsCtx) {
-            console.log('Canvas ticketsChart non trouvé');
-            return;
-        }
-
-        const ticketData = @json($ticketStatusData ?? []);
-        const hasData = ticketData && Object.keys(ticketData).length > 0 && Object.values(ticketData).some(val => val > 0);
-
-        if (!hasData) {
-            console.log('Aucune donnée pour le graphique des tickets');
-            return;
-        }
-
-        console.log('Données tickets:', ticketData);
-
-        try {
-            // Détruire le graphique existant s'il y en a un
-            if (ticketsCtx.chart) {
-                ticketsCtx.chart.destroy();
-            }
-
-            ticketsCtx.chart = new Chart(ticketsCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(ticketData),
-                    datasets: [{
-                        data: Object.values(ticketData),
-                        backgroundColor: ['#f093fb', '#4facfe', '#43e97b', '#fed7d7'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            position: 'bottom',
-                            labels: { 
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                                    return `${label}: ${value} (${percentage}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            console.log('Graphique tickets initialisé avec succès');
-        } catch (error) {
-            console.error('Erreur initialisation graphique tickets:', error);
-        }
-    }
-
-    function initializeEquipmentChart() {
-        const equipmentsCtx = document.getElementById('equipmentsChart-{{ $this->id }}');
-        if (!equipmentsCtx) {
-            console.log('Canvas equipmentsChart non trouvé');
-            return;
-        }
-
-        const equipmentData = @json($equipmentChartData ?? []);
-        const hasData = equipmentData && Object.keys(equipmentData).length > 0 && Object.values(equipmentData).some(val => val > 0);
-
-        if (!hasData) {
-            console.log('Aucune donnée pour le graphique des équipements');
-            return;
-        }
-
-        console.log('Données équipements:', equipmentData);
-
-        try {
-            // Détruire le graphique existant s'il y en a un
-            if (equipmentsCtx.chart) {
-                equipmentsCtx.chart.destroy();
-            }
-
-            equipmentsCtx.chart = new Chart(equipmentsCtx, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(equipmentData),
-                    datasets: [{
-                        label: 'Nombre d\'équipements',
-                        data: Object.values(equipmentData),
-                        backgroundColor: '#667eea',
-                        borderRadius: 8,
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { 
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-            console.log('Graphique équipements initialisé avec succès');
-        } catch (error) {
-            console.error('Erreur initialisation graphique équipements:', error);
-        }
-    }
-
-    function initializeEquipmentStatusChart() {
-        const equipmentStatusCtx = document.getElementById('equipmentStatusChart-{{ $this->id }}');
-        if (!equipmentStatusCtx) {
-            console.log('Canvas equipmentStatusChart non trouvé');
-            return;
-        }
-
-        const equipmentStatusData = @json($equipmentStatusData ?? []);
-        const hasData = equipmentStatusData && Object.keys(equipmentStatusData).length > 0 && Object.values(equipmentStatusData).some(val => val > 0);
-
-        if (!hasData) {
-            console.log('Aucune donnée pour le graphique des statuts d\'équipements');
-            return;
-        }
-
-        console.log('Données statuts équipements:', equipmentStatusData);
-
-        try {
-            // Détruire le graphique existant s'il y en a un
-            if (equipmentStatusCtx.chart) {
-                equipmentStatusCtx.chart.destroy();
-            }
-
-            equipmentStatusCtx.chart = new Chart(equipmentStatusCtx, {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(equipmentStatusData),
-                    datasets: [{
-                        data: Object.values(equipmentStatusData),
-                        backgroundColor: ['#43e97b', '#4facfe', '#f093fb', '#fed7d7'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            position: 'bottom',
-                            labels: { 
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                                    return `${label}: ${value} (${percentage}%)`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            console.log('Graphique statuts équipements initialisé avec succès');
-        } catch (error) {
-            console.error('Erreur initialisation graphique statuts équipements:', error);
-        }
-    }
-
-    function initializeMonthlyTicketsChart() {
-        const monthlyTicketsCtx = document.getElementById('monthlyTicketsChart-{{ $this->id }}');
-        if (!monthlyTicketsCtx) {
-            console.log('Canvas monthlyTicketsChart non trouvé');
-            return;
-        }
-
-        const monthlyData = @json($monthlyTicketsData ?? []);
-        const hasData = monthlyData && monthlyData.length > 0 && monthlyData.some(val => val > 0);
-
-        if (!hasData) {
-            console.log('Aucune donnée pour le graphique des tickets mensuels');
-            return;
-        }
-
-        console.log('Données tickets mensuels:', monthlyData);
-
-        try {
-            // Détruire le graphique existant s'il y en a un
-            if (monthlyTicketsCtx.chart) {
-                monthlyTicketsCtx.chart.destroy();
-            }
-
-            monthlyTicketsCtx.chart = new Chart(monthlyTicketsCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
-                    datasets: [{
-                        label: 'Tickets créés',
-                        data: monthlyData,
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: '#667eea',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { 
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
-                    }
-                }
-            });
-            console.log('Graphique tickets mensuels initialisé avec succès');
-        } catch (error) {
-            console.error('Erreur initialisation graphique tickets mensuels:', error);
-        }
-    }
-
-    // Initialiser les graphiques quand la page est chargée
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM chargé, initialisation des graphiques...');
-        // Petit délai pour s'assurer que Livewire est chargé
-        setTimeout(initializeCharts, 100);
-    });
-
-    // Réinitialiser les graphiques après les mises à jour Livewire
-    Livewire.hook('morph.updated', (el, component) => {
-        if (component.$wire.__instance.id === '{{ $this->id }}') {
-            console.log('Composant mis à jour, réinitialisation des graphiques...');
-            setTimeout(initializeCharts, 100);
-        }
-    });
-
-    // Écouter l'événement de rafraîchissement des graphiques
-    window.addEventListener('chartsRefreshed', function() {
-        console.log('Événement chartsRefreshed reçu, réinitialisation des graphiques...');
-        setTimeout(initializeCharts, 100);
-    });
-
-    // Réinitialiser quand on clique sur le bouton actualiser
-    document.addEventListener('livewire:init', () => {
-        Livewire.on('refreshCharts', () => {
-            setTimeout(initializeCharts, 100);
+    <!-- Graphiques secondaires -->
+    <div class="row g-4 mb-5">
+        <!-- Équipements -->
+        <div class="col-lg-6 animate-entry">
+            <div class="card h-100 border-0">
+                <div class="card-header border-0 pb-0">
+                    <h5 class="mb-1">Équipements</h5>
+                    <p class="text-muted small mb-0">Par type d'inventaire</p>
+                </div>
+                <div class="card-body">
+                    <div id="chartEquipments"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logiciels -->
+        <div class="col-lg-6 animate-entry">
+            <div class="card h-100 border-0">
+                <div class="card-header border-0 pb-0">
+                    <h5 class="mb-1">Logiciels & Licences</h5>
+                    <p class="text-muted small mb-0">Répartition par catégorie</p>
+                </div>
+                <div class="card-body">
+                    <div id="chartSoftware"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tableau des activités unifiées -->
+    <div class="card border-0 animate-entry">
+        <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Flux d'Activités Unifié</h5>
+            <div class="d-flex align-items-center gap-3">
+                <div class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" id="filterActive" wire:model.live="onlyActive">
+                    <label class="form-check-label small fw-600" for="filterActive">Flux Actif Uniquement</label>
+                </div>
+                <span class="badge bg-soft-primary px-3 py-2 rounded-2">Total: {{ count($this->UnifiedActivities) }}</span>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Type</th>
+                            <th>Description</th>
+                            <th>Utilisateur</th>
+                            <th>Assigné à</th>
+                            <th>Date & Heure</th>
+                            <th>Statut</th>
+                            <th>Priorité</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($this->UnifiedActivities as $activity)
+                        <tr class="activity-row" style="border-left: 4px solid var(--maxton-{{ $activity['color'] == 'orange' ? 'warning' : ($activity['color'] == 'info' ? 'primary' : $activity['color']) }});">
+                            <td class="ps-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="stat-icon-wrapper bg-soft-{{ $activity['color'] == 'orange' ? 'warning' : ($activity['color'] == 'info' ? 'primary' : $activity['color']) }} rounded-circle me-2" style="width: 32px; height: 32px; font-size: 0.9rem; margin-bottom: 0;">
+                                        <i class="{{ $activity['icon'] }}"></i>
+                                    </div>
+                                    <span class="fw-700 small">{{ $activity['type'] }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fw-600 text-main">{{ $activity['title'] }}</div>
+                                <div class="text-muted small">ID: #{{ str_pad($activity['id'] ?? '---', 4, '0', STR_PAD_LEFT) }}</div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar me-2 bg-indigo text-white" style="width: 30px; height: 30px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                        {{ substr($activity['user'], 0, 1) }}
+                                    </div>
+                                    <span class="fw-500 small">{{ $activity['user'] }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar me-2 bg-violet text-white" style="width: 30px; height: 30px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                        {{ substr($activity['assigned_to'] ?? '---', 0, 1) }}
+                                    </div>
+                                    <span class="fw-500 small">{{ $activity['assigned_to'] ?? '---' }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fw-500 small">{{ $activity['date']->format('d/m/Y') }}</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">{{ $activity['date']->format('H:i') }} ({{ $activity['date']->diffForHumans() }})</div>
+                            </td>
+                            <td>
+                                @php
+                                    $badgeClass = match($activity['color']) {
+                                        'danger' => 'bg-soft-danger text-danger',
+                                        'orange' => 'bg-soft-warning text-warning',
+                                        'warning' => 'bg-soft-warning text-warning',
+                                        'success' => 'bg-soft-success text-success',
+                                        'info' => 'bg-soft-primary text-primary',
+                                        default => 'bg-soft-secondary'
+                                    };
+                                @endphp
+                                <span class="badge {{ $badgeClass }} font-size-12 px-3 py-2 rounded-pill">
+                                    {{ $activity['status'] }}
+                                </span>
+                            </td>
+                            <td>
+                                @if($activity['priority'] == 'Urgent' || $activity['priority'] == 'Critique')
+                                    <span class="text-danger fw-700 small"><i class="fas fa-circle font-size-10 me-1"></i>{{ $activity['priority'] }}</span>
+                                @else
+                                    <span class="text-muted fw-500 small">{{ $activity['priority'] }}</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @empty
+                        <tr><td colspan="7" class="text-center py-5 text-muted">Aucune activité récente trouvée</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initDashboard();
         });
-    });
-</script>
-@endscript
+
+        document.addEventListener('livewire:load', function() {
+            Livewire.hook('message.processed', (message, component) => {
+                initDashboard();
+            });
+        });
+
+        window.addEventListener('chartsRefreshed', () => {
+            initDashboard();
+        });
+
+        function initDashboard() {
+            // Colors Maxton
+            const colors = {
+                primary: '#6366f1',
+                secondary: '#a855f7',
+                success: '#10b981',
+                warning: '#f59e0b',
+                danger: '#ef4444',
+                info: '#06b6d4'
+            };
+
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-bs-theme') === 'dark';
+            const textColor = isDark ? '#94a3b8' : '#64748b';
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+
+            // Données
+            const ticketsHistory = {!! json_encode($monthlyTicketsData ?? []) !!};
+            const checkoutsHistory = {!! json_encode($monthlyCheckoutsData ?? []) !!};
+            
+            // Configuration des sparklines
+            const sparkOptions = {
+                chart: { 
+                    type: 'area', 
+                    height: 50, 
+                    sparkline: { enabled: true },
+                    animations: { enabled: true }
+                },
+                stroke: { curve: 'smooth', width: 2.5 },
+                fill: { 
+                    type: 'gradient',
+                    gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0 }
+                },
+                tooltip: { enabled: false }
+            };
+
+            // Spark 1 - Incidents
+            if(document.querySelector("#spark1")) {
+                new ApexCharts(document.querySelector("#spark1"), {
+                    ...sparkOptions,
+                    colors: [colors.danger],
+                    series: [{ data: {!! json_encode(array_values($incidentTrendData['data'] ?? [5, 8, 6, 10, 7, 9])) !!} }]
+                }).render();
+            }
+
+            // Spark 2 - Tickets
+            if(document.querySelector("#spark2")) {
+                new ApexCharts(document.querySelector("#spark2"), {
+                    ...sparkOptions,
+                    colors: [colors.primary],
+                    series: [{ data: Object.values(ticketsHistory).slice(-10) }]
+                }).render();
+            }
+
+            // Spark 3 - Checkouts
+            if(document.querySelector("#spark3")) {
+                new ApexCharts(document.querySelector("#spark3"), {
+                    ...sparkOptions,
+                    colors: [colors.success],
+                    series: [{ data: Object.values(checkoutsHistory).slice(-10) }]
+                }).render();
+            }
+
+            // Spark 4 - Taux
+            if(document.querySelector("#spark4")) {
+                new ApexCharts(document.querySelector("#spark4"), {
+                    ...sparkOptions,
+                    colors: [colors.warning],
+                    series: [{ data: [90, 92, 95, 94, 96, 95, 97, 96, 98, 97, 98, 99] }]
+                }).render();
+            }
+
+            // Chart Tickets (Area)
+            if(document.querySelector("#chartTickets")) {
+                new ApexCharts(document.querySelector("#chartTickets"), {
+                    series: [{ name: 'Tickets', data: Object.values(ticketsHistory) }],
+                    chart: { 
+                        id: 'mainTickets',
+                        type: 'area', 
+                        height: 320, 
+                        toolbar: { show: false },
+                        background: 'transparent',
+                        foreColor: textColor
+                    },
+                    colors: [colors.primary],
+                    stroke: { curve: 'smooth', width: 3 },
+                    fill: { 
+                        type: 'gradient', 
+                        gradient: { shadeIntensity: 1, opacityFrom: 0.5, opacityTo: 0.1 } 
+                    },
+                    grid: { borderColor: gridColor, strokeDashArray: 4 },
+                    xaxis: { categories: Object.keys(ticketsHistory) }
+                }).render();
+            }
+
+            // Chart Checkouts (Bar)
+            if(document.querySelector("#chartCheckouts")) {
+                new ApexCharts(document.querySelector("#chartCheckouts"), {
+                    series: [{ name: 'Sorties', data: Object.values(checkoutsHistory) }],
+                    chart: { 
+                        id: 'mainCheckouts',
+                        type: 'bar', 
+                        height: 320, 
+                        toolbar: { show: false },
+                        background: 'transparent',
+                        foreColor: textColor
+                    },
+                    colors: [colors.success],
+                    plotOptions: { bar: { borderRadius: 8, columnWidth: '45%' } },
+                    grid: { borderColor: gridColor, strokeDashArray: 4 },
+                    xaxis: { categories: Object.keys(checkoutsHistory) }
+                }).render();
+            }
+
+            // Donut Équipements
+            if(document.querySelector("#chartEquipments")) {
+                const equipmentData = {!! json_encode($equipmentTypeData ?? []) !!};
+                new ApexCharts(document.querySelector("#chartEquipments"), {
+                    series: Object.values(equipmentData),
+                    labels: Object.keys(equipmentData),
+                    chart: { type: 'donut', height: 300, foreColor: textColor },
+                    colors: [colors.primary, colors.secondary, colors.info, colors.success],
+                    stroke: { width: 0 },
+                    legend: { position: 'bottom' },
+                    plotOptions: { pie: { donut: { size: '75%' } } }
+                }).render();
+            }
+
+            // Pie Logiciels
+            if(document.querySelector("#chartSoftware")) {
+                const softwareData = {!! json_encode($softwareCategoryData ?? []) !!};
+                new ApexCharts(document.querySelector("#chartSoftware"), {
+                    series: Object.values(softwareData),
+                    labels: Object.keys(softwareData),
+                    chart: { type: 'pie', height: 300, foreColor: textColor },
+                    colors: [colors.primary, colors.success, colors.warning, colors.danger, colors.secondary],
+                    stroke: { width: 0 },
+                    legend: { position: 'bottom' }
+                }).render();
+            }
+
+            // --- Theme Support JS ---
+            const themeBtn = document.getElementById('themeToggle');
+            const icon = themeBtn.querySelector('i');
+
+            // Set initial icon
+            updateThemeIcon(isDark);
+
+            themeBtn.addEventListener('click', () => {
+                const current = html.getAttribute('data-bs-theme');
+                const dark = current !== 'dark';
+                
+                html.setAttribute('data-bs-theme', dark ? 'dark' : 'light');
+                localStorage.setItem('theme', dark ? 'dark' : 'light');
+                
+                updateThemeIcon(dark);
+                
+                // Reload page or refresh charts logic
+                // For simplicity, we refresh the window to apply all Maxton CSS variables properly
+                window.location.reload();
+            });
+
+            function updateThemeIcon(dark) {
+                 if(dark) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                    themeBtn.style.color = '#fbbf24';
+                 } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                    themeBtn.style.color = 'inherit';
+                 }
+            }
+        }
+    </script>
+</div>

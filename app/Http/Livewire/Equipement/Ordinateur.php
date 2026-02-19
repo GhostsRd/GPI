@@ -58,6 +58,9 @@ class Ordinateur extends Component
     public $selectedOrdinateur = null;
     public $confirmingDelete = false;
     public $selectedOrdinateurName = '';
+    public $isBulkDelete = false;
+    public $selectedOrdinateurs = [];
+    public $selectAll = false;
 
     // Propriétés pour l'import avec mapping
     public $fichierExcel;
@@ -134,10 +137,24 @@ class Ordinateur extends Component
     {
         if (in_array($propertyName, ['search', 'statut', 'entite', 'perPage'])) {
             $this->resetPage();
+            $this->selectedOrdinateurs = [];
+            $this->selectAll = false;
         }
     }
 
-    public function render()
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedOrdinateurs = $this->getOrdinateursQuery()->pluck('id')->map(fn($id) => (string)$id)->toArray();
+        } else {
+            $this->selectedOrdinateurs = [];
+        }
+    }
+
+    /**
+     * Obtenir la requête de base avec filtres
+     */
+    private function getOrdinateursQuery()
     {
         $query = OrdinateurModel::with(['utilisateur', 'usager']);
 
@@ -163,10 +180,15 @@ class Ordinateur extends Component
             $query->where('entite', 'LIKE', "%{$this->entite}%");
         }
 
-        // Tri
-        $query->orderBy($this->sortField, $this->sortDirection);
+        return $query;
+    }
 
+    public function render()
+    {
+        $query = $this->getOrdinateursQuery();
+        $query->orderBy($this->sortField, $this->sortDirection);
         $ordinateurs = $query->paginate($this->perPage);
+        
         $utilisateurs = Utilisateur::orderBy('nom')->get();
         $statuts = ['En service', 'En stock', 'Hors service', 'En réparation'];
 
@@ -324,6 +346,21 @@ class Ordinateur extends Component
         $ordinateur = OrdinateurModel::findOrFail($id);
         $this->selectedOrdinateurName = $ordinateur->nom;
         $this->ordinateurId = $id;
+        $this->isBulkDelete = false;
+        $this->confirmingDelete = true;
+    }
+
+    /**
+     * Confirmer la suppression groupée
+     */
+    public function confirmBulkDelete()
+    {
+        if (empty($this->selectedOrdinateurs)) {
+            session()->flash('warning', 'Veuillez sélectionner au moins un ordinateur.');
+            return;
+        }
+
+        $this->isBulkDelete = true;
         $this->confirmingDelete = true;
     }
 
@@ -343,10 +380,17 @@ class Ordinateur extends Component
     public function deleteConfirmed()
     {
         try {
-            $ordinateur = OrdinateurModel::findOrFail($this->ordinateurId);
-            $ordinateur->delete();
+            if ($this->isBulkDelete) {
+                $count = OrdinateurModel::whereIn('id', $this->selectedOrdinateurs)->delete();
+                $this->selectedOrdinateurs = [];
+                $this->selectAll = false;
+                session()->flash('message', "{$count} ordinateur(s) supprimé(s) avec succès.");
+            } else {
+                $ordinateur = OrdinateurModel::findOrFail($this->ordinateurId);
+                $ordinateur->delete();
+                session()->flash('message', 'Ordinateur supprimé avec succès.');
+            }
 
-            session()->flash('message', 'Ordinateur supprimé avec succès.');
             $this->chargerStatistiques();
             $this->closeDeleteModal();
         } catch (\Exception $e) {

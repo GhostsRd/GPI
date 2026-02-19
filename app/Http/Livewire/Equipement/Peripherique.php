@@ -46,6 +46,8 @@ class Peripherique extends Component
     public $showImportedData = false;
     public $confirmingDelete = false;
     public $deleteId = null;
+    public $isBulkDelete = false;
+    public $peripheriqueName = '';
 
     // Sélection multiple et tri
     public $selectedPeripheriques = [];
@@ -707,7 +709,10 @@ public $viewMode = 'compact';
      */
     public function confirmDelete($id)
     {
+        $peripherique = PeripheriqueModel::findOrFail($id);
         $this->deleteId = $id;
+        $this->peripheriqueName = $peripherique->nom;
+        $this->isBulkDelete = false;
         $this->confirmingDelete = true;
     }
 
@@ -734,37 +739,38 @@ public $viewMode = 'compact';
      */
     public function deleteConfirmed()
     {
-        if ($this->deleteId) {
-            $this->delete($this->deleteId);
+        try {
+            if ($this->isBulkDelete) {
+                $count = PeripheriqueModel::whereIn('id', $this->selectedPeripheriques)->delete();
+                $this->selectedPeripheriques = [];
+                $this->selectAll = false;
+                session()->flash('success', "{$count} périphérique(s) supprimé(s) avec succès.");
+            } else if ($this->deleteId) {
+                PeripheriqueModel::findOrFail($this->deleteId)->delete();
+                session()->flash('success', 'Périphérique supprimé avec succès.');
+            }
+            
             $this->confirmingDelete = false;
             $this->deleteId = null;
+            $this->peripheriqueName = '';
+            $this->chargerStatistiques();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
         }
     }
 
     /**
      * Supprimer les périphériques sélectionnés
      */
-    public function deleteSelected()
+    public function confirmBulkDelete()
     {
-        try {
-            if (empty($this->selectedPeripheriques)) {
-                session()->flash('warning', 'Aucun périphérique sélectionné.');
-                return;
-            }
-
-            $count = PeripheriqueModel::whereIn('id', $this->selectedPeripheriques)->delete();
-            
-            $this->selectedPeripheriques = [];
-            $this->selectAll = false;
-            $this->chargerStatistiques();
-            $this->chargerFabricants();
-            $this->chargerEntites();
-
-            session()->flash('success', $count . ' périphérique(s) supprimé(s) avec succès.');
-
-        } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+        if (empty($this->selectedPeripheriques)) {
+            session()->flash('warning', 'Aucun périphérique sélectionné.');
+            return;
         }
+
+        $this->isBulkDelete = true;
+        $this->confirmingDelete = true;
     }
 
     // ==================== MÉTHODES POUR LES STATISTIQUES ====================

@@ -182,7 +182,7 @@
                     <i class="fas fa-file-export "></i>
                 </button>
 
-                <button wire:click="deleteSelected" class="btn btn-outline-danger btn-sm" title="Supprimer sélection"
+                <button wire:click="confirmBulkDelete" class="btn btn-outline-danger btn-sm" title="Supprimer sélection"
                     {{ empty($selectedPeripheriques) ? 'disabled' : '' }}>
                     <i class="fas fa-trash "></i>
                     <span class="small ms-1">{{ count($selectedPeripheriques) }}</span>
@@ -725,26 +725,39 @@
 
 <!-- Confirmation Modal -->
 @if($confirmingDelete)
-    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmer la suppression</h5>
-                    <button type="button" wire:click="$set('confirmingDelete', false)" class="btn-close"></button>
+<div class="modal fade show" 
+     style="display: block; background: rgba(0,0,0,0.5);"
+     tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white border-0">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Confirmation de suppression
+                </h5>
+                <button type="button" class="btn-close btn-close-white" wire:click="$set('confirmingDelete', false)"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <div class="mb-3">
+                    <i class="bi bi-trash3 text-danger" style="font-size: 3rem;"></i>
                 </div>
-                <div class="modal-body">
-                    <p>Êtes-vous sûr de vouloir supprimer ce périphérique ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button wire:click="$set('confirmingDelete', false)" class="btn btn-secondary">Annuler</button>
-                    <button wire:click="delete({{ $confirmingDelete }})" class="btn btn-danger">
-                        <i class="fas fa-trash me-1"></i>
-                        Supprimer
-                    </button>
-                </div>
+                @if($isBulkDelete)
+                    <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer les <strong>{{ count($selectedPeripheriques) }}</strong> périphériques sélectionnés ?</p>
+                @else
+                    <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer le périphérique <strong>{{ $peripheriqueName }}</strong> ?</p>
+                @endif
+                <p class="text-muted small">Cette action est irréversible et toutes les données associées seront définitivement perdues.</p>
+            </div>
+            <div class="modal-footer bg-light border-0 justify-content-center p-3">
+                <button type="button" class="btn btn-outline-secondary px-4" wire:click="$set('confirmingDelete', false)">
+                    <i class="bi bi-x-lg me-1"></i> Annuler
+                </button>
+                <button type="button" class="btn btn-danger px-4" wire:click="deleteConfirmed">
+                    <i class="bi bi-trash-fill me-1"></i> Confirmer la suppression
+                </button>
             </div>
         </div>
     </div>
+</div>
 @endif
 
 <!-- Modal Détails du Périphérique -->

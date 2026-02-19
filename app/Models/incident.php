@@ -25,8 +25,11 @@ class Incident extends Model
     public function monitor(){
         return $this->belongsTo(moniteur::class,'equipement_id');
     }
-      public function commentaire()
+    public function commentaire()
     {
         return $this->hasMany(Commentaire::class, 'incident_id');
+    }
+    public function technicien(){
+        return $this->belongsTo(User::class, 'technicien_id');
     }
 }
