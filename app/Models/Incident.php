@@ -29,4 +29,7 @@ class Incident extends Model
     {
         return $this->hasMany(Commentaire::class, 'incident_id');
     }
+    public function technicien(){
+        return $this->belongsTo(User::class, 'technicien_id');
+    }
 }
