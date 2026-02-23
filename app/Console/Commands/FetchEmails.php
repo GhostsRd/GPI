@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Incident;
 use Illuminate\Console\Command;
 use Webklex\IMAP\Facades\Client;
 use App\Models\ticket;
@@ -38,7 +39,7 @@ class FetchEmails extends Command
      *
      * @return int
      */
-    public function handle(ticket $ticket,Commentaire $commentaire)
+    public function handle(ticket $ticket,Commentaire $commentaire , Incident $incident)
     {
         $client = Client::account('default');
         $client->connect();
@@ -46,6 +47,8 @@ class FetchEmails extends Command
         
         $folder = $client->getFolder('INBOX');
         $messages = $folder->messages()->unseen()->get();
+
+        //dd($messages);
 
         foreach ($messages as $message) {
             

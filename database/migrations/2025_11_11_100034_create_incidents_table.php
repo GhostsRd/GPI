@@ -19,10 +19,10 @@ class CreateIncidentsTable extends Migration
             $table->integer('utilisateur_id');
             $table->integer('commentaire_id')->nullable();
             $table->integer('statut')->default(1);
-            $table->string('equipement_type');
+            $table->string('equipement_type')->nullable();
             $table->string('incident_sujet');
             $table->string('incident_description');
-            $table->string('incident_nature');
+            $table->string('incident_nature')->nullable();
             $table->string('rapport_incident');
             $table->string('declaration_perte')->nullable();
             $table->timestamps();

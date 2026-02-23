@@ -150,7 +150,15 @@ class Ordinateur extends Component
                         'reseau_ip' => $request->ip
                 ]
         );
-     
+        
+        if(!$ordinateur){
+            OrdinateurModel::create([
+                'nom' => $request->computer_name,
+                'statut' => $request->status,
+                'reseau_ip' => $request->ip
+            ]);
+            return response()->json(['message' => 'Ordinateur créé avec succès'], 201);
+        }
 
 
         return response()->json($ordinateur);
