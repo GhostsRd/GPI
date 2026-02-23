@@ -28,28 +28,7 @@ class Kernel extends ConsoleKernel
      */
    protected function schedule(Schedule $schedule)
 {
-    $schedule->call(function () {
-
-      $ticket = Ticket::where('priorite', 0)
-    
-    ->latest('created_at')
-    ->first();
-    
-        $notifications = Cache::get('notifications', []);
-        $now = Carbon::now();
-        $last = end($notifications);
-
-        if (!$last || Carbon::parse($last['created_at'])->diffInMinutes($now) >= 1) {
-            $notifications[] = [
-                'title' => 'Rappel automatique',
-                'message' => 'Notification toutes les minutes'.$ticket->sujet.' et '.$ticket->details,
-                'created_at' => $now->toDateTimeString()
-            ];
-
-            Cache::put('notifications', $notifications, 60 * 60 * 24); // expire dans 24h
-        }
-
-    })->everyMinute(); // toutes les minutes
+    $schedule->command('fetch:emails')->everyMinute();
 }
 
     /**

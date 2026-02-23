@@ -507,7 +507,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-sm table-hover">
+                <table class="table table-sm table-hover" wire:poll.5s>
                     <thead>
                         <tr>
                             <th width="40">

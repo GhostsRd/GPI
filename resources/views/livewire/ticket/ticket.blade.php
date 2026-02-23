@@ -177,7 +177,7 @@
 
             <div class="table-wrapper p-0 border-0 w-100 compact-mode">
          
-                <table class="table border-0 shadow-sm">
+                <table class="table border-0 shadow-sm" wire:poll.5s>
                     <thead>
                     <tr>
                         <th>

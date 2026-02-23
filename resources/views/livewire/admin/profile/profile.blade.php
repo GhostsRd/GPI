@@ -4,11 +4,11 @@
             <div class="row">
                 <div class="col-lg-2 ">
                     @if (!empty($utilisateurs->photo))
-                      <img width="100" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('storage/'.$utilisateurs->photo) }}"
-                        alt="Photo de profil">
+                        <img width="100" class="mt-2 shadow-sm   rounded-pill"
+                            src="{{ asset('storage/' . $utilisateurs->photo) }}" alt="Photo de profil">
                     @else
-                    <img width="100" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('images/avtar_1.png') }}"
-                        alt="Photo de profil">
+                        <img width="100" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('images/avtar_1.png') }}"
+                            alt="Photo de profil">
                     @endif
 
                 </div>
@@ -29,16 +29,18 @@
                 </div>
 
                 <div class="col-lg-2  col-3 text-left">
-                   
+
                     <li class="nav-item dropdown" style="list-style: none">
-                        <a  class="dropdown-toggle dropdown-item shadow-sm py-1 rounded-3 fw-6 text-center justify-content-center" href="#" id="downloadDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                          
-                            <span >Plus</span>                      
+                        <a class="dropdown-toggle dropdown-item shadow-sm py-1 rounded-3 fw-6 text-center justify-content-center"
+                            href="#" id="downloadDropdown" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+
+                            <span>Plus</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="downloadDropdown">
                             <li>
-                                <a data-bs-toggle="modal" data-bs-target="#ajouterequipement" class="dropdown-item" target="_blank">
+                                <a data-bs-toggle="modal" data-bs-target="#ajouterequipement" class="dropdown-item"
+                                    target="_blank">
                                     Lier equipement
                                 </a>
                             </li>
@@ -46,8 +48,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item" wire:click="declaration_perte" target="_blank"
-                              >
+                                <a class="dropdown-item" wire:click="declaration_perte" target="_blank">
                                     Déclaration de perte
                                 </a>
                             </li>
@@ -355,7 +356,8 @@
             <div class="modal-content" style="">
 
                 <div class=" border-bottom">
-                    <h5 class="modal-title mx-2 my-2 text-dark fw-bold" id="incidentModalLabel">Nouveau incident</h5>
+                    <h5 class="modal-title mx-2 my-2 text-dark fw-bold" id="incidentModalLabel">Ajouter equipement
+                    </h5>
 
                 </div>
 
@@ -363,152 +365,160 @@
                 <form wire:submit.prevent="store">
                     <div class="modal-body row">
                         <!-- Sujet -->
-                        <p class="text-muted mb-3 mt-3">Les champs indiqués <span class="text-danger">*</span> sont
+                        <p class="text-muted mb-3 mt-1">Les champs indiqués <span class="text-danger">*</span> sont
                             obligatoires</p>
 
                         <div class="mb-3 col-lg-8">
-                            <label for="sujet" class="form-label fw-bold text-muted ">Sujet <span
-                                    class="text-danger ">*</span></label> <br>
-                            <textarea type="text" placeholder="Ex: J'ai perdu mon telephone .."
-                                class=" input-recherche py-1  border col-lg-8  px-2 text-dark rounded-2  @error('sujet') is-invalid border-danger  @enderror"
-                                id="sujet" wire:model.debounce.500ms="incident_sujet">
-
-                    </textarea>
-                            @error('sujet')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <label for="sujet" class="form-label fw-bold text-muted ">Ordinateur : <span
+                                    class="text-danger ">*</span></label>
                         </div>
-
-                        <!-- Détails -->
-                        <div class="mb-3 col-lg-8">
-                            <label for="details" class="form-label fw-bold text-muted">Description <span
-                                    class="text-danger">*</span></label> <br>
-                            <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
-                                class="input-recherche border col-lg-8 rounded-2  py-3 px-2  text-dark  @error('details') is-invalid border-danger @enderror"
-                                id="details" wire:model.debounce.500ms="incident_description" rows="2"></textarea>
-                            @error('details')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="border-top border-2 mb-4">
-                        </div>
-
-                        <div class="mb-3 col-lg-6">
-                            <label for="nature" class="form-label fw-bold text-muted mb-2">Nature d'incident <span
-                                    class="text-danger">*</span></label>
-                            <div class="position-relative">
-                                <i
-                                    class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                                <select id="categorie"
-                                    class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('impact') is-invalid @enderror"
-                                    wire:model="incident_nature">
-                                    <option value="" class="text-left"> Sélectionner le nature</option>
-
-                                    <option value="Vol">Vol</option>
-                                    <option value="Perte">Perte</option>
-                                    <option value="Panne">Panne</option>
-                                    <option value="Autre">Autre</option>
-                                </select>
+                            <div class="mb-3 col-lg-8">
+                                <label for="sujet" class="form-label fw-bold text-muted ">Telephone : <span
+                                        class="text-danger ">*</span></label>
+                               
+                                @error('sujet')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('nature')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-
-                        </div>
-
-                        <div class="mb-3 col-lg-6">
-                            <label for="equipement_type" class="form-label fw-bold text-muted">Équipement <span
-                                    class="text-danger">*</span></label>
-                            <div class="position-relative">
-                                <i
-                                    class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                                <select id="equipement_type"
-                                    class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border"
-                                    wire:model="equipement_type">
-                                    <option value="">Sélectionner l'equipement</option>
-                                    <option value="Ordinateur">Ordinateur</option>
-                                    <option value="Telephone">Téléphone</option>
-                                    <option value="Peripherique">Périphérique</option>
-                                    <option value="Moniteur">Moniteur</option>
-                                    <option value="Autre">Autre</option>
-                                </select>
+                                <div class="mb-3 col-lg-8">
+                                <label for="sujet" class="form-label fw-bold text-muted ">Flotte : <span
+                                        class="text-danger ">*</span></label>
+                               
+                                @error('sujet')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
+                            <!-- Détails -->
+                            <div class="mb-3 col-lg-8">
+                                <label for="details" class="form-label fw-bold text-muted">Description <span
+                                        class="text-danger">*</span></label> <br>
+                                <textarea type="text" placeholder="Ex: On m'a vole mon telephone"
+                                    class="input-recherche border col-lg-8 rounded-2  py-3 px-2  text-dark  @error('details') is-invalid border-danger @enderror"
+                                    id="details" wire:model.debounce.500ms="incident_description" rows="2"></textarea>
+                                @error('details')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="border-top border-2 mb-4">
+                            </div>
+
+                            <div class="mb-3 col-lg-6">
+                                <label for="nature" class="form-label fw-bold text-muted mb-2">Nature d'incident
+                                    <span class="text-danger">*</span></label>
+                                <div class="position-relative">
+                                    <i
+                                        class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                    <select id="categorie"
+                                        class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border @error('impact') is-invalid @enderror"
+                                        wire:model="incident_nature">
+                                        <option value="" class="text-left"> Sélectionner le nature</option>
+
+                                        <option value="Vol">Vol</option>
+                                        <option value="Perte">Perte</option>
+                                        <option value="Panne">Panne</option>
+                                        <option value="Autre">Autre</option>
+                                    </select>
+                                </div>
+                                @error('nature')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
+                            </div>
+
+                            <div class="mb-3 col-lg-6">
+                                <label for="equipement_type" class="form-label fw-bold text-muted">Équipement <span
+                                        class="text-danger">*</span></label>
+                                <div class="position-relative">
+                                    <i
+                                        class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                    <select id="equipement_type"
+                                        class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border"
+                                        wire:model="equipement_type">
+                                        <option value="">Sélectionner l'equipement</option>
+                                        <option value="Ordinateur">Ordinateur</option>
+                                        <option value="Telephone">Téléphone</option>
+                                        <option value="Peripherique">Périphérique</option>
+                                        <option value="Moniteur">Moniteur</option>
+                                        <option value="Autre">Autre</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 col-lg-6 ">
+                                <label for="categorie" class="form-label fw-bold text-muted">Rapport d'incident <span
+                                        class="text-danger">*</span></label>
+
+
+                                <input type="file" wire:model="rapport_incident"
+                                    class="form-control  @error('rapport_incident') is-invalid @enderror">
+                                @error('rapport_incident')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
+                                <div wire:loading wire:target="rapport_incident">Telechargement...</div>
+
+
+                            </div>
+
+                            <div class="mb-3 col-lg-6 ">
+                                <label for="categorie" class="form-label fw-bold text-muted">Declaration de perte
+                                    <span class="text-success">( Optionnel )</span></label>
+                                <input type="file" wire:model="declaration_perte" class="form-control">
+                            </div>
+
+
+
                         </div>
 
-                        <div class="mb-3 col-lg-6 ">
-                            <label for="categorie" class="form-label fw-bold text-muted">Rapport d'incident <span
-                                    class="text-danger">*</span></label>
-
-
-                            <input type="file" wire:model="rapport_incident"
-                                class="form-control  @error('rapport_incident') is-invalid @enderror">
-                            @error('rapport_incident')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-
-                            <div wire:loading wire:target="rapport_incident">Telechargement...</div>
-
+                        <!-- Footer -->
+                        <div class="modal-footer border-top py-2">
+                            <button type="button" class="btn btn-secondary px-4"
+                                data-bs-dismiss="modal">Fermer</button>
 
                         </div>
-
-                        <div class="mb-3 col-lg-6 ">
-                            <label for="categorie" class="form-label fw-bold text-muted">Declaration de perte <span
-                                    class="text-success">( Optionnel )</span></label>
-                            <input type="file" wire:model="declaration_perte" class="form-control">
-                        </div>
-
-
 
                     </div>
-
-                    <!-- Footer -->
-                    <div class="modal-footer border-top py-2">
-                        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Fermer</button>
-
-                    </div>
-
             </div>
         </div>
-    </div>
 
 
 
 
-    <aside wire:ignore.self class="chat-popup" id="chatPopup"  role="dialog" aria-modal="false"
-        aria-label="Fenêtre de chat">
-        <header class="chat-header">
-            <div> <img width="50" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('/images/avtar_1.png') }}"
-                    alt="Photo de profil">
-            </div>
-            <div class="chat-title">
-                <h4>{{ $utilisateurs->nom }}</h4>
-                <p>{{ $utilisateurs->poste }}</p>
-            </div>
-            <button class="chat-close" id="chatClose" aria-label="Fermer">✕</button>
-        </header>
+        <aside wire:ignore.self class="chat-popup" id="chatPopup" role="dialog" aria-modal="false"
+            aria-label="Fenêtre de chat">
+            <header class="chat-header">
+                <div> <img width="50" class="mt-2 shadow-sm   rounded-pill"
+                        src="{{ asset('/images/avtar_1.png') }}" alt="Photo de profil">
+                </div>
+                <div class="chat-title">
+                    <h4>{{ $utilisateurs->nom }}</h4>
+                    <p>{{ $utilisateurs->poste }}</p>
+                </div>
+                <button class="chat-close" id="chatClose" aria-label="Fermer">✕</button>
+            </header>
 
-        <div class="chat-messages" id="messages" aria-live="polite">
-            @foreach ($Chats as $chat)
-                <!-- sample messages -->
+            <div class="chat-messages" id="messages" aria-live="polite">
+                @foreach ($Chats as $chat)
+                    <!-- sample messages -->
 
-                <div class="msg {{ $chat->type == 'user' ? 'user' : 'agent' }}">{{ $chat->message }}<small>Vous ·
-                        {{ $chat->created_at }}</small></div>
+                    <div class="msg {{ $chat->type == 'user' ? 'user' : 'agent' }}">{{ $chat->message }}<small>Vous ·
+                            {{ $chat->created_at }}</small></div>
 
-                {{-- <div class="msg user">Salut, j'ai un problème avec mon compte<small>Vous · 08:56</small></div>
+                    {{-- <div class="msg user">Salut, j'ai un problème avec mon compte<small>Vous · 08:56</small></div>
       
       <div class="msg agent">D'accord, peux-tu préciser ?<small>Support · 08:57</small></div>
       <div class="msg agent">{{$chat->message}}<small>Vous · {{$chat->created_at}}</small></div> --}}
-            @endforeach
-        </div>
+                @endforeach
+            </div>
 
-        <form wire:submit.prevent="EnvoyerMessage" class="p-2">
-            <textarea id="input" wire:model="message" class="chat-input" rows="1" placeholder="Écris un message..."></textarea>
-            <button id="sendBtn" type="submit" class="btn border-0 btn-primary btn-sm">Envoyer</button>
-        </form>
-    </aside>
+            <form wire:submit.prevent="EnvoyerMessage" class="p-2">
+                <textarea id="input" wire:model="message" class="chat-input" rows="1" placeholder="Écris un message..."></textarea>
+                <button id="sendBtn" type="submit" class="btn border-0 btn-primary btn-sm">Envoyer</button>
+            </form>
+        </aside>
 
 
-    {{-- <div wire:poll.60s="checkNotifications">
+        {{-- <div wire:poll.60s="checkNotifications">
     <h4>Notification récente</h4>
 
     @php
@@ -533,295 +543,296 @@
     <audio id="notifSound" src="{{ asset('song/notif.wav') }}" preload="auto"></audio>
 </div> --}}
 
-    {{-- <audio id="notifSound" src="{{ asset('song/notif.wav') }}" preload="auto"></audio> --}}
-    {{-- <button id="enableSound" class="btn btn-outline-secondary">
+        {{-- <audio id="notifSound" src="{{ asset('song/notif.wav') }}" preload="auto"></audio> --}}
+        {{-- <button id="enableSound" class="btn btn-outline-secondary">
     🔊 Activer les sons
 </button> --}}
 
-    <style>
-        /* Reset minimal */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0
-        }
-
-        html,
-        body {
-            height: 100%
-        }
-
-        body {
-            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-            background: #f3f4f6
-        }
-        .modal-content {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-        backdrop-filter: blur(0px) ;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        }
-
-        .modal-backdrop.show {
-            background-color: rgba(0, 0, 0, 0.2) !important;
-            /* 0.2 = plus clair */
-        }
-
-        /* Floating button */
-        .chat-toggle {
-            position: fixed;
-            right: 24px;
-            bottom: 24px;
-            z-index: 1000;
-            width: 56px;
-            height: 56px;
-            border-radius: 28px;
-            background: #0b84ff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 18px rgba(11, 132, 255, .24);
-            font-weight: 700;
-            font-size: 18px
-        }
-
-        /* Popup container */
-        .chat-popup {
-            position: fixed;
-            right: 24px;
-            bottom: 92px;
-            z-index: 1000;
-            width: 360px;
-            max-width: 92vw;
-            height: 520px;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            border-radius: 14px;
-            background: #fff;
-            box-shadow: 0 18px 50px rgba(15, 23, 42, .2);
-            overflow: hidden;
-            transform: translateY(20px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all .26s cubic-bezier(.2, .9, .3, 1);
-        }
-
-        .chat-popup.open {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto
-        }
-
-        /* Header */
-        .chat-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            border-bottom: 1px solid #eef2f7;
-            background: linear-gradient(90deg, #f8fafc, #fff)
-        }
-
-        .chat-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #0b84ff, #0047b3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 700
-        }
-
-        .chat-title {
-            flex: 1
-        }
-
-        .chat-title h4 {
-            font-size: 15px;
-            margin-bottom: 2px
-        }
-
-        .chat-title p {
-            font-size: 12px;
-            color: #64748b
-        }
-
-        .chat-close {
-            background: transparent;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: #64748b
-        }
-
-        /* Messages area */
-        .chat-messages {
-            flex: 1;
-            padding: 12px;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%)
-        }
-
-        .msg {
-            max-width: 78%;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.35
-        }
-
-        .msg.agent {
-            align-self: flex-start;
-            background: #f1f5f9;
-            color: #0f172a;
-            border-bottom-left-radius: 4px
-        }
-
-        .msg.user {
-            align-self: flex-end;
-            background: #0b84ff;
-            color: #fff;
-            border-bottom-right-radius: 4px
-        }
-
-        .msg small {
-            display: block;
-            margin-top: 6px;
-            font-size: 11px;
-            opacity: .75
-        }
-
-        /* Composer */
-        .chat-composer {
-            padding: 10px;
-            border-top: 1px solid #eef2f7;
-            display: flex;
-            gap: 8px;
-            align-items: center
-        }
-
-        .chat-input {
-            flex: 1;
-            background: #f8fafc;
-            border: 1px solid #e6eef9;
-            padding: 10px 12px;
-            border-radius: 10px;
-            min-height: 40px;
-            resize: none
-        }
-
-        .btn-send {
-            background: #0b84ff;
-            color: #fff;
-            border: none;
-            padding: 10px 12px;
-            border-radius: 10px;
-            cursor: pointer
-        }
-
-        /* Tiny responsive tweak */
-        @media (max-width:420px) {
-            .chat-popup {
-                right: 12px;
-                left: 12px;
-                width: calc(100% - 24px);
-                bottom: 80px
+        <style>
+            /* Reset minimal */
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0
             }
 
+            html,
+            body {
+                height: 100%
+            }
+
+            body {
+                font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+                background: #f3f4f6
+            }
+
+            .modal-content {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+                backdrop-filter: blur(0px);
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            }
+
+            .modal-backdrop.show {
+                background-color: rgba(0, 0, 0, 0.2) !important;
+                /* 0.2 = plus clair */
+            }
+
+            /* Floating button */
             .chat-toggle {
-                right: 12px;
-                bottom: 12px
+                position: fixed;
+                right: 24px;
+                bottom: 24px;
+                z-index: 1000;
+                width: 56px;
+                height: 56px;
+                border-radius: 28px;
+                background: #0b84ff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 6px 18px rgba(11, 132, 255, .24);
+                font-weight: 700;
+                font-size: 18px
             }
-        }
-    </style>
 
-
-
-    <script>
-        const toggle = document.getElementById('chatToggle');
-        const popup = document.getElementById('chatPopup');
-        const closeBtn = document.getElementById('chatClose');
-        const messages = document.getElementById('messages');
-        const input = document.getElementById('input');
-        const sendBtn = document.getElementById('sendBtn');
-
-        function openChat() {
-            popup.classList.add('open');
-            toggle.style.display = 'none';
-            input.focus();
-            scrollToBottom()
-        }
-
-        function closeChat() {
-            popup.classList.remove('open');
-            toggle.style.display = 'flex'
-        }
-
-        toggle.addEventListener('click', openChat);
-        closeBtn.addEventListener('click', closeChat);
-
-        // send message
-        function appendMessage(text, who) {
-            const el = document.createElement('div');
-            el.className = 'msg ' + (who === 'user' ? 'user' : 'agent');
-            const now = new Date();
-            const hh = now.getHours().toString().padStart(2, '0');
-            const mm = now.getMinutes().toString().padStart(2, '0');
-            el.innerHTML = text + '<small>' + (who === 'user' ? 'Vous' : 'Support') + ' · ' + hh + ':' + mm + '</small>';
-            messages.appendChild(el);
-            scrollToBottom();
-        }
-
-        function scrollToBottom() {
-            messages.scrollTop = messages.scrollHeight
-        }
-
-
-
-        // simple escape to avoid injection when inserting HTML
-        function escapeHtml(s) {
-            return s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
-                .replaceAll("'", "&#39;")
-        }
-
-        // allow enter to send (shift+enter for newline)
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendBtn.click();
+            /* Popup container */
+            .chat-popup {
+                position: fixed;
+                right: 24px;
+                bottom: 92px;
+                z-index: 1000;
+                width: 360px;
+                max-width: 92vw;
+                height: 520px;
+                max-height: 80vh;
+                display: flex;
+                flex-direction: column;
+                border-radius: 14px;
+                background: #fff;
+                box-shadow: 0 18px 50px rgba(15, 23, 42, .2);
+                overflow: hidden;
+                transform: translateY(20px);
+                opacity: 0;
+                pointer-events: none;
+                transition: all .26s cubic-bezier(.2, .9, .3, 1);
             }
-        });
 
-        // accessibility: close with escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && popup.classList.contains('open')) closeChat();
-        });
-    </script>
+            .chat-popup.open {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto
+            }
+
+            /* Header */
+            .chat-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 14px;
+                border-bottom: 1px solid #eef2f7;
+                background: linear-gradient(90deg, #f8fafc, #fff)
+            }
+
+            .chat-avatar {
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #0b84ff, #0047b3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-weight: 700
+            }
+
+            .chat-title {
+                flex: 1
+            }
+
+            .chat-title h4 {
+                font-size: 15px;
+                margin-bottom: 2px
+            }
+
+            .chat-title p {
+                font-size: 12px;
+                color: #64748b
+            }
+
+            .chat-close {
+                background: transparent;
+                border: none;
+                font-size: 20px;
+                cursor: pointer;
+                color: #64748b
+            }
+
+            /* Messages area */
+            .chat-messages {
+                flex: 1;
+                padding: 12px;
+                overflow: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%)
+            }
+
+            .msg {
+                max-width: 78%;
+                padding: 10px 14px;
+                border-radius: 12px;
+                font-size: 14px;
+                line-height: 1.35
+            }
+
+            .msg.agent {
+                align-self: flex-start;
+                background: #f1f5f9;
+                color: #0f172a;
+                border-bottom-left-radius: 4px
+            }
+
+            .msg.user {
+                align-self: flex-end;
+                background: #0b84ff;
+                color: #fff;
+                border-bottom-right-radius: 4px
+            }
+
+            .msg small {
+                display: block;
+                margin-top: 6px;
+                font-size: 11px;
+                opacity: .75
+            }
+
+            /* Composer */
+            .chat-composer {
+                padding: 10px;
+                border-top: 1px solid #eef2f7;
+                display: flex;
+                gap: 8px;
+                align-items: center
+            }
+
+            .chat-input {
+                flex: 1;
+                background: #f8fafc;
+                border: 1px solid #e6eef9;
+                padding: 10px 12px;
+                border-radius: 10px;
+                min-height: 40px;
+                resize: none
+            }
+
+            .btn-send {
+                background: #0b84ff;
+                color: #fff;
+                border: none;
+                padding: 10px 12px;
+                border-radius: 10px;
+                cursor: pointer
+            }
+
+            /* Tiny responsive tweak */
+            @media (max-width:420px) {
+                .chat-popup {
+                    right: 12px;
+                    left: 12px;
+                    width: calc(100% - 24px);
+                    bottom: 80px
+                }
+
+                .chat-toggle {
+                    right: 12px;
+                    bottom: 12px
+                }
+            }
+        </style>
 
 
 
-    <script>
-        let soundEnabled = false;
-        const audio = document.getElementById('notifSound');
+        <script>
+            const toggle = document.getElementById('chatToggle');
+            const popup = document.getElementById('chatPopup');
+            const closeBtn = document.getElementById('chatClose');
+            const messages = document.getElementById('messages');
+            const input = document.getElementById('input');
+            const sendBtn = document.getElementById('sendBtn');
 
-        document.getElementById('enableSound').addEventListener('click', () => {
-            audio.play().then(() => {
-                soundEnabled = true;
-                audio.pause();
-                alert("✅ Sons activés !");
-            }).catch(err => console.warn("Autoplay bloqué :", err));
-        });
+            function openChat() {
+                popup.classList.add('open');
+                toggle.style.display = 'none';
+                input.focus();
+                scrollToBottom()
+            }
 
-        // Exemple d’événement Livewire
-        window.addEventListener('playSound', () => {
-            if (soundEnabled) audio.play().catch(() => {});
-        });
-    </script>
+            function closeChat() {
+                popup.classList.remove('open');
+                toggle.style.display = 'flex'
+            }
+
+            toggle.addEventListener('click', openChat);
+            closeBtn.addEventListener('click', closeChat);
+
+            // send message
+            function appendMessage(text, who) {
+                const el = document.createElement('div');
+                el.className = 'msg ' + (who === 'user' ? 'user' : 'agent');
+                const now = new Date();
+                const hh = now.getHours().toString().padStart(2, '0');
+                const mm = now.getMinutes().toString().padStart(2, '0');
+                el.innerHTML = text + '<small>' + (who === 'user' ? 'Vous' : 'Support') + ' · ' + hh + ':' + mm + '</small>';
+                messages.appendChild(el);
+                scrollToBottom();
+            }
+
+            function scrollToBottom() {
+                messages.scrollTop = messages.scrollHeight
+            }
+
+
+
+            // simple escape to avoid injection when inserting HTML
+            function escapeHtml(s) {
+                return s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+                    .replaceAll("'", "&#39;")
+            }
+
+            // allow enter to send (shift+enter for newline)
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendBtn.click();
+                }
+            });
+
+            // accessibility: close with escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && popup.classList.contains('open')) closeChat();
+            });
+        </script>
+
+
+
+        <script>
+            let soundEnabled = false;
+            const audio = document.getElementById('notifSound');
+
+            document.getElementById('enableSound').addEventListener('click', () => {
+                audio.play().then(() => {
+                    soundEnabled = true;
+                    audio.pause();
+                    alert("✅ Sons activés !");
+                }).catch(err => console.warn("Autoplay bloqué :", err));
+            });
+
+            // Exemple d’événement Livewire
+            window.addEventListener('playSound', () => {
+                if (soundEnabled) audio.play().catch(() => {});
+            });
+        </script>

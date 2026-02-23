@@ -1464,7 +1464,7 @@
 
 
                         @foreach ($tickets as $ticket)
-                            <a wire:click="visualiser('{{ $ticket->id }}')" href="#" {{-- data-aos="fade-down" --}}
+                            <a href="#" {{-- data-aos="fade-down" --}}
                                 {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
                                 class="list-group-item   list-group-item-action border bg-light mb-1  materiel-item rounded-2 ">
                                 <div class="d-flex w-100 py-1 justify-content-between">

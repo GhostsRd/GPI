@@ -164,7 +164,7 @@
 
         <!-- Tableau des checkouts -->
         <div class="table-wrapper p-0 border-0 w-100 compact-mode mx-3">
-            <table class="table table-hover border-0 shadow-sm text-center small">
+            <table class="table table-hover border-0 shadow-sm text-center small" wire:poll.5s>
                 <thead class="table-light">
                     <tr>
                         <th class="py-2" style="width: 30px;">

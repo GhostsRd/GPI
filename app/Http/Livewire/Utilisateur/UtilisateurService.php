@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Utilisateur;
 
+use Exception;
 use Livewire\Component;
 use App\Models\ticket;
 use App\Models\chat;
@@ -9,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Commentaire;
 use App\Models\User;
 use Livewire\WithPagination;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Momemail;
 
 class UtilisateurService extends Component
 {
@@ -56,6 +58,9 @@ class UtilisateurService extends Component
         $utlisateurConnecter = Auth::guard('utilisateur')->user()->id;
         //$responsable = User::where("poste",);
 
+        //    $responsable = user::all();
+
+    
 
         if ($this->categorie == "Réseau") {
             $this->responsable_id = 1;
@@ -98,6 +103,29 @@ class UtilisateurService extends Component
         $chat->type = "agent";
         $chat->message = "Ticket creer avec succes";
         $chat->save();
+
+        $lastTicket = Ticket::latest()->first();
+   
+    
+
+        $data = [
+            'title' => 'Information',
+            'message' => 'Vous avez une nouvelle ticket sur GPI  http://127.0.1:8000/admin/ticket-view-' . $lastTicket->id,
+
+        ];
+        try
+        {
+            Mail::to('leoncerado@gmail.com')->send(new Momemail($data));
+
+        }catch(Exception $e)
+        {
+
+
+        }
+
+       
+           
+      
         usleep(1000000);
         $this->reset(['sujet', 'details', 'priorite', 'equipement']);
         $this->emitSelf('refreshComponent');
