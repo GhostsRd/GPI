@@ -631,29 +631,41 @@
                                 <div class="col-md-4 fw-bold">Type d'équipement :</div>
                                 <div class="col-md-8 text-capitalize">{{ $selectedCheckouts->materiel_type }}</div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-4 fw-bold">Matériel :</div>
-                                <div class="col-md-8">
-                                    @if($selectedCheckouts->materiel_type == 'ordinateur' && $selectedCheckouts->ordinateur)
-                                        {{ $selectedCheckouts->ordinateur->nom }} ({{ $selectedCheckouts->ordinateur->os_version }})
-                                    @elseif($selectedCheckouts->materiel_type == 'telephone' && $selectedCheckouts->telephone)
-                                        {{ $selectedCheckouts->telephone->nom }} ({{ $selectedCheckouts->telephone->marque }})
-                                    @endif
-                                </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Matériel :</div>
+                            <div class="col-md-8" id="equipement_id">
+                                @if ($selectedCheckouts?->materiel_type == 'ordinateur')
+                                    {{ $selectedCheckouts?->ordinateur->nom }}
+                                    {{ $selectedCheckouts?->ordinateur->os_version }}
+                                @endif 
+                                 @if ($selectedCheckouts?->materiel_type == 'telephone')
+                                    {{ $selectedCheckouts?->telephone->nom }}
+                                    {{ $selectedCheckouts?->telephone->os_version }}
+                                @endif 
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-4 fw-bold">Date de création :</div>
-                                <div class="col-md-8">
-                                    {{ \Carbon\Carbon::parse($selectedCheckouts->created_at)->translatedFormat('d/m/Y H:i') }}
-                                </div>
+                        </div>
+                        {{-- <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Responsable :</div>
+                            <div class="col-md-8" id="responsable">
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-4 fw-bold">Statut :</div>
-                                <div class="col-md-8">
-                                    <span class="badge {{ $this->getStatutBadgeClass($selectedCheckouts->statut) }} p-2">
-                                        {{ $this->getStatutLabel($selectedCheckouts->statut) }}
-                                    </span>
-                                </div>
+                        </div> --}}
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Date de creation :</div>
+                            <div class="col-md-8" id="date_debut">{{ $selectedCheckouts?->created_at }}</div>
+                        </div>
+                        {{-- <div class="row mb-2">
+                        <div class="col-md-4 fw-bold text-muted">Date de fin :</div>
+                        <div class="col-md-8" id="date_fin">2025-11-12</div>
+                    </div> --}}
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Statut :</div>
+                            <div class="col-md-8" id="statut">EN COURS</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4 fw-bold text-muted">Commentaire :</div>
+                            <div class="col-md-8" id="commentaire">
+                                Exemple de commentaire de l'incident...
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-4 fw-bold">Commentaire :</div>

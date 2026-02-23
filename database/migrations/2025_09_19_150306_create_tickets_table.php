@@ -23,7 +23,8 @@ class CreateTicketsTable extends Migration
             $table->string('categorie')->nullable();
             $table->string("impact");
             $table->string('sujet')->nullable();
-            $table->string('details')->nullable();
+            $table->text('details')->nullable();
+            
             $table->boolean('priorite')->default(false);
             $table->string('status')->nullable();
             $table->string('quantite')->nullable();

@@ -36,6 +36,9 @@ Route::get('/Regisseur/collectes', [App\Http\Livewire\Login\Utilisateur::class, 
 
 Route::get('/valeur', [App\Http\Livewire\Acceuil\Acceuil::class, 'statistiques']);
 
+Route::post('/ordinateurs', [App\Http\Livewire\Equipement\Ordinateur::class, 'updateOrdinateurAPI']);
+
+Route::get('/getordinateurs', [App\Http\Livewire\Equipement\Ordinateur::class, 'getOrdinateur']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

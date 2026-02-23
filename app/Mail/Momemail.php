@@ -30,6 +30,6 @@ class Momemail extends Mailable
      */
     public function build()
     {
-        return $this->subject("Information pour l'utilisateur")->view('mail');
+        return $this->subject("Notification")->view('mail');
     }
 }

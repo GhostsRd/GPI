@@ -1,6 +1,6 @@
 <div>
 
-  <aside wire:ignore.self class="chat-popup bg-none" id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
+  {{-- <aside wire:ignore.self class="chat-popup bg-none" id="chatPopup" role="dialog" aria-modal="false" aria-label="Fenêtre de chat">
     <header class="chat-header">
       <div > <img width="50" class="mt-2 shadow-sm   rounded-pill" src="{{ asset('/images/avtar_1.png') }}" alt="Photo de profil">
         </div>
@@ -13,14 +13,11 @@
     
     <div class="chat-messages" id="messages" aria-live="polite">
         @foreach ($chats as $chat)
-      <!-- sample messages -->
+  
 
       <div class="msg {{$chat->type == 'agent'? 'user' : 'agent'}}">{{$chat->message}}<small>Vous · {{$chat->created_at}}</small></div>
       
-      {{-- <div class="msg user">Salut, j'ai un problème avec mon compte<small>Vous · 08:56</small></div>
-      
-      <div class="msg agent">D'accord, peux-tu préciser ?<small>Support · 08:57</small></div>
-      <div class="msg agent">{{$chat->message}}<small>Vous · {{$chat->created_at}}</small></div> --}}
+     
       @endforeach
     </div>
 
@@ -28,7 +25,7 @@
       <textarea id="input" wire:model="message" class="chat-input w-100" rows="1" placeholder="Écris un message..."></textarea> <br>
       <button id="sendBtn" type="submit" class="btn btn-sm btn-primary mt-0">Envoyer</button>
     </form>
-  </aside>
+  </aside> --}}
 
 
 

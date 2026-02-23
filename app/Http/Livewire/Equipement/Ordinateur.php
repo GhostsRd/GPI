@@ -14,6 +14,7 @@ use League\Csv\Reader;
 use League\Csv\Statement;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\OrdinateursImport;
+use Illuminate\Http\Request;
 
 class Ordinateur extends Component
 {
@@ -140,6 +141,25 @@ class Ordinateur extends Component
             $this->selectedOrdinateurs = [];
             $this->selectAll = false;
         }
+    }
+
+    //udpate status ordinateur from api
+    public function updateOrdinateurAPI(Request $request){
+        $ordinateur = OrdinateurModel::where('nom',$request->computer_name)->update(
+            ['statut' => $request->status,
+                        'reseau_ip' => $request->ip
+                ]
+        );
+     
+
+
+        return response()->json($ordinateur);
+    }
+    public function getOrdinateur(){
+        $ordinateur = OrdinateurModel::all();
+      
+        return response()->json($ordinateur);
+        
     }
 
     public function updatedSelectAll($value)
