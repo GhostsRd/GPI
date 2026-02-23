@@ -20,25 +20,25 @@
                                 — {{ $checkouts->materiel_type }}
                                 <small>
                                     @if ($checkouts->materiel_type ==  'ordinateur')
-                                        {{ $checkouts->ordinateur->nom}}
+                                        {{ $checkouts->ordinateur->nom ?? null}}
                                     @endif
                                      @if ($checkouts->materiel_type ==  'Telephone')
-                                        {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
+                                        {{ $checkouts->telephone->nom ?? null }} {{ $checkouts->telephone->marque ?? null }}
                                     @endif
                                     @if ($checkouts->materiel_type ==  'Peripherique')
-                                        {{ $checkouts->peripherique->nom }} 
+                                        {{ $checkouts->peripherique->nom ?? null }} 
                                     @endif
                                 </small>
                                 <small class="badge text-primary badge-light shadow-sm">
                                           @if ($checkouts->materiel_type ==  'ordinateur')
-                                        {{ $checkouts->ordinateur->statut}}
+                                        {{ $checkouts->ordinateur->statut ?? null}}
                                     @endif
                                      @if ($checkouts->materiel_type ==  'Telephone')
-                                        {{ $checkouts->telephone->statut }} 
+                                        {{ $checkouts->telephone->statut ?? null }} 
                                     @endif
 
                                      @if ($checkouts->materiel_type ==  'Peripherique')
-                                        {{ $checkouts->peripherique->statut }} 
+                                        {{ $checkouts->peripherique->statut ?? null }} 
                                     @endif
                                 </small>
                             </label>
@@ -190,15 +190,15 @@
                                 src="https://ui-avatars.com/api/?name={{ $checkouts->responsable->name ?? 'Guest' }}"
                                 alt="Profil" width="40" height="40" class="shadow rounded-circle me-2">
                             @if ($checkouts->materiel_type == 'Telephone')
-                                ⮕ {{ $checkouts->telephone->nom }} {{ $checkouts->telephone->marque }}
+                                ⮕ {{ $checkouts->telephone->nom ?? null}} {{ $checkouts->telephone->marque ?? null}}
                                 @endif
                             @if($checkouts->materiel_type == 'ordinateur')
-                                ⮕ {{ $checkouts->ordinateur->nom }} {{ $checkouts->ordinateur->modele }}
-                                {{ $checkouts->ordinateur->os_version }}
+                                ⮕ {{ $checkouts->ordinateur->nom ?? null }} {{ $checkouts->ordinateur->modele ?? null }}
+                                {{ $checkouts->ordinateur->os_version ?? null }}
                             @endif
 
                              @if ($checkouts->materiel_type  == 'Peripherique')
-                                        {{$checkouts->peripherique->nom}} {{ $checkouts->peripherique->type }}
+                                        {{$checkouts->peripherique->nom ?? null}} {{ $checkouts->peripherique->type ?? null}}
                              @endif
                         </p>
                         <label for="" class="fw-bold mb-2 d-flex justify-content-center">Lier une equipement

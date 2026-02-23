@@ -1212,12 +1212,12 @@
                             <div class="col-md-4 fw-bold text-muted">Matériel :</div>
                             <div class="col-md-8" id="equipement_id">
                                 @if ($selectedCheckouts?->materiel_type == 'ordinateur')
-                                    {{ $selectedCheckouts?->ordinateur->nom }}
-                                    {{ $selectedCheckouts?->ordinateur->os_version }}
+                                    {{ $selectedCheckouts?->ordinateur->nom ?? null}}
+                                    {{ $selectedCheckouts?->ordinateur->os_version ?? null }}
                                 @endif 
                                  @if ($selectedCheckouts?->materiel_type == 'telephone')
-                                    {{ $selectedCheckouts?->telephone->nom }}
-                                    {{ $selectedCheckouts?->telephone->os_version }}
+                                    {{ $selectedCheckouts?->telephone->nom ?? null}}
+                                    {{ $selectedCheckouts?->telephone->os_version ?? null }}
                                 @endif 
                             </div>
                         </div>

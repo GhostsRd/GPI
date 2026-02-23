@@ -240,15 +240,15 @@
                             <td class="py-2" wire:click="Visualiser({{ $checkout->id }})">
                                 <small class="text-muted">
                                     @if ($checkout->materiel_type  == 'ordinateur' )
-                                        {{ $checkout->ordinateur->nom }}  {{ $checkout->ordinateur->os_version }}
+                                        {{ $checkout->ordinateur->nom ?? null }}  {{ $checkout->ordinateur->os_version ?? null }}
                                     @endif
                                     @if ($checkout->materiel_type  == 'telephone')
-                                                {{ $checkout->telephone->nom }}  {{ $checkout->telephone->marque }}
+                                                {{ $checkout->telephone->nom ?? null }}  {{ $checkout->telephone->marque }}
                                     @endif
                                      @if ($checkout->materiel_type  == 'peripherique')
                                         @foreach ($Peripheriques as $peripherique)
                                         @if ($checkout->materiel_details == $peripherique->type )
-                                              {{ $peripherique->nom }} {{ $peripherique->fabricant }}
+                                              {{ $peripherique->nom ?? null}} {{ $peripherique->fabricant ?? null }}
                                             
                                          
                                             @endif

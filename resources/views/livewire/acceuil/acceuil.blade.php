@@ -382,7 +382,7 @@
                             <th>Priorité</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody wire:poll.5000ms>
                         @forelse($this->UnifiedActivities as $activity)
                         <tr class="activity-row" style="border-left: 4px solid var(--maxton-{{ $activity['color'] == 'orange' ? 'warning' : ($activity['color'] == 'info' ? 'primary' : $activity['color']) }});">
                             <td class="ps-3">

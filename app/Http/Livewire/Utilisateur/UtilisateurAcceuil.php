@@ -32,7 +32,7 @@ class UtilisateurAcceuil extends Component
     {
         return view('livewire.utilisateur.utilisateur-acceuil',[
             "chats" => Chat::where(function ($query) {
-                $userId = Auth::guard('utilisateur')->user()->matricule;
+                $userId = Auth::guard('utilisateur')->user()->matricule ?? null;
                 $query->where('targetmsg_id', $userId)
                
                     ->orWhere('utilisateur_id', $userId);
