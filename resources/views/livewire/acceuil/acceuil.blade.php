@@ -1,451 +1,769 @@
-<script>
-    // Prevent theme flicker
-    (function() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-bs-theme', savedTheme);
-    })();
-</script>
-<div class="container-fluid py-4" style="min-height: 100vh;">
-    <!-- Bootstrap 5 CSS -->
+<div class="container-fluid py-4" style="min-height: 100vh; background: transparent;">
+    <!-- Assets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-    <style>
-        * {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-        
         :root {
-            /* Maxton Palette - Indigo/Violet SaaS */
-            --maxton-primary: #6366f1;
-            --maxton-primary-dark: #4f46e5;
-            --maxton-secondary: #a855f7;
-            --maxton-accent: #38bdf8;
-            --maxton-success: #10b981;
-            --maxton-warning: #f59e0b;
-            --maxton-danger: #ef4444;
-            
-            --bs-body-bg: #f8fafc;
-            --card-bg: #ffffff;
-            --card-border: rgba(0,0,0,0.05);
-            --text-main: #1e293b;
-            --text-muted: #64748b;
+            --primary: #4361ee;
+            --primary-dark: #3730a3;
+            --primary-light: #818cf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-bg-dark: rgba(30, 41, 59, 0.85);
+            --border-light: rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 20px 27px -8px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 30px 35px -12px rgba(0, 0, 0, 0.1);
+            --blur-amount: 12px;
         }
-        
+
         [data-bs-theme="dark"] {
-            --bs-body-bg: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: rgba(255,255,255,0.05);
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            
-            --maxton-primary: #818cf8;
-            --maxton-secondary: #c084fc;
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --light: #0f172a;
+            --dark: #f8fafc;
+            --gray: #94a3b8;
+            --border-light: rgba(255, 255, 255, 0.08);
         }
-        
+
         body {
-            background-color: var(--bs-body-bg);
-            color: var(--text-main);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: transparent;
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
         }
-        
-        /* Modern Glassmorphism Cards */
+
+        .fullscreen-table {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .fullscreen-table.active {
+            display: flex;
+        }
+
+        .fullscreen-table .card {
+            width: 95vw;
+            height: 90vh;
+            max-width: 1800px;
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            display: flex;
+            flex-direction: column;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .fullscreen-table .card-body {
+            flex: 1;
+            overflow: auto;
+            padding: 0;
+        }
+
+        .fullscreen-table .table {
+            margin-bottom: 0;
+        }
+
+        .fullscreen-table .table thead th {
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .fullscreen-table .table tbody tr {
+            cursor: pointer;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         .card {
             background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-            overflow: hidden;
+            backdrop-filter: blur(var(--blur-amount));
+            -webkit-backdrop-filter: blur(var(--blur-amount));
+            border: 1px solid var(--border-light);
+            border-radius: 28px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+            background: rgba(255, 255, 255, 0.95);
         }
-        
+
+        [data-bs-theme="dark"] .card:hover {
+            background: rgba(30, 41, 59, 0.95);
+        }
+
         .card-header {
             background: transparent;
-            border-bottom: 1px solid var(--card-border);
-            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+            padding: 1.5rem 1.75rem;
         }
-        
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--text-main);
-            font-weight: 700;
+
+        .card-body {
+            padding: 1.75rem;
         }
-        
-        /* Stats Icons */
-        .stat-icon-wrapper {
-            width: 52px;
-            height: 52px;
+
+        .stat-card {
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            -webkit-backdrop-filter: blur(var(--blur-amount));
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.05) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, rgba(67, 97, 238, 0.9), rgba(55, 48, 163, 0.9)); color: white; }
+        .stat-icon.success { background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9)); color: white; }
+        .stat-icon.danger { background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.9)); color: white; }
+        .stat-icon.warning { background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9)); color: white; }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            border-radius: 30px;
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .badge.bg-primary { background: rgba(67, 97, 238, 0.15) !important; color: var(--primary); border-color: rgba(67, 97, 238, 0.3); }
+        .badge.bg-success { background: rgba(16, 185, 129, 0.15) !important; color: var(--success); border-color: rgba(16, 185, 129, 0.3); }
+        .badge.bg-danger { background: rgba(239, 68, 68, 0.15) !important; color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
+        .badge.bg-warning { background: rgba(245, 158, 11, 0.15) !important; color: var(--warning); border-color: rgba(245, 158, 11, 0.3); }
+
+        .btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            -webkit-backdrop-filter: blur(var(--blur-amount));
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+        }
+
+        .btn-icon:hover {
+            border-color: var(--primary);
+            color: white;
+            background: var(--primary);
+            transform: rotate(180deg);
+        }
+
+        .btn-refresh {
+            padding: 0.6rem 1.5rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            -webkit-backdrop-filter: blur(var(--blur-amount));
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+        }
+
+        .btn-refresh:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .btn-refresh i {
+            transition: transform 0.5s ease;
+        }
+
+        .btn-refresh:hover i {
+            transform: rotate(360deg);
+        }
+
+        .btn-view-all {
+            padding: 0.6rem 1.5rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-view-all:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-view-all i {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-view-all:hover i {
+            transform: translateX(5px);
+        }
+
+        .btn-close-fullscreen {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 20;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(var(--blur-amount));
         }
-        
-        .card:hover .stat-icon-wrapper {
-            transform: scale(1.1) rotate(5deg);
-        }
-        
-        .bg-indigo { background: rgba(99, 102, 241, 0.15); color: #6366f1; }
-        .bg-violet { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
-        .bg-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .bg-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 
-        /* Animations */
+        .btn-close-fullscreen:hover {
+            transform: rotate(90deg) scale(1.1);
+            background: #dc2626;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: rgba(67, 97, 238, 0.03);
+            color: var(--gray);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 1.25rem 1.5rem;
+            border-bottom: none;
+        }
+
+        .table tbody tr {
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(67, 97, 238, 0.03);
+            border-left-color: var(--primary);
+            transform: scale(1.01);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .table td {
+            padding: 1.25rem 1.5rem;
+            color: var(--dark);
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .page-subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-entry {
-            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
-        .row > div:nth-child(1) .animate-entry { animation-delay: 0.1s; }
-        .row > div:nth-child(2) .animate-entry { animation-delay: 0.2s; }
-        .row > div:nth-child(3) .animate-entry { animation-delay: 0.3s; }
-        .row > div:nth-child(4) .animate-entry { animation-delay: 0.4s; }
-
-        /* Fancy Tables */
-        .table {
-            color: var(--text-main);
-        }
-        
-        .table thead th {
-            background: rgba(0,0,0,0.02);
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 0.05rem;
-            border-bottom: 1px solid var(--card-border);
-            padding: 1rem 1.5rem;
-        }
-        
-        [data-bs-theme="dark"] .table thead th {
-            background: rgba(255,255,255,0.02);
-        }
-        
-        .table td { border-bottom: 1px solid var(--card-border); padding: 1rem 1.5rem; vertical-align: middle; }
-
-        /* Theme Toggle Button */
-        .theme-toggle {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-            background: var(--card-bg);
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .theme-toggle:hover {
-            border-color: var(--maxton-primary);
-            color: var(--maxton-primary);
-            transform: scale(1.05);
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
         }
 
-        /* Support Button (Inspired by image) */
-        .btn-maxton-support {
-            background: linear-gradient(135deg, var(--maxton-primary) 0%, var(--maxton-secondary) 100%);
-            border: none;
-            color: white;
-            padding: 0.6rem 1.4rem;
-            border-radius: 12px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-            transition: all 0.3s ease;
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
         }
-        
-        .btn-maxton-support:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-            color: white;
+
+        @media (max-width: 768px) {
+            .card-header, .card-body {
+                padding: 1.25rem;
+            }
+            .stat-value {
+                font-size: 2rem;
+            }
+            .page-title {
+                font-size: 1.75rem;
+            }
         }
-        
-        /* Custom Scrollbar for Dark Mode */
-        [data-bs-theme="dark"] ::-webkit-scrollbar { width: 8px; }
-        [data-bs-theme="dark"] ::-webkit-scrollbar-track { background: #1e293b; }
-        [data-bs-theme="dark"] ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 
+    <!-- Fullscreen Table Modal -->
+    <div class="fullscreen-table" id="fullscreenTable">
+        <div class="card">
+            <button class="btn-close-fullscreen" id="closeFullscreen">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-1 fw-700">Toutes les activités</h4>
+                    <p class="text-muted small mb-0">Liste complète des événements</p>
+                </div>
+                <span class="badge bg-primary">{{ count($this->UnifiedActivities ?? []) }} événements</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive h-100">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">Type</th>
+                                <th>Description</th>
+                                <th>Utilisateur</th>
+                                <th>Statut</th>
+                                <th class="text-end pe-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($this->UnifiedActivities as $activity)
+                            @php
+                                $activityColor = isset($activity['color']) ? $activity['color'] : 'info';
+                                $color = match($activityColor) {
+                                    'orange', 'warning' => 'warning',
+                                    'info' => 'primary',
+                                    'danger' => 'danger',
+                                    'success' => 'success',
+                                    default => 'primary'
+                                };
+                            @endphp
+                            <tr>
+                                <td class="ps-4">
+                                    <span class="badge bg-{{ $color }}">
+                                        <i class="{{ $activity['icon'] ?? 'fas fa-circle' }} me-2"></i> 
+                                        {{ $activity['type'] ?? 'N/A' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="fw-600">{{ $activity['title'] ?? '' }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle bg-{{ $color }} bg-opacity-10 p-2 me-2">
+                                            <i class="fas fa-user-circle text-{{ $color }}"></i>
+                                        </div>
+                                        <span class="text-muted">{{ $activity['user'] ?? '' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{ $color }} bg-opacity-10 text-{{ $color }}">
+                                        {{ $activity['status'] ?? '' }}
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <button class="btn-icon btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="py-4">
+                                        <i class="fas fa-inbox fa-3x mb-3" style="color: var(--gray);"></i>
+                                        <h6 class="fw-600 mb-2">Aucune activité récente</h6>
+                                        <p class="text-muted small mb-0">Les nouvelles activités apparaîtront ici</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-    <!-- Header Dashboard -->
-    <div class="d-flex justify-content-between align-items-center mb-5 animate-entry">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-5 fade-in">
         <div>
-            <h2 class="mb-1 text-main">Tableau de Bord</h2>
-            <p class="text-muted mb-0">Vue d'ensemble intelligente de votre infrastructure</p>
+            <h1 class="page-title">Tableau de bord</h1>
+            <p class="page-subtitle">
+                <i class="fas fa-circle me-2" style="color: #10b981; font-size: 0.5rem;"></i>
+                Infrastructure et monitoring en temps réel
+            </p>
         </div>
         <div class="d-flex gap-3">
-            <div id="themeToggle" class="theme-toggle">
+            <button class="btn-icon" id="themeToggle">
                 <i class="fas fa-moon"></i>
-            </div>
-            <button class="btn btn-white bg-card border-0 shadow-sm fw-600 px-4 rounded-3" wire:click="refreshCharts" style="height: 42px;">
-                <i class="fas fa-sync-alt me-2 text-primary"></i>Actualiser
+            </button>
+            <button class="btn-refresh" wire:click="refreshCharts">
+                <i class="fas fa-sync-alt me-2"></i>Actualiser
             </button>
         </div>
     </div>
 
-    <!-- Stats Cards Row -->
+    <!-- Stats Cards -->
     <div class="row g-4 mb-5">
-        <!-- Total Incidents -->
-        <div class="col-12 col-md-6 col-xl-3 animate-entry">
-            <div class="card h-100 p-4 border-0">
-                <div class="d-flex justify-content-between align-items-start mb-3">
+        <!-- Incident -->
+        <div class="col-md-6 col-xl-3 fade-in" style="animation-delay: 0.1s">
+            <div class="card stat-card">
+                <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Incidents</p>
-                        <h2 class="mb-0">{{ $totalIncidents ?? 0 }}</h2>
+                        <p class="stat-label mb-1">Incidents</p>
+                        <h2 class="stat-value">{{ $totalIncidents ?? 0 }}</h2>
+                        <span class="badge bg-danger mt-3">
+                            <i class="fas fa-arrow-up me-1"></i>+12% cette semaine
+                        </span>
                     </div>
-                    <div class="stat-icon-wrapper bg-soft-danger rounded-circle">
+                    <div class="stat-icon danger float-animation">
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                 </div>
-                <div class="d-flex align-items-center mt-3">
-                    <span class="text-danger fw-700 me-2"><i class="fas fa-arrow-up me-1"></i>12%</span>
-                    <span class="text-muted small">ce mois</span>
-                </div>
-                <div id="spark1" class="mt-3" style="min-height: 50px;"></div>
+                <div id="spark1" wire:ignore class="mt-4"></div>
             </div>
         </div>
 
-        <!-- Total Tickets -->
-        <div class="col-12 col-md-6 col-xl-3 animate-entry">
-            <div class="card h-100 p-4 border-0">
-                <div class="d-flex justify-content-between align-items-start mb-3">
+        <!-- Tickets -->
+        <div class="col-md-6 col-xl-3 fade-in" style="animation-delay: 0.15s">
+            <div class="card stat-card">
+                <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Tickets</p>
-                        <h2 class="mb-0">{{ $stats['total_tickets'] ?? 0 }}</h2>
+                        <p class="stat-label mb-1">Tickets ouverts</p>
+                        <h2 class="stat-value">{{ $stats['total_tickets'] ?? 0 }}</h2>
+                        <span class="badge bg-primary mt-3">
+                            <i class="fas fa-clock me-1"></i>24 en attente
+                        </span>
                     </div>
-                    <div class="stat-icon-wrapper bg-soft-primary rounded-circle">
+                    <div class="stat-icon primary float-animation">
                         <i class="fas fa-ticket-alt"></i>
                     </div>
                 </div>
-                <div class="d-flex align-items-center mt-3">
-                    <span class="text-indigo fw-700 me-2"><i class="fas fa-arrow-down me-1"></i>5%</span>
-                    <span class="text-muted small">vs dernier mois</span>
-                </div>
-                <div id="spark2" class="mt-3" style="min-height: 50px;"></div>
+                <div id="spark2" wire:ignore class="mt-4"></div>
             </div>
         </div>
 
-        <!-- Sorties Actives -->
-        <div class="col-12 col-md-6 col-xl-3 animate-entry">
-            <div class="card h-100 p-4 border-0">
-                <div class="d-flex justify-content-between align-items-start mb-3">
+        <!-- Sorties -->
+        <div class="col-md-6 col-xl-3 fade-in" style="animation-delay: 0.2s">
+            <div class="card stat-card">
+                <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Sorties</p>
-                        <h2 class="mb-0">{{ $stats['total_checkouts'] ?? 0 }}</h2>
+                        <p class="stat-label mb-1">Sorties en cours</p>
+                        <h2 class="stat-value">{{ $stats['total_checkouts'] ?? 0 }}</h2>
+                        <span class="badge bg-success mt-3">
+                            <i class="fas fa-rotate-left me-1"></i>8 à retourner
+                        </span>
                     </div>
-                    <div class="stat-icon-wrapper bg-soft-success rounded-circle">
+                    <div class="stat-icon success float-animation">
                         <i class="fas fa-exchange-alt"></i>
                     </div>
                 </div>
-                <div class="d-flex align-items-center mt-3">
-                    <span class="text-emerald fw-700 me-2"><i class="fas fa-arrow-up me-1"></i>8%</span>
-                    <span class="text-muted small">en hausse</span>
-                </div>
-                <div id="spark3" class="mt-3" style="min-height: 50px;"></div>
+                <div id="spark3" wire:ignore class="mt-4"></div>
             </div>
         </div>
 
-        <!-- Taux Résolution -->
-        <div class="col-12 col-md-6 col-xl-3 animate-entry">
-            <div class="card h-100 p-4 border-0">
-                <div class="d-flex justify-content-between align-items-start mb-3">
+        <!-- Résolution -->
+        <div class="col-md-6 col-xl-3 fade-in" style="animation-delay: 0.25s">
+            @php
+                $sum = isset($incidentsChartData) ? array_sum($incidentsChartData) : 0;
+                $res = isset($incidentsChartData['Résolus']) ? $incidentsChartData['Résolus'] : 0;
+                $rate = $sum > 0 ? round(($res / $sum) * 100) : 0;
+            @endphp
+            <div class="card stat-card">
+                <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <p class="text-muted fw-600 text-uppercase small mb-1 ls-1">Résolution</p>
-                        @php
-                            $rate = 0;
-                            if(isset($incidentsChartData) && array_sum($incidentsChartData) > 0) {
-                                $resolved = $incidentsChartData['Résolus'] ?? 0;
-                                $total = array_sum($incidentsChartData);
-                                $rate = round(($resolved / $total) * 100);
-                            }
-                        @endphp
-                        <h2 class="mb-0">{{ $rate }}%</h2>
+                        <p class="stat-label mb-1">Taux de résolution</p>
+                        <h2 class="stat-value">{{ $rate }}%</h2>
+                        <div class="progress mt-3" style="width: 90%;">
+                            <div class="progress-bar" style="width: {{ $rate }}%"></div>
+                        </div>
                     </div>
-                    <div class="stat-icon-wrapper bg-soft-warning rounded-circle">
+                    <div class="stat-icon warning float-animation">
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
-                <div class="d-flex align-items-center mt-3">
-                    <span class="text-amber fw-700 me-2"><i class="fas fa-check me-1"></i>+3%</span>
-                    <span class="text-muted small">efficacité</span>
-                </div>
-                <div id="spark4" class="mt-3" style="min-height: 50px;"></div>
+                <div id="spark4" wire:ignore class="mt-4"></div>
             </div>
         </div>
     </div>
 
-    <!-- Graphiques principaux -->
+    <!-- Charts Row 1 -->
     <div class="row g-4 mb-5">
-        <!-- Tickets Mensuels -->
-        <div class="col-lg-6 animate-entry">
-            <div class="card h-100 border-0">
-                <div class="card-header border-0 d-flex justify-content-between align-items-center pb-0">
+        <div class="col-lg-6 fade-in" style="animation-delay: 0.3s">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        <h5 class="mb-1">Statistiques Tickets</h5>
-                        <p class="text-muted small mb-0">Évolution mensuelle {{ date('Y') }}</p>
+                        <h6 class="mb-1 fw-700">Évolution des tickets</h6>
+                        <p class="text-muted small mb-0">Activité des 30 derniers jours</p>
                     </div>
+                    <span class="badge bg-primary">
+                        <i class="fas fa-chart-line me-1"></i>+23%
+                    </span>
                 </div>
-                <div class="card-body">
+                <div class="card-body" wire:ignore>
                     <div id="chartTickets"></div>
                 </div>
             </div>
         </div>
-
-        <!-- Activité des Sorties -->
-        <div class="col-lg-6 animate-entry">
-            <div class="card h-100 border-0">
-                <div class="card-header border-0 d-flex justify-content-between align-items-center pb-0">
+        <div class="col-lg-6 fade-in" style="animation-delay: 0.35s">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        <h5 class="mb-1">Activité des Sorties</h5>
-                        <p class="text-muted small mb-0">Prêts et retours récents</p>
+                        <h6 class="mb-1 fw-700">Activité des sorties</h6>
+                        <p class="text-muted small mb-0">Mouvements d'équipements</p>
                     </div>
+                    <span class="badge bg-success">
+                        <i class="fas fa-arrow-up me-1"></i>+15%
+                    </span>
                 </div>
-                <div class="card-body">
+                <div class="card-body" wire:ignore>
                     <div id="chartCheckouts"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Graphiques secondaires -->
+    <!-- Charts Row 2 -->
     <div class="row g-4 mb-5">
-        <!-- Équipements -->
-        <div class="col-lg-6 animate-entry">
-            <div class="card h-100 border-0">
-                <div class="card-header border-0 pb-0">
-                    <h5 class="mb-1">Équipements</h5>
-                    <p class="text-muted small mb-0">Par type d'inventaire</p>
+        <div class="col-lg-6 fade-in" style="animation-delay: 0.4s">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1 fw-700">Équipements par type</h6>
+                        <p class="text-muted small mb-0">Répartition du stock</p>
+                    </div>
+                    <span class="badge bg-primary">Total: 156</span>
                 </div>
-                <div class="card-body">
+                <div class="card-body" wire:ignore>
                     <div id="chartEquipments"></div>
                 </div>
             </div>
         </div>
-
-        <!-- Logiciels -->
-        <div class="col-lg-6 animate-entry">
-            <div class="card h-100 border-0">
-                <div class="card-header border-0 pb-0">
-                    <h5 class="mb-1">Logiciels & Licences</h5>
-                    <p class="text-muted small mb-0">Répartition par catégorie</p>
+        <div class="col-lg-6 fade-in" style="animation-delay: 0.45s">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1 fw-700">Logiciels par catégorie</h6>
+                        <p class="text-muted small mb-0">Distribution des licences</p>
+                    </div>
+                    <span class="badge bg-warning">
+                        <i class="fas fa-key me-1"></i>234 licences
+                    </span>
                 </div>
-                <div class="card-body">
+                <div class="card-body" wire:ignore>
                     <div id="chartSoftware"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Tableau des activités unifiées -->
-    <div class="card border-0 animate-entry">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Flux d'Activités Unifié</h5>
-            <div class="d-flex align-items-center gap-3">
-                <div class="form-check form-switch mb-0">
-                    <input class="form-check-input" type="checkbox" id="filterActive" wire:model.live="onlyActive">
-                    <label class="form-check-label small fw-600" for="filterActive">Flux Actif Uniquement</label>
-                </div>
-                <span class="badge bg-soft-primary px-3 py-2 rounded-2">Total: {{ count($this->UnifiedActivities) }}</span>
+    <!-- Table des activités avec bouton Voir tous -->
+    <div class="card fade-in" style="animation-delay: 0.5s">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="mb-1 fw-700">Activités récentes</h6>
+                <p class="text-muted small mb-0">Derniers événements enregistrés</p>
+            </div>
+            <div class="d-flex gap-3 align-items-center">
+                <span class="badge bg-primary">{{ count($this->UnifiedActivities ?? []) }} événements</span>
+                <button class="btn-view-all" id="viewAllBtn">
+                    <i class="fas fa-eye me-2"></i>Voir tous
+                    <i class="fas fa-arrow-right ms-2"></i>
+                </button>
             </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th class="ps-4">Type</th>
-                            <th>Description</th>
-                            <th>Utilisateur</th>
-                            <th>Assigné à</th>
-                            <th>Date & Heure</th>
-                            <th>Statut</th>
-                            <th>Priorité</th>
-                        </tr>
-                    </thead>
-                    <tbody wire:poll.5000ms>
-                        @forelse($this->UnifiedActivities as $activity)
-                        <tr class="activity-row" style="border-left: 4px solid var(--maxton-{{ $activity['color'] == 'orange' ? 'warning' : ($activity['color'] == 'info' ? 'primary' : $activity['color']) }});">
-                            <td class="ps-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="stat-icon-wrapper bg-soft-{{ $activity['color'] == 'orange' ? 'warning' : ($activity['color'] == 'info' ? 'primary' : $activity['color']) }} rounded-circle me-2" style="width: 32px; height: 32px; font-size: 0.9rem; margin-bottom: 0;">
-                                        <i class="{{ $activity['icon'] }}"></i>
-                                    </div>
-                                    <span class="fw-700 small">{{ $activity['type'] }}</span>
+        <div class="table-responsive" style="max-height: 400px;">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Type</th>
+                        <th>Description</th>
+                        <th>Utilisateur</th>
+                        <th>Statut</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($this->UnifiedActivities as $activity)
+                    @php
+                        $activityColor = isset($activity['color']) ? $activity['color'] : 'info';
+                        $color = match($activityColor) {
+                            'orange', 'warning' => 'warning',
+                            'info' => 'primary',
+                            'danger' => 'danger',
+                            'success' => 'success',
+                            default => 'primary'
+                        };
+                    @endphp
+                    <tr>
+                        <td class="ps-4">
+                            <span class="badge bg-{{ $color }}">
+                                <i class="{{ $activity['icon'] ?? 'fas fa-circle' }} me-2"></i> 
+                                {{ $activity['type'] ?? 'N/A' }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="fw-600">{{ $activity['title'] ?? '' }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-{{ $color }} bg-opacity-10 p-2 me-2">
+                                    <i class="fas fa-user-circle text-{{ $color }}"></i>
                                 </div>
-                            </td>
-                            <td>
-                                <div class="fw-600 text-main">{{ $activity['title'] }}</div>
-                                <div class="text-muted small">ID: #{{ str_pad($activity['id'] ?? '---', 4, '0', STR_PAD_LEFT) }}</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar me-2 bg-indigo text-white" style="width: 30px; height: 30px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                                        {{ substr($activity['user'], 0, 1) }}
-                                    </div>
-                                    <span class="fw-500 small">{{ $activity['user'] }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar me-2 bg-violet text-white" style="width: 30px; height: 30px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                                        {{ substr($activity['assigned_to'] ?? '---', 0, 1) }}
-                                    </div>
-                                    <span class="fw-500 small">{{ $activity['assigned_to'] ?? '---' }}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="fw-500 small">{{ $activity['date']->format('d/m/Y') }}</div>
-                                <div class="text-muted" style="font-size: 0.75rem;">{{ $activity['date']->format('H:i') }} ({{ $activity['date']->diffForHumans() }})</div>
-                            </td>
-                            <td>
-                                @php
-                                    $badgeClass = match($activity['color']) {
-                                        'danger' => 'bg-soft-danger text-danger',
-                                        'orange' => 'bg-soft-warning text-warning',
-                                        'warning' => 'bg-soft-warning text-warning',
-                                        'success' => 'bg-soft-success text-success',
-                                        'info' => 'bg-soft-primary text-primary',
-                                        default => 'bg-soft-secondary'
-                                    };
-                                @endphp
-                                <span class="badge {{ $badgeClass }} font-size-12 px-3 py-2 rounded-pill">
-                                    {{ $activity['status'] }}
-                                </span>
-                            </td>
-                            <td>
-                                @if($activity['priority'] == 'Urgent' || $activity['priority'] == 'Critique')
-                                    <span class="text-danger fw-700 small"><i class="fas fa-circle font-size-10 me-1"></i>{{ $activity['priority'] }}</span>
-                                @else
-                                    <span class="text-muted fw-500 small">{{ $activity['priority'] }}</span>
-                                @endif
-                            </td>
-                        </tr>
-                        @empty
-                        <tr><td colspan="7" class="text-center py-5 text-muted">Aucune activité récente trouvée</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                                <span class="text-muted">{{ $activity['user'] ?? '' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-{{ $color }} bg-opacity-10 text-{{ $color }}">
+                                {{ $activity['status'] ?? '' }}
+                            </span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <button class="btn-icon btn-sm">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div class="py-4">
+                                <i class="fas fa-inbox fa-3x mb-3" style="color: var(--gray);"></i>
+                                <h6 class="fw-600 mb-2">Aucune activité récente</h6>
+                                <p class="text-muted small mb-0">Les nouvelles activités apparaîtront ici</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -454,191 +772,258 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            initDashboard();
+        let charts = {};
+
+        // Fullscreen table functionality
+        const fullscreenTable = document.getElementById('fullscreenTable');
+        const viewAllBtn = document.getElementById('viewAllBtn');
+        const closeFullscreen = document.getElementById('closeFullscreen');
+
+        if (viewAllBtn) {
+            viewAllBtn.addEventListener('click', () => {
+                fullscreenTable.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        if (closeFullscreen) {
+            closeFullscreen.addEventListener('click', () => {
+                fullscreenTable.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && fullscreenTable.classList.contains('active')) {
+                fullscreenTable.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
 
-        document.addEventListener('livewire:load', function() {
-            Livewire.hook('message.processed', (message, component) => {
-                initDashboard();
+        // Close on click outside
+        fullscreenTable.addEventListener('click', (e) => {
+            if (e.target === fullscreenTable) {
+                fullscreenTable.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        function initCharts() {
+            try {
+                const dataTickets = @json($monthlyTicketsData ?? []);
+                const dataCheckouts = @json($monthlyCheckoutsData ?? []);
+                const dataEquip = @json($equipmentTypeData ?? []);
+                const dataSoft = @json($softwareCategoryData ?? []);
+                
+              incidentData = <?php echo json_encode(array_values($incidentTrendData['data'] ?? [0, 0, 0])); ?>;
+
+                for (let key in charts) {
+                    if (charts[key] && typeof charts[key].destroy === 'function') {
+                        try { charts[key].destroy(); } catch(e) {}
+                    }
+                }
+                charts = {};
+
+                const createSpark = (id, data, color) => {
+                    const element = document.getElementById(id);
+                    if (!element) return;
+                    
+                    try {
+                        charts[id] = new ApexCharts(element, {
+                            chart: { 
+                                type: 'area', 
+                                height: 40, 
+                                sparkline: { enabled: true },
+                                animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                            },
+                            stroke: { curve: 'smooth', width: 2 },
+                            colors: [color],
+                            fill: { 
+                                opacity: 0.3,
+                                type: 'gradient',
+                                gradient: { shadeIntensity: 1, opacityFrom: 0.3, opacityTo: 0 }
+                            },
+                            series: [{ data: data }],
+                            tooltip: { enabled: false }
+                        });
+                        charts[id].render();
+                    } catch(e) {}
+                };
+
+                createSpark('spark1', incidentData, '#ef4444');
+                createSpark('spark2', Object.values(dataTickets).slice(-10), '#4361ee');
+                createSpark('spark3', Object.values(dataCheckouts).slice(-10), '#10b981');
+                createSpark('spark4', [80, 85, 90, 88, 92], '#f59e0b');
+
+                const chartTickets = document.getElementById('chartTickets');
+                if (chartTickets) {
+                    charts.t = new ApexCharts(chartTickets, {
+                        series: [{ name: 'Tickets', data: Object.values(dataTickets) }],
+                        chart: { 
+                            type: 'area', 
+                            height: 280, 
+                            toolbar: { show: false },
+                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                        },
+                        colors: ['#4361ee'],
+                        stroke: { curve: 'smooth', width: 3 },
+                        fill: { 
+                            opacity: 0.1, 
+                            type: 'gradient',
+                            gradient: { shadeIntensity: 1, opacityFrom: 0.2, opacityTo: 0 }
+                        },
+                        dataLabels: { enabled: false },
+                        grid: { borderColor: 'var(--border-light)', strokeDashArray: 5 },
+                        xaxis: { 
+                            categories: Object.keys(dataTickets), 
+                            axisBorder: { show: false },
+                            labels: { style: { colors: 'var(--gray)' } }
+                        },
+                        yaxis: { 
+                            labels: { style: { colors: 'var(--gray)' } }
+                        },
+                        tooltip: { theme: 'dark' }
+                    });
+                    charts.t.render();
+                }
+
+                const chartCheckouts = document.getElementById('chartCheckouts');
+                if (chartCheckouts) {
+                    charts.c = new ApexCharts(chartCheckouts, {
+                        series: [{ name: 'Sorties', data: Object.values(dataCheckouts) }],
+                        chart: { 
+                            type: 'bar', 
+                            height: 280, 
+                            toolbar: { show: false },
+                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                        },
+                        colors: ['#10b981'],
+                        plotOptions: { 
+                            bar: { 
+                                borderRadius: 8, 
+                                columnWidth: '60%',
+                                distributed: true
+                            } 
+                        },
+                        dataLabels: { enabled: false },
+                        grid: { borderColor: 'var(--border-light)', strokeDashArray: 5 },
+                        xaxis: { 
+                            categories: Object.keys(dataCheckouts), 
+                            axisBorder: { show: false },
+                            labels: { style: { colors: 'var(--gray)' } }
+                        },
+                        yaxis: { 
+                            labels: { style: { colors: 'var(--gray)' } }
+                        },
+                        tooltip: { theme: 'dark' }
+                    });
+                    charts.c.render();
+                }
+
+                const chartEquipments = document.getElementById('chartEquipments');
+                if (chartEquipments && Object.keys(dataEquip).length > 0) {
+                    charts.e = new ApexCharts(chartEquipments, {
+                        series: Object.values(dataEquip),
+                        labels: Object.keys(dataEquip),
+                        chart: { 
+                            type: 'donut', 
+                            height: 280,
+                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                        },
+                        colors: ['#4361ee', '#818cf8', '#10b981', '#f59e0b', '#ef4444'],
+                        plotOptions: { 
+                            pie: { 
+                                donut: { 
+                                    size: '65%',
+                                    labels: {
+                                        show: true,
+                                        name: { show: true },
+                                        value: { show: true, fontSize: '16px', fontWeight: 600 },
+                                        total: { show: true, label: 'Total' }
+                                    }
+                                } 
+                            } 
+                        },
+                        legend: { 
+                            position: 'bottom', 
+                            fontSize: '12px',
+                            labels: { colors: 'var(--dark)' }
+                        },
+                        dataLabels: { enabled: false },
+                        stroke: { show: false },
+                        tooltip: { theme: 'dark' }
+                    });
+                    charts.e.render();
+                }
+
+                const chartSoftware = document.getElementById('chartSoftware');
+                if (chartSoftware && Object.keys(dataSoft).length > 0) {
+                    charts.s = new ApexCharts(chartSoftware, {
+                        series: Object.values(dataSoft),
+                        labels: Object.keys(dataSoft),
+                        chart: { 
+                            type: 'pie', 
+                            height: 280,
+                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                        },
+                        colors: ['#4361ee', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
+                        legend: { 
+                            position: 'bottom', 
+                            fontSize: '12px',
+                            labels: { colors: 'var(--dark)' }
+                        },
+                        dataLabels: { enabled: false },
+                        stroke: { show: false },
+                        tooltip: { theme: 'dark' }
+                    });
+                    charts.s.render();
+                }
+            } catch(e) {
+                console.error('Erreur lors de l\'initialisation des graphiques:', e);
+            }
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const html = document.documentElement;
+                const theme = html.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-bs-theme', theme);
+                localStorage.setItem('theme', theme);
+                
+                const icon = document.querySelector('#themeToggle i');
+                if (icon) {
+                    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+                
+                Object.values(charts).forEach(chart => {
+                    if (chart && chart.updateOptions) {
+                        chart.updateOptions({
+                            xaxis: { labels: { style: { colors: theme === 'dark' ? '#94a3b8' : '#64748b' } } },
+                            yaxis: { labels: { style: { colors: theme === 'dark' ? '#94a3b8' : '#64748b' } } },
+                            grid: { borderColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
+                            legend: { labels: { colors: theme === 'dark' ? '#f8fafc' : '#1e293b' } }
+                        });
+                    }
+                });
             });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const saved = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-bs-theme', saved);
+                const icon = document.querySelector('#themeToggle i');
+                if (icon) {
+                    icon.className = saved === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+                initCharts();
+            } catch(e) {}
         });
 
         window.addEventListener('chartsRefreshed', () => {
-            initDashboard();
+            initCharts();
         });
-
-        function initDashboard() {
-            // Colors Maxton
-            const colors = {
-                primary: '#6366f1',
-                secondary: '#a855f7',
-                success: '#10b981',
-                warning: '#f59e0b',
-                danger: '#ef4444',
-                info: '#06b6d4'
-            };
-
-            const html = document.documentElement;
-            const isDark = html.getAttribute('data-bs-theme') === 'dark';
-            const textColor = isDark ? '#94a3b8' : '#64748b';
-            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-
-            // Données
-            const ticketsHistory = {!! json_encode($monthlyTicketsData ?? []) !!};
-            const checkoutsHistory = {!! json_encode($monthlyCheckoutsData ?? []) !!};
-            
-            // Configuration des sparklines
-            const sparkOptions = {
-                chart: { 
-                    type: 'area', 
-                    height: 50, 
-                    sparkline: { enabled: true },
-                    animations: { enabled: true }
-                },
-                stroke: { curve: 'smooth', width: 2.5 },
-                fill: { 
-                    type: 'gradient',
-                    gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0 }
-                },
-                tooltip: { enabled: false }
-            };
-
-            // Spark 1 - Incidents
-            if(document.querySelector("#spark1")) {
-                new ApexCharts(document.querySelector("#spark1"), {
-                    ...sparkOptions,
-                    colors: [colors.danger],
-                    series: [{ data: {!! json_encode(array_values($incidentTrendData['data'] ?? [5, 8, 6, 10, 7, 9])) !!} }]
-                }).render();
-            }
-
-            // Spark 2 - Tickets
-            if(document.querySelector("#spark2")) {
-                new ApexCharts(document.querySelector("#spark2"), {
-                    ...sparkOptions,
-                    colors: [colors.primary],
-                    series: [{ data: Object.values(ticketsHistory).slice(-10) }]
-                }).render();
-            }
-
-            // Spark 3 - Checkouts
-            if(document.querySelector("#spark3")) {
-                new ApexCharts(document.querySelector("#spark3"), {
-                    ...sparkOptions,
-                    colors: [colors.success],
-                    series: [{ data: Object.values(checkoutsHistory).slice(-10) }]
-                }).render();
-            }
-
-            // Spark 4 - Taux
-            if(document.querySelector("#spark4")) {
-                new ApexCharts(document.querySelector("#spark4"), {
-                    ...sparkOptions,
-                    colors: [colors.warning],
-                    series: [{ data: [90, 92, 95, 94, 96, 95, 97, 96, 98, 97, 98, 99] }]
-                }).render();
-            }
-
-            // Chart Tickets (Area)
-            if(document.querySelector("#chartTickets")) {
-                new ApexCharts(document.querySelector("#chartTickets"), {
-                    series: [{ name: 'Tickets', data: Object.values(ticketsHistory) }],
-                    chart: { 
-                        id: 'mainTickets',
-                        type: 'area', 
-                        height: 320, 
-                        toolbar: { show: false },
-                        background: 'transparent',
-                        foreColor: textColor
-                    },
-                    colors: [colors.primary],
-                    stroke: { curve: 'smooth', width: 3 },
-                    fill: { 
-                        type: 'gradient', 
-                        gradient: { shadeIntensity: 1, opacityFrom: 0.5, opacityTo: 0.1 } 
-                    },
-                    grid: { borderColor: gridColor, strokeDashArray: 4 },
-                    xaxis: { categories: Object.keys(ticketsHistory) }
-                }).render();
-            }
-
-            // Chart Checkouts (Bar)
-            if(document.querySelector("#chartCheckouts")) {
-                new ApexCharts(document.querySelector("#chartCheckouts"), {
-                    series: [{ name: 'Sorties', data: Object.values(checkoutsHistory) }],
-                    chart: { 
-                        id: 'mainCheckouts',
-                        type: 'bar', 
-                        height: 320, 
-                        toolbar: { show: false },
-                        background: 'transparent',
-                        foreColor: textColor
-                    },
-                    colors: [colors.success],
-                    plotOptions: { bar: { borderRadius: 8, columnWidth: '45%' } },
-                    grid: { borderColor: gridColor, strokeDashArray: 4 },
-                    xaxis: { categories: Object.keys(checkoutsHistory) }
-                }).render();
-            }
-
-            // Donut Équipements
-            if(document.querySelector("#chartEquipments")) {
-                const equipmentData = {!! json_encode($equipmentTypeData ?? []) !!};
-                new ApexCharts(document.querySelector("#chartEquipments"), {
-                    series: Object.values(equipmentData),
-                    labels: Object.keys(equipmentData),
-                    chart: { type: 'donut', height: 300, foreColor: textColor },
-                    colors: [colors.primary, colors.secondary, colors.info, colors.success],
-                    stroke: { width: 0 },
-                    legend: { position: 'bottom' },
-                    plotOptions: { pie: { donut: { size: '75%' } } }
-                }).render();
-            }
-
-            // Pie Logiciels
-            if(document.querySelector("#chartSoftware")) {
-                const softwareData = {!! json_encode($softwareCategoryData ?? []) !!};
-                new ApexCharts(document.querySelector("#chartSoftware"), {
-                    series: Object.values(softwareData),
-                    labels: Object.keys(softwareData),
-                    chart: { type: 'pie', height: 300, foreColor: textColor },
-                    colors: [colors.primary, colors.success, colors.warning, colors.danger, colors.secondary],
-                    stroke: { width: 0 },
-                    legend: { position: 'bottom' }
-                }).render();
-            }
-
-            // --- Theme Support JS ---
-            const themeBtn = document.getElementById('themeToggle');
-            const icon = themeBtn.querySelector('i');
-
-            // Set initial icon
-            updateThemeIcon(isDark);
-
-            themeBtn.addEventListener('click', () => {
-                const current = html.getAttribute('data-bs-theme');
-                const dark = current !== 'dark';
-                
-                html.setAttribute('data-bs-theme', dark ? 'dark' : 'light');
-                localStorage.setItem('theme', dark ? 'dark' : 'light');
-                
-                updateThemeIcon(dark);
-                
-                // Reload page or refresh charts logic
-                // For simplicity, we refresh the window to apply all Maxton CSS variables properly
-                window.location.reload();
-            });
-
-            function updateThemeIcon(dark) {
-                 if(dark) {
-                    icon.classList.replace('fa-moon', 'fa-sun');
-                    themeBtn.style.color = '#fbbf24';
-                 } else {
-                    icon.classList.replace('fa-sun', 'fa-moon');
-                    themeBtn.style.color = 'inherit';
-                 }
-            }
-        }
     </script>
 </div>

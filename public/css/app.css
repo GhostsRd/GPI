@@ -80,7 +80,9 @@
 }
 
 /* CSS Reset Modern */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -89,11 +91,11 @@
 /* Smooth transitions and fluid animations */
 * {
     transition: background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.3s ease,
-    box-shadow 0.3s ease;
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 html {
@@ -107,9 +109,11 @@ body {
     margin: 0;
     padding: 0;
     color: var(--dark);
-    line-height: 1.2; /* Interligne réduit */
+    line-height: 1.2;
+    /* Interligne réduit */
     overflow-x: hidden;
-    font-size: 0.875rem; /* Taille de base réduite */
+    font-size: 0.875rem;
+    /* Taille de base réduite */
 }
 
 /* RÉDUCTION DES TITRES */
@@ -150,7 +154,8 @@ h3 {
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
-    z-index: 1200 !important; /* Z-index plus élevé que la sidebar */
+    z-index: 1200 !important;
+    /* Z-index plus élevé que la sidebar */
     display: flex;
     align-items: center;
 }
@@ -284,7 +289,8 @@ h3 {
     }
 
     .brand-subtitle {
-        display: none; /* Cache le sous-titre sur mobile */
+        display: none;
+        /* Cache le sous-titre sur mobile */
     }
 }
 
@@ -311,6 +317,7 @@ h3 {
         opacity: 0;
         transform: translateX(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -413,7 +420,6 @@ h3 {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     position: relative;
-    overflow: hidden;
     display: flex;
     align-items: center;
     height: 35px !important;
@@ -429,6 +435,7 @@ h3 {
     background: var(--gradient-primary);
     opacity: 0.1;
     transition: left 0.4s ease;
+    pointer-events: none;
 }
 
 .user-dropdown:hover {
@@ -472,6 +479,7 @@ h3 {
         opacity: 0;
         transform: translateY(-8px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -518,13 +526,16 @@ h3 {
 .sidebar-modern {
     background: var(--sidebar-bg);
     border-right: 1px solid var(--border);
-    min-height: calc(100vh - 50px) !important; /* Ajusté à la hauteur de la navbar */
+    min-height: calc(100vh - 50px) !important;
+    /* Ajusté à la hauteur de la navbar */
     box-shadow: 4px 0 25px var(--shadow);
     position: fixed;
-    top: 50px !important; /* Commence juste après la navbar */
+    top: 50px !important;
+    /* Commence juste après la navbar */
     left: 0;
     width: min(260px, 90vw);
-    z-index: 1100 !important; /* Z-index inférieur à la navbar */
+    z-index: 1100 !important;
+    /* Z-index inférieur à la navbar */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     backdrop-filter: blur(10px);
@@ -537,12 +548,16 @@ h3 {
 }
 
 .sidebar-header {
-    padding: 1rem 0.75rem 0.75rem; /* Padding réduit */
-    border-bottom: none; /* Bordure enlevée */
+    padding: 1rem 0.75rem 0.75rem;
+    /* Padding réduit */
+    border-bottom: none;
+    /* Bordure enlevée */
     text-align: center;
     background: var(--gradient-light);
-    margin: 0.5rem; /* Marge réduite */
-    border-radius: 10px; /* Border radius réduit */
+    margin: 0.5rem;
+    /* Marge réduite */
+    border-radius: 10px;
+    /* Border radius réduit */
     position: relative;
     overflow: hidden;
 }
@@ -560,7 +575,8 @@ h3 {
 .sidebar-title {
     color: var(--dark);
     font-weight: 700;
-    font-size: 0.9rem; /* Taille réduite */
+    font-size: 0.9rem;
+    /* Taille réduite */
     margin: 0;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
@@ -570,18 +586,22 @@ h3 {
 
 /* Enhanced Sidebar Navigation */
 .sidebar-nav-modern {
-    padding: 0.5rem 0; /* Padding réduit */
+    padding: 0.5rem 0;
+    /* Padding réduit */
 }
 
 .nav-item-modern {
-    margin: 0.15rem 0.5rem; /* Marge réduite */
+    margin: 0.15rem 0.5rem;
+    /* Marge réduite */
 }
 
 .nav-link-modern {
     color: var(--sidebar-text);
     text-decoration: none;
-    padding: 0.6rem 0.75rem; /* Padding réduit */
-    border-radius: 6px; /* Border radius réduit */
+    padding: 0.6rem 0.75rem;
+    /* Padding réduit */
+    border-radius: 6px;
+    /* Border radius réduit */
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -589,10 +609,13 @@ h3 {
     font-weight: 500;
     position: relative;
     overflow: hidden;
-    border: none; /* Bordure enlevée */
-    font-size: 0.75rem; /* Taille réduite */
+    border: none;
+    /* Bordure enlevée */
+    font-size: 0.75rem;
+    /* Taille réduite */
     background: transparent;
-    line-height: 1.1; /* Interligne réduit */
+    line-height: 1.1;
+    /* Interligne réduit */
 }
 
 .nav-link-modern::before {
@@ -622,7 +645,8 @@ h3 {
     background: var(--gradient-primary);
     color: white;
     transform: translateX(4px);
-    border: none; /* Bordure enlevée */
+    border: none;
+    /* Bordure enlevée */
     box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
 }
 
@@ -633,14 +657,17 @@ h3 {
 }
 
 .nav-icon {
-    width: 16px; /* Taille réduite */
-    height: 16px; /* Taille réduite */
+    width: 16px;
+    /* Taille réduite */
+    height: 16px;
+    /* Taille réduite */
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
     color: inherit;
-    font-size: 0.8rem; /* Taille réduite */
+    font-size: 0.8rem;
+    /* Taille réduite */
 }
 
 .nav-link-modern:hover .nav-icon {
@@ -655,7 +682,8 @@ h3 {
     margin-left: auto;
     transition: transform 0.3s ease;
     color: inherit;
-    font-size: 0.7rem; /* Taille réduite */
+    font-size: 0.7rem;
+    /* Taille réduite */
 }
 
 .nav-link-modern[aria-expanded="true"] .nav-chevron {
@@ -664,20 +692,27 @@ h3 {
 
 /* Styles pour les sous-menus - BORDURES ENLEVÉES */
 .nav-collapse-modern {
-    border: none; /* Bordure enlevée */
+    border: none;
+    /* Bordure enlevée */
     background: transparent;
 }
 
 .nav-submenu-modern {
-    border: none; /* Bordure enlevée */
-    padding-left: 1rem; /* Padding réduit */
+    border: none;
+    /* Bordure enlevée */
+    padding-left: 1rem;
+    /* Padding réduit */
 }
 
 .nav-submenu-modern .nav-link-modern {
-    padding: 0.5rem 0.75rem; /* Padding réduit */
-    font-size: 0.7rem; /* Taille réduite */
-    border-radius: 5px; /* Border radius réduit */
-    line-height: 1.1; /* Interligne réduit */
+    padding: 0.5rem 0.75rem;
+    /* Padding réduit */
+    font-size: 0.7rem;
+    /* Taille réduite */
+    border-radius: 5px;
+    /* Border radius réduit */
+    line-height: 1.1;
+    /* Interligne réduit */
 }
 
 .nav-submenu-modern .nav-link-modern:hover {
@@ -694,10 +729,14 @@ h3 {
 /* Enhanced Submenu - BORDURES ENLEVÉES */
 .nav-submenu {
     background: var(--sidebar-hover);
-    border-radius: 8px; /* Border radius réduit */
-    margin: 0.3rem 0.5rem; /* Marge réduite */
-    padding: 0.3rem 0; /* Padding réduit */
-    border: none; /* BORDURE ENLEVÉE */
+    border-radius: 8px;
+    /* Border radius réduit */
+    margin: 0.3rem 0.5rem;
+    /* Marge réduite */
+    padding: 0.3rem 0;
+    /* Padding réduit */
+    border: none;
+    /* BORDURE ENLEVÉE */
     animation: submenuSlide 0.3s ease-out;
 }
 
@@ -706,6 +745,7 @@ h3 {
         opacity: 0;
         transform: translateY(-8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -713,18 +753,23 @@ h3 {
 }
 
 .submenu-item {
-    padding: 0.4rem 1rem 0.4rem 2rem; /* Padding réduit */
+    padding: 0.4rem 1rem 0.4rem 2rem;
+    /* Padding réduit */
     color: var(--sidebar-text);
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    border-radius: 5px; /* Border radius réduit */
+    border-radius: 5px;
+    /* Border radius réduit */
     transition: all 0.3s ease;
-    font-size: 0.7rem; /* Taille réduite */
+    font-size: 0.7rem;
+    /* Taille réduite */
     position: relative;
-    margin: 0.1rem 0.3rem; /* Marge réduite */
-    line-height: 1.1; /* Interligne réduit */
+    margin: 0.1rem 0.3rem;
+    /* Marge réduite */
+    line-height: 1.1;
+    /* Interligne réduit */
 }
 
 .submenu-item::before {
@@ -733,8 +778,10 @@ h3 {
     left: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 4px; /* Taille réduite */
-    height: 4px; /* Taille réduite */
+    width: 4px;
+    /* Taille réduite */
+    height: 4px;
+    /* Taille réduite */
     background: var(--primary);
     border-radius: 50%;
     transition: all 0.3s ease;
@@ -760,14 +807,18 @@ h3 {
 /* Enhanced Nav Headings */
 .nav-heading-modern {
     color: var(--gray-500);
-    font-size: 0.65rem; /* Taille réduite */
+    font-size: 0.65rem;
+    /* Taille réduite */
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px; /* Espacement réduit */
-    padding: 0.75rem 1rem 0.4rem; /* Padding réduit */
+    letter-spacing: 0.5px;
+    /* Espacement réduit */
+    padding: 0.75rem 1rem 0.4rem;
+    /* Padding réduit */
     margin: 0;
     position: relative;
-    line-height: 1.1; /* Interligne réduit */
+    line-height: 1.1;
+    /* Interligne réduit */
 }
 
 .nav-heading-modern::after {
@@ -785,8 +836,10 @@ h3 {
     margin-left: min(260px, 90vw);
     padding: clamp(1rem, 3vw, 2rem);
     background: var(--main-bg);
-    min-height: calc(100vh - 50px) !important; /* Ajusté à la hauteur de la navbar */
-    margin-top: 50px !important; /* Compense la navbar fixe */
+    min-height: calc(100vh - 50px) !important;
+    /* Ajusté à la hauteur de la navbar */
+    margin-top: 50px !important;
+    /* Compense la navbar fixe */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
@@ -799,7 +852,7 @@ h3 {
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
     pointer-events: none;
     z-index: -1;
 }
@@ -879,7 +932,8 @@ h3 {
     margin-bottom: 0.5rem !important;
 }
 
-.col, .col-auto {
+.col,
+.col-auto {
     padding: 0.375rem !important;
 }
 
@@ -933,7 +987,8 @@ h3 {
 
     .sidebar-modern {
         width: 100vw;
-        top: 45px !important; /* Ajusté à la hauteur réduite de la navbar */
+        top: 45px !important;
+        /* Ajusté à la hauteur réduite de la navbar */
         min-height: calc(100vh - 45px) !important;
     }
 
@@ -994,8 +1049,13 @@ h3 {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideInLeft {
@@ -1003,6 +1063,7 @@ h3 {
         transform: translateX(-25px);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -1014,6 +1075,7 @@ h3 {
         transform: translateX(25px);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -1025,10 +1087,12 @@ h3 {
         transform: scale(0.3);
         opacity: 0;
     }
+
     50% {
         transform: scale(1.03);
         opacity: 0.8;
     }
+
     100% {
         transform: scale(1);
         opacity: 1;
@@ -1055,8 +1119,15 @@ h3 {
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 /* Enhanced Toggle Sidebar Button */
@@ -1107,8 +1178,13 @@ h3 {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Focus States for Accessibility */
@@ -1187,7 +1263,10 @@ h3 {
 
 /* Reduced Motion for Accessibility */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;

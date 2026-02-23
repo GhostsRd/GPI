@@ -91,46 +91,41 @@
                 </p>
             </div>
 
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3 class="feature-title">Rapide</h3>
-                        <p class="feature-description">
-                            Trouvez rapidement les informations dont vous avez besoin grâce à notre 
-                            système de recherche intelligent et à notre organisation optimisée.
-                        </p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
                     </div>
+                    <h3 class="feature-title">Rapide</h3>
+                    <p class="feature-description">
+                        Trouvez rapidement les informations dont vous avez besoin grâce à notre 
+                        système de recherche intelligent et à notre organisation optimisée.
+                    </p>
                 </div>
-                <div class="col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3 class="feature-title">Accessible</h3>
-                        <p class="feature-description">
-                            Accédez à la documentation depuis n'importe quel appareil, à tout moment. 
-                            Une expérience fluide sur mobile, tablette et desktop.
-                        </p>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
                     </div>
+                    <h3 class="feature-title">Accessible</h3>
+                    <p class="feature-description">
+                        Accédez à la documentation depuis n'importe quel appareil, à tout moment. 
+                        Une expérience fluide sur mobile, tablette et desktop.
+                    </p>
                 </div>
-                <div class="col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-layer-group"></i>
-                        </div>
-                        <h3 class="feature-title">Complet</h3>
-                        <p class="feature-description">
-                            Une collection exhaustive de guides, tutoriels et références pour 
-                            couvrir tous vos besoins professionnels.
-                        </p>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
                     </div>
+                    <h3 class="feature-title">Complet</h3>
+                    <p class="feature-description">
+                        Une collection exhaustive de guides, tutoriels et références pour 
+                        couvrir tous vos besoins professionnels.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Categories Section -->
     <div class="doc-categories-section">
@@ -2010,6 +2005,18 @@
             
             .modal-container {
                 max-height: 95vh;
+            }
+        }
+        /* Features Grid - Force 3 colonnes alignées */
+        .features-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 1.5rem !important;
+        }
+
+        @media (max-width: 576px) {
+            .features-grid {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>

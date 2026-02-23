@@ -1560,7 +1560,7 @@ class Acceuil extends Component
     }
 
     /**
-     * Activités unifiées
+     * Activités unifiées - Triées par date la plus récente
      */
     public function getUnifiedActivitiesProperty()
     {
@@ -1684,12 +1684,8 @@ class Acceuil extends Component
             }
         }
 
-        return $activities->sort(function($a, $b) {
-            if ($a['priority_level'] != $b['priority_level']) {
-                return $a['priority_level'] <=> $b['priority_level'];
-            }
-            return $b['date'] <=> $a['date'];
-        })->values()->take(50);
+        // TRI PAR DATE LA PLUS RÉCENTE UNIQUEMENT
+        return $activities->sortByDesc('date')->values()->take(50);
     }
 
     private function getPriorityLevel($priority, $status)
