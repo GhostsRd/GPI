@@ -1,14 +1,27 @@
 <div>
     <div class="table-container border-0 shadow-sm fade-in-up">
-        <div class="table-header bg-light p-3 rounded-top">
+        <!-- En-tête avec boutons de contrôle -->
+        <div class="table-header bg-light p-3 rounded-top d-flex justify-content-between align-items-center">
             <div class="table-title fw-bold text-dark">
                 <i class="bi bi-cart-check me-2"></i>
-                Liste des Checkouts 
+                Liste des Checkouts
+            </div>
+            <div class="d-flex gap-2">
+                <!-- Bouton Masquer les cartes -->
+                <button class="btn btn-sm btn-outline-primary" id="toggleCardsBtn" title="Masquer/Afficher les statistiques">
+                    <i class="fas fa-chart-simple me-1"></i>
+                    <span id="toggleCardsText">Masquer les cartes</span>
+                </button>
+                <!-- Bouton Filtres -->
+                <button class="btn btn-sm btn-outline-secondary" id="toggleFiltersBtn" title="Masquer/Afficher les filtres">
+                    <i class="fas fa-sliders me-1"></i>
+                    <span id="toggleFiltersText">Masquer les filtres</span>
+                </button>
             </div>
         </div>
 
-        <!-- Statistiques des checkouts -->
-        <div class="row p-3">
+        <!-- Statistiques des checkouts (masquable) -->
+        <div id="statsCards" class="row p-3">
             <div class="col-xl-3 col-md-6 mb-3">
                 <div class="card stats-widget border-0 shadow-sm">
                     <div class="card-body">
@@ -82,8 +95,8 @@
             </div>
         </div>
 
-        <!-- Barre de recherche et filtres -->
-        <div class="card border-0 shadow-sm mb-4 mx-3">
+        <!-- Barre de recherche et filtres (masquable) -->
+        <div id="filtersSection" class="card border-0 shadow-sm mb-4 mx-3">
             <div class="card-body py-2">
                 <div class="row g-2 align-items-end">
                     <div class="col-md-2">
@@ -352,8 +365,9 @@
         @endif
     </div>
 </div>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 .small {
@@ -451,4 +465,89 @@
     width: 16px;
     height: 16px;
 }
+
+/* Animations pour le masquage/affichage */
+#statsCards, #filtersSection {
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+#statsCards.hidden, #filtersSection.hidden {
+    display: none !important;
+}
+
+.btn-outline-primary, .btn-outline-secondary {
+    transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover, .btn-outline-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-outline-primary i, .btn-outline-secondary i {
+    transition: transform 0.2s ease;
+}
+
+.btn-outline-primary:hover i, .btn-outline-secondary:hover i {
+    transform: rotate(5deg);
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestionnaire pour masquer/afficher les cartes statistiques
+    const toggleCardsBtn = document.getElementById('toggleCardsBtn');
+    const statsCards = document.getElementById('statsCards');
+    const toggleCardsText = document.getElementById('toggleCardsText');
+    
+    if (toggleCardsBtn && statsCards) {
+        // Vérifier l'état sauvegardé dans localStorage
+        const cardsHidden = localStorage.getItem('statsCardsHidden') === 'true';
+        if (cardsHidden) {
+            statsCards.classList.add('hidden');
+            toggleCardsText.textContent = 'Afficher les cartes';
+            toggleCardsBtn.innerHTML = '<i class="fas fa-chart-simple me-1"></i><span id="toggleCardsText">Afficher les cartes</span>';
+        }
+        
+        toggleCardsBtn.addEventListener('click', function() {
+            statsCards.classList.toggle('hidden');
+            const isHidden = statsCards.classList.contains('hidden');
+            localStorage.setItem('statsCardsHidden', isHidden);
+            
+            if (isHidden) {
+                toggleCardsText.textContent = 'Afficher les cartes';
+            } else {
+                toggleCardsText.textContent = 'Masquer les cartes';
+            }
+        });
+    }
+    
+    // Gestionnaire pour masquer/afficher les filtres
+    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+    const filtersSection = document.getElementById('filtersSection');
+    const toggleFiltersText = document.getElementById('toggleFiltersText');
+    
+    if (toggleFiltersBtn && filtersSection) {
+        // Vérifier l'état sauvegardé dans localStorage
+        const filtersHidden = localStorage.getItem('filtersSectionHidden') === 'true';
+        if (filtersHidden) {
+            filtersSection.classList.add('hidden');
+            toggleFiltersText.textContent = 'Afficher les filtres';
+            toggleFiltersBtn.innerHTML = '<i class="fas fa-sliders me-1"></i><span id="toggleFiltersText">Afficher les filtres</span>';
+        }
+        
+        toggleFiltersBtn.addEventListener('click', function() {
+            filtersSection.classList.toggle('hidden');
+            const isHidden = filtersSection.classList.contains('hidden');
+            localStorage.setItem('filtersSectionHidden', isHidden);
+            
+            if (isHidden) {
+                toggleFiltersText.textContent = 'Afficher les filtres';
+            } else {
+                toggleFiltersText.textContent = 'Masquer les filtres';
+            }
+        });
+    }
+});
+</script>
