@@ -34,6 +34,12 @@ class UtilisateurService extends Component
     public $responsable_id = 2;
     public $step2 = "";
 
+    public $disabled = true;
+
+    public function disableRecente()
+    {
+        $this->disabled = !$this->disabled;
+    }
     public function steps2()
     {
         $this->step2 = "active";
@@ -123,7 +129,7 @@ class UtilisateurService extends Component
 
         }
 
-       
+
            
       
         usleep(1000000);
@@ -148,6 +154,7 @@ class UtilisateurService extends Component
         $this->step2;
         $this->resetPage('refreshComponent');
         $this->dispatchBrowserEvent('ticket-saved');
+        $this->disabled;
     }
     public function storechat()
     {

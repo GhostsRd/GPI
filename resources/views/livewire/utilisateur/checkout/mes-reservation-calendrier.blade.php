@@ -1,6 +1,6 @@
 <div class="container-fluid row " style="margin-top: 5% ;scrollbar-width: none; -ms-overflow-style: none;"
     style="height:40vh;">
-    <div class="col-lg-2 offset-1 bg-white py-1 px-0 ">
+    <div class="col-lg-2 offset-1 d-none d-lg-block d-xl-block bg-white py-1 px-0 ">
 
         @livewire('component.menu-utilisateur')
 
@@ -330,7 +330,7 @@
         </div>
     </div>
 
-    <div class="col-lg-9 row  mt-4 border-start"
+    <div class="col-lg-9 m-2 m-lg-0 m-xl-0 row  mt-4 border-0 border-md-start"
         style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
         <div wire:ignore.self class="p-2 col-lg-12 ">
             <h5 class="mt-2 pb-4 border-bottom fw-bold">calendrier de vos reservation</h5>

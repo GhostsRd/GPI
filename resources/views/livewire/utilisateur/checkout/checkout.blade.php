@@ -1,5 +1,5 @@
 <div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section">
-    <div wire:ignore.self class="sidebar shadow rounded-3 p-0  col-lg-2 bg-white py-4 card mt-5 " id="sidebar">
+    <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-white p-0   mt-4" id="sidebar">
         <div>
             <div>
                 <div>
@@ -15,7 +15,7 @@
                             {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
                                 obligatoires</p> --}}
 
-                            <div class="mb-3 col-lg-6 position-relative">
+                            <div class="mb-3  position-relative">
 
                                 @error('sujet')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -60,7 +60,7 @@
 
                                     <div class="mt-4 border-bottom py-1">
                                         <button wire:click.prevent="next_form(2)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant ⮞</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant </button>
                                     </div>
                                 </div>
 
@@ -98,9 +98,9 @@
                                     </a>
                                     <div class="mt-4 border-bottom py-1">
                                         <button wire:click="next_form(1)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜ Precedent</button>
+                                            class="btn btn-outline-white  fw-bold border  px-3  btn-sm  shadow-sm"> Precedent</button>
                                         <button wire:click="next_form(5)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant ⮞</button>
+                                            class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Suivant </button>
                                     </div>
                                 </div>
 
@@ -249,7 +249,7 @@
                                         <button wire:click="next_form(1)"
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
                                         <button wire:click="next_form(5)" type="submit"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
+                                            class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
                                     </div>
                                 </div>
 
@@ -279,16 +279,11 @@
                                     </a>
                                     <div class="">
                                         <button wire:click="next_form(1)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Retour</button>
                                         <button type="submit" wire:click="EnvoyerCheckout"
-                                            class="btn btn-two btn-sm    fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
+                                            class="btn btn-two btn-sm text-white   fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
                                             Envoyer
-                                            <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="size-1">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                                            </svg>
+                                            
 
                                         </button>
                                     </div>
@@ -314,11 +309,11 @@
 
 
 
-    <div wire:ignore.self class="container-fluid main-content mt-4">
+    <div wire:ignore.self class="container-fluid main-content mt-3">
 
-        <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
+        <div class="row col-lg-11 offset-lg-1 offset-xs-0 offset-0  col-12">
             {{-- ici le menu --}}
-            <div class="col-lg-2 bg-white py-1 px-0 ">
+            <div class="col-lg-2 bg-white py-1 px-0 d-md-block d-xl-block d-none">
 
 
                  @livewire('component.menu-utilisateur')
@@ -653,109 +648,119 @@
 
             {{-- ici le contente right --}}
 
-            <div class="border-start col-lg-9 mx-2">
-                <div class="col-lg-12 ">
-                    <h5 class="fw-bold m-2 ">Checkout / Reservation d'equipement</h5>
-                    <span class="text-muted m-2 mt-2 pb-2">Visualisation globale de chekout</span> <br>
-                </div>
-                <div class="col-lg-12 mx-4 ">
-                    <div class="row border-top mt-4">
-                        <div class="col-lg-6 ">
+            <div class="border-md-start col-lg-9 mx-0 mx-md-2 mx-lg-2">
+                <div class="row">
 
-                            <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
-                        </div>
-
-                        <div class="col-lg-6">
-
-                            <span class="d-flex justify-content-end py-3 px-2 text-primary">Afficher tous les reservations</span>
-                        </div>
-
-
+                    <div class="col-lg-6 col-8">
+                        <h5 class="fw-bold mx-1 ">Checkout / Reservation</h5> 
+                        <span class="text-muted m-2 mt-2 pb-2">Visualisation globale de chekout</span> <br>
                     </div>
-                    <div class="row p-0 mx-3 ">
-                        @foreach ($checkoutrecentes as $checkoutrecente)
-                        
-                        <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
-                            {{-- <div class="card-title border-bottom bg-light py-2 px-2">
-                                Nom du ticket de las
-                            </div> --}}
-                            
-                            <div class="card-body m-0 p-0 ">
-                                 <div class="pb-2 fw-bold text-muted" >
-                                    Checkout 
-                                </div>
-                                <strong class="d-flex justify-content-between">
-                                    <div class="bg-light rounded-start-pill">
-                                        <img  class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $checkoutrecente->utilisateur->nom ?? 'none' }}"
-                                            alt="Profil" width="40" height="40"
-                                            class="rounded-circle me-2">
-                                            <span class="mx-2 ">{{ $checkoutrecente->materiel_type ?? 'Aucun' }}</span></div> 
-                                </strong>
-                                 {{-- <div class="d-flex justify-content-end">
-                                        <small> 10 Nov 2025</small>
-                                </div> --}}
-                                <div class="mt-2 ">
-                                    <p>{{ $checkoutrecente->materiel_details ?? 'Aucun' }}</p>
-                                </div>
-                                <div>
-                                    
-                                    <div class="d-flex justify-content-end">
-                                        <span class="text-muted mx-2">
-                                               {{ \Carbon\Carbon::parse($checkoutrecente->created_at)->translatedFormat('d M Y H:i') }}
-                                        </span>
-                                        <img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $checkoutrecente->responsable->name ?? 'none' }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2"></div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
+                    <div class="col-lg-6 col-4  d-none d-md-block d-lg-block">
 
-                        @foreach ($reservationRecentes as $reservationRecent )
-                             <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
-                            {{-- <div class="card-title border-bottom bg-light py-2 px-2">
-                                Nom du ticket de las
-                            </div> --}}
-                            <div class="card-body m-0 p-0 " title="Reservation de materiel">
-                                <div class="pb-2 fw-bold text-muted" >
-                                    Reservation 
-                                </div>
-                                 
-                                <strong class="d-flex justify-content-between">
-                                    <div class="bg-light rounded-start-pill">
-                                        <img  class="dropdown-toggle border border-success border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $reservationRecent->responsable->nom ?? 'none' }}"
-                                            alt="Profil" width="40" height="40"
-                                            class="rounded-circle  me-2">
-                                            <span class="mx-2 text-capitalize ">{{ $reservationRecent->equipement_type?? 'Auccun' }}</span></div> 
-                                </strong>
-                                 {{-- <div class="d-flex justify-content-end">
-                                        <small> 10 Nov 2025</small>
+                            <span class="d-flex justify-content-end py-3 px-2 " wire:click="disableRecente" style="color: #5BC4BF" style="cursor: pointer">{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
+                    </div>
+                     <div class="col-lg-6 col-4 d-block d-md-none d-lg-none">
+
+                            <span class="d-flex justify-content-end py-3 px-2 " style="color: #5BC4BF" id="toggleSidebar" style="cursor: pointer">Nouveau</span>
+                    </div>
+                </div>
+                <div class="col-lg-12  mx-lg-4 mx-md-4  ">
+                    <div class="{{ $disabled ? 'd-none' : 'd-block' }}">
+
+                        <div class="row border-top mt-4">
+                            <div class="col-lg-6 ">
+    
+                                <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
+                            </div>
+    
+                        
+    
+                        </div>
+                        <div class="row p-0 mx-3 ">
+                            @foreach ($checkoutrecentes as $checkoutrecente)
+                            
+                            <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                                    Nom du ticket de las
                                 </div> --}}
-                                <div class="mt-2">
-                                    <p>{{ \Carbon\Carbon::parse($reservationRecent->date_debut)->translatedFormat('d M Y') }} - {{ \Carbon\Carbon::parse($reservationRecent->date_fin)->translatedFormat('d M Y') }}</p>
-                                </div>
-                                <div>
-                                    
-                                    <div class="d-flex justify-content-end"><img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name ?? 'none' }}"
-                                            alt="Profil" width="20" height="20"
-                                            class="rounded-circle me-2"></div>
+                                
+                                <div class="card-body m-0 p-0 ">
+                                     <div class="pb-2 fw-bold text-muted" >
+                                        Checkout 
+                                    </div>
+                                    <strong class="d-flex justify-content-between">
+                                        <div class="bg-light rounded-start-pill">
+                                            <img  class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $checkoutrecente->utilisateur->nom ?? 'none' }}"
+                                                alt="Profil" width="40" height="40"
+                                                class="rounded-circle me-2">
+                                                <span class="mx-2 ">{{ $checkoutrecente->materiel_type ?? 'Aucun' }}</span></div> 
+                                    </strong>
+                                     {{-- <div class="d-flex justify-content-end">
+                                            <small> 10 Nov 2025</small>
+                                    </div> --}}
+                                    <div class="mt-2 ">
+                                        <p>{{ $checkoutrecente->materiel_details ?? 'Aucun' }}</p>
+                                    </div>
+                                    <div>
+                                        
+                                        <div class="d-flex justify-content-end">
+                                            <span class="text-muted mx-2">
+                                                   {{ \Carbon\Carbon::parse($checkoutrecente->created_at)->translatedFormat('d M Y H:i') }}
+                                            </span>
+                                            <img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $checkoutrecente->responsable->name ?? 'none' }}"
+                                                alt="Profil" width="20" height="20"
+                                                class="rounded-circle me-2"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        @endforeach
-                        <div class="col-lg-3  mx-2  p-0 m-0   ">
-                            
-                            <div class="card-body m-0  ">
-                                 
-                                <span id="toggleSidebar"  class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 " style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
-                                    + Nouveau  
-                                </span>
-                               
-                               
+                            @endforeach
+    
+                            @foreach ($reservationRecentes as $reservationRecent )
+                                 <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                                    Nom du ticket de las
+                                </div> --}}
+                                <div class="card-body m-0 p-0 " title="Reservation de materiel">
+                                    <div class="pb-2 fw-bold text-muted" >
+                                        Reservation 
+                                    </div>
+                                     
+                                    <strong class="d-flex justify-content-between">
+                                        <div class="bg-light rounded-start-pill">
+                                            <img  class="dropdown-toggle border border-success border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $reservationRecent->responsable->nom ?? 'none' }}"
+                                                alt="Profil" width="40" height="40"
+                                                class="rounded-circle  me-2">
+                                                <span class="mx-2 text-capitalize ">{{ $reservationRecent->equipement_type?? 'Auccun' }}</span></div> 
+                                    </strong>
+                                     {{-- <div class="d-flex justify-content-end">
+                                            <small> 10 Nov 2025</small>
+                                    </div> --}}
+                                    <div class="mt-2">
+                                        <p>{{ \Carbon\Carbon::parse($reservationRecent->date_debut)->translatedFormat('d M Y') }} - {{ \Carbon\Carbon::parse($reservationRecent->date_fin)->translatedFormat('d M Y') }}</p>
+                                    </div>
+                                    <div>
+                                        
+                                        <div class="d-flex justify-content-end"><img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name ?? 'none' }}"
+                                                alt="Profil" width="20" height="20"
+                                                class="rounded-circle me-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                            <div class="col-lg-3  mx-2  p-0 m-0   ">
+                                
+                                <div class="card-body m-0  ">
+                                     
+                                    <span id="toggleSidebar"  class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 " style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
+                                        + Nouveau  
+                                    </span>
+                                   
+                                   
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -775,7 +780,7 @@
                                     Reserver une equipement
                                 </button>
                             </li>
-                            <li class="nav-item   text-dark" role="presentation">
+                            <li class="nav-item d-none d-md-block d-lg-block   text-dark" role="presentation">
                                 <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important"
                                     id="link2-tab" data-bs-toggle="tab" data-bs-target="#link2" type="button"
                                     role="tab" aria-controls="link1" aria-selected="false">
@@ -786,14 +791,14 @@
 
                         </ul>
 
-                        <div class="tab-content border-0 p-3  border-top-0" id="myTabContent">
+                        <div class="tab-content border-0 p-2  border-top-0" id="myTabContent">
                             <div class="tab-pane fade show active " id="active" role="tabpanel"
                                 aria-labelledby="active-tab">
 
                                 <div class="">
                                     <h5>Historique de votre checkout</h5>
                                 </div>
-                                <div class="list-group mt-2  bg-white " style="max-height:400px;overflow-y: scroll">
+                                <div class="list-group mt-2  bg-white " style="max-height:700px;overflow-y: scroll">
                                     @if ($checkouts)
                                          @foreach ($checkouts as $checkout)
                                             <a  data-aos="fade-down" data-aos-duration="400"
@@ -915,7 +920,7 @@
                             </div>
 
 
-                            <div class="tab-pane fade border-0 " id="link2" role="tabpanel"
+                            <div class="tab-pane fade border-0 d-none d-md-block d-lg-block" id="link2" role="tabpanel"
                                 aria-labelledby="link2-tab">
                                 <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 

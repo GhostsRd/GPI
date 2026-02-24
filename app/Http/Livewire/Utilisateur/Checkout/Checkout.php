@@ -12,6 +12,7 @@ use App\Models\ordinateur;
 use App\Models\moniteur;
 use \App\Models\Checkout as modelchekout;
 use App\Models\ticket;
+use App\Http\Livewire\Utilisateur\UtilisateurService;
 use App\Models\checkoutreserver as ReservationEquipement;
 //use Livewire\WithPagination;
 
@@ -24,7 +25,7 @@ class Checkout extends Component
     public $tickets;
     public $recherche;
     public $search = "";
-
+    public $disabled = true;
     public $type_materiel;
     public $state;
     public $filteredMateriels = [];
@@ -53,6 +54,10 @@ class Checkout extends Component
     ] ;
     
     public $selectedEquipements;
+
+    public function disableRecente(){
+        $this->disabled = !$this->disabled;
+    }
 
      public function redicrectlink($vals){
         if($vals == 1){
@@ -141,6 +146,7 @@ class Checkout extends Component
         $this->type_materiel;
         $this->selectcheckoutID;
         $this->selectedCheckouts;
+        $this->disabled;
         //$this->events;
         // dd(gettype($ordinateur->statut));
        // $this->events = ReservationEquipement::where('equipement_id',$this->equipement_id)

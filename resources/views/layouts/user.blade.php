@@ -399,12 +399,14 @@
 
                 GPI - Pivot
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
+                <ul class="navbar-nav mx-4">
+                    <hr class="d-block d-lg-none">
+                    <label for="" class="d-block d-lg-none fw-bold text-white">Menu</label>
                     <li class="nav-item"><a class="nav-link" href="{{ route('utilisateurService') }}">• Ticket</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('checkout') }}">• Checkout</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('utilisateur.incident') }}">• Incident</a>
@@ -412,9 +414,11 @@
 
                     <li class="nav-item"><a class="nav-link" href="{{ route('mes.reservation') }}">• Reservation</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contact">• Contact</a></li>
+
+                    <hr class="d-block d-lg-none">
                     <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle" id="userDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <a href="#" class="btn btn-one py-0 text-white fw-bold text-sm rounded-pill px-3">
+                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-target="#logoutmenu">
+                        <a href="#" class="btn btn-one py-0 text-white fw-bold text-sm  px-3">
                             @if (empty(Auth::guard('utilisateur')->user()->photo))
                                 <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
                                     src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
@@ -428,7 +432,7 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2"
-                            aria-labelledby="userDropdown">
+                            aria-labelledby="logoutmenu" id="logoutmenu">
                             <!-- Profil -->
                             <li>
                                 <a class="dropdown-item d-flex align-items-center px-3 py-2"
