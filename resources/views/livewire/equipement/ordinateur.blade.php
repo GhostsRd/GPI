@@ -628,214 +628,263 @@
         </div>
     </div>
 
-    <!-- Modals -->
     <!-- Modal pour créer/modifier un ordinateur -->
-    @if($showModal)
-    <div class="modal-backdrop fade show"></div>
-    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header py-2">
-                    <h5 class="modal-title small fw-semibold">
-                        <i class="bi {{ $isEditing ? 'bi-pencil' : 'bi-plus-circle' }} me-1"></i>
-                        {{ $isEditing ? 'Modifier l\'ordinateur' : 'Nouvel Ordinateur' }}
-                    </h5>
-                    <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
-                </div>
-                <form wire:submit.prevent="save" style="max-height:400px;overflow-y: scroll;  -ms-overflow-style: none;">
-                    <div class="modal-body p-3">
-                        <div class="row g-2">
-                            <!-- Informations de base -->
-                            <div class="col-12 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="bi bi-info-circle me-1 text-primary"></i>Informations de base
-                                </h6>
-                            </div>
+@if($showModal)
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title small fw-semibold">
+                    <i class="bi {{ $isEditing ? 'bi-pencil' : 'bi-plus-circle' }} me-1"></i>
+                    {{ $isEditing ? 'Modifier l\'ordinateur' : 'Nouvel Ordinateur' }}
+                </h5>
+                <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
+            </div>
+            <form wire:submit.prevent="save" style="max-height:400px;overflow-y: scroll; -ms-overflow-style: none;">
+                <div class="modal-body p-3">
+                    <div class="row g-2">
+                        <!-- Informations de base -->
+                        <div class="col-12 mb-2">
+                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                <i class="bi bi-info-circle me-1 text-primary"></i>Informations de base
+                            </h6>
+                        </div>
 
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Nom <span class="text-danger">*</span></label>
-                                <input type="text" wire:model="nom"
-                                       class="form-control form-control-sm @error('nom') is-invalid @enderror"
-                                       placeholder="Nom de l'ordinateur">
-                                @error('nom') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Nom <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="nom"
+                                   class="form-control form-control-sm @error('nom') is-invalid @enderror"
+                                   placeholder="Nom de l'ordinateur">
+                            @error('nom') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                        </div>
 
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Statut <span class="text-danger">*</span></label>
-                                <select wire:model="statut_form"
-                                        class="form-select form-select-sm @error('statut_form') is-invalid @enderror">
-                                    <option value="">Sélectionner un statut</option>
-                                    @foreach($statuts as $statut)
-                                        <option value="{{ $statut }}">{{ $statut }}</option>
-                                    @endforeach
-                                </select>
-                                @error('statut_form') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Statut <span class="text-danger">*</span></label>
+                            <select wire:model="statut_form"
+                                    class="form-select form-select-sm @error('statut_form') is-invalid @enderror">
+                                <option value="">Sélectionner un statut</option>
+                                @foreach($statuts as $statut)
+                                    <option value="{{ $statut }}">{{ $statut }}</option>
+                                @endforeach
+                            </select>
+                            @error('statut_form') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                        </div>
 
-                            <!-- Spécifications matérielles -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="bi bi-cpu me-1 text-primary"></i>Spécifications matérielles
-                                </h6>
-                            </div>
+                        <!-- Utilisateurs (Section déplacée plus haut pour plus de visibilité) -->
+                        <div class="col-12 mt-2 mb-2">
+                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                <i class="bi bi-people me-1 text-primary"></i>Attribution des utilisateurs
+                            </h6>
+                        </div>
 
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Fabricant</label>
-                                <input type="text" wire:model="fabricant"
-                                       class="form-control form-control-sm @error('fabricant') is-invalid @enderror"
-                                       placeholder="Dell, HP, Lenovo...">
-                                @error('fabricant') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Modèle</label>
-                                <input type="text" wire:model="modele"
-                                       class="form-control form-control-sm @error('modele') is-invalid @enderror"
-                                       placeholder="Latitude 5420...">
-                                @error('modele') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Numéro de série</label>
-                                <input type="text" wire:model="numero_serie"
-                                       class="form-control form-control-sm @error('numero_serie') is-invalid @enderror"
-                                       placeholder="Numéro de série">
-                                @error('numero_serie') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Disque dur</label>
-                                <input type="text" wire:model="disque_dur"
-                                       class="form-control form-control-sm"
-                                       placeholder="512 Go SSD">
-                            </div>
-
-                            <!-- Réseau et OS -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="bi bi-wifi me-1 text-primary"></i>Réseau et Système
-                                </h6>
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Adresse IP</label>
-                                <input type="text" wire:model="reseau_ip"
-                                       class="form-control form-control-sm @error('reseau_ip') is-invalid @enderror"
-                                       placeholder="192.168.1.100">
-                                @error('reseau_ip') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Version OS</label>
-                                <input type="text" wire:model="os_version"
-                                       class="form-control form-control-sm"
-                                       placeholder="Windows 11 Pro">
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Version noyau</label>
-                                <input type="text" wire:model="os_noyau" class="form-control form-control-sm"
-                                       placeholder="10.0.19045">
-                            </div>
-
-                            <!-- Utilisateurs -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="bi bi-people me-1 text-primary"></i>Attribution utilisateurs
-                                </h6>
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Utilisateur principal</label>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">
+                                <i class="bi bi-person-circle me-1 text-primary"></i>
+                                Utilisateur principal
+                                <span class="text-muted fw-light">(optionnel)</span>
+                            </label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light border-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
                                 <select wire:model="utilisateur_id"
                                         class="form-select form-select-sm @error('utilisateur_id') is-invalid @enderror">
-                                    <option value="">Sélectionner un utilisateur</option>
+                                    <option value="">-- Aucun utilisateur principal --</option>
                                     @foreach($utilisateurs as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}" 
+                                            {{ $user->id == $utilisateur_id ? 'selected' : '' }}>
+                                            {{ $user->name }} ({{ $user->email }})
+                                        </option>
                                     @endforeach
                                 </select>
-                                @error('utilisateur_id') <div class="invalid-feedback small">{{ $message }}</div> @enderror
                             </div>
+                            @error('utilisateur_id') <div class="invalid-feedback small d-block">{{ $message }}</div> @enderror
+                            <small class="text-muted d-block mt-1">
+                                <i class="bi bi-info-circle"></i> L'utilisateur principal assigné à cet ordinateur
+                            </small>
+                        </div>
 
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Usager secondaire</label>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">
+                                <i class="bi bi-person me-1 text-primary"></i>
+                                Usager secondaire
+                                <span class="text-muted fw-light">(optionnel)</span>
+                            </label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light border-0">
+                                    <i class="bi bi-person-plus"></i>
+                                </span>
                                 <select wire:model="usager_id" class="form-select form-select-sm">
-                                    <option value="">Sélectionner un usager</option>
+                                    <option value="">-- Aucun usager secondaire --</option>
                                     @foreach($utilisateurs as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}"
+                                            {{ $user->id == $usager_id ? 'selected' : '' }}>
+                                            {{ $user->name }} ({{ $user->email }})
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
+                            <small class="text-muted d-block mt-1">
+                                <i class="bi bi-info-circle"></i> Utilisateur secondaire ou suppléant
+                            </small>
+                        </div>
 
-                            <!-- Organisation -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="bi bi-building me-1 text-primary"></i>Organisation
-                                </h6>
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Entité</label>
-                                <input type="text" wire:model="entite_form"
-                                       class="form-control form-control-sm @error('entite_form') is-invalid @enderror"
-                                       placeholder="Entité organisationnelle">
-                                @error('entite_form') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Sous-entité</label>
-                                <input type="text" wire:model="sous_entite"
-                                       class="form-control form-control-sm"
-                                       placeholder="Sous-entité organisationnelle">
-                            </div>
-
-                            <!-- Dates importantes -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="bi bi-calendar me-1 text-primary"></i>Dates importantes
-                                </h6>
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Date dernier inventaire</label>
-                                <input type="date" wire:model="date_dernier_inventaire"
-                                       class="form-control form-control-sm">
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Dernier démarrage</label>
-                                <input type="datetime-local" wire:model="derniere_date_demarrage"
-                                       class="form-control form-control-sm">
-                            </div>
-
-                            <!-- Notes -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="bi bi-sticky me-1 text-primary"></i>Notes et informations
-                                </h6>
-                                <textarea wire:model="notes" class="form-control form-control-sm" rows="3"
-                                          placeholder="Informations supplémentaires..."></textarea>
+                        <!-- Barre de recherche rapide pour les utilisateurs (optionnel) -->
+                        <div class="col-12 mb-2">
+                            <div class="bg-light p-2 rounded-2 small">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-medium">Utilisateurs disponibles :</span>
+                                    <span class="badge bg-primary badge-sm">{{ count($utilisateurs) }} total</span>
+                                </div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach($utilisateurs->take(5) as $user)
+                                        <span class="badge bg-light text-dark border">{{ $user->name }}</span>
+                                    @endforeach
+                                    @if(count($utilisateurs) > 5)
+                                        <span class="badge bg-light text-dark border">+{{ count($utilisateurs)-5 }} autres</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Spécifications matérielles -->
+                        <div class="col-12 mt-2 mb-2">
+                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                <i class="bi bi-cpu me-1 text-primary"></i>Spécifications matérielles
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Fabricant</label>
+                            <input type="text" wire:model="fabricant"
+                                   class="form-control form-control-sm @error('fabricant') is-invalid @enderror"
+                                   placeholder="Dell, HP, Lenovo...">
+                            @error('fabricant') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Modèle</label>
+                            <input type="text" wire:model="modele"
+                                   class="form-control form-control-sm @error('modele') is-invalid @enderror"
+                                   placeholder="Latitude 5420...">
+                            @error('modele') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Numéro de série</label>
+                            <input type="text" wire:model="numero_serie"
+                                   class="form-control form-control-sm @error('numero_serie') is-invalid @enderror"
+                                   placeholder="Numéro de série">
+                            @error('numero_serie') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Disque dur</label>
+                            <input type="text" wire:model="disque_dur"
+                                   class="form-control form-control-sm"
+                                   placeholder="512 Go SSD">
+                        </div>
+
+                        <!-- Réseau et OS -->
+                        <div class="col-12 mt-2 mb-2">
+                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                <i class="bi bi-wifi me-1 text-primary"></i>Réseau et Système
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Adresse IP</label>
+                            <input type="text" wire:model="reseau_ip"
+                                   class="form-control form-control-sm @error('reseau_ip') is-invalid @enderror"
+                                   placeholder="192.168.1.100">
+                            @error('reseau_ip') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Version OS</label>
+                            <input type="text" wire:model="os_version"
+                                   class="form-control form-control-sm"
+                                   placeholder="Windows 11 Pro">
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Version noyau</label>
+                            <input type="text" wire:model="os_noyau" class="form-control form-control-sm"
+                                   placeholder="10.0.19045">
+                        </div>
+
+                        <!-- Organisation -->
+                        <div class="col-12 mt-2 mb-2">
+                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                <i class="bi bi-building me-1 text-primary"></i>Organisation
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Entité</label>
+                            <input type="text" wire:model="entite_form"
+                                   class="form-control form-control-sm @error('entite_form') is-invalid @enderror"
+                                   placeholder="Entité organisationnelle">
+                            @error('entite_form') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Sous-entité</label>
+                            <input type="text" wire:model="sous_entite"
+                                   class="form-control form-control-sm"
+                                   placeholder="Sous-entité organisationnelle">
+                        </div>
+
+                        <!-- Dates importantes -->
+                        <div class="col-12 mt-2 mb-2">
+                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                <i class="bi bi-calendar me-1 text-primary"></i>Dates importantes
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Date dernier inventaire</label>
+                            <input type="date" wire:model="date_dernier_inventaire"
+                                   class="form-control form-control-sm">
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label small fw-medium">Dernier démarrage</label>
+                            <input type="datetime-local" wire:model="derniere_date_demarrage"
+                                   class="form-control form-control-sm">
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="col-12 mt-2 mb-2">
+                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
+                                <i class="bi bi-sticky me-1 text-primary"></i>Notes et informations
+                            </h6>
+                            <textarea wire:model="notes" class="form-control form-control-sm" rows="3"
+                                      placeholder="Informations supplémentaires..."></textarea>
+                        </div>
                     </div>
-                    <div class="modal-footer py-2">
-                        <button type="button" class="btn btn-secondary btn-sm" wire:click="closeModal">Annuler</button>
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <span wire:loading.remove>
-                                <i class="bi {{ $isEditing ? 'bi-check' : 'bi-plus' }} me-1"></i>
-                                {{ $isEditing ? 'Modifier' : 'Créer' }}
-                            </span>
-                            <span wire:loading>
-                                <i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i>
-                                {{ $isEditing ? 'Modification...' : 'Création...' }}
-                            </span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeModal">
+                        <i class="bi bi-x me-1"></i>Annuler
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <span wire:loading.remove wire:target="save">
+                            <i class="bi {{ $isEditing ? 'bi-check' : 'bi-plus' }} me-1"></i>
+                            {{ $isEditing ? 'Modifier' : 'Créer' }}
+                        </span>
+                        <span wire:loading wire:target="save">
+                            <i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i>
+                            {{ $isEditing ? 'Modification...' : 'Création...' }}
+                        </span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-    @endif
+</div>
+@endif
 
     <!-- Modal de détails de l'ordinateur -->
     @if($showDetailsModal)
