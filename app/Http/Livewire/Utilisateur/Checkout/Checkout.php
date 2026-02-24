@@ -26,6 +26,7 @@ class Checkout extends Component
     public $type_materiel;
     public $state;
     public $filteredMateriels = [];
+    public $filteredEquipements = [];
     public $filtrematreservation = "";
     public $equipements = [];
     public $valeur1;
