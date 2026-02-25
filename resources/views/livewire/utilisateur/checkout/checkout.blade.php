@@ -1,6 +1,4 @@
-<div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section">
-    <div wire:ignore.self class="sidebar shadow rounded-3 p-0  col-lg-2 bg-white py-4 card mt-5 " id="sidebar">
-        <div>
+
             <div>
                 <div>
                     <!-- Header -->
@@ -119,9 +117,7 @@
                                         <small class="text-body-secondary">En stock</small>
                                     </div>
 
-                                </a>
 
-                                <div class="list-group">
 
                                     <!-- Ordinateur -->
 
@@ -130,7 +126,7 @@
                                     <a wire:click="$set('valeur2', 'Clavier')" href="#"
                                         class="{{ $valeur2 == 'Clavier' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Clavier </label>
+
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
                                     </a>
