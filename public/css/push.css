@@ -93,6 +93,9 @@
     width: 100%;
     left: -100%;
   }
+  .checkoutmenu{
+    width: 80% !important;
+  }
 
   .sidebar.active {
     left: 0;

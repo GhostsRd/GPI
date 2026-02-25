@@ -1,6 +1,6 @@
 <div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section  bg-md-white-cust ">
-    <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-white p-0   mt-4" id="sidebar">
-        <div>
+    <div wire:ignore.self class="sidebar checkoutmenu  rounded-3 text-dark card bg-white p-0   mt-4" id="sidebar">
+        <div >
             <div>
                 <div>
                     <!-- Header -->
@@ -23,18 +23,19 @@
                             </div>
 
 
-                            <div class="etap_validation">
+                            <div class="etap_validation ">
                                 <label for="sujet" class="form-label text-dark">
                                     Choisir le matériel <span class="text-danger">*</span>
                                 </label>
 
-                                <div class="etap {{ $etape[1] }}">
+                                <div class="etap {{ $etape[1] }} ">
                                     <a href="#" wire:click="$set('valeur1', 'ordinateur')" data-aos-duration="400"
                                         class=" {{ $valeur1 == 'ordinateur' ? ' shadow-lg fw-bold' : 'shadow-sm' }} nav-link text-dark card   "
                                         aria-current="true">
 
                                         <div class="d-flex w-100 justify-content-between">
                                             <label class="text-dark"> Ordinateur </label>
+                                           
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
                                     </a>
