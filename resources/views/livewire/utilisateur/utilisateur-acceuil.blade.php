@@ -43,7 +43,7 @@
           </p>
           <div class="d-flex justify-content-lg-start justify-content-center gap-3">
             <a class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow" href="#services">
-              <i class="bi bi-play-circle me-2  " ></i> Commencer   ⮕
+              <i class="bi bi-play-circle me-2  " ></i> Commencer 
             </a>
             <a class="btn btn-light btn-sm rounded-pill shadow" aria-label="Ouvrir le chat" id="chatToggle" href="#">
               <i class="bi bi-clock-history me-2 btn-sm" ></i> Contact    

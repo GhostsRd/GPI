@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     @livewireStyles
 </head>
-<body>
+<body class="">
     <div id="app">
         <nav class="shadow-sm navbar navbar-expand-md navbar-light bg-white  rounded-lg-2">
             <div class="container">
@@ -38,7 +38,7 @@
                   {{ config('app.name', 'Laravel') }}
                   {{-- <img class="shadow-sm rounded-2 " width="50" src="{{asset('/images/logo.png')}}" alt=""> --}}
                 </a>
-                <button id="side" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button id="side" class="navbar-toggler border-danger"  type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="col-lg-2 col-2">
 
-                                  <a id="navbarDropdown" class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                  <a id="navbarDropdown" class="nav-link  dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                       {{ Auth::user()->name }}
                                   </a>
                                 </div>

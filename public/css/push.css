@@ -35,9 +35,11 @@
       position: fixed;
     
       left: -70%;
-      width: 50%;
+      /*width: 50%;*/
+      width: 40%;
       /* background: linear-gradient(135deg, rgb(5, 67, 54), rgb(5, 99, 57)); */
       color: white;
+      
       padding: 2rem;
       transition: left 0.6s ease;
       z-index: 100;
@@ -47,6 +49,19 @@
       
        
         
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        top: 10%;
+      }
+      .sidebar.active{
+        top: 10%;
+        height: auto;
+        width: auto;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
     }
     
     .sidebar.active {
@@ -70,7 +85,7 @@
       width: 60%;
       transform: translateX(50%);
       filter: blur(0px);
-      box-shadow: 5px 0 20px rgba(0,0,0,0.3) !important; 
+      box-shadow: 5px 0 20px rgba(208, 208, 208, 0.3) !important; 
     }
 
     @media (max-width: 991px) {

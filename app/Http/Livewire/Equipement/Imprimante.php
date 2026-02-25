@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Equipement;
 
 use App\Models\Imprimante as ImprimanteModel;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
@@ -265,6 +266,22 @@ class Imprimante extends Component
         $this->showModal = true;
     }
 
+    public function UpdateImprimante(Request $request){
+        $ordinateur = ImprimanteModel::where('reseau_ip',$request->ip)->update(
+            ['statut' => 'disponible',
+                        'reseau_ip' => $request->ip
+                ]
+        );
+        if(!$ordinateur){
+            ImprimanteModel::create([
+                'nom' => 'Nom a mettre a jour',
+                'statut' => 'Disponible',
+                'reseau_ip' => $request->ip
+            ]);
+            return response()->json(['message' => 'Ordinateur créé avec succès'], 201);
+        }
+        return response()->json($ordinateur);
+    }
     /**
      * Enregistrer ou mettre à jour une imprimante
      */

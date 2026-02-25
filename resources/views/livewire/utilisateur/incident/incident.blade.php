@@ -1,5 +1,5 @@
-<div style="margin-top: 5%">
-    <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-white p-0  colg-lg-3 mt-4 " id="sidebar">
+<div style="margin-top: 5%" class=" bg-md-white-cust ">
+    <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-light p-0  colg-lg-3 mt-4 " id="sidebar">
 
         <!-- Header -->
         <div class=" border-bottom">
@@ -9,12 +9,12 @@
 
         <!-- Formulaire Livewire -->
         <form wire:submit.prevent="store">
-            <div class="modal-body row">
+            <div class="modal-body row"      style="max-height:400px;overflow-y: scroll; scrollbar-width: none;">
                 <!-- Sujet -->
-                <p class="text-dark  mb-3 mt-3">TVeuillez remplir tous les champs.</p>
+                <p class="text-dark  mb-3 mt-3">Veuillez remplir tous les champs.</p>
 
-                <div class="mb-3 col-lg-8">
-                    <div class="modern-group">
+                <div class="mb-3 ">
+                    <div >
                         {{-- <label for="sujet" class="modern-label">
                             Sujet <span class="required">*</span>
                         </label> --}}
@@ -30,146 +30,150 @@
                 </div>
 
                 <!-- Détails -->
-                <div class="mb-3 col-lg-8 ">
+                <div class="mb-3  ">
                     {{-- <label for="details" class="form-label fw-bold text-muted">Description <span --}}
 
                     <textarea type="text" placeholder="Details de votre incident ..."
-                        class="modern-textarea  @error('details') is-invalid border-danger @enderror" id="details"
+                        class="modern-textarea w-100  @error('details') is-invalid border-danger @enderror" id="details"
                         wire:model.debounce.500ms="incident_description" rows="2"></textarea>
                     @error('details')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 @if (!empty($incident_description))
-                <div class="border-top border-2 mb-4">
-                </div>
-                        
-                <div class="mb-3 col-lg-6 py-2">
-                    <label for="nature" class="form-label fw-bold text-muted mb-2">Quelle est le nature de
-                        l'incident<span class="text-danger">*</span></label>
-                    <div class="position-relative">
-                        <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                        <select id="categorie"
-                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border-0 border-bottom @error('impact') is-invalid @enderror"
-                            wire:model="incident_nature">
-                            <option value="" class="text-left"> Sélectionner le nature</option>
-
-                            <option value="Vol">Vol</option>
-                            <option value="Perte">Perte</option>
-                            <option value="Panne">Panne</option>
-                            <option value="Autre">Autre</option>
-                        </select>
+                    <div class="border-top border-2 mb-4">
                     </div>
-                    @error('nature')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
 
-                </div>
+                    <div class="mb-3   py-2">
+                        <label for="nature" class="form-label fw-bold text-muted mb-2">Quelle est le nature de
+                            l'incident<span class="text-danger">*</span></label>
+                        <div class="position-relative">
+                            <i
+                                class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <select id="categorie"
+                                class="modern-textarea py-2 px-1 form-select-sm ps-5 text-muted border-0 border-bottom @error('impact') is-invalid @enderror"
+                                wire:model="incident_nature">
+                                <option value="" class="text-left"> Sélectionner le nature</option>
 
-                <div class="mb-3 col-lg-6">
-                    <label for="equipement_type" class="form-label fw-bold text-muted">Équipement <span
-                            class="text-danger">*</span></label>
-                    <div class="position-relative">
-                        <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                        <select id="equipement_type"
-                            class="input-recherche py-2 px-1 form-select-sm ps-5 text-muted border-0 border-bottom"
-                            wire:model="equipement_type">
-                            <option value="">Sélectionner l'equipement</option>
-                            <option value="Ordinateur">Ordinateur</option>
-                            <option value="Telephone">Téléphone</option>
-                            <option value="Peripherique">Périphérique</option>
-                            <option value="Moniteur">Moniteur</option>
-                            <option value="Autre">Autre</option>
-                        </select>
+                                <option value="Vol">Vol</option>
+                                <option value="Perte">Perte</option>
+                                <option value="Panne">Panne</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        @error('nature')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+
                     </div>
-                </div>
 
-                @if ($equipement_type === 'Ordinateur')
-                    <div class="mb-3 col-lg-6">
-                        <label for="equipement_id" class="form-label fw-bold text-muted">Sélectionner le matériel <span
+                    <div class="mb-3 ">
+                        <label for="equipement_type" class="form-label fw-bold text-muted">Équipement <span
                                 class="text-danger">*</span></label>
                         <div class="position-relative">
                             <i
                                 class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                            <select id="equipement_id"
-                                class="input-recherche py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
-                                wire:model="equipement_id">
-                                <option value="">Sélectionner </option>
-
-                                @foreach ($checkouts as $checkout)
-                                    @if ($checkout->materiel_type === 'ordinateur' && !$incidents->contains('equipement_id', $checkout->equipement_id))
-                                        <option value="{{ $checkout->ordinateur->id }}">
-                                            {{ $checkout->ordinateur->nom }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                                {{-- <option value="Imprimante">Imprimante</option>
-                                        <option value="Routeur">Routeur</option>
-                                        <option value="Switch">Switch</option>
-                                        <option value="Serveur">Serveur</option>
-                                        <option value="autre">Autre</option> --}}
+                            <select id="equipement_type"
+                                class="modern-textarea py-2 px-1 form-select-sm ps-5 text-muted border-0 border-bottom"
+                                wire:model="equipement_type">
+                                <option value="">Sélectionner l'equipement</option>
+                                <option value="Ordinateur">Ordinateur</option>
+                                <option value="Telephone">Téléphone</option>
+                                <option value="Peripherique">Périphérique</option>
+                                <option value="Moniteur">Moniteur</option>
+                                <option value="Autre">Autre</option>
                             </select>
                         </div>
-                        @error('equipement_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
                     </div>
-                @elseif($equipement_type == 'Telephone')
-                    <div class="mb-3 col-lg-6">
-                        <label for="equipement_id" class="form-label fw-bold text-muted">Sélectionner le matériel <span
-                                class="text-danger">*</span></label>
-                        <div class="position-relative">
-                            <i
-                                class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                            <select id="equipement_id"
-                                class="input-recherche py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
-                                wire:model="equipement_id">
-                                <option value="">Sélectionner </option>
 
-                                @foreach ($checkouts as $checkout)
-                                    @if ($checkout->materiel_type == 'Telephone')
-                                        <option value="{{ $checkout->telephone->id }}">{{ $checkout->telephone->nom }}
-                                            {{ $checkout->telephone->marque }}</option>
-                                    @endif
-                                @endforeach
-                                {{-- <option value="Imprimante">Imprimante</option>
+                    @if ($equipement_type === 'Ordinateur')
+                        <div class="mb-3 ">
+                            <label for="equipement_id" class="form-label fw-bold text-muted">Sélectionner le matériel
+                                <span class="text-danger">*</span></label>
+                            <div class="position-relative">
+                                <i
+                                    class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                <select id="equipement_id"
+                                    class="modern-textarea py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
+                                    wire:model="equipement_id">
+                                    <option value="">Sélectionner </option>
+
+                                    @foreach ($checkouts as $checkout)
+                                        @if ($checkout->materiel_type === 'ordinateur' && !$incidents->contains('equipement_id', $checkout->equipement_id))
+                                            <option value="{{ $checkout->ordinateur->id }}">
+                                                {{ $checkout->ordinateur->nom }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                    {{-- <option value="Imprimante">Imprimante</option>
                                         <option value="Routeur">Routeur</option>
                                         <option value="Switch">Switch</option>
                                         <option value="Serveur">Serveur</option>
                                         <option value="autre">Autre</option> --}}
-                            </select>
+                                </select>
+                            </div>
+                            @error('equipement_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        @error('equipement_id')
+                    @elseif($equipement_type == 'Telephone')
+                        <div class="mb-3 ">
+                            <label for="equipement_id" class="form-label fw-bold text-muted">Sélectionner le matériel
+                                <span class="text-danger">*</span></label>
+                            <div class="position-relative">
+                                <i
+                                    class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                <select id="equipement_id"
+                                    class="modern-textarea py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
+                                    wire:model="equipement_id">
+                                    <option value="">Sélectionner </option>
+
+                                    @foreach ($checkouts as $checkout)
+                                        @if ($checkout->materiel_type == 'Telephone')
+                                            <option value="{{ $checkout->telephone->id }}">
+                                                {{ $checkout->telephone->nom }}
+                                                {{ $checkout->telephone->marque }}</option>
+                                        @endif
+                                    @endforeach
+                                    {{-- <option value="Imprimante">Imprimante</option>
+                                        <option value="Routeur">Routeur</option>
+                                        <option value="Switch">Switch</option>
+                                        <option value="Serveur">Serveur</option>
+                                        <option value="autre">Autre</option> --}}
+                                </select>
+                            </div>
+                            @error('equipement_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endif
+
+                    <div class="mb-3 col-lg-6 ">
+                        <label for="categorie" class="form-label fw-bold text-muted">Rapport d'incident <span
+                                class="text-danger">*</span></label>
+
+
+                        <input type="file" wire:model="rapport_incident"
+                            class="form-control border-0 border-bottom  @error('rapport_incident') is-invalid @enderror">
+                        @error('rapport_incident')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+
+                        <div wire:loading wire:target="rapport_incident">Telechargement...</div>
+
+
+                    </div>
+
+                    <div class="mb-3 col-lg-6 ">
+                        <label for="categorie" class="form-label fw-bold text-muted">Declaration de perte <span
+                                class="text-success">( Optionnel )</span></label>
+                        <input type="file" wire:model="declaration_perte"
+                            class="form-control border-0 border-bottom">
+                        <div wire:loading wire:target="declaration_perte">Telechargement...</div>
                     </div>
                 @endif
 
-                <div class="mb-3 col-lg-6 ">
-                    <label for="categorie" class="form-label fw-bold text-muted">Rapport d'incident <span
-                            class="text-danger">*</span></label>
-
-
-                    <input type="file" wire:model="rapport_incident"
-                        class="form-control border-0 border-bottom  @error('rapport_incident') is-invalid @enderror">
-                    @error('rapport_incident')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-
-                    <div wire:loading wire:target="rapport_incident">Telechargement...</div>
-
-
-                </div>
-
-                <div class="mb-3 col-lg-6 ">
-                    <label for="categorie" class="form-label fw-bold text-muted">Declaration de perte <span
-                            class="text-success">( Optionnel )</span></label>
-                    <input type="file" wire:model="declaration_perte" class="form-control border-0 border-bottom">
-                    <div wire:loading wire:target="declaration_perte">Telechargement...</div>
-                </div>
-                    @endif
-
-                </div>
+            </div>
 
             <!-- Footer -->
             <div class="modal-footer border-top py-1 ">
@@ -189,7 +193,7 @@
 
     <div class="container-fluid main-content">
         <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
-            <div class="col-lg-2 bg-white py-1 px-0 ">
+            <div class="col-lg-2 bg-light py-1 px-0 d-md-block d-xl-block d-none ">
 
 
                 @livewire('component.menu-utilisateur')
@@ -1378,183 +1382,208 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2   col-lg-9 border-start"
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2 py-5 bg-white  col-lg-8 rounded-2"
                 style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                <div class="row ">
+                    <div class="col-lg-6 col-8">
 
-                <h5 class="fw-bold mx-4 ">Incident</h5>
-                <span class="text-muted mx-4 mt-2">Visualisation globale des incidents de Matériel</span> <br>
+                        <h5 class="fw-bold mx-4 ">Incident</h5>
+                        <span class="text-muted mx-4 mt-2">Gestion d'incident</span> <br>
 
-                <section class="p-0 py-3 mx-5">
-                    <div class="row border-top mt-2">
-                        <div class="col-lg-6 ">
-                            <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
-                        </div>
-                        <div class="col-lg-6">
 
-                            <span class="d-flex justify-content-end py-3 px-2 text-primary">Afficher tous les
-                                espaces</span>
-                        </div>
                     </div>
-                    <div class="row p-0 mx-3 ">
-                        @foreach ($Incidentsrecentes as $incidentrecent)
-                            <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3  ">
-                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
-                                Nom du ticket de las
-                            </div> --}}
-                                <div class="card-body m-0 p-0  ">
-                                    <div class="pb-2">
-                                        <span class="  fw-bold ">Incident</span>
-                                        <small class="small mx-2 justify-content-end">
-                                            {{ \Carbon\Carbon::parse($incidentrecent->created_at)->translatedFormat('d M Y H:i') }}
-                                        </small>
-                                    </div>
-                                    <strong class="d-flex justify-content-between">
-                                        <div class="bg-light rounded-start-pill ">
-                                            <img class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill"
-                                                data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ $incidentrecent->utilisateur->nom ?? 'none' }}"
-                                                alt="Profil" width="40" height="40"
-                                                class="rounded-circle me-2">
-                                            <span class="mx-2 ">{{ $incidentrecent->incident_sujet ?? 'Aucun' }}</span>
-                                        </div>
-                                    </strong>
-                                    {{-- <div class="d-flex justify-content-end">
-                                        <small> 10 Nov 2025</small>
-                                        </div> --}}
-                                    <div class="mt-2 ">
-                                        <p>{{ $incidentrecent->incident_description ?? 'Aucun' }}</p>
-                                    </div>
-                                    <div>
+                    <div class="col-lg-6 col-4 d-flex d-none d-lg-block ">
+                        <span class="d-flex  justify-content-end py-3 px-lg-2 fw-bold" style="color: #5BC4BF;cursor: pointer"
+                            wire:click="disableRecente">{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
+                    </div>
+                    <div class="col-lg-6 col-4 d-lg-none d-md-none d-block">
+                        <span class="d-flex  justify-content-end py-3 px-lg-2 fw-bold" style="color: #5BC4BF;cursor: pointer" 
+                            id="toggleSidebar">Nouveau 
 
-                                        <div class="d-flex justify-content-center">
+                            {{-- <i class="bi bi-chevron-right fw-bold"></i> --}}
+                        </span>
 
-                                            <small>
-                                                <a href="{{ asset('storage/' . $selectedIncidents?->rapport_incident) }}"
-                                                    target="_blank" class="mx-1 my-1">
-                                                    <i class="bi bi-download"></i> Rapport d'incident
-                                                </a> <br>
-                                                <a href="{{ asset('storage/' . $selectedIncidents?->declaration_perte) }}"
-                                                    target="_blank" class="mx-1 my-1">
-                                                    <i class="bi bi-download"></i>
-                                                    Declaration de perte ..
-                                                </a>
+                    </div>
+                </div>
+
+                <section class="p-0  mx-4 mx-md-3 mx-lg-3">
+                    <div class="row p-0 ">
+                        <div class="{{ $disabled ? 'd-none' : 'd-block' }}">
+                            <div class="row border-top mt-2">
+                                <div class="col-lg-6 ">
+                                    <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
+                                </div>
+
+                            </div>
+
+                            @foreach ($Incidentsrecentes as $incidentrecent)
+                                <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3  ">
+                                    {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                                    Nom du ticket de las
+                                </div> --}}
+                                    <div class="card-body m-0 p-0  ">
+                                        <div class="pb-2">
+                                            <span class="  fw-bold ">Incident</span>
+                                            <small class="small mx-2 justify-content-end">
+                                                {{ \Carbon\Carbon::parse($incidentrecent->created_at)->translatedFormat('d M Y H:i') }}
                                             </small>
                                         </div>
+                                        <strong class="d-flex justify-content-between">
+                                            <div class="bg-light rounded-start-pill ">
+                                                <img class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill"
+                                                    data-toggle="dropdown"
+                                                    src="https://ui-avatars.com/api/?name={{ $incidentrecent->utilisateur->nom ?? 'none' }}"
+                                                    alt="Profil" width="40" height="40"
+                                                    class="rounded-circle me-2">
+                                                <span
+                                                    class="mx-2 ">{{ $incidentrecent->incident_sujet ?? 'Aucun' }}</span>
+                                            </div>
+                                        </strong>
+                                        {{-- <div class="d-flex justify-content-end">
+                                            <small> 10 Nov 2025</small>
+                                            </div> --}}
+                                        <div class="mt-2 ">
+                                            <p>{{ $incidentrecent->incident_description ?? 'Aucun' }}</p>
+                                        </div>
+                                        <div>
+
+                                            <div class="d-flex justify-content-center">
+
+                                                <small>
+                                                    <a href="{{ asset('storage/' . $selectedIncidents?->rapport_incident) }}"
+                                                        target="_blank" class="mx-1 my-1">
+                                                        <i class="bi bi-download"></i> Rapport d'incident
+                                                    </a> <br>
+                                                    <a href="{{ asset('storage/' . $selectedIncidents?->declaration_perte) }}"
+                                                        target="_blank" class="mx-1 my-1">
+                                                        <i class="bi bi-download"></i>
+                                                        Declaration de perte ..
+                                                    </a>
+                                                </small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                        <div class="col-lg-3  mx-2  p-0 m-0   ">
-
-                            <div class="card-body m-0  ">
-
-                                <span id="toggleSidebar"
-                                    class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 "
-                                    style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
-                                    + Nouveau
-                                </span>
-
-
-                            </div>
+                            @endforeach
+                           
                         </div>
 
-                        <strong href="#" class=" border-0 py-2 " aria-current="true">
+                        <strong href="#" class=" border-0 px-md-4 px-lg-4 " aria-current="true">
 
-                            <div class="d-flex active w-100 justify-content-between border-top mt-4 border-3">
-                                <label class="mb-1 fw-bold py-1 mt-4">Liste de vos incident</label>
-                                <small class="mt-4">
-                                <div class="shadow-sm p-2 rounded-2">
-                                    
-                                    Filtre par :
-                                    <span>
-                                        <select name="" id="" class="border-0 px-2"
-                                            wire:model="filtrerticket">
-                                            <option value="">Tous</option>
-                                            <option value="1" class="border-0 ">En cours </option>
-                                            <option value="2" class="border-0 ">En traitement </option>
-                                            <option value="3" class="border-0  shadow-sm">Resolu</option>
-                                            <option value="4" class="border-0 ">Fermer</option>
+                            <div class="d-flex active w-100  justify-content-between border-top mt-md-2 ">
+                                <label class="mb-1 fw-bold py-1 mt-3">Liste de vos incident</label>
+                                <small class="mt-3">
+                                    <div class="shadow-sm p-2 rounded-2">
 
-                                        </select>
-                                    </span>
-                                </div>
-                                {{-- <input type="text" wire:model="recherche"
+                                        Filtre par :
+                                        <span>
+                                            <select name="" id="" class="border-0 px-2"
+                                                wire:model="filtrerticket">
+                                                <option value="">Tous</option>
+                                                <option value="1" class="border-0 ">En cours </option>
+                                                <option value="2" class="border-0 ">En traitement </option>
+                                                <option value="3" class="border-0  shadow-sm">Resolu</option>
+                                                <option value="4" class="border-0 ">Fermer</option>
+
+                                            </select>
+                                        </span>
+                                    </div>
+                                    {{-- <input type="text" wire:model="recherche"
                                     class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
                                     placeholder="Recherche par sujet.."> --}}
-                            </small>
+                                </small>
                             </div>
                         </strong>
                         <div class="list-group "
-                            style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                            style="max-height:700px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+
+                    
 
 
-                            @foreach ($incidents as $incident)
-                                <a wire:click="visualiser('{{ $incident->id }}')" href="#"
-                                    {{-- data-aos="fade-down" --}} data-bs-toggle="modal"
-                                    data-bs-target="#incidentDetailModal" {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
-                                    class="list-group-item bg-light mb-1 materiel-item rounded-2 list-group-item-action border ">
-                                    <div class="d-flex w-100 py-1 justify-content-between">
-                                        <b class="mb-1 text-black-50">{{ $incident->id }} -
-                                            {{ $incident->incident_sujet }}
+                                @forelse ($incidents as $incident)
+                                    <a wire:click="visualiser('{{ $incident->id }}')" href="#"
+                                        {{-- data-aos="fade-down" --}} data-bs-toggle="modal"
+                                        data-bs-target="#incidentDetailModal" {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
+                                        class="list-group-item bg-light mb-1 materiel-item rounded-2 list-group-item-action border ">
+                                        <div class="d-flex w-100 py-1 justify-content-between">
+                                            <b class="mb-1 text-black-50">{{ $incident->id }} -
+                                                {{ $incident->incident_sujet }}
 
-                                            @if ($incident->equipement_type == 'Ordinateur')
-                                                {{ $incident->ordinateur->nom }}
-                                                {{ $incident->ordinateur->os_version }}
-                                            @elseif($incident->equipement_type == 'Telephone')
-                                                {{ $incident->telephone->nom }} {{ $incident->telephone->marque }}
-                                            @endif
-                                        </b>
-                                        <small
-                                            class="text-body-secondary">{{ \Carbon\Carbon::parse($incident->created_at)->translatedFormat('d M Y H:i') }}</small>
-                                    </div>
+                                                @if ($incident->equipement_type == 'Ordinateur')
+                                                    {{ $incident->ordinateur->nom }}
+                                                    {{ $incident->ordinateur->os_version }}
+                                                @elseif($incident->equipement_type == 'Telephone')
+                                                    {{ $incident->telephone->nom }} {{ $incident->telephone->marque }}
+                                                @endif
+                                            </b>
+                                            <small
+                                                class="text-body-secondary">{{ \Carbon\Carbon::parse($incident->created_at)->translatedFormat('d M Y H:i') }}</small>
+                                        </div>
 
-                                    <div class="d-flex w-100 py-1 justify-content-between">
-                                        <p class="mb-1 text-capitalize mx-3">{{ $incident->incident_description }}
-                                        </p>
-                                        <small
-                                            class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
+                                        <div class="d-flex w-100 py-1 justify-content-between">
+                                            <p class="mb-1 text-capitalize mx-3">
+                                                {{ $incident->incident_description }}
+                                            </p>
+                                            <small
+                                                class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
 
-                                        </small>
-                                        <small
-                                            class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-muted' }} badge bage-light shadow-sm  rounded-pill">
-                                            {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : ($incident->statut == 1 ? 'En cours de traitement ...' : ($incident->statut == 2 ? 'Recu ' : ($incident->statut == 3 ? 'Resolu' : 'Non resolu')))) }}
-                                            {{-- <a href="{{ asset('storage/' . $incident->rapport_incident) }}" target="_blank" >
+                                            </small>
+                                            <small
+                                                class=" {{ $incident->statut == 0 ? 'text-danger' : 'text-muted' }} badge bage-light shadow-sm  rounded-pill">
+                                                {{ $incident->statut == 1 ? 'En cours' : ($incident->statut == 0 ? 'Annulation de la demande en cours ...' : ($incident->statut == 1 ? 'En cours de traitement ...' : ($incident->statut == 2 ? 'Recu ' : ($incident->statut == 3 ? 'Resolu' : 'Non resolu')))) }}
+                                                {{-- <a href="{{ asset('storage/' . $incident->rapport_incident) }}" target="_blank" >
                                                     <i class="bi bi-download"></i> Voir ou Télécharger le rapport
                                                 </a>
                                             
                                         <a href="{{ asset('storage/' . $incident->declaration_perte) }}" target="_blank" >
                                                     <i class="bi bi-download"></i> Voir ou Télécharger le rapport
                                                 </a> --}}
-                                        </small>
-                                    </div>
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <small class="text-body-secondary mx-3">
-                                            <svg width="12" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="size-6 text-success">
+                                            </small>
+                                        </div>
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <small class="text-body-secondary mx-3">
+                                                <svg width="12" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor" class="size-6 text-success">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                                </svg>
+
+                                                {{ $incident->equipement }}</small>
+                                            <small class="text-body-secondary  ">
+                                                <img class="dropdown-toggle  p-0 m-0 rounded-pill"
+                                                    data-toggle="dropdown"
+                                                    src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
+                                                    alt="Profil" width="20" height="20"
+                                                    class="rounded-circle me-2">
+                                                <img class="dropdown-toggle  p-0 m-0 rounded-pill"
+                                                    data-toggle="dropdown"
+                                                    src="https://ui-avatars.com/api/?name={{ $incident->utilisateur->nom ?? 'none' }}"
+                                                    alt="Profil" width="20" height="20"
+                                                    class="rounded-circle me-2">
+                                            </small>
+                                        </div>
+
+                                        {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
+                                    </a>
+                                @empty
+                                   <p class="mt-4 text-center p-4">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning"
+                                                width="80" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor" class="size-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                             </svg>
+                                            <br>
+                                            <br>
 
-                                            {{ $incident->equipement }}</small>
-                                        <small class="text-body-secondary  ">
-                                            <img class="dropdown-toggle  p-0 m-0 rounded-pill"
-                                                data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
-                                                alt="Profil" width="20" height="20"
-                                                class="rounded-circle me-2">
-                                            <img class="dropdown-toggle  p-0 m-0 rounded-pill"
-                                                data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ $incident->utilisateur->nom ?? 'none' }}"
-                                                alt="Profil" width="20" height="20"
-                                                class="rounded-circle me-2">
-                                        </small>
-                                    </div>
+                                            <span class="my-4">Aucun Incident trouvé </span>
+                                            <br>
 
-                                    {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
-                                </a>
-                            @endforeach
-
+                                        </p>
+                                @endforelse
+                           
                             <div class="mt-4 d-flex justify-content-center">
                                 {{-- {{ $incidents->links() }} --}}
 
@@ -1587,16 +1616,16 @@
                 <!-- Body -->
                 <div class="modal-body">
                     <div class="container-fluid">
-                         <div class="row mb-2">
+                        <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Sujet :</div>
                             <div class="col-md-8" id="commentaire">
-                                {{$selectedIncidents?->incident_sujet}}
+                                {{ $selectedIncidents?->incident_sujet }}
                             </div>
                         </div>
-                         <div class="row mb-2">
+                        <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Details :</div>
                             <div class="col-md-8" id="commentaire">
-                                {{$selectedIncidents?->incident_description}}
+                                {{ $selectedIncidents?->incident_description }}
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -1636,7 +1665,7 @@
                             <div class="col-md-4 fw-bold text-muted">Statut :</div>
                             <div class="col-md-8" id="statut">EN COURS</div>
                         </div>
-                       
+
                         <div class="row mb-2">
                             <div class="col-md-4 fw-bold text-muted">Rapport :</div>
                             <div class="col-md-8" id="rapport">

@@ -21,6 +21,7 @@ class Incident extends Component
     public $incident_sujet;
     public $incident_description;
     public $incident_nature;
+    public $disabled = true;
     public $rapport_path;
     public $declaration_perte_path;
     public $rapport_incident;
@@ -31,6 +32,9 @@ class Incident extends Component
 
   
    
+    public function disableRecente(){
+        $this->disabled = !$this->disabled;
+    }
     public function annulationDemande($id){
         $incident =IncidentModel::findOrFail($id);
         $incident->statut = 0;
@@ -49,6 +53,7 @@ class Incident extends Component
         $this->userConnected = Auth::guard("utilisateur")->user()->id;
         $this->equipement_type;
         $this->selectedIncidents ;
+        $this->disabled;
     }
     public function store(IncidentModel $incident){
           $this->validate([

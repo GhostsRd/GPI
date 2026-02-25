@@ -1,6 +1,6 @@
 <div class="container-fluid row " style="margin-top: 5% ;scrollbar-width: none; -ms-overflow-style: none;"
     style="height:40vh;">
-    <div class="col-lg-2 offset-1 bg-white py-1 px-0 ">
+    <div class="col-lg-2 offset-1 bg-white d-none d-lg-block d-xl-block py-1 px-0 ">
 
 
         @livewire('component.menu-utilisateur')
@@ -335,19 +335,23 @@
         style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
         <div wire:ignore.self class="p-2 col-lg-12 ">
             <h5 class="mt-2 pb-4 border-bottom fw-bold">Reservation de materiel</h5>
-            <label class="text-muted  d-flex justify-content-between">Disponibilite /
-                {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
-                {{ $firsts?->os_version }} {{ $firsts?->marque }} </label>
-            <div class="d-flex  justify-content-end">
-                <div class="btn border-0  py-0 fw-bold rounded-3 text-white  btn-two p-0 mx-2 btn-sm"
-                    wire:click="openReservationModal('{{ $type_materiel }}',{{ $reserverId }})"
-                    data-bs-toggle="modal" data-bs-target="#centeredModalreservation">
-                    <i class="bi bi-plus"></i> Nouveau
+            <div class="row">
+                <div class="col-lg-8 col-8">
+                    <label class="text-muted mt-1 mt-md-0 mt-lg-0 d-flex justify-content-between">Disponibilite /
+                        {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
+                        {{ $firsts?->os_version }} {{ $firsts?->marque }} </label>
+
                 </div>
+                <div class="col-lg-4 col-4">
 
-
-
-
+                    <div class="d-flex  justify-content-end">
+                        <div class="btn border-0  py-0 fw-bold rounded-3 text-white  btn-two p-0 mx-2 btn-sm"
+                            wire:click="openReservationModal('{{ $type_materiel }}',{{ $reserverId }})"
+                            data-bs-toggle="modal" data-bs-target="#centeredModalreservation">
+                            Valider
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-lg-10">
@@ -384,8 +388,6 @@
                     <br>
                 @else
                     <p class="">
-
-
                         Aucun événement trouvé.</p>
                 @endif
             </div>
@@ -534,17 +536,16 @@
                                 {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y H:m') }} </small>
 
                         </label>
-                       
-                             <button type="submt" data-bs-toggle="modal" data-bs-target="#lightModal"
+
+                        <button type="submt" data-bs-toggle="modal" data-bs-target="#lightModal"
                             @if (
                                 ($item->date_debut > now() || $item->created_at->isToday()) &&
                                     $item->responsable->id == $userConnected &&
                                     $item->statut == 1) wire:click="ModifierView({{ $item->id }})"
                             @else
-                            class="d-none"
-                            @endif
+                            class="d-none" @endif
                             wire:click="ModifierView({{ $item->id }})" class="btn btn-white">
-                             <i class="bi bi-pencil"></i>
+                            <i class="bi bi-pencil"></i>
                         </button>
 
                     </div>
@@ -570,7 +571,7 @@
                         <button type="button" class="btn btn-two text-white fw-bold"
                             data-bs-dismiss="modal">Fermer</button>
 
-                       
+
                     </div>
                 </div>
             @endforeach
