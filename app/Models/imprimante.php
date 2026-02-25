@@ -29,6 +29,16 @@ class Imprimante extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function utilisateur()
+    {
+        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+    }
+
+    public function usager()
+    {
+        return $this->belongsTo(Utilisateur::class, 'usager_id');
+    }
+
     // Scopes pour faciliter les requêtes
     public function scopeEnService($query)
     {

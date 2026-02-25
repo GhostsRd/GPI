@@ -50,6 +50,48 @@
     @stack('styles')
 
     <style>
+        :root {
+            --primary: #4fbbb2;
+            --primary-light: #76cfc8;
+            --primary-dark: #3a8c85;
+            --secondary: #f1705a;
+            --secondary-light: #f48d7b;
+            --secondary-dark: #cc5a48;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            --dark: #1e293b;
+            --light: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-900: #0f172a;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
+            --shadow-sm: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            --shadow-md: 0 20px 27px -8px rgba(15, 23, 42, 0.12);
+            --shadow-lg: 0 30px 45px -12px rgba(79, 187, 178, 0.2);
+            --blur-amount: 16px;
+            --gradient-primary: linear-gradient(135deg, #4fbbb2, #f1705a);
+            --gradient-teal: linear-gradient(135deg, #4fbbb2, #3a8c85);
+        }
+
+        [data-bs-theme="dark"] {
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --light: #0f172a;
+            --dark: #f8fafc;
+            --gray: #94a3b8;
+            --border-light: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+        }
+
         /* Style pour le bouton de déconnexion */
         .logout-btn {
             transition: all 0.3s ease;

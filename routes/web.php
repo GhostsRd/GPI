@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/admin/utilisateur',[App\Http\Controllers\admin\profile\UtilisateurListe::class,'index'])->name('listeutilisateur');    
     Route::get('/admin/utilisateur/profile-{id}',[App\Http\Controllers\admin\profile\Profile::class,'index'])->name('userprofile');
+    Route::get('/admin/activites', App\Http\Livewire\Admin\Activites\Activites::class)->name('admin.activites');
 
     Route::get('/documentation/admin-doc',[App\Http\Controllers\Documentation\AdminDoc::class,'index'])->name('documentation.admin-doc');
 

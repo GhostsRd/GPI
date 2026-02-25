@@ -575,7 +575,22 @@
                             <td class="small">{{ $ordinateur->fabricant }}</td>
                             <td class="small">{{ $ordinateur->modele }}</td>
                             <td class="small font-monospace">{{ $ordinateur->numero_serie ?? 'N/A' }}</td>
-                            <td class="small">{{ $ordinateur->utilisateur->name ?? 'Non attribué' }}</td>
+                            <td>
+    @php
+        $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+            ->where('ordinateur_id', $ordinateur->id)
+            ->where('statut', 'actif')
+            ->first();
+    @endphp
+    
+    @if($liaisonActive && $liaisonActive->utilisateur)
+        <a href="#" class="text-decoration-none small">
+            <i class="bi bi-person-fill me-1 text-primary"></i>{{ $liaisonActive->utilisateur->nom }}
+        </a>
+    @else
+        <span class="text-muted small">Non attribué</span>
+    @endif
+</td>
                             <td class="small font-monospace">{{ $ordinateur->reseau_ip ?? 'N/A' }}</td>
                             <td class="small">{{ $ordinateur->os_version ?? 'N/A' }}</td>
                             <td class="small">{{ $ordinateur->updated_at->format('d/m/Y H:i') }}</td>
@@ -967,6 +982,52 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- AJOUT : Section des utilisateurs liés via liaison_equipements -->
+                        @php
+                            $liaisonsOrdinateur = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                                ->where('ordinateur_id', $selectedOrdinateur->id)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+                        @endphp
+                        
+                        @if($liaisonsOrdinateur->count() > 0)
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <hr>
+                                    <h6 class="fw-semibold mb-2">
+                                        <i class="bi bi-people me-1 text-primary"></i> 
+                                        Utilisateurs liés
+                                    </h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-borderless">
+                                            <tbody>
+                                                @foreach($liaisonsOrdinateur as $liaison)
+                                                <tr>
+                                                    <td class="small">
+                                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($liaison->utilisateur->nom ?? 'U') }}&size=20&background=0D6EFD&color=fff" 
+                                                             class="rounded-circle me-1" width="16" height="16" alt="">
+                                                        {{ $liaison->utilisateur->nom ?? 'Utilisateur' }}
+                                                    </td>
+                                                    <td class="small text-muted">
+                                                        <i class="bi bi-calendar3 me-1"></i>
+                                                        {{ $liaison->date_attribution->format('d/m/Y') }}
+                                                    </td>
+                                                    <td>
+                                                        @if($liaison->statut == 'actif')
+                                                            <span class="badge bg-success">Actif</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">Inactif</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
 
                         <div class="row mt-3">
                             <div class="col-12">

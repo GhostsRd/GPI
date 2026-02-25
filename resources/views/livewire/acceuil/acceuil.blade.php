@@ -5,41 +5,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3730a3;
-            --primary-light: #818cf8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --light: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-bg-dark: rgba(30, 41, 59, 0.85);
-            --border-light: rgba(0, 0, 0, 0.08);
-            --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-            --shadow-md: 0 20px 27px -8px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-            --shadow-lg: 0 30px 35px -12px rgba(0, 0, 0, 0.1);
-            --blur-amount: 12px;
-        }
-
-        [data-bs-theme="dark"] {
-            --card-bg: rgba(30, 41, 59, 0.85);
-            --light: #0f172a;
-            --dark: #f8fafc;
-            --gray: #94a3b8;
-            --border-light: rgba(255, 255, 255, 0.08);
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: transparent;
-            color: var(--dark);
-            margin: 0;
-            padding: 0;
-        }
-
         .fullscreen-table {
             position: fixed;
             top: 0;
@@ -145,7 +110,7 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(67, 97, 238, 0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(79, 187, 178, 0.1) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.5s ease;
         }
@@ -171,7 +136,7 @@
             transform: scale(1.1) rotate(5deg);
         }
 
-        .stat-icon.primary { background: linear-gradient(135deg, rgba(67, 97, 238, 0.9), rgba(55, 48, 163, 0.9)); color: white; }
+        .stat-icon.primary { background: var(--gradient-teal); color: white; }
         .stat-icon.success { background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9)); color: white; }
         .stat-icon.danger { background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.9)); color: white; }
         .stat-icon.warning { background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9)); color: white; }
@@ -202,7 +167,7 @@
             -webkit-backdrop-filter: blur(4px);
         }
 
-        .badge.bg-primary { background: rgba(67, 97, 238, 0.15) !important; color: var(--primary); border-color: rgba(67, 97, 238, 0.3); }
+        .badge.bg-primary { background: rgba(79, 187, 178, 0.15) !important; color: var(--primary); border-color: rgba(79, 187, 178, 0.3); }
         .badge.bg-success { background: rgba(16, 185, 129, 0.15) !important; color: var(--success); border-color: rgba(16, 185, 129, 0.3); }
         .badge.bg-danger { background: rgba(239, 68, 68, 0.15) !important; color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
         .badge.bg-warning { background: rgba(245, 158, 11, 0.15) !important; color: var(--warning); border-color: rgba(245, 158, 11, 0.3); }
@@ -321,7 +286,7 @@
         }
 
         .table thead th {
-            background: rgba(67, 97, 238, 0.03);
+            background: rgba(6, 182, 212, 0.03);
             color: var(--gray);
             font-weight: 700;
             font-size: 0.75rem;
@@ -337,7 +302,7 @@
         }
 
         .table tbody tr:hover {
-            background: rgba(67, 97, 238, 0.03);
+            background: rgba(6, 182, 212, 0.03);
             border-left-color: var(--primary);
             transform: scale(1.01);
             box-shadow: var(--shadow-sm);
@@ -358,7 +323,7 @@
         }
 
         .progress-bar {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--gradient-teal);
             border-radius: 4px;
             position: relative;
             overflow: hidden;
@@ -693,10 +658,10 @@
             </div>
             <div class="d-flex gap-3 align-items-center">
                 <span class="badge bg-primary">{{ count($this->UnifiedActivities ?? []) }} événements</span>
-                <button class="btn-view-all" id="viewAllBtn">
+                <a href="{{ route('admin.activites') }}" target="_blank" class="btn-view-all text-decoration-none" id="viewAllBtn">
                     <i class="fas fa-eye me-2"></i>Voir tous
                     <i class="fas fa-arrow-right ms-2"></i>
-                </button>
+                </a>
             </div>
         </div>
         <div class="table-responsive" style="max-height: 400px;">
@@ -866,7 +831,7 @@
                             toolbar: { show: false },
                             animations: { enabled: true, easing: 'easeinout', speed: 800 }
                         },
-                        colors: ['#4361ee'],
+                        colors: ['#4fbbb2'],
                         stroke: { curve: 'smooth', width: 3 },
                         fill: { 
                             opacity: 0.1, 
@@ -898,7 +863,7 @@
                             toolbar: { show: false },
                             animations: { enabled: true, easing: 'easeinout', speed: 800 }
                         },
-                        colors: ['#10b981'],
+                        colors: ['#8b5cf6'],
                         plotOptions: { 
                             bar: { 
                                 borderRadius: 8, 
@@ -931,7 +896,7 @@
                             height: 280,
                             animations: { enabled: true, easing: 'easeinout', speed: 800 }
                         },
-                        colors: ['#4361ee', '#818cf8', '#10b981', '#f59e0b', '#ef4444'],
+                        colors: ['#06b6d4', '#8b5cf6', '#2dd4bf', '#10b981', '#f59e0b'],
                         plotOptions: { 
                             pie: { 
                                 donut: { 

@@ -587,7 +587,8 @@
                                 @endif
                             </th>
                             <th>Marque/Modèle</th>
-                            <th>Entité/Usager</th>
+                            <th>Entité</th>
+                            <th>Usager</th>
                             <th>Localisation</th>
                             <th>Numéro Série</th>
                             <th>IMEI</th>
@@ -631,10 +632,21 @@
                                 <div class="fw-medium">{{ $telephone->marque ?? 'N/A' }}</div>
                                 <div class="text-muted">{{ $telephone->modele ?? '' }}</div>
                             </td>
-                            <td class="small">
-                                <div>{{ $telephone->entite ?? '-' }}</div>
-                                @if($telephone->usager)
-                                    <div class="text-muted">{{ $telephone->usager }}</div>
+                            <td class="small">{{ $telephone->entite ?? '-' }}</td>
+                            <td>
+                                @php
+                                    $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                                        ->where('telephone_id', $telephone->id)
+                                        ->where('statut', 'actif')
+                                        ->first();
+                                @endphp
+                                
+                                @if($liaisonActive && $liaisonActive->utilisateur)
+                                    <span class="badge bg-light text-dark border small">
+                                        <i class="bi bi-person-fill me-1 text-primary"></i>{{ $liaisonActive->utilisateur->nom }}
+                                    </span>
+                                @else
+                                    <span class="text-muted small">Non attribué</span>
                                 @endif
                             </td>
                             <td class="small">
