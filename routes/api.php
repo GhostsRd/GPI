@@ -40,6 +40,9 @@ Route::post('/ordinateurs', [App\Http\Livewire\Equipement\Ordinateur::class, 'up
 
 Route::get('/getordinateurs', [App\Http\Livewire\Equipement\Ordinateur::class, 'getOrdinateur']);
 
+Route::post('/imprimantesInventaire', [App\Http\Livewire\Equipement\Imprimante::class, 'UpdateImprimante']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

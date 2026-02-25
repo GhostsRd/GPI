@@ -1,4 +1,4 @@
-<div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section">
+<div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section  bg-md-white-cust ">
     <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-white p-0   mt-4" id="sidebar">
         <div>
             <div>
@@ -309,11 +309,11 @@
 
 
 
-    <div wire:ignore.self class="container-fluid main-content mt-3">
+    <div wire:ignore.self class="container-fluid main-content mt-md-3 mt-lg-3">
 
         <div class="row col-lg-11 offset-lg-1 offset-xs-0 offset-0  col-12">
             {{-- ici le menu --}}
-            <div class="col-lg-2 bg-white py-1 px-0 d-md-block d-xl-block d-none">
+            <div class="col-lg-2 bg-light py-1 px-0 d-md-block d-xl-block d-none">
 
 
                  @livewire('component.menu-utilisateur')
@@ -648,26 +648,27 @@
 
             {{-- ici le contente right --}}
 
-            <div class="border-md-start col-lg-9 mx-0 mx-md-2 mx-lg-2">
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2   col-lg-8 bg-white rounded-2"
+            style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
                 <div class="row">
 
                     <div class="col-lg-6 col-8">
-                        <h5 class="fw-bold mx-1 ">Checkout / Reservation</h5> 
-                        <span class="text-muted m-2 mt-2 pb-2">Visualisation globale de chekout</span> <br>
+                        <h5 class="fw-bold mx-lg-4 mx-2">Checkout / Reservation</h5> 
+                        <span class="text-muted mx-lg-4 mx-2 mt-2">Visualisation globale de chekout</span> <br>
                     </div>
                     <div class="col-lg-6 col-4  d-none d-md-block d-lg-block">
 
-                            <span class="d-flex justify-content-end py-3 px-2 " wire:click="disableRecente" style="color: #5BC4BF" style="cursor: pointer">{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
+                            <span class="d-flex justify-content-end py-3 px-2 fw-bold" wire:click="disableRecente" style="color: #5BC4BF;cursor:pointer" >{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
                     </div>
                      <div class="col-lg-6 col-4 d-block d-md-none d-lg-none">
 
-                            <span class="d-flex justify-content-end py-3 px-2 " style="color: #5BC4BF" id="toggleSidebar" style="cursor: pointer">Nouveau</span>
+                            <span class="d-flex justify-content-end py-3 px-2 fw-bold" style="color: #5BC4BF;cursor:pointer" id="toggleSidebar" >Nouveau</span>
                     </div>
                 </div>
                 <div class="col-lg-12  mx-lg-4 mx-md-4  ">
                     <div class="{{ $disabled ? 'd-none' : 'd-block' }}">
 
-                        <div class="row border-top mt-4">
+                        <div class="row border-top mx-2 col-lg-11 mt-2">
                             <div class="col-lg-6 ">
     
                                 <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
@@ -751,21 +752,11 @@
                                 </div>
                             </div>
                             @endforeach
-                            <div class="col-lg-3  mx-2  p-0 m-0   ">
-                                
-                                <div class="card-body m-0  ">
-                                     
-                                    <span id="toggleSidebar"  class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 " style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
-                                        + Nouveau  
-                                    </span>
-                                   
-                                   
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
-                    <div class="mt-4   p-0">
-                        <ul class="nav nav-tabs  text-secondary" id="myTab" role="tablist">
+                    <div class="mt-4  col-lg-11 p-0">
+                        <ul class="nav mx-2 nav-tabs  text-secondary" id="myTab" role="tablist">
                             <li class="nav-item text-dark" role="presentation">
                                 <button class="nav-link  active" style="color: rgb(53, 53, 53) !important"
                                     id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"

@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     @livewireStyles
 </head>
-<body>
+<body class="">
     <div id="app">
         <nav class="shadow-sm navbar navbar-expand-md navbar-light bg-white  rounded-lg-2">
             <div class="container">

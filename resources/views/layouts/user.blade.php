@@ -136,6 +136,11 @@
 
 
         }
+        @media (max-width: 768px) {
+        .bg-md-white-cust {
+            background-color: white !important;
+        }
+    }
 
 
         .bg-blob {
@@ -389,7 +394,7 @@
     @livewireStyles
 </head>
 
-<body class="bg-white"   >
+<body class="bg-light"   >
     <nav class="navbar navbar-expand-lg fixed-top sh ">
         <div class="container">
             <a class="navbar-brand text-white " href="{{ route('utilisateur') }}">

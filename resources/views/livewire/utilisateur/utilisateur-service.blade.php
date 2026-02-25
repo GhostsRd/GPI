@@ -1,4 +1,5 @@
-<div style="margin-top:5%">
+<div style="margin-top:5%" class=" bg-md-white-cust ">
+
 
     <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-light p-0  colg-lg-3 mt-4 " id="sidebar">
 
@@ -149,7 +150,7 @@
             <!-- Footer -->
             <div class="modal-footer border-top py-1 ">
                 <button type="button" class="btn btn-outline-light text-dark border px-3 "
-                    id="closeSidebar">Annuler</button>
+                    id="closeSidebar">Quitter</button>
                 <button type="submit" class="btn m-1   fw-bold border px-3  btn-two text-white  shadow-sm">Envoyer
                     <div wire:loading wire:target="store">...</div>
                 </button>
@@ -160,9 +161,9 @@
 
 
 
-    <div class="container-fluid main-content">
+    <div class="container-fluid main-content  ">
         <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
-            <div class="col-lg-2 bg-white py-1 px-0 d-md-none  d-xl-block d-none">
+            <div class="col-lg-2 bg-lg-light bg-md-light py-1 px-0 d-md-none   d-xl-block d-none">
 
 
                 @livewire('component.menu-utilisateur')
@@ -1351,7 +1352,7 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  py-5 col-lg-9 "
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2  py-5 col-lg-8 bg-white rounded-2"
                 style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
 
                 <div class="row">
@@ -1363,19 +1364,19 @@
                             </div>
                             <div class="col-4 d-block d-md-block d-lg-none d-xl-none">
                                 
-                                <span class="d-flex justify-content-end py-3 px-2" id="toggleSidebar" style="color: #5BC4BF;cursor: pointer">Nouveau</span>
+                                <span class="d-flex justify-content-end py-3 px-2 fw-bold" id="toggleSidebar" style="color: #5BC4BF;cursor: pointer">Nouveau</span>
                             </div>
                         </div>
 
                     </div>
                     <div class="col-lg-6 d-none d-lg-block d-md-none d-xl-block">
-                        <span class="d-flex justify-content-end py-3 px-2" style="color: #5BC4BF;cursor:pointer"
+                        <span class="d-flex justify-content-end py-3 px-2 fw-bold" style="color: #5BC4BF;cursor:pointer"
                             wire:click="disableRecente">{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
                     </div>
                 </div>
 
 
-                <section class="p-0  mx-2 ms-3 m-md-5 mx-lg-5 mx-xl-5  ">
+                <section class="p-0 mx-4 mx-md-3  mx-lg-3  ">
                     <div class="{{ $disabled ? 'd-none' : 'd-block' }}">
                         <div class="row border-top mt-2">
                             <div class="col-lg-6 ">
@@ -1415,7 +1416,7 @@
                                         </div>
                                         <div>
 
-                                            <div class=" pb-0 mt-5">
+                                            <div class=" pb-0 mt-4">
 
                                                 <small
                                                     class="text-body-secondary text-end d-flex justify-content-end border-0 badge badge-primary border-top-generic  rounded-pill">
@@ -1431,7 +1432,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                            <div class="col-lg-3  mx-2  p-0 m-0   ">
+                            {{-- <div class="col-lg-3  mx-2  p-0 m-0   ">
 
                                 <div class="card-body m-0  ">
 
@@ -1443,7 +1444,7 @@
 
 
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -1478,9 +1479,9 @@
 
 
 
-                        @foreach ($tickets as $ticket)
+                        @forelse ($tickets as $ticket)
                             <a href="#" {{-- data-aos="fade-down" --}} {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
-                                class="list-group-item   list-group-item-action border  mb-1  materiel-item rounded-2 ">
+                                class="list-group-item   list-group-item-action border mb-1 materiel-item rounded-2 ">
                                 <div class="d-flex w-100 py-1 justify-content-between">
                                     <b class="mb-1 text-black-50">{{ $ticket->id }} - {{ $ticket->sujet }}</b>
                                     <small
@@ -1509,7 +1510,7 @@
                                             $user = Auth::guard('utilisateur')->user();
                                         @endphp
 
-                                        @if (is_null($user->photo))
+                                        {{-- @if (is_null($user->photo))
                                             <img width="30" height="30"
                                                 class="dropdown-toggle rounded-pill p-0 m-0" data-toggle="dropdown"
                                                 src="https://ui-avatars.com/api/?name={{ urlencode($user->nom ?? 'Guest') }}"
@@ -1517,7 +1518,7 @@
                                         @else
                                             <img width="30" height="30" class="rounded-pill my-0 py-0"
                                                 src="{{ asset('storage/' . $user->photo) }}" alt="Photo profil">
-                                        @endif
+                                        @endif --}}
 
                                         @if (!empty($ticket->responsable->photo))
                                             <img width="20" height="20"
@@ -1535,7 +1536,23 @@
 
                                 {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
                             </a>
-                        @endforeach
+                        @empty
+                            <p class="mt-4 text-center p-4">
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning"
+                                                width="80" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                            </svg>
+                                            <br>
+                                            <br>
+
+                                            <span class="my-4">Aucun ticket trouvé </span>
+                                            <br>
+
+                                        </p>
+                        @endforelse
                         {{-- @if ($tickets->first()?->state > 4)
                             <span class="mx-3 py-1 fw-normal">RESOLU</span>
                         @endif --}}

@@ -1,4 +1,4 @@
-<div style="margin-top: 5%">
+<div style="margin-top: 5%" class=" bg-md-white-cust ">
     <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-light p-0  colg-lg-3 mt-4 " id="sidebar">
 
         <!-- Header -->
@@ -193,7 +193,7 @@
 
     <div class="container-fluid main-content">
         <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
-            <div class="col-lg-2 bg-white py-1 px-0 d-md-block d-xl-block d-none ">
+            <div class="col-lg-2 bg-light py-1 px-0 d-md-block d-xl-block d-none ">
 
 
                 @livewire('component.menu-utilisateur')
@@ -1382,7 +1382,7 @@
                     </svg>
                 </div>
             </div>
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2 py-5   col-lg-9 border-start"
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2 py-5 bg-white  col-lg-8 rounded-2"
                 style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
                 <div class="row ">
                     <div class="col-lg-6 col-8">
@@ -1393,20 +1393,23 @@
 
                     </div>
                     <div class="col-lg-6 col-4 d-flex d-none d-lg-block ">
-                        <span class="d-flex  justify-content-end py-3 px-lg-2 text-primary" style="cursor: pointer"
+                        <span class="d-flex  justify-content-end py-3 px-lg-2 fw-bold" style="color: #5BC4BF;cursor: pointer"
                             wire:click="disableRecente">{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
                     </div>
                     <div class="col-lg-6 col-4 d-lg-none d-md-none d-block">
-                        <span class="d-flex  justify-content-end py-3 px-lg-2 text-primary" style="cursor: pointer"
-                            id="toggleSidebar">Nouveau</span>
+                        <span class="d-flex  justify-content-end py-3 px-lg-2 fw-bold" style="color: #5BC4BF;cursor: pointer" 
+                            id="toggleSidebar">Nouveau 
+
+                            {{-- <i class="bi bi-chevron-right fw-bold"></i> --}}
+                        </span>
 
                     </div>
                 </div>
 
-                <section class="p-0 py-1 mx-md-5 mx-lg-5 mx-4">
+                <section class="p-0  mx-4 mx-md-3 mx-lg-3">
                     <div class="row p-0 ">
                         <div class="{{ $disabled ? 'd-none' : 'd-block' }}">
-                            <div class="row border-top mt-md-2">
+                            <div class="row border-top mt-2">
                                 <div class="col-lg-6 ">
                                     <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
                                 </div>
@@ -1462,26 +1465,14 @@
                                     </div>
                                 </div>
                             @endforeach
-                            <div class="col-lg-3  mx-2  p-0 m-0   ">
-
-                                <div class="card-body m-0  ">
-
-                                    <span id="toggleSidebar"
-                                        class="d-flex justify-content-center text-muted bg-light rounded-3 p-5 "
-                                        style="border: 2px dotted #d0d0d0a1; padding: 20px;cursor:pointer">
-                                        + Nouveau
-                                    </span>
-
-
-                                </div>
-                            </div>
+                           
                         </div>
 
-                        <strong href="#" class=" border-0   " aria-current="true">
+                        <strong href="#" class=" border-0 px-md-4 px-lg-4 " aria-current="true">
 
-                            <div class="d-flex active w-100  justify-content-between border-top mt-md-4 ">
-                                <label class="mb-1 fw-bold py-1 mt-4">Liste de vos incident</label>
-                                <small class="mt-4">
+                            <div class="d-flex active w-100  justify-content-between border-top mt-md-2 ">
+                                <label class="mb-1 fw-bold py-1 mt-3">Liste de vos incident</label>
+                                <small class="mt-3">
                                     <div class="shadow-sm p-2 rounded-2">
 
                                         Filtre par :
