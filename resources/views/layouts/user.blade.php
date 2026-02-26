@@ -397,13 +397,9 @@
 <body class="bg-light"   >
     <nav class="navbar navbar-expand-lg fixed-top sh ">
         <div class="container">
-            <a class="navbar-brand text-white " href="{{ route('utilisateur') }}">
-                <img src="{{ url('images/bureau.png') }}" alt="Logo ONG Pivot" width="40"
-                    class="rounded-pill me-2">
-
-
-                GPI - Pivot
-            </a>
+            
+             @livewire('component.routing')  
+      
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

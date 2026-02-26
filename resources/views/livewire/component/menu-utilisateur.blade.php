@@ -15,15 +15,14 @@
 
                 </div>
             </div>
-            <li style="cursor: pointer" class="bg-light bg-gradient py-2 "
+            <li style="cursor: pointer;color:#5BC4BF" class=" rounded-start fw-bold bg-gradient py-2 "
                 wire:click="openReservationModal" data-bs-toggle="modal"
-                data-bs-target="#centeredModalreservation"><svg width="20" class="text-danger-emphasis mr-1"
-                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                Nouveau 
+                data-bs-target="#centeredModalreservation">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                                </svg>
+
+                <span class="mx-1 py-2">Nouveau</span> 
 
             </li>
             <li style="cursor: pointer" wire:click="redicrectlink(3)"

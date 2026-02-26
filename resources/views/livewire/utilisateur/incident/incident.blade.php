@@ -1387,7 +1387,9 @@
                 <div class="row ">
                     <div class="col-lg-6 col-8">
 
-                        <h5 class="fw-bold mx-4 ">Incident</h5>
+                        <h5 class="fw-bold mx-4 d-none d-lg-block d-md-block">Incident</h5>
+                        <h5 class="fw-bold mx-4 d-block d-md-none d-lg-none">List de vos incident</h5>
+
                         <span class="text-muted mx-4 mt-2">Gestion d'incident</span> <br>
 
 
@@ -1471,7 +1473,9 @@
                         <strong href="#" class=" border-0 px-md-4 px-lg-4 " aria-current="true">
 
                             <div class="d-flex active w-100  justify-content-between border-top mt-md-2 ">
-                                <label class="mb-1 fw-bold py-1 mt-3">Liste de vos incident</label>
+                                <label class="mb-1 fw-bold py-1 mt-3 d-none d-md-block d-lg-block">Liste de vos incident</label>
+                                <input type="text" name="" placeholder="Recheche" class="form-control-sm mb-1 d-block d-md-none d-lg-none fw-bold  border-0 border-bottom-1  mt-3 "  id="">
+                            
                                 <small class="mt-3">
                                     <div class="shadow-sm p-2 rounded-2">
 

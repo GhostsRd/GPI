@@ -654,7 +654,9 @@
                 <div class="row">
 
                     <div class="col-lg-6 col-8">
-                        <h5 class="fw-bold mx-lg-4 mx-2">Checkout / Reservation</h5> 
+                        <h5 class="fw-bold mx-lg-4 mx-2 d-none d-md-block d-lg-block">Checkout / Reservation</h5> 
+                        <h5 class="fw-bold mx-lg-4 mx-2 d-bloc d-md-none d-lg-none">Liste de checkout</h5> 
+
                         <span class="text-muted mx-lg-4 mx-2 mt-2">Visualisation globale de chekout</span> <br>
                     </div>
                     <div class="col-lg-6 col-4  d-none d-md-block d-lg-block">
@@ -787,8 +789,30 @@
                             <div class="tab-pane fade show active " id="active" role="tabpanel"
                                 aria-labelledby="active-tab">
 
-                                <div class="">
-                                    <h5>Historique de votre checkout</h5>
+                                <div class="d-flex justify-content-between">
+                                    <label class="d-none py-2 mt-3 d-md-block d-lg-block">Historique de votre checkout</label>
+
+                                    {{-- <input type="text" class="d-block form-control-sm d-md-none d-lg-none border-bottom-1 "  placeholder="Recherche"> --}}
+                                    <small class="mt-3">
+                                        <div class="shadow-sm p-2      rounded-2">
+
+                                            Filtre par :
+                                            <span>
+                                                <select name="" id="" class="border-0 px-2"
+                                                    wire:model="filtrerCheckout">
+                                                    <option value="">Tous</option>
+                                                    <option value="1" class="border-0 ">En cours </option>
+                                                    <option value="2" class="border-0 ">En traitement </option>
+                                                    <option value="3" class="border-0  shadow-sm">Resolu</option>
+                                                    <option value="4" class="border-0 ">Fermer</option>
+
+                                                </select>
+                                            </span>
+                                        </div>
+                                        {{-- <input type="text" wire:model="recherche"
+                                            class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
+                                            placeholder="Recherche par sujet.."> --}}
+                                    </small>
                                 </div>
                                 <div class="list-group mt-2  bg-white " style="max-height:700px;overflow-y: scroll">
                                     @if ($checkouts)
@@ -859,7 +883,7 @@
                                 <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
                                     <div class="">
-                                        <h5>Choisir le materiel</h5>
+                                        <label class="py-2 mt-3">Choisir le materiel</label>
                                     </div>
 
 
@@ -917,7 +941,7 @@
                                 <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
                                     <div class="">
-                                        <h5>Historique de vos reservation</h5>
+                                        <label class="py-2 mt-3">Historique de vos reservation</label>
                                     </div>
 
 

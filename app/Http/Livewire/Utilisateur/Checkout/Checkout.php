@@ -28,6 +28,8 @@ class Checkout extends Component
     public $disabled = true;
     public $type_materiel;
     public $state;
+    public $filtrerCheckout;
+
     public $filteredMateriels = [];
     public $filteredEquipements = [];
     public $filtrematreservation = "";
@@ -181,6 +183,7 @@ class Checkout extends Component
             "moniteurs" => moniteur::where("statut", "En stock")->paginate(10),
             'equipements' => $this->filteredEquipements,
             "checkouts" => modelchekout::where("utilisateur_id",$user_ID)
+            ->where("statut", "like", "%" . $this->filtrerCheckout . "%")
             ->orderBy("created_at","desc")
             ->paginate(105),
             "checkoutrecentes" => modelchekout::where("utilisateur_id",$user_ID)

@@ -1359,7 +1359,8 @@
                     <div class="col-12 col-lg-6">
                         <div class="row">
                             <div class="col-8">
-                                <h5 class="fw-bold mx-4 ">Ticket</h5>
+                                <h5 class="fw-bold mx-4 d-none d-md-block d-lg-block">Ticket</h5>
+                                <h5 class="fw-bold d-block mx-4 d-md-none d-lg-none">List de votre ticket</h5>
                                 <span class="text-muted mx-4 mt-2">Gestion de vos ticket</span>
                             </div>
                             <div class="col-4 d-block d-md-block d-lg-none d-xl-none">
@@ -1451,7 +1452,8 @@
                     <strong href="#" class=" border-0 mt-0  " aria-current="true">
 
                         <div class="d-flex active w-100  justify-content-between border-top ">
-                            <label class="mb-1 fw-bold  py-2 mt-3">Liste de votre ticket</label>
+                            <label class="mb-1 fw-bold  py-2 mt-3 d-none d-md-block d-lg-block">Liste de votre ticket</label>
+                            <input type="text" name="" placeholder="Recheche" class="form-control-sm mb-1 d-block d-md-none d-lg-none fw-bold  border-0 border-bottom-1  mt-3 "  id="">
                             <small class="mt-3">
                                 <div class="shadow-sm p-2 rounded-2">
 
