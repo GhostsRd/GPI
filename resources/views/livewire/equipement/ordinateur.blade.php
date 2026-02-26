@@ -577,7 +577,7 @@
                             <td class="small font-monospace">{{ $ordinateur->numero_serie ?? 'N/A' }}</td>
                             <td>
     @php
-        $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+        $liaisonActive = \App\Models\liaison_equipement::with(['utilisateur'])
             ->where('ordinateur_id', $ordinateur->id)
             ->where('statut', 'actif')
             ->first();
@@ -985,7 +985,7 @@
 
                         <!-- AJOUT : Section des utilisateurs liés via liaison_equipements -->
                         @php
-                            $liaisonsOrdinateur = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                            $liaisonsOrdinateur = \App\Models\liaison_equipement::with(['utilisateur'])
                                 ->where('ordinateur_id', $selectedOrdinateur->id)
                                 ->orderBy('created_at', 'desc')
                                 ->get();

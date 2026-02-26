@@ -18,7 +18,7 @@ use App\Models\Flotte;
 use App\Models\Imprimante;
 use App\Models\moniteur;
 use App\Models\Peripherique;
-use App\Models\LiaisonEquipement;
+use App\Models\liaison_equipement;
 
 class Profile extends Component
 {
@@ -57,7 +57,7 @@ class Profile extends Component
     public function loadEquipementsDisponibles()
     {
         // Récupérer les IDs des équipements déjà liés activement
-        $liaisonsActives = LiaisonEquipement::where('statut', 'actif')->get();
+        $liaisonsActives = liaison_equipement::where('statut', 'actif')->get();
 
         $ordinateurIds = $liaisonsActives->whereNotNull('ordinateur_id')->pluck('ordinateur_id')->toArray();
         $telephoneIds = $liaisonsActives->whereNotNull('telephone_id')->pluck('telephone_id')->toArray();
@@ -77,7 +77,7 @@ class Profile extends Component
 
     public function chargerEquipementsLies()
     {
-        $this->equipements_lies = LiaisonEquipement::with(['ordinateur', 'telephone', 'flotte', 'imprimante', 'moniteur', 'peripherique'])
+        $this->equipements_lies = liaison_equipement::with(['ordinateur', 'telephone', 'flotte', 'imprimante', 'moniteur', 'peripherique'])
             ->where('utilisateur_id', $this->profileId)
             ->where('statut', 'actif')
             ->orderBy('created_at', 'desc')
@@ -119,7 +119,7 @@ class Profile extends Component
                 $typeColumn = $type . '_id';
 
                 // Vérifier que l'équipement n'est pas déjà lié
-                $dejaLie = LiaisonEquipement::where('statut', 'actif')
+                $dejaLie = liaison_equipement::where('statut', 'actif')
                     ->where($typeColumn, $id)
                     ->exists();
 
@@ -128,7 +128,7 @@ class Profile extends Component
                     continue;
                 }
 
-                $liaison = new LiaisonEquipement();
+                $liaison = new liaison_equipement();
                 $liaison->utilisateur_id = $this->profileId;
                 $liaison->type = $type;
                 $liaison->date_attribution = $this->date_attribution;
@@ -165,7 +165,7 @@ class Profile extends Component
     public function detacherEquipement($id)
     {
         try {
-            $liaison = LiaisonEquipement::find($id);
+            $liaison = liaison_equipement::find($id);
             if($liaison) {
                 $liaison->statut = 'inactif';
                 $liaison->date_retour_effectif = now();

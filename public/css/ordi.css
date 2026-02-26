@@ -2,15 +2,15 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 
 [data-theme="dark"] {
-    /* Dark Theme - Cyan */
-    --primary: #22d3ee;
-    --primary-light: #67e8f9;
-    --primary-dark: #06b6d4;
-    --primary-50: #0c4a6e;
-    --primary-100: #155e75;
-    --primary-200: #0e7490;
-    --primary-300: #0891b2;
-    --primary-400: #06b6d4;
+    /* Dark Theme - Teal */
+    --primary: #1ABC9C;
+    --primary-light: #48C9B0;
+    --primary-dark: #16A085;
+    --primary-50: #0B5345;
+    --primary-100: #0E6655;
+    --primary-200: #117864;
+    --primary-300: #148F77;
+    --primary-400: #1ABC9C;
     --secondary: #a78bfa;
     --success: #34d399;
     --warning: #fbbf24;
@@ -148,7 +148,8 @@
     color: var(--gray-400) !important;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
     background: var(--card-bg) !important;
     border: 1px solid var(--border) !important;
     color: var(--dark) !important;
@@ -156,7 +157,8 @@
     border-radius: 8px !important;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
     outline: none;
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1) !important;
@@ -461,6 +463,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

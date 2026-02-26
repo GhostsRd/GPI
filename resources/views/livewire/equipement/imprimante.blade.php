@@ -392,7 +392,7 @@
                             <td class="small">{{ $imprimante->updated_at->format('d/m/Y H:i') }}</td>
                             <td>
                                 @php
-                                    $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                                    $liaisonActive = \App\Models\liaison_equipement::with(['utilisateur'])
                                         ->where('imprimante_id', $imprimante->id)
                                         ->where('statut', 'actif')
                                         ->first();

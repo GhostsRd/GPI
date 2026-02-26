@@ -3,16 +3,16 @@
 
 /* Variables CSS modernes */
 :root {
-    --primary: #3b82f6;
-    --primary-light: #60a5fa;
-    --primary-dark: #2563eb;
-    --primary-50: #eff6ff;
-    --primary-100: #dbeafe;
+    --primary: #48C9B0;
+    --primary-light: #76D7C4;
+    --primary-dark: #1ABC9C;
+    --primary-50: #E8F8F5;
+    --primary-100: #D1F2EB;
     --secondary: #8b5cf6;
     --success: #10b981;
     --warning: #f59e0b;
     --error: #ef4444;
-    --info: #06b6d4;
+    --info: #48C9B0;
     --dark: #1e293b;
     --light: #f8fafc;
     --gray-50: #f8fafc;
@@ -55,8 +55,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 80%, rgba(72, 201, 176, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
 }
@@ -110,7 +110,7 @@
     font-size: 1.2rem;
     background: var(--gradient-primary);
     color: white;
-    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 3px 10px rgba(72, 201, 176, 0.2);
     transition: all 0.3s ease;
 }
 
@@ -211,12 +211,12 @@
     gap: 0.4rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 2px 6px rgba(72, 201, 176, 0.2);
 }
 
 .btn-modern:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 3px 10px rgba(72, 201, 176, 0.3);
 }
 
 .btn-modern.secondary {
@@ -250,7 +250,7 @@
 .search-box input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px rgba(72, 201, 176, 0.1);
 }
 
 .search-box input::placeholder {
@@ -396,12 +396,12 @@
 }
 
 .btn-edit {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(72, 201, 176, 0.1);
     color: var(--primary);
 }
 
 .btn-edit:hover {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(72, 201, 176, 0.2);
 }
 
 .btn-delete {
@@ -429,6 +429,7 @@
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -467,7 +468,7 @@
 .form-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 .form-select {
@@ -485,7 +486,7 @@
 .form-select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 /* Messages flash */
@@ -504,6 +505,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -648,6 +650,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -733,7 +736,9 @@
     font-size: 0.6rem;
     padding: 0.2rem 0.4rem;
     min-width: 60px;
-}/* Import de la police */
+}
+
+/* Import de la police */
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 
 /* Variables CSS modernes */
@@ -791,7 +796,7 @@
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
 }
@@ -946,12 +951,12 @@
     gap: 0.4rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 2px 6px rgba(72, 201, 176, 0.2);
 }
 
 .btn-modern:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 3px 10px rgba(72, 201, 176, 0.3);
 }
 
 .btn-modern.secondary {
@@ -985,7 +990,7 @@
 .search-box input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px rgba(72, 201, 176, 0.1);
 }
 
 .search-box input::placeholder {
@@ -1131,12 +1136,12 @@
 }
 
 .btn-edit {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(72, 201, 176, 0.1);
     color: var(--primary);
 }
 
 .btn-edit:hover {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(72, 201, 176, 0.2);
 }
 
 .btn-delete {
@@ -1164,6 +1169,7 @@
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -1202,7 +1208,7 @@
 .form-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 .form-select {
@@ -1220,7 +1226,7 @@
 .form-select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 /* Messages flash */
@@ -1239,6 +1245,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1383,6 +1390,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1468,7 +1476,9 @@
     font-size: 0.6rem;
     padding: 0.2rem 0.4rem;
     min-width: 60px;
-}/* Import de la police */
+}
+
+/* Import de la police */
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 
 /* Variables CSS modernes */
@@ -1526,7 +1536,7 @@
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
 }
@@ -1681,12 +1691,12 @@
     gap: 0.4rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 2px 6px rgba(72, 201, 176, 0.2);
 }
 
 .btn-modern:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 3px 10px rgba(72, 201, 176, 0.3);
 }
 
 .btn-modern.secondary {
@@ -1720,7 +1730,7 @@
 .search-box input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px rgba(72, 201, 176, 0.1);
 }
 
 .search-box input::placeholder {
@@ -1866,12 +1876,12 @@
 }
 
 .btn-edit {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(72, 201, 176, 0.1);
     color: var(--primary);
 }
 
 .btn-edit:hover {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(72, 201, 176, 0.2);
 }
 
 .btn-delete {
@@ -1899,6 +1909,7 @@
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -1937,7 +1948,7 @@
 .form-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 .form-select {
@@ -1955,7 +1966,7 @@
 .form-select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 /* Messages flash */
@@ -1974,6 +1985,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -2118,6 +2130,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -2203,7 +2216,9 @@
     font-size: 0.6rem;
     padding: 0.2rem 0.4rem;
     min-width: 60px;
-}/* Import de la police */
+}
+
+/* Import de la police */
 @import url(https://fonts.googleapis.com/css?family=Nunito);
 
 /* Variables CSS modernes */
@@ -2261,7 +2276,7 @@
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
 }
@@ -2416,12 +2431,12 @@
     gap: 0.4rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 2px 6px rgba(72, 201, 176, 0.2);
 }
 
 .btn-modern:hover {
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 3px 10px rgba(72, 201, 176, 0.3);
 }
 
 .btn-modern.secondary {
@@ -2455,7 +2470,7 @@
 .search-box input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px rgba(72, 201, 176, 0.1);
 }
 
 .search-box input::placeholder {
@@ -2601,12 +2616,12 @@
 }
 
 .btn-edit {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(72, 201, 176, 0.1);
     color: var(--primary);
 }
 
 .btn-edit:hover {
-    background: rgba(59, 130, 246, 0.2);
+    background: rgba(72, 201, 176, 0.2);
 }
 
 .btn-delete {
@@ -2634,6 +2649,7 @@
         opacity: 0;
         transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -2672,7 +2688,7 @@
 .form-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 .form-select {
@@ -2690,7 +2706,7 @@
 .form-select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(72, 201, 176, 0.1);
 }
 
 /* Messages flash */
@@ -2709,6 +2725,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -2853,6 +2870,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
