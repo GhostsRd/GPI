@@ -364,7 +364,11 @@
                         </small> -
                         <small>
                             {{ $last->equipement_type }}
-                            {{ $last->equipement_type == 'ordinateur' ? $last->ordinateur->nom : $last->TelephoneTablette->nom }}
+
+                            @if($last->equipement_type == 'peripherique')
+                                {{ $last->peripherique->type }} {{ $last->peripherique->nom }}
+                            @endif
+                            {{-- {{ $last->equipement_type == 'ordinateur' ? $last->ordinateur->nom : $last->TelephoneTablette->nom }} --}}
                         </small>
                     </div>
                     <br>
@@ -389,7 +393,7 @@
 
                         <div class="d-flex w-100 justify-content-between">
                             <b class="mb-1 text-black-50"># {{ $event->id }} -
-                                {{ $event->equipement_type }} {{ $event->equipement_nombre }}
+                                {{ $event->equipement_type }} - nb : {{ $event->equipement_nombre }}
                             </b>
                             <small class="text-body-secondary">
                                 {{ \Carbon\Carbon::parse($event->date_debut)->translatedFormat('d M Y') }} -
@@ -405,7 +409,9 @@
                                         ? $event->ordinateur->os_version
                                         : ($event->equipement_type == 'telephone'
                                             ? $event->TelephoneTablette->nom . ' ' . $event->TelephoneTablette->marque
-                                            : 'aucun') }}
+                                            : ($event->equipement_type == 'peripherique'
+                                            ? $event->peripherique->type . ' ' . $event->peripherique->nom
+                                            : 'aucun')) }}
                                 </small>
                             </p>
                             {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
@@ -497,6 +503,26 @@
                                             </small>
                                             <div wire:loading
                                                 wire:target="reserverMat('telephone',{{ $telephone->id }})">
+                                                <div class="spinner-border spinner-border-sm"></div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                @if($peripheriques)
+                                        <div class="py-2">
+                                        <label for="p-4">Peripheriques</label>
+                                    </div>
+                                    @foreach ($peripheriques as $peripherique)
+                                        <div class="bg-light py-2 mb-1 rounded-2" style="cursor: pointer"
+                                            wire:click="reserverMat('peripherique',{{ $peripherique->id }})">
+
+                                            <small class="m-2 mx-3" wire:loading.remove
+                                                wire:target="reserverMat('peripherique',{{ $peripherique->id }})">
+                                                {{ $peripherique->type }} {{ $peripherique->nom }} 
+                                            </small>
+                                            <div wire:loading
+                                                wire:target="reserverMat('peripherique',{{ $peripherique->id }})">
                                                 <div class="spinner-border spinner-border-sm"></div>
                                             </div>
                                         </div>
@@ -764,6 +790,24 @@
                             url: "{{ $event->url ?? '#' }}",
                             allDay: true,
                             className: "info"
+
+
+                        }
+                        @if (!$loop->last)
+                            ,
+                        @endif
+                    @endif
+                    @if ($event->equipement_type == 'peripherique')
+
+                        {
+
+                            id: "{{ $event->id }}",
+                            title: "{{ $event->peripherique->type }} {{ $event->peripherique->nom }}",
+                            start: "{{ \Carbon\Carbon::parse($event->date_debut)->toIso8601String() }}",
+                            end: "{{ \Carbon\Carbon::parse($event->date_fin)->toIso8601String() }}",
+                            url: "{{ $event->url ?? '#' }}",
+                            allDay: true,
+                            className: "{{ $event->responsable->id == $userConnected ? 'info' : 'success' }}"
 
 
                         }

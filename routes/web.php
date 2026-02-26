@@ -19,7 +19,7 @@ use App\Http\Controllers\ProfileController;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect('utilisateur');
 });
 
 Auth::routes();

@@ -3,7 +3,10 @@
 namespace App\Http\Livewire\Utilisateur\Incident;
 
 use App\Models\Checkout;
+use App\Models\liaison_equipement;
 use App\Models\ordinateur;
+use App\Models\Peripherique;
+use App\Models\TelephoneTablette;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Incident as IncidentModel;
@@ -70,6 +73,21 @@ class Incident extends Component
            
         }
 
+
+        if($this->equipement_type == "ordinateur"){
+            ordinateur::where('id',$this->equipement_id)->update(['statut'=>'En réparation']);
+        }
+        elseif($this->equipement_type == "Telephone"){
+            TelephoneTablette::where('id',$this->equipement_id)->update(['statut'=>'En réparation']);
+        }
+        elseif($this->equipement_type == "Peripherique"){
+            Peripherique::where('id',$this->equipement_id)->update(['statut'=>'En réparation']);
+        }
+
+
+
+
+
         $incident->equipement_type = $this->equipement_type;
         $incident->equipement_id = $this->equipement_id;
         $incident->utilisateur_id = Auth::guard("utilisateur")->user()->id;
@@ -92,6 +110,7 @@ class Incident extends Component
             'checkouts' => Checkout::where('utilisateur_id',$this->userConnected)
             
             ->where('statut','!=',1)->get(),
+            'EquipementLier' => liaison_equipement::where('utilisateur_id',$this->userConnected)->get(),
             'Incidentsrecentes' => IncidentModel::where('utilisateur_id',$this->userConnected)->orderBy('id','desc')->limit(2)->get(),
         ]);
         //////////////////////////////////////////////////checkout type eto zao e 

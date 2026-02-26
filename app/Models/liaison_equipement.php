@@ -48,7 +48,7 @@ class liaison_equipement extends Model
     // Relation avec le téléphone
     public function telephone()
     {
-        return $this->belongsTo(Telephone::class, 'telephone_id');
+        return $this->belongsTo(TelephoneTablette::class, 'telephone_id');
     }
 
     // Relation avec la flotte

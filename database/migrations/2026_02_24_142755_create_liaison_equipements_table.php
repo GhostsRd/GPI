@@ -56,15 +56,9 @@ return new class extends Migration
                 ->on('ordinateurs')
                 ->nullOnDelete();
 
-            $table->foreign('telephone_id')
-                ->references('id')
-                ->on('telephones')
-                ->nullOnDelete();
+        
 
-            $table->foreign('flotte_id')
-                ->references('id')
-                ->on('flottes')
-                ->nullOnDelete();
+         
 
             $table->foreign('imprimante_id')
                 ->references('id')
