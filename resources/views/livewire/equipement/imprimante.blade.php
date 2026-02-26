@@ -353,6 +353,7 @@
                                     <i class="fas fa-sort text-muted small"></i>
                                 @endif
                             </th>
+                            <th>Usager</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -389,6 +390,22 @@
                             <td class="small">{{ $imprimante->type }}</td>
                             <td class="small">{{ $imprimante->modele }}</td>
                             <td class="small">{{ $imprimante->updated_at->format('d/m/Y H:i') }}</td>
+                            <td>
+                                @php
+                                    $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                                        ->where('imprimante_id', $imprimante->id)
+                                        ->where('statut', 'actif')
+                                        ->first();
+                                @endphp
+                                
+                                @if($liaisonActive && $liaisonActive->utilisateur)
+                                    <span class="badge bg-light text-dark border small">
+                                        <i class="bi bi-person-fill me-1 text-primary"></i>{{ $liaisonActive->utilisateur->nom }}
+                                    </span>
+                                @else
+                                    <span class="text-muted small">Non attribué</span>
+                                @endif
+                            </td>
                             <td>
                                 <div class="d-flex gap-1">
                                     <!-- Bouton Voir Détails -->

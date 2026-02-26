@@ -578,14 +578,14 @@
                             <td class="small font-monospace">{{ $moniteur->numero_serie ?? 'N/A' }}</td>
                             <td class="small">
                                 @if($moniteur->utilisateur)
-                                    <span class="badge bg-light text-dark border small">{{ $moniteur->utilisateur->name }}</span>
+                                    <span class="badge bg-light text-dark border small">{{ $moniteur->utilisateur->nom }}</span>
                                 @else
                                     <span class="text-muted small">Non attribué</span>
                                 @endif
                             </td>
                             <td class="small">
                                 @if($moniteur->usager)
-                                    <span class="badge bg-light text-dark border small">{{ $moniteur->usager->name }}</span>
+                                    <span class="badge bg-light text-dark border small">{{ $moniteur->usager->nom }}</span>
                                 @else
                                     <span class="text-muted small">N/A</span>
                                 @endif
@@ -889,12 +889,12 @@
 
                             <div class="detail-item mb-2">
                                 <strong class="small"><i class="fas fa-users me-1"></i>Utilisateur principal</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->utilisateur->name ?? 'Non attribué' }}</p>
+                                <p class="mb-0 small">{{ $selectedMoniteur->utilisateur->nom ?? 'Non attribué' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
                                 <strong class="small"><i class="fas fa-user me-1"></i>Usager secondaire</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->usager->name ?? 'Non attribué' }}</p>
+                                <p class="mb-0 small">{{ $selectedMoniteur->usager->nom ?? 'Non attribué' }}</p>
                             </div>
                         </div>
                     </div>

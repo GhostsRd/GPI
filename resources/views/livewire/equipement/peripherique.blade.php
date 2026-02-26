@@ -280,7 +280,22 @@
                             <td class="small">{{ $peripherique->fabricant ?? 'N/A' }}</td>
                             <td class="small">{{ $peripherique->modele ?? 'N/A' }}</td>
                             <td class="small">{{ $peripherique->entite ?? '-' }}</td>
-                            <td class="small">{{ $peripherique->usager ?? '-' }}</td>
+                            <td class="small">
+                                @php
+                                    $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                                        ->where('peripherique_id', $peripherique->id)
+                                        ->where('statut', 'actif')
+                                        ->first();
+                                @endphp
+                                
+                                @if($liaisonActive && $liaisonActive->utilisateur)
+                                    <span class="badge bg-light text-dark border small">
+                                        <i class="bi bi-person-fill me-1 text-primary"></i>{{ $liaisonActive->utilisateur->nom }}
+                                    </span>
+                                @else
+                                    <span class="text-muted small">Non attribué</span>
+                                @endif
+                            </td>
                             <td class="small">{{ $peripherique->lieu ?? 'N/A' }}</td>
                             <td class="small">{{ $peripherique->updated_at->format('d/m/Y H:i') }}</td>
                             <td class="small">

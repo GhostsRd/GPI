@@ -30,7 +30,7 @@ class moniteur extends Model
      */
     public function utilisateur()
     {
-        return $this->belongsTo(User::class, 'utilisateur_id');
+        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
     }
 
     /**
@@ -38,7 +38,7 @@ class moniteur extends Model
      */
     public function usager()
     {
-        return $this->belongsTo(User::class, 'usager_id');
+        return $this->belongsTo(Utilisateur::class, 'usager_id');
     }
 
     /**
