@@ -282,7 +282,7 @@
                             <td class="small">{{ $peripherique->entite ?? '-' }}</td>
                             <td class="small">
                                 @php
-                                    $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                                    $liaisonActive = \App\Models\liaison_equipement::with(['utilisateur'])
                                         ->where('peripherique_id', $peripherique->id)
                                         ->where('statut', 'actif')
                                         ->first();

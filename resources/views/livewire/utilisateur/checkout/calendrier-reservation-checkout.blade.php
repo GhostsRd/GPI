@@ -337,7 +337,7 @@
             <h5 class="mt-2 pb-4 border-bottom fw-bold">Reservation de materiel</h5>
             <div class="row">
                 <div class="col-lg-8 col-8">
-                    <label class="text-muted mt-1 mt-md-0 mt-lg-0 d-flex justify-content-between">Disponibilite /
+                    <label class="text-muted mt-1 mt-md-0 mt-lg-0 d-flex justify-content-between">M /
                         {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
                         {{ $firsts?->os_version }} {{ $firsts?->marque }} </label>
 

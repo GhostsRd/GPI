@@ -333,7 +333,7 @@
     <div class="col-lg-9 m-2 m-lg-0 m-xl-0 row  mt-4 border-0 border-md-start"
         style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
         <div wire:ignore.self class="p-2 col-lg-12 ">
-            <h5 class="mt-2 pb-4 border-bottom fw-bold">calendrier de vos reservation</h5>
+            <h5 class="mt-2 pb-4 border-bottom fw-bold">Calendrier de vos reservation</h5>
             <label class="text-muted  d-flex justify-content-between">Disponibilite /
                 Tous vos reservation </label>
             <div class="d-flex  justify-content-end">

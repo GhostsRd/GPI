@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 <div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section">
     <div wire:ignore.self class="sidebar shadow rounded-3 p-0  col-lg-2 bg-white py-4 card mt-5 " id="sidebar">
         <div>
+=======
+<div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section  bg-md-white-cust ">
+    <div wire:ignore.self class="sidebar checkoutmenu  rounded-3 text-dark card bg-white p-0   mt-4" id="sidebar">
+        <div >
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
             <div>
                 <div>
                     <!-- Header -->
@@ -15,7 +21,11 @@
                             {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
                                 obligatoires</p> --}}
 
+<<<<<<< HEAD
                             <div class="mb-3 col-lg-6 position-relative">
+=======
+                            <div class="mb-3  position-relative">
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
 
                                 @error('sujet')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -23,18 +33,30 @@
                             </div>
 
 
+<<<<<<< HEAD
                             <div class="etap_validation">
+=======
+                            <div class="etap_validation ">
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                 <label for="sujet" class="form-label text-dark">
                                     Choisir le matériel <span class="text-danger">*</span>
                                 </label>
 
+<<<<<<< HEAD
                                 <div class="etap {{ $etape[1] }}">
+=======
+                                <div class="etap {{ $etape[1] }} ">
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                     <a href="#" wire:click="$set('valeur1', 'ordinateur')" data-aos-duration="400"
                                         class=" {{ $valeur1 == 'ordinateur' ? ' shadow-lg fw-bold' : 'shadow-sm' }} nav-link text-dark card   "
                                         aria-current="true">
 
                                         <div class="d-flex w-100 justify-content-between">
                                             <label class="text-dark"> Ordinateur </label>
+<<<<<<< HEAD
+=======
+                                           
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                             <small class="text-body-secondary">En stock</small>
                                         </div>
                                     </a>
@@ -60,7 +82,11 @@
 
                                     <div class="mt-4 border-bottom py-1">
                                         <button wire:click.prevent="next_form(2)"
+<<<<<<< HEAD
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant ⮞</button>
+=======
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant </button>
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                     </div>
                                 </div>
 
@@ -98,9 +124,15 @@
                                     </a>
                                     <div class="mt-4 border-bottom py-1">
                                         <button wire:click="next_form(1)"
+<<<<<<< HEAD
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜ Precedent</button>
                                         <button wire:click="next_form(5)"
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant ⮞</button>
+=======
+                                            class="btn btn-outline-white  fw-bold border  px-3  btn-sm  shadow-sm"> Precedent</button>
+                                        <button wire:click="next_form(5)"
+                                            class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Suivant </button>
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                     </div>
                                 </div>
 
@@ -249,7 +281,11 @@
                                         <button wire:click="next_form(1)"
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
                                         <button wire:click="next_form(5)" type="submit"
+<<<<<<< HEAD
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
+=======
+                                            class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                     </div>
                                 </div>
 
@@ -279,6 +315,7 @@
                                     </a>
                                     <div class="">
                                         <button wire:click="next_form(1)"
+<<<<<<< HEAD
                                             class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">⮜</button>
                                         <button type="submit" wire:click="EnvoyerCheckout"
                                             class="btn btn-two btn-sm    fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
@@ -289,6 +326,13 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
+=======
+                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Retour</button>
+                                        <button type="submit" wire:click="EnvoyerCheckout"
+                                            class="btn btn-two btn-sm text-white   fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
+                                            Envoyer
+                                            
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
 
                                         </button>
                                     </div>
@@ -314,13 +358,14 @@
 
 
 
-    <div wire:ignore.self class="container-fluid main-content mt-4">
+    <div wire:ignore.self class="container-fluid main-content mt-md-3 mt-lg-3">
 
-        <div class="row col-lg-11 offset-lg-1 offset-xs-0 col-12">
+        <div class="row col-lg-11 offset-lg-1 offset-xs-0 offset-0  col-12">
             {{-- ici le menu --}}
-            <div class="col-lg-2 bg-white py-1 px-0 ">
+            <div class="col-lg-2 bg-light py-1 px-0 d-md-block d-xl-block d-none">
 
 
+<<<<<<< HEAD
                 <ul style="list-style: none " class="px-2 py-2 ">
                     <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
                         <div class="d-flex align-items-center">
@@ -399,6 +444,9 @@
                     </li>
 
                 </ul>
+=======
+                 @livewire('component.menu-utilisateur')
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                 <div class="justify-content-center">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                         x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;"
@@ -730,6 +778,7 @@
 
             {{-- ici le contente right --}}
 
+<<<<<<< HEAD
             <div class="border-start col-lg-9 mx-2">
                 <div class="col-lg-12 ">
                     <h5 class="fw-bold m-2 ">Checkout / Reservation d'equipement</h5>
@@ -746,9 +795,19 @@
 
                             <span class="d-flex justify-content-end py-3 px-2 text-primary">Afficher tous les reservations</span>
                         </div>
+=======
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2   col-lg-8 bg-white rounded-2"
+            style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                <div class="row">
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
 
+                    <div class="col-lg-6 col-8">
+                        <h5 class="fw-bold mx-lg-4 mx-2 d-none d-md-block d-lg-block">Checkout / Reservation</h5> 
+                        <h5 class="fw-bold mx-lg-4 mx-2 d-bloc d-md-none d-lg-none">Liste de checkout</h5> 
 
+                        <span class="text-muted mx-lg-4 mx-2 mt-2">Visualisation globale de chekout</span> <br>
                     </div>
+<<<<<<< HEAD
                     <div class="row p-0 mx-3 ">
                         @foreach ($checkoutrecentes as $checkoutrecente)
                         
@@ -834,10 +893,109 @@
                                
                                
                             </div>
+=======
+                    <div class="col-lg-6 col-4  d-none d-md-block d-lg-block">
+
+                            <span class="d-flex justify-content-end py-3 px-2 fw-bold" wire:click="disableRecente" style="color: #5BC4BF;cursor:pointer" >{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
+                    </div>
+                     <div class="col-lg-6 col-4 d-block d-md-none d-lg-none">
+
+                            <span class="d-flex justify-content-end py-3 px-2 fw-bold" style="color: #5BC4BF;cursor:pointer" id="toggleSidebar" >Nouveau</span>
+                    </div>
+                </div>
+                <div class="col-lg-12  mx-lg-4 mx-md-4  ">
+                    <div class="{{ $disabled ? 'd-none' : 'd-block' }}">
+
+                        <div class="row border-top mx-2 col-lg-11 mt-2">
+                            <div class="col-lg-6 ">
+    
+                                <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
+                            </div>
+    
+                        
+    
+                        </div>
+                        <div class="row p-0 mx-3 ">
+                            @foreach ($checkoutrecentes as $checkoutrecente)
+                            
+                            <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                                    Nom du ticket de las
+                                </div> --}}
+                                
+                                <div class="card-body m-0 p-0 ">
+                                     <div class="pb-2 fw-bold text-muted" >
+                                        Checkout 
+                                    </div>
+                                    <strong class="d-flex justify-content-between">
+                                        <div class="bg-light rounded-start-pill">
+                                            <img  class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $checkoutrecente->utilisateur->nom ?? 'none' }}"
+                                                alt="Profil" width="40" height="40"
+                                                class="rounded-circle me-2">
+                                                <span class="mx-2 ">{{ $checkoutrecente->materiel_type ?? 'Aucun' }}</span></div> 
+                                    </strong>
+                                     {{-- <div class="d-flex justify-content-end">
+                                            <small> 10 Nov 2025</small>
+                                    </div> --}}
+                                    <div class="mt-2 ">
+                                        <p>{{ $checkoutrecente->materiel_details ?? 'Aucun' }}</p>
+                                    </div>
+                                    <div>
+                                        
+                                        <div class="d-flex justify-content-end">
+                                            <span class="text-muted mx-2">
+                                                   {{ \Carbon\Carbon::parse($checkoutrecente->created_at)->translatedFormat('d M Y H:i') }}
+                                            </span>
+                                            <img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $checkoutrecente->responsable->name ?? 'none' }}"
+                                                alt="Profil" width="20" height="20"
+                                                class="rounded-circle me-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+    
+                            @foreach ($reservationRecentes as $reservationRecent )
+                                 <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
+                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
+                                    Nom du ticket de las
+                                </div> --}}
+                                <div class="card-body m-0 p-0 " title="Reservation de materiel">
+                                    <div class="pb-2 fw-bold text-muted" >
+                                        Reservation 
+                                    </div>
+                                     
+                                    <strong class="d-flex justify-content-between">
+                                        <div class="bg-light rounded-start-pill">
+                                            <img  class="dropdown-toggle border border-success border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $reservationRecent->responsable->nom ?? 'none' }}"
+                                                alt="Profil" width="40" height="40"
+                                                class="rounded-circle  me-2">
+                                                <span class="mx-2 text-capitalize ">{{ $reservationRecent->equipement_type?? 'Auccun' }}</span></div> 
+                                    </strong>
+                                     {{-- <div class="d-flex justify-content-end">
+                                            <small> 10 Nov 2025</small>
+                                    </div> --}}
+                                    <div class="mt-2">
+                                        <p>{{ \Carbon\Carbon::parse($reservationRecent->date_debut)->translatedFormat('d M Y') }} - {{ \Carbon\Carbon::parse($reservationRecent->date_fin)->translatedFormat('d M Y') }}</p>
+                                    </div>
+                                    <div>
+                                        
+                                        <div class="d-flex justify-content-end"><img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
+                                                src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name ?? 'none' }}"
+                                                alt="Profil" width="20" height="20"
+                                                class="rounded-circle me-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                           
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                         </div>
                     </div>
-                    <div class="mt-4   p-0">
-                        <ul class="nav nav-tabs  text-secondary" id="myTab" role="tablist">
+                    <div class="mt-4  col-lg-11 p-0">
+                        <ul class="nav mx-2 nav-tabs  text-secondary" id="myTab" role="tablist">
                             <li class="nav-item text-dark" role="presentation">
                                 <button class="nav-link  active" style="color: rgb(53, 53, 53) !important"
                                     id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"
@@ -852,7 +1010,7 @@
                                     Reserver une equipement
                                 </button>
                             </li>
-                            <li class="nav-item   text-dark" role="presentation">
+                            <li class="nav-item d-none d-md-block d-lg-block   text-dark" role="presentation">
                                 <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important"
                                     id="link2-tab" data-bs-toggle="tab" data-bs-target="#link2" type="button"
                                     role="tab" aria-controls="link1" aria-selected="false">
@@ -863,21 +1021,54 @@
 
                         </ul>
 
-                        <div class="tab-content border-0 p-3  border-top-0" id="myTabContent">
+                        <div class="tab-content border-0 p-2  border-top-0" id="myTabContent">
                             <div class="tab-pane fade show active " id="active" role="tabpanel"
                                 aria-labelledby="active-tab">
 
+<<<<<<< HEAD
                                 <div class="">
                                     <h5>Historique de votre checkout</h5>
                                 </div>
                                 <div class="list-group mt-2  bg-white " style="max-height:400px;overflow-y: scroll">
+=======
+                                <div class="d-flex justify-content-between">
+                                    <label class="d-none py-2 mt-3 d-md-block d-lg-block">Historique de votre checkout</label>
+
+                                    {{-- <input type="text" class="d-block form-control-sm d-md-none d-lg-none border-bottom-1 "  placeholder="Recherche"> --}}
+                                    <small class="mt-3">
+                                        <div class="shadow-sm p-2      rounded-2">
+
+                                            Filtre par :
+                                            <span>
+                                                <select name="" id="" class="border-0 px-2"
+                                                    wire:model="filtrerCheckout">
+                                                    <option value="">Tous</option>
+                                                    <option value="1" class="border-0 ">En cours </option>
+                                                    <option value="2" class="border-0 ">En traitement </option>
+                                                    <option value="3" class="border-0  shadow-sm">Resolu</option>
+                                                    <option value="4" class="border-0 ">Fermer</option>
+
+                                                </select>
+                                            </span>
+                                        </div>
+                                        {{-- <input type="text" wire:model="recherche"
+                                            class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
+                                            placeholder="Recherche par sujet.."> --}}
+                                    </small>
+                                </div>
+                                <div class="list-group mt-2  bg-white " style="max-height:700px;overflow-y: scroll">
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                     @if ($checkouts)
                                          @foreach ($checkouts as $checkout)
                                             <a  data-aos="fade-down" data-aos-duration="400"
                                             wire:click="visualisercheckout({{ $checkout->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#checkoutview"
                                                 data-aos-delay="{{ $loop->index * 200 }}"
+<<<<<<< HEAD
                                                 class="list-group-item border-0 list-group-item-action ">
+=======
+                                                class="list-group-item border mb-1  list-group-item-action rounded-2 ">
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
 
                                                 <div class="d-flex w-100 justify-content-between">
                                                     <b class="mb-1 text-black-50"> {{ $checkout->id }} -
@@ -936,6 +1127,7 @@
                             </div>
                             <div class="tab-pane fade border-0 " id="link1" role="tabpanel"
                                 aria-labelledby="link1-tab">
+<<<<<<< HEAD
                                 <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
                                     <div class="">
@@ -994,10 +1186,84 @@
 
                             <div class="tab-pane fade border-0 " id="link2" role="tabpanel"
                                 aria-labelledby="link2-tab">
+=======
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                 <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
                                     <div class="">
-                                        <h5>Historique de vos reservation</h5>
+                                        <label class="py-2 mt-3">Choisir le materiel</label>
+                                    </div>
+
+
+                                    <div class="list-group mt-2 " style="max-height: 400px;overflow-y: scroll">
+<<<<<<< HEAD
+                                     @foreach ($matreservations as $materiel)
+                                            <a href="#" wire:click="visualiser( {{ $materiel->id }})" 
+                                                
+                                                title="Voir le details" class="list-group-item list-group-item-action border-0 border-bottom ">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <b class="mb-1 text-black-50 text-capitalize"> {{ $materiel->equipement_type }} </b>
+                                                    <span class="text-muted fw-6">{{ \Carbon\Carbon::parse($materiel->date_debut)->translatedFormat('d M Y ') }} - {{ \Carbon\Carbon::parse($materiel->date_fin)->translatedFormat('d M Y ') }}</span>
+=======
+                                        @foreach ($ordinateurs as $ordinateur)
+                                            <a href="#" wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})" title="Voir la disonibilite" class="list-group-item list-group-item-action border-0 border-bottom ">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <b class="mb-1 text-black-50"> {{ $ordinateur->nom }}</b>
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
+                                                    <small class="text-body-secondary"></small>
+                                                </div>
+
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <p class="mb-1 text-capitalize"> </p>
+                                                    <small
+                                                        class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
+                                                    </small>
+                                                </div>
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <small class="text-body-secondary">
+<<<<<<< HEAD
+                                                         Le  {{ \Carbon\Carbon::parse($materiel->created_at)->translatedFormat('d M Y H:i') }}
+                                                    </small>
+=======
+                                                        <svg width="12" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                            stroke="currentColor" class="size-6 text-success">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                                        </svg>
+                                                        4 {{ $ordinateur->state }} {{ $ordinateur->os_version }}
+                                                    </small>
+                                                    <small class="text-body-secondary  ">
+{{-- 
+                                                        <button type="button"
+                                                            wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
+                                                            class="btn btn-sm border-0 btn-light"
+                                                            data-bs-toggle="modal" data-bs-target="#calendarModal">
+                                                            📅 Voir le disponibite
+                                                        </button> --}}
+
+                                                    </small>
+                                                </div>
+
+                                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
+                                            </a>
+                                        @endforeach
+
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="tab-pane fade border-0 d-none d-md-block d-lg-block" id="link2" role="tabpanel"
+                                aria-labelledby="link2-tab">
+                                <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
+
+                                    <div class="">
+                                        <label class="py-2 mt-3">Historique de vos reservation</label>
                                     </div>
 
 
@@ -1022,6 +1288,7 @@
                                                     <small class="text-body-secondary">
                                                          Le  {{ \Carbon\Carbon::parse($materiel->created_at)->translatedFormat('d M Y H:i') }}
                                                     </small>
+>>>>>>> 0c7c963511092519e16453d31ecc4d7cb5307eba
                                                     <small class=" {{ $materiel->statut == 0 ? 'text-danger' : 'text-body-secondary' }} justify-content-end  ">
                                                     {{ match($materiel->statut) {
                                                             0 => 'Demande d\'annulation en cours',

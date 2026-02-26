@@ -6368,7 +6368,7 @@
 
  <footer class=" parallax-footer  text-white py-4 mt-5">
     <div class="container text-center">
-        <p class="mb-1">&copy; 2025 MonSite. Tous droits réservés.</p>
+        <p class="mb-1">&copy; 2026@Leonce GPI-Pivot. Tous droits réservés.</p>
         <ul class="list-inline">
             <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">Accueil</a></li>
             <li class="list-inline-item"><a href="#" class="text-white text-decoration-none">À propos</a></li>

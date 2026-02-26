@@ -635,7 +635,7 @@
                             <td class="small">{{ $telephone->entite ?? '-' }}</td>
                             <td>
                                 @php
-                                    $liaisonActive = \App\Models\LiaisonEquipement::with(['utilisateur'])
+                                    $liaisonActive = \App\Models\liaison_equipement::with(['utilisateur'])
                                         ->where('telephone_id', $telephone->id)
                                         ->where('statut', 'actif')
                                         ->first();
