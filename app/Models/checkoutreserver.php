@@ -22,6 +22,9 @@ class checkoutreserver extends Model
       return $this->hasMany(Commentaire::class, 'reservation_id');
     }
     
+    public function peripherique(){
+      return $this->belongsTo( Peripherique::class, 'equipement_id');
+    }
 
     public function TelephoneTablette(){
          return $this->belongsTo(TelephoneTablette::class, 'equipement_id');

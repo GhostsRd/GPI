@@ -101,9 +101,17 @@
                                     @foreach ($checkouts as $checkout)
                                         @if ($checkout->materiel_type === 'ordinateur' && !$incidents->contains('equipement_id', $checkout->equipement_id))
                                             <option value="{{ $checkout->ordinateur->id }}">
-                                                {{ $checkout->ordinateur->nom }}
+                                              Ordinateur :  {{ $checkout->ordinateur->nom }}
                                             </option>
                                         @endif
+                                    @endforeach
+                                    @foreach ($EquipementLier as $equipement)
+                                            @if($equipement->ordinateur?->id && !$incidents->contains('equipement_id', $equipement->ordinateur->id))
+
+                                            <option value="{{ $equipement->ordinateur->id }}">
+                                              Ordinateur :  {{ $equipement->ordinateur->nom  }}
+                                            </option>
+                                            @endif
                                     @endforeach
                                     {{-- <option value="Imprimante">Imprimante</option>
                                         <option value="Routeur">Routeur</option>
@@ -128,18 +136,68 @@
                                     wire:model="equipement_id">
                                     <option value="">Sélectionner </option>
 
+                                    @foreach ($EquipementLier as $equipement)
+                                  
+                                        @if($equipement->telephone?->id && !$incidents->contains('equipement_id', $equipement->telephone->id))
+
+                                        <option value="{{ $equipement->telephone->id  }}">
+                                          telephone :  {{ $equipement->telephone->nom}}
+                                        </option>
+                                        @endif
+                                      
+                                    @endforeach
+
                                     @foreach ($checkouts as $checkout)
-                                        @if ($checkout->materiel_type == 'Telephone')
+                                        @if ($checkout->materiel_type == 'Telephone' && !$incidents->contains('equipement_id', $checkout->equipement_id))
                                             <option value="{{ $checkout->telephone->id }}">
                                                 {{ $checkout->telephone->nom }}
                                                 {{ $checkout->telephone->marque }}</option>
                                         @endif
                                     @endforeach
+
                                     {{-- <option value="Imprimante">Imprimante</option>
                                         <option value="Routeur">Routeur</option>
                                         <option value="Switch">Switch</option>
                                         <option value="Serveur">Serveur</option>
                                         <option value="autre">Autre</option> --}}
+                                </select>
+                            </div>
+                            @error('equipement_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @elseif($equipement_type == 'Peripherique')
+                            <div class="mb-3 ">
+                            <label for="equipement_id" class="form-label fw-bold text-muted">Sélectionner le peripherique
+                                <span class="text-danger">*</span></label>
+                            <div class="position-relative">
+                                <i
+                                    class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                <select id="equipement_id"
+                                    class="modern-textarea py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
+                                    wire:model="equipement_id">
+                                    <option value="">Sélectionner </option>
+
+                                    @foreach ($EquipementLier as $equipement)
+                                  
+                                        @if($equipement->peripherique?->id && !$incidents->contains('equipement_id', $equipement->peripherique->id))
+
+                                        <option value="{{ $equipement->peripherique->id  }}">
+                                          Peripherique :  {{ $equipement->peripherique->nom}}
+                                        </option>
+                                        @endif
+                                      
+                                    @endforeach
+
+                                    @foreach ($checkouts as $checkout)
+                                        @if ($checkout->materiel_type == 'Peripherique' && !$incidents->contains('equipement_id', $checkout->equipement_id))
+                                            <option value="{{ $checkout->peripherique->id }}">
+                                                {{ $checkout->peripherique->type }}
+                                                {{ $checkout->peripherique->nom }}</option>
+                                        @endif
+                                    @endforeach
+
+                        
                                 </select>
                             </div>
                             @error('equipement_id')
@@ -1498,7 +1556,7 @@
                                 </small>
                             </div>
                         </strong>
-                        <div class="list-group "
+                        <div class="list-group  mt-2 px-lg-4 px-md-4 px-2"
                             style="max-height:700px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
 
                     
@@ -1510,15 +1568,10 @@
                                         data-bs-target="#incidentDetailModal" {{-- data-aos-duration="400" data-aos-delay="{{ $loop->index * 200 }}" --}}
                                         class="list-group-item bg-light mb-1 materiel-item rounded-2 list-group-item-action border ">
                                         <div class="d-flex w-100 py-1 justify-content-between">
-                                            <b class="mb-1 text-black-50">{{ $incident->id }} -
+                                            <b class="mb-1 text-black-50">{{ $incident->incident_nature }} -
                                                 {{ $incident->incident_sujet }}
 
-                                                @if ($incident->equipement_type == 'Ordinateur')
-                                                    {{ $incident->ordinateur->nom }}
-                                                    {{ $incident->ordinateur->os_version }}
-                                                @elseif($incident->equipement_type == 'Telephone')
-                                                    {{ $incident->telephone->nom }} {{ $incident->telephone->marque }}
-                                                @endif
+                                               
                                             </b>
                                             <small
                                                 class="text-body-secondary">{{ \Carbon\Carbon::parse($incident->created_at)->translatedFormat('d M Y H:i') }}</small>
@@ -1526,6 +1579,15 @@
 
                                         <div class="d-flex w-100 py-1 justify-content-between">
                                             <p class="mb-1 text-capitalize mx-3">
+                                                 @if ($incident->equipement_type == 'Ordinateur')
+                                                     {{ $incident->equipement_type }}  {{ $incident->ordinateur->nom }}
+                                                    {{ $incident->ordinateur->os_version }}
+                                                @elseif($incident->equipement_type == 'Telephone')
+                                                    {{ $incident->equipement_type }}  {{ $incident->telephone->nom }} {{ $incident->telephone->marque }}
+                                                @elseif($incident->equipement_type == 'Peripherique')
+                                                      {{ $incident->equipement_type }}   {{ $incident->peripherique->type }} {{ $incident->peripherique->nom }} 
+                                                @endif
+                                                <br>
                                                 {{ $incident->incident_description }}
                                             </p>
                                             <small
@@ -1647,6 +1709,11 @@
                                 @if ($selectedIncidents?->equipement_type == 'Telephone')
                                     {{ $selectedIncidents?->telephone->nom }}
                                     {{ $selectedIncidents?->telephone->marque }}
+                                @endif
+
+                                @if ($selectedIncidents?->equipement_type == 'Peripherique')
+                                    {{ $selectedIncidents?->peripherique->nom }}
+                                    {{ $selectedIncidents?->peripherique->details }}
                                 @endif
 
 

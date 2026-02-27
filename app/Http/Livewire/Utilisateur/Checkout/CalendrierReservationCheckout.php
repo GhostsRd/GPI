@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Utilisateur\Checkout;
 
+use App\Models\Peripherique;
 use App\Models\TelephoneTablette;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
@@ -137,11 +138,16 @@ public function clearErrorsFn()
         $this->type_materiel = $type;
         $this->equipement_id = $id;
 
+     
+
         $this->equipement_type = $type;
         if ($type == "ordinateur") {
             $this->selectedEquipements = ordinateur::where('id', $id)->get();
         }
-
+        elseif($this->equipement_type == "peripherique"){
+             $this->selectedEquipements = Peripherique::where('id',$id)->get();
+        
+        }
         //$this->emitSelf('refrese');
         // Ensuite tu peux émettre l’événement JS pour ouvrir le modal
         $this->dispatchBrowserEvent('openModal');
@@ -273,6 +279,8 @@ public function clearErrorsFn()
             $firstEvent = ordinateur::where('id', $this->reserverId)->first();
         } elseif ($this->type_materiel == "telephone") {
             $firstEvent = TelephoneTablette::where('id', $this->reserverId)->first();
+        }elseif ($this->type_materiel == "peripherique") {
+            $firstEvent = Peripherique::where('id', $this->reserverId)->first();
         }
         // ajouter d'autres types si besoin
 

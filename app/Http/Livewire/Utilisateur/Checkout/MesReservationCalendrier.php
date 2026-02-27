@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Utilisateur\Checkout;
 
+use App\Models\Peripherique;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\checkoutreserver as reserverEquipement;
@@ -40,10 +41,14 @@ class MesReservationCalendrier extends Component
             
             
             $ordinateurs = ordinateur::where('nom', "like","%".$this->recherche."%")
-               ->where('statut','!=','Hors service')
+           ->where('statut','!=','En service')
             ->get();
             $telephones = TelephoneTablette::where('nom', "like","%".$this->recherche."%")
-            ->where('statut','!=','Hors service')
+            ->where('statut','!=','En service')
+            ->get();
+            $peripheriques = Peripherique::where('type', "like","%".$this->recherche."%")
+            ->where('statut','!=','En service')
+            
             ->get();
 
             $firstEvent = reserverEquipement::where('responsable_id', $this->userConnected)->first();
@@ -55,6 +60,7 @@ class MesReservationCalendrier extends Component
               'lastEvent' => $lastEvent,
               'ordinateurs' => $ordinateurs,
               'telephones'=> $telephones,
+              'peripheriques' => $peripheriques,
                'historiques' => reserverEquipement::where('responsable_id', $this->userConnected)
                 ->orderBy('created_at', 'desc')
                 ->get(),

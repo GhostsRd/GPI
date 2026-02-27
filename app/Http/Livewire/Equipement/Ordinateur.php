@@ -146,7 +146,7 @@ class Ordinateur extends Component
     //udpate status ordinateur from api
     public function updateOrdinateurAPI(Request $request){
         $ordinateur = OrdinateurModel::where('nom',$request->computer_name)->update(
-            ['statut' => $request->status,
+            ['statut' => "En service",
                         'reseau_ip' => $request->ip
                 ]
         );
@@ -154,7 +154,7 @@ class Ordinateur extends Component
         if(!$ordinateur){
             OrdinateurModel::create([
                 'nom' => $request->computer_name,
-                'statut' => $request->status,
+                'statut' => "En service",
                 'reseau_ip' => $request->ip
             ]);
             return response()->json(['message' => 'Ordinateur créé avec succès'], 201);

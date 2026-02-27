@@ -337,9 +337,17 @@
             <h5 class="mt-2 pb-4 border-bottom fw-bold">Reservation de materiel</h5>
             <div class="row">
                 <div class="col-lg-8 col-8">
-                    <label class="text-muted mt-1 mt-md-0 mt-lg-0 d-flex justify-content-between">M /
+                    <label class="text-muted mt-1 mt-md-0 mt-lg-0 d-flex justify-content-between">Materiel /
+                        
+                        @if($type_materiel == 'peripherique' )
+                            {{ $firsts?->type ?? 'Aucun equipement trouver' }}
+                            {{ $firsts?->nom ?? 'Aucun equipement trouver' }}
+
+                        @else
+
                         {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
                         {{ $firsts?->os_version }} {{ $firsts?->marque }} </label>
+                        @endif
 
                 </div>
                 <div class="col-lg-4 col-4">
@@ -367,8 +375,16 @@
 
                 @if ($lastEvent)
                     Type de materiel :<label
-                        class="text-muted text-center py-1 text-capitalize"><small>{{ $lastEvent->equipement_type }}
-                            {{ $lastEvent->equipement_type == 'ordinateur' ? $lastEvent->ordinateur->nom : $lastEvent->TelephoneTablette->nom }}</small></label>
+                        class="text-muted text-center py-1 text-capitalize"><small>
+                            
+                            {{ $lastEvent->equipement_type }}   
+
+                            @if($lastEvent->equipement_type == 'peripherique')
+                            {{ $lastEvent->peripherique->type  }}</small></label>
+
+                            @endif
+
+                            {{-- {{ $lastEvent->equipement_type == 'ordinateur' ? $lastEvent->ordinateur->nom : $lastEvent->TelephoneTablette->nom }}</small></label> --}}
                     <br>
                     Utilisateur :
                     <label class="text-muted">
@@ -400,7 +416,11 @@
                             {{ \Carbon\Carbon::parse($prochaine->date_debut)->translatedFormat('d M Y') }}
                         </small> -
                         <small>{{ $prochaine->equipement_type }}
-                            {{ $prochaine->equipement_type == 'ordinateur' ? $prochaine->ordinateur->nom : $prochaine->TelephoneTablette->nom }}</small>
+                            @if($prochaine->equipement_type == 'peripherique')
+                                {{ $prochaine->peripherique->type }} {{ $prochaine->peripherique->nom  }}
+                            @endif
+                        </small>
+                            {{-- {{ $prochaine->equipement_type == 'ordinateur' ? $prochaine->ordinateur->nom : $prochaine->TelephoneTablette->nom }}</small> --}}
 
                     </div>
 
@@ -440,7 +460,9 @@
                                         ? $event->ordinateur->os_version
                                         : ($event->equipement_type == 'telephone'
                                             ? $event->TelephoneTablette->nom . ' ' . $event->TelephoneTablette->marque
-                                            : 'aucun') }}
+                                            : ($event->equipement_type == 'peripherique'
+                                            ? $event->peripherique->type . ' ' . $event->peripherique->nom
+                                            : 'aucun') ) }}
                                 </small>
                             </p>
                             {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
@@ -488,6 +510,15 @@
                             / État /
                         </label>
                     @endif
+                    @if ($type_materiel == 'peripherique' && $selectedEquipements)
+                        <label class="fw-bold mx-2">
+                            @foreach ($selectedEquipements as $materiel)
+                              {{ $materiel->type }}  {{ $materiel->nom }} 
+                            @endforeach
+                            / État /
+                        </label>
+                    @endif
+
 
                     <br>
                     <p class="mt-1 p-1 text-muted fw-6">Les champs indiquer <span class="text-danger">*</span> sont
@@ -846,6 +877,24 @@
 
                             id: "{{ $event->id }}",
                             title: "{{ $event->TelephoneTablette->nom }}",
+                            start: "{{ \Carbon\Carbon::parse($event->date_debut)->toIso8601String() }}",
+                            end: "{{ \Carbon\Carbon::parse($event->date_fin)->toIso8601String() }}",
+                            url: "{{ $event->url ?? '#' }}",
+                            allDay: true,
+                            className: "{{ $event->responsable->id == $userConnected ? 'info' : 'success' }}"
+
+
+                        }
+                        @if (!$loop->last)
+                            ,
+                        @endif
+                    @endif
+                    @if ($event->equipement_type == 'peripherique')
+
+                        {
+
+                            id: "{{ $event->id }}",
+                            title: "{{ $event->peripherique->type }} {{ $event->peripherique->nom }}",
                             start: "{{ \Carbon\Carbon::parse($event->date_debut)->toIso8601String() }}",
                             end: "{{ \Carbon\Carbon::parse($event->date_fin)->toIso8601String() }}",
                             url: "{{ $event->url ?? '#' }}",
