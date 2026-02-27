@@ -168,13 +168,16 @@
 </div>
 
 <style>
-    /* Variables CSS modernes */
+    /* Variables CSS modernes avec #5BC4BF */
     :root {
-        --primary: #06b6d4;
-        --primary-light: #22d3ee;
-        --primary-dark: #0891b2;
-        --primary-50: #f0fdff;
-        --primary-100: #ccfbf1;
+        --primary: #5BC4BF !important;
+        --primary-light: #7FD9D4 !important;
+        --primary-dark: #4AA39E !important;
+        --primary-soft: rgba(91, 196, 191, 0.1) !important;
+        --primary-50: #E9F5F4 !important;
+        --primary-100: #D1EBE9 !important;
+        --gradient-primary: linear-gradient(135deg, #5BC4BF, #4AA39E) !important;
+        --gradient-primary-light: linear-gradient(135deg, #7FD9D4, #5BC4BF) !important;
         --success: #10b981;
         --warning: #f59e0b;
         --info: #3b82f6;
@@ -189,17 +192,17 @@
         --gray-600: #475569;
         --border: #e2e8f0;
         --card-bg: #ffffff;
-        --shadow: rgba(15, 23, 42, 0.08);
-        --shadow-lg: rgba(15, 23, 42, 0.15);
-        --gradient-primary: linear-gradient(135deg, var(--primary), #8b5cf6);
+        --shadow: rgba(91, 196, 191, 0.08);
+        --shadow-lg: rgba(91, 196, 191, 0.15);
     }
 
     [data-theme="dark"] {
-        --primary: #22d3ee;
-        --primary-light: #67e8f9;
-        --primary-dark: #06b6d4;
-        --primary-50: #0c4a6e;
-        --primary-100: #155e75;
+        --primary: #5BC4BF !important;
+        --primary-light: #7FD9D4 !important;
+        --primary-dark: #4AA39E !important;
+        --primary-50: #1A3A38 !important;
+        --primary-100: #1F4A47 !important;
+        --gradient-primary: linear-gradient(135deg, #5BC4BF, #4AA39E) !important;
         --success: #34d399;
         --warning: #fbbf24;
         --info: #60a5fa;
@@ -214,13 +217,13 @@
         --gray-600: #e2e8f0;
         --border: #334155;
         --card-bg: #1e293b;
-        --shadow: rgba(0, 0, 0, 0.25);
-        --shadow-lg: rgba(0, 0, 0, 0.4);
+        --shadow: rgba(91, 196, 191, 0.2);
+        --shadow-lg: rgba(91, 196, 191, 0.3);
     }
 
     /* Reset et base */
     .equipement-dashboard {
-        background: var(--gray-50);
+        background: linear-gradient(135deg, var(--gray-50), rgba(91, 196, 191, 0.05));
         min-height: 100vh;
         padding: 1.5rem;
         font-family: 'Nunito', 'Inter', sans-serif;
@@ -246,7 +249,6 @@
     .dashboard-title {
         font-size: 1.75rem;
         font-weight: 700;
-        color: var(--dark);
         margin-bottom: 0.5rem;
         background: var(--gradient-primary);
         -webkit-background-clip: text;
@@ -265,7 +267,7 @@
         padding: 0.75rem 1.25rem;
         border-radius: 12px;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
+        box-shadow: 0 4px 12px rgba(91, 196, 191, 0.3);
     }
 
     .total-number {
@@ -294,7 +296,7 @@
         border-radius: 10px;
         padding: 1.25rem;
         box-shadow: 0 1px 3px var(--shadow);
-        border: 1px solid var(--border);
+        border: 1px solid rgba(91, 196, 191, 0.15);
         transition: all 0.3s ease;
         display: flex;
         align-items: center;
@@ -303,7 +305,8 @@
 
     .stat-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px var(--shadow-lg);
+        box-shadow: 0 4px 12px rgba(91, 196, 191, 0.2);
+        border-color: var(--primary-light);
     }
 
     .stat-icon {
@@ -318,7 +321,7 @@
     }
 
     .stat-icon.primary {
-        background: var(--primary-50);
+        background: rgba(91, 196, 191, 0.15);
         color: var(--primary);
     }
 
@@ -344,7 +347,7 @@
     .stat-number {
         font-size: 1.5rem;
         font-weight: 700;
-        color: var(--dark);
+        color: var(--primary-dark);
         line-height: 1;
         margin-bottom: 0.25rem;
     }
@@ -373,19 +376,20 @@
         background: var(--card-bg);
         border-radius: 12px;
         box-shadow: 0 1px 3px var(--shadow);
-        border: 1px solid var(--border);
+        border: 1px solid rgba(91, 196, 191, 0.15);
         overflow: hidden;
     }
 
     .chart-header {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid rgba(91, 196, 191, 0.15);
+        background: linear-gradient(135deg, rgba(91, 196, 191, 0.02), transparent);
     }
 
     .chart-title {
         font-size: 1rem;
         font-weight: 600;
-        color: var(--dark);
+        color: var(--primary-dark);
         margin: 0;
     }
 
@@ -399,24 +403,25 @@
         background: var(--card-bg);
         border-radius: 12px;
         box-shadow: 0 1px 3px var(--shadow);
-        border: 1px solid var(--border);
+        border: 1px solid rgba(91, 196, 191, 0.15);
         overflow: hidden;
     }
 
     .table-header {
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid rgba(91, 196, 191, 0.15);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
         gap: 1rem;
+        background: linear-gradient(135deg, rgba(91, 196, 191, 0.02), transparent);
     }
 
     .table-title {
         font-size: 1rem;
         font-weight: 600;
-        color: var(--dark);
+        color: var(--primary-dark);
         margin: 0;
     }
 
@@ -434,7 +439,7 @@
     .search-input {
         width: 100%;
         padding: 0.5rem 2.5rem 0.5rem 1rem;
-        border: 1px solid var(--border);
+        border: 1px solid rgba(91, 196, 191, 0.2);
         border-radius: 8px;
         font-size: 0.8rem;
         background: var(--gray-50);
@@ -445,7 +450,7 @@
     .search-input:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+        box-shadow: 0 0 0 2px rgba(91, 196, 191, 0.15);
     }
 
     .search-icon {
@@ -453,7 +458,7 @@
         right: 1rem;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--gray-400);
+        color: var(--primary);
     }
 
     .btn-export {
@@ -473,7 +478,7 @@
 
     .btn-export:hover {
         transform: translateY(-1px);
-        box-shadow: 0 3px 10px rgba(6, 182, 212, 0.3);
+        box-shadow: 0 3px 10px rgba(91, 196, 191, 0.4);
     }
 
     .table-container {
@@ -500,13 +505,23 @@
         letter-spacing: 0.5px;
     }
 
-    .data-table tbody tr {
-        border-bottom: 1px solid var(--border);
+    .data-table th.sortable {
+        cursor: pointer;
         transition: background-color 0.2s ease;
     }
 
+    .data-table th.sortable:hover {
+        background: var(--primary-dark);
+    }
+
+    .data-table tbody tr {
+        border-bottom: 1px solid rgba(91, 196, 191, 0.15);
+        transition: all 0.2s ease;
+    }
+
     .data-table tbody tr:hover {
-        background: var(--gray-50);
+        background: rgba(91, 196, 191, 0.03);
+        transform: translateX(2px);
     }
 
     .data-table td {
@@ -525,12 +540,32 @@
         font-weight: 600;
         font-size: 0.75rem;
         width: fit-content;
+        border: 1px solid transparent;
     }
 
-    .category-badge.blue { background: var(--primary-50); color: var(--primary-dark); }
-    .category-badge.green { background: rgba(16, 185, 129, 0.1); color: #065f46; }
-    .category-badge.yellow { background: rgba(245, 158, 11, 0.1); color: #92400e; }
-    .category-badge.purple { background: rgba(139, 92, 246, 0.1); color: #5b21b6; }
+    .category-badge.blue { 
+        background: rgba(91, 196, 191, 0.15); 
+        color: var(--primary-dark);
+        border-color: rgba(91, 196, 191, 0.3);
+    }
+    
+    .category-badge.green { 
+        background: rgba(16, 185, 129, 0.15); 
+        color: #065f46;
+        border-color: rgba(16, 185, 129, 0.3);
+    }
+    
+    .category-badge.yellow { 
+        background: rgba(245, 158, 11, 0.15); 
+        color: #92400e;
+        border-color: rgba(245, 158, 11, 0.3);
+    }
+    
+    .category-badge.purple { 
+        background: rgba(139, 92, 246, 0.15); 
+        color: #5b21b6;
+        border-color: rgba(139, 92, 246, 0.3);
+    }
 
     .category-icon {
         font-size: 0.9rem;
@@ -546,18 +581,19 @@
         display: inline-block;
         text-align: center;
         min-width: 60px;
+        border: 1px solid transparent;
     }
 
     .status-badge.active {
-        background: rgba(16, 185, 129, 0.1);
+        background: rgba(16, 185, 129, 0.15);
         color: #065f46;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-color: rgba(16, 185, 129, 0.3);
     }
 
     .status-badge.inactive {
-        background: rgba(100, 116, 139, 0.1);
+        background: rgba(100, 116, 139, 0.15);
         color: #475569;
-        border: 1px solid rgba(100, 116, 139, 0.3);
+        border-color: rgba(100, 116, 139, 0.3);
     }
 
     /* Actions */
@@ -577,19 +613,14 @@
         cursor: pointer;
         transition: all 0.2s ease;
         text-decoration: none;
-    }
-
-    .btn-action:hover {
-        transform: scale(1.05);
-    }
-
-    .btn-action.view {
-        background: rgba(6, 182, 212, 0.1);
+        background: rgba(91, 196, 191, 0.1);
         color: var(--primary);
     }
 
-    .btn-action.view:hover {
-        background: rgba(6, 182, 212, 0.2);
+    .btn-action:hover {
+        transform: scale(1.1);
+        background: var(--primary);
+        color: white;
     }
 
     .action-icon {
@@ -610,14 +641,14 @@
     .loader-spinner {
         width: 48px;
         height: 48px;
-        border: 3px solid var(--gray-200);
+        border: 3px solid rgba(91, 196, 191, 0.2);
         border-top: 3px solid var(--primary);
         border-radius: 50%;
         animation: spin 1s linear infinite;
     }
 
     .loading-text {
-        color: var(--gray-600);
+        color: var(--primary-dark);
         font-size: 1rem;
         font-weight: 600;
     }
@@ -681,6 +712,12 @@
             height: 200px;
         }
     }
+
+    /* Personnalisation Chart.js */
+    canvas {
+        max-height: 250px;
+        width: 100% !important;
+    }
 </style>
 
 <script>
@@ -697,8 +734,8 @@ document.addEventListener('livewire:load', function () {
                 datasets: [{
                     label: 'Nombre d\'équipements',
                     data: chartData.data,
-                    backgroundColor: chartData.colors,
-                    borderColor: chartData.colors.map(color => color),
+                    backgroundColor: chartData.colors || ['#5BC4BF', '#4AA39E', '#7FD9D4', '#2A8C87', '#3B7A76'],
+                    borderColor: chartData.colors || ['#5BC4BF', '#4AA39E', '#7FD9D4', '#2A8C87', '#3B7A76'],
                     borderWidth: 1,
                     borderRadius: 4,
                 }]
@@ -715,7 +752,7 @@ document.addEventListener('livewire:load', function () {
                     y: {
                         beginAtZero: true,
                         grid: {
-                            color: 'rgba(0, 0, 0, 0.1)'
+                            color: 'rgba(91, 196, 191, 0.1)'
                         }
                     },
                     x: {
@@ -737,7 +774,7 @@ document.addEventListener('livewire:load', function () {
                 labels: chartData.labels,
                 datasets: [{
                     data: chartData.data,
-                    backgroundColor: chartData.colors,
+                    backgroundColor: chartData.colors || ['#5BC4BF', '#4AA39E', '#7FD9D4', '#2A8C87', '#3B7A76'],
                     borderWidth: 2,
                     borderColor: '#ffffff',
                 }]
@@ -752,6 +789,7 @@ document.addEventListener('livewire:load', function () {
                         labels: {
                             padding: 15,
                             usePointStyle: true,
+                            color: '#4AA39E'
                         }
                     }
                 }

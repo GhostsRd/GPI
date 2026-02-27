@@ -351,12 +351,15 @@ class Logiciel extends Component
     {
         $this->stats = [
             'total' => LogicielModel::count(),
-            'licences_critiques' => LogicielModel::where('statut_licences', 'Critique')->count(),
+            'licences_critiques' => LogicielModel::where('nombre_installations', '>', DB::raw('nombre_licences'))
+                                    ->where('nombre_licences', '>', 0)
+                                    ->count(),
             'total_installations' => LogicielModel::sum('nombre_installations'),
             'total_licences' => LogicielModel::sum('nombre_licences'),
             'sans_licences' => LogicielModel::where('nombre_licences', 0)->count(),
             'taux_conformite' => LogicielModel::count() > 0 ? 
-                round((LogicielModel::where('statut_licences', 'Conforme')->count() / LogicielModel::count()) * 100) : 0
+                round((LogicielModel::where('nombre_installations', '<=', DB::raw('nombre_licences * 0.8')))
+                ->count() / LogicielModel::count() * 100) : 0
         ];
     }
 

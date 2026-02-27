@@ -31,8 +31,7 @@ class Logiciel extends Model
     // Scope pour les licences critiques
     public function scopeLicencesCritiques($query)
     {
-        return $query->where('statut_licences', 'Critique')
-                    ->orWhere(function($q) {
+        return $query->where(function($q) {
                         $q->where('nombre_installations', '>', DB::raw('nombre_licences'))
                          ->where('nombre_licences', '>', 0);
                     });

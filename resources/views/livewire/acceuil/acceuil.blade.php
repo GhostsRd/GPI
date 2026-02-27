@@ -2,490 +2,319 @@
     <!-- Assets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        .fullscreen-table {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
+        :root {
+            --primary: #5BC4BF;
+            --primary-light: #7ED6D3;
+            --primary-dark: #3A9692;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
         }
 
-        .fullscreen-table.active {
-            display: flex;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
         }
 
-        .fullscreen-table .card {
-            width: 95vw;
-            height: 90vh;
-            max-width: 1800px;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            display: flex;
-            flex-direction: column;
-            animation: zoomIn 0.3s ease;
+        [data-bs-theme="dark"] {
+            --gray-50: #111827;
+            --gray-100: #1f2937;
+            --gray-200: #374151;
+            --gray-300: #4b5563;
+            --gray-400: #6b7280;
+            --gray-500: #9ca3af;
+            --gray-600: #d1d5db;
+            --gray-700: #e5e7eb;
+            --gray-800: #f3f4f6;
+            --gray-900: #f9fafb;
         }
 
-        .fullscreen-table .card-body {
-            flex: 1;
-            overflow: auto;
-            padding: 0;
-        }
-
-        .fullscreen-table .table {
-            margin-bottom: 0;
-        }
-
-        .fullscreen-table .table thead th {
-            position: sticky;
-            top: 0;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            z-index: 10;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .fullscreen-table .table tbody tr {
-            cursor: pointer;
-        }
-
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
+        /* Cards simplifiés */
         .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            -webkit-backdrop-filter: blur(var(--blur-amount));
-            border: 1px solid var(--border-light);
-            border-radius: 28px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
+        }
+
+        [data-bs-theme="dark"] .card {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
         }
 
         .card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
             border-color: var(--primary-light);
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        [data-bs-theme="dark"] .card:hover {
-            background: rgba(30, 41, 59, 0.95);
         }
 
         .card-header {
             background: transparent;
-            border-bottom: 1px solid var(--border-light);
-            padding: 1.5rem 1.75rem;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.25rem 1.5rem;
+        }
+
+        [data-bs-theme="dark"] .card-header {
+            border-bottom-color: var(--gray-700);
         }
 
         .card-body {
-            padding: 1.75rem;
+            padding: 1.5rem;
         }
 
+        /* Stats cards simplifiés */
         .stat-card {
-            padding: 1.75rem;
-            position: relative;
-            overflow: hidden;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            -webkit-backdrop-filter: blur(var(--blur-amount));
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(79, 187, 178, 0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
         }
 
-        .stat-card:hover::before {
-            opacity: 1;
+        .stat-info p {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            margin-bottom: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
         }
 
         .stat-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 18px;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            font-size: 1.25rem;
+            color: white;
+            background: var(--primary);
         }
 
-        .stat-card:hover .stat-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .stat-icon.primary { background: var(--gradient-teal); color: white; }
-        .stat-icon.success { background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9)); color: white; }
-        .stat-icon.danger { background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.9)); color: white; }
-        .stat-icon.warning { background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9)); color: white; }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 0.25rem;
-            color: var(--dark);
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-        }
-
-        .badge {
-            padding: 0.5rem 1rem;
-            font-weight: 600;
+        .stat-trend {
             font-size: 0.75rem;
-            border-radius: 30px;
-            border: 1px solid var(--border-light);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            margin-top: 0.5rem;
+            color: var(--gray-500);
         }
 
-        .badge.bg-primary { background: rgba(79, 187, 178, 0.15) !important; color: var(--primary); border-color: rgba(79, 187, 178, 0.3); }
-        .badge.bg-success { background: rgba(16, 185, 129, 0.15) !important; color: var(--success); border-color: rgba(16, 185, 129, 0.3); }
-        .badge.bg-danger { background: rgba(239, 68, 68, 0.15) !important; color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
-        .badge.bg-warning { background: rgba(245, 158, 11, 0.15) !important; color: var(--warning); border-color: rgba(245, 158, 11, 0.3); }
+        .stat-trend i {
+            margin-right: 0.25rem;
+        }
 
+        .stat-trend .up { color: #10b981; }
+        .stat-trend .down { color: #ef4444; }
+
+        /* Badges simplifiés */
+        .badge {
+            padding: 0.375rem 0.75rem;
+            font-weight: 500;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+        }
+
+        [data-bs-theme="dark"] .badge {
+            background: var(--gray-700);
+            color: var(--gray-200);
+            border-color: var(--gray-600);
+        }
+
+        .badge-primary {
+            background: rgba(91, 196, 191, 0.1);
+            color: var(--primary);
+            border-color: rgba(91, 196, 191, 0.2);
+        }
+
+        /* Boutons simplifiés */
         .btn-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            border: 1px solid var(--border-light);
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            -webkit-backdrop-filter: blur(var(--blur-amount));
-            color: var(--dark);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            background: white;
+            color: var(--gray-600);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
             cursor: pointer;
+        }
+
+        [data-bs-theme="dark"] .btn-icon {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+            color: var(--gray-400);
         }
 
         .btn-icon:hover {
             border-color: var(--primary);
-            color: white;
-            background: var(--primary);
-            transform: rotate(180deg);
+            color: var(--primary);
+            transform: scale(1.05);
         }
 
         .btn-refresh {
-            padding: 0.6rem 1.5rem;
-            border-radius: 14px;
-            border: 1px solid var(--border-light);
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--blur-amount));
-            -webkit-backdrop-filter: blur(var(--blur-amount));
-            color: var(--dark);
-            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            background: white;
+            color: var(--gray-700);
+            font-weight: 500;
             font-size: 0.875rem;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
             cursor: pointer;
+        }
+
+        [data-bs-theme="dark"] .btn-refresh {
+            background: var(--gray-800);
+            border-color: var(--gray-700);
+            color: var(--gray-300);
         }
 
         .btn-refresh:hover {
             background: var(--primary);
-            color: white;
             border-color: var(--primary);
-            transform: scale(1.05);
+            color: white;
         }
 
         .btn-refresh i {
-            transition: transform 0.5s ease;
-        }
-
-        .btn-refresh:hover i {
-            transform: rotate(360deg);
-        }
-
-        .btn-view-all {
-            padding: 0.6rem 1.5rem;
-            border-radius: 14px;
-            border: 1px solid var(--border-light);
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-view-all:hover {
-            background: var(--primary-dark);
-            transform: scale(1.05);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-view-all i {
             transition: transform 0.3s ease;
         }
 
-        .btn-view-all:hover i {
-            transform: translateX(5px);
+        .btn-refresh:hover i {
+            transform: rotate(180deg);
         }
 
-        .btn-close-fullscreen {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 20;
-            background: var(--danger);
-            color: white;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-light);
-            backdrop-filter: blur(var(--blur-amount));
-        }
-
-        .btn-close-fullscreen:hover {
-            transform: rotate(90deg) scale(1.1);
-            background: #dc2626;
-        }
-
+        /* Table simplifiée */
         .table {
             margin-bottom: 0;
         }
 
         .table thead th {
-            background: rgba(6, 182, 212, 0.03);
-            color: var(--gray);
-            font-weight: 700;
+            background: transparent;
+            color: var(--gray-500);
+            font-weight: 600;
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 1.25rem 1.5rem;
-            border-bottom: none;
+            letter-spacing: 0.025em;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        .table tbody tr {
-            border-left: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .table tbody tr:hover {
-            background: rgba(6, 182, 212, 0.03);
-            border-left-color: var(--primary);
-            transform: scale(1.01);
-            box-shadow: var(--shadow-sm);
+        [data-bs-theme="dark"] .table thead th {
+            border-bottom-color: var(--gray-700);
+            color: var(--gray-400);
         }
 
         .table td {
-            padding: 1.25rem 1.5rem;
-            color: var(--dark);
-            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 1.5rem;
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-100);
             vertical-align: middle;
         }
 
+        [data-bs-theme="dark"] .table td {
+            border-bottom-color: var(--gray-800);
+            color: var(--gray-300);
+        }
+
+        .table tbody tr:hover td {
+            background: var(--gray-50);
+        }
+
+        [data-bs-theme="dark"] .table tbody tr:hover td {
+            background: var(--gray-800);
+        }
+
+        /* Progress bar simplifiée */
         .progress {
-            height: 8px;
-            border-radius: 4px;
-            background: rgba(0, 0, 0, 0.05);
+            height: 6px;
+            border-radius: 3px;
+            background: var(--gray-100);
             overflow: hidden;
+        }
+
+        [data-bs-theme="dark"] .progress {
+            background: var(--gray-700);
         }
 
         .progress-bar {
-            background: var(--gradient-teal);
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
+            background: var(--primary);
+            border-radius: 3px;
         }
 
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 1.5s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
+        /* Titres simplifiés */
         .page-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--dark);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gray-900);
             margin-bottom: 0.25rem;
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            letter-spacing: -0.025em;
         }
 
         .page-subtitle {
-            color: var(--gray);
-            font-size: 1rem;
-            font-weight: 500;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            font-weight: 400;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+        /* Animations fluides */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        /* Chart container simplifié */
+        .chart-container {
+            width: 100%;
+            height: 250px;
+            margin-top: 0.5rem;
         }
 
-        .fade-in {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @media (max-width: 768px) {
-            .card-header, .card-body {
-                padding: 1.25rem;
-            }
-            .stat-value {
-                font-size: 2rem;
-            }
-            .page-title {
-                font-size: 1.75rem;
-            }
+        .small-chart {
+            height: 40px;
+            width: 100%;
         }
     </style>
 
-    <!-- Fullscreen Table Modal -->
-    <div class="fullscreen-table" id="fullscreenTable">
-        <div class="card">
-            <button class="btn-close-fullscreen" id="closeFullscreen">
-                <i class="fas fa-times"></i>
-            </button>
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <div>
-                    <h4 class="mb-1 fw-700">Toutes les activités</h4>
-                    <p class="text-muted small mb-0">Liste complète des événements</p>
-                </div>
-                <span class="badge bg-primary">{{ count($this->UnifiedActivities ?? []) }} événements</span>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive h-100">
-                    <table class="table table-hover align-middle">
-                        <thead>
-                            <tr>
-                                <th class="ps-4">Type</th>
-                                <th>Description</th>
-                                <th>Utilisateur</th>
-                                <th>Statut</th>
-                                <th class="text-end pe-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($this->UnifiedActivities as $activity)
-                            @php
-                                $activityColor = isset($activity['color']) ? $activity['color'] : 'info';
-                                $color = match($activityColor) {
-                                    'orange', 'warning' => 'warning',
-                                    'info' => 'primary',
-                                    'danger' => 'danger',
-                                    'success' => 'success',
-                                    default => 'primary'
-                                };
-                            @endphp
-                            <tr>
-                                <td class="ps-4">
-                                    <span class="badge bg-{{ $color }}">
-                                        <i class="{{ $activity['icon'] ?? 'fas fa-circle' }} me-2"></i> 
-                                        {{ $activity['type'] ?? 'N/A' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="fw-600">{{ $activity['title'] ?? '' }}</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="rounded-circle bg-{{ $color }} bg-opacity-10 p-2 me-2">
-                                            <i class="fas fa-user-circle text-{{ $color }}"></i>
-                                        </div>
-                                        <span class="text-muted">{{ $activity['user'] ?? '' }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-{{ $color }} bg-opacity-10 text-{{ $color }}">
-                                        {{ $activity['status'] ?? '' }}
-                                    </span>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <button class="btn-icon btn-sm">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5" class="text-center py-5">
-                                    <div class="py-4">
-                                        <i class="fas fa-inbox fa-3x mb-3" style="color: var(--gray);"></i>
-                                        <h6 class="fw-600 mb-2">Aucune activité récente</h6>
-                                        <p class="text-muted small mb-0">Les nouvelles activités apparaîtront ici</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-5 fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4 fade-in">
         <div>
             <h1 class="page-title">Tableau de bord</h1>
-            <p class="page-subtitle">
-                <i class="fas fa-circle me-2" style="color: #10b981; font-size: 0.5rem;"></i>
-                Infrastructure et monitoring en temps réel
-            </p>
+            <p class="page-subtitle">Vue d'ensemble de l'activité</p>
         </div>
-        <div class="d-flex gap-3">
+        <div class="d-flex gap-2">
             <button class="btn-icon" id="themeToggle">
                 <i class="fas fa-moon"></i>
             </button>
@@ -495,62 +324,59 @@
         </div>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="row g-4 mb-5">
+    <!-- Stats Cards - Design simplifié -->
+    <div class="row g-3 mb-4">
         <!-- Incident -->
         <div class="col-md-6 col-xl-3 fade-in" style="animation-delay: 0.1s">
             <div class="card stat-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <p class="stat-label mb-1">Incidents</p>
-                        <h2 class="stat-value">{{ $totalIncidents ?? 0 }}</h2>
-                        <span class="badge bg-danger mt-3">
-                            <i class="fas fa-arrow-up me-1"></i>+12% cette semaine
-                        </span>
-                    </div>
-                    <div class="stat-icon danger float-animation">
-                        <i class="fas fa-exclamation-triangle"></i>
+                <div class="stat-info">
+                    <p>Incidents</p>
+                    <h3>{{ $totalIncidents ?? 0 }}</h3>
+                    <div class="stat-trend">
+                        <i class="fas fa-arrow-up up"></i>
+                        <span>+12% cette semaine</span>
                     </div>
                 </div>
-                <div id="spark1" wire:ignore class="mt-4"></div>
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div id="spark1" class="small-chart mt-3" wire:ignore></div>
             </div>
         </div>
 
         <!-- Tickets -->
         <div class="col-md-6 col-xl-3 fade-in" style="animation-delay: 0.15s">
             <div class="card stat-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <p class="stat-label mb-1">Tickets ouverts</p>
-                        <h2 class="stat-value">{{ $stats['total_tickets'] ?? 0 }}</h2>
-                        <span class="badge bg-primary mt-3">
-                            <i class="fas fa-clock me-1"></i>24 en attente
-                        </span>
-                    </div>
-                    <div class="stat-icon primary float-animation">
-                        <i class="fas fa-ticket-alt"></i>
+                <div class="stat-info">
+                    <p>Tickets ouverts</p>
+                    <h3>{{ $stats['total_tickets'] ?? 0 }}</h3>
+                    <div class="stat-trend">
+                        <i class="fas fa-clock me-1"></i>
+                        <span>24 en attente</span>
                     </div>
                 </div>
-                <div id="spark2" wire:ignore class="mt-4"></div>
+                <div class="stat-icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div id="spark2" class="small-chart mt-3" wire:ignore></div>
             </div>
         </div>
 
         <!-- Sorties -->
         <div class="col-md-6 col-xl-3 fade-in" style="animation-delay: 0.2s">
             <div class="card stat-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <p class="stat-label mb-1">Sorties en cours</p>
-                        <h2 class="stat-value">{{ $stats['total_checkouts'] ?? 0 }}</h2>
-                        <span class="badge bg-success mt-3">
-                            <i class="fas fa-rotate-left me-1"></i>8 à retourner
-                        </span>
-                    </div>
-                    <div class="stat-icon success float-animation">
-                        <i class="fas fa-exchange-alt"></i>
+                <div class="stat-info">
+                    <p>Sorties en cours</p>
+                    <h3>{{ $stats['total_checkouts'] ?? 0 }}</h3>
+                    <div class="stat-trend">
+                        <i class="fas fa-rotate-left me-1"></i>
+                        <span>8 à retourner</span>
                     </div>
                 </div>
-                <div id="spark3" wire:ignore class="mt-4"></div>
+                <div class="stat-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div id="spark3" class="small-chart mt-3" wire:ignore></div>
             </div>
         </div>
 
@@ -562,109 +388,85 @@
                 $rate = $sum > 0 ? round(($res / $sum) * 100) : 0;
             @endphp
             <div class="card stat-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <p class="stat-label mb-1">Taux de résolution</p>
-                        <h2 class="stat-value">{{ $rate }}%</h2>
-                        <div class="progress mt-3" style="width: 90%;">
-                            <div class="progress-bar" style="width: {{ $rate }}%"></div>
-                        </div>
-                    </div>
-                    <div class="stat-icon warning float-animation">
-                        <i class="fas fa-chart-line"></i>
+                <div class="stat-info">
+                    <p>Taux de résolution</p>
+                    <h3>{{ $rate }}%</h3>
+                    <div class="progress mt-2" style="width: 90%;">
+                        <div class="progress-bar" style="width: {{ $rate }}%"></div>
                     </div>
                 </div>
-                <div id="spark4" wire:ignore class="mt-4"></div>
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div id="spark4" class="small-chart mt-3" wire:ignore></div>
             </div>
         </div>
     </div>
 
-    <!-- Charts Row 1 -->
-    <div class="row g-4 mb-5">
+    <!-- Charts Row 1 - Design simplifié -->
+    <div class="row g-3 mb-4">
         <div class="col-lg-6 fade-in" style="animation-delay: 0.3s">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-1 fw-700">Évolution des tickets</h6>
-                        <p class="text-muted small mb-0">Activité des 30 derniers jours</p>
-                    </div>
-                    <span class="badge bg-primary">
-                        <i class="fas fa-chart-line me-1"></i>+23%
-                    </span>
+                    <h6 class="mb-0 fw-600">Évolution des tickets</h6>
+                    <span class="badge badge-primary">+23%</span>
                 </div>
-                <div class="card-body" wire:ignore>
-                    <div id="chartTickets"></div>
+                <div class="card-body">
+                    <div id="chartTickets" class="chart-container" wire:ignore></div>
                 </div>
             </div>
         </div>
         <div class="col-lg-6 fade-in" style="animation-delay: 0.35s">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-1 fw-700">Activité des sorties</h6>
-                        <p class="text-muted small mb-0">Mouvements d'équipements</p>
-                    </div>
-                    <span class="badge bg-success">
-                        <i class="fas fa-arrow-up me-1"></i>+15%
-                    </span>
+                    <h6 class="mb-0 fw-600">Activité des sorties</h6>
+                    <span class="badge badge-primary">+15%</span>
                 </div>
-                <div class="card-body" wire:ignore>
-                    <div id="chartCheckouts"></div>
+                <div class="card-body">
+                    <div id="chartCheckouts" class="chart-container" wire:ignore></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Charts Row 2 -->
-    <div class="row g-4 mb-5">
+    <!-- Charts Row 2 - Design simplifié -->
+    <div class="row g-3 mb-4">
         <div class="col-lg-6 fade-in" style="animation-delay: 0.4s">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-1 fw-700">Équipements par type</h6>
-                        <p class="text-muted small mb-0">Répartition du stock</p>
-                    </div>
-                    <span class="badge bg-primary">Total: 156</span>
+                    <h6 class="mb-0 fw-600">Équipements par type</h6>
+                    <span class="badge badge-primary">Total: 156</span>
                 </div>
-                <div class="card-body" wire:ignore>
-                    <div id="chartEquipments"></div>
+                <div class="card-body">
+                    <div id="chartEquipments" class="chart-container" wire:ignore></div>
                 </div>
             </div>
         </div>
         <div class="col-lg-6 fade-in" style="animation-delay: 0.45s">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-1 fw-700">Logiciels par catégorie</h6>
-                        <p class="text-muted small mb-0">Distribution des licences</p>
-                    </div>
-                    <span class="badge bg-warning">
-                        <i class="fas fa-key me-1"></i>234 licences
-                    </span>
+                    <h6 class="mb-0 fw-600">Logiciels par catégorie</h6>
+                    <span class="badge badge-primary">234 licences</span>
                 </div>
-                <div class="card-body" wire:ignore>
-                    <div id="chartSoftware"></div>
+                <div class="card-body">
+                    <div id="chartSoftware" class="chart-container" wire:ignore></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Table des activités avec bouton Voir tous -->
+    <!-- Table des activités - Design simplifié -->
     <div class="card fade-in" style="animation-delay: 0.5s">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <div>
-                <h6 class="mb-1 fw-700">Activités récentes</h6>
-                <p class="text-muted small mb-0">Derniers événements enregistrés</p>
-            </div>
+            <h6 class="mb-0 fw-600">Activités récentes</h6>
             <div class="d-flex gap-3 align-items-center">
-                <span class="badge bg-primary">{{ count($this->UnifiedActivities ?? []) }} événements</span>
-                <a href="{{ route('admin.activites') }}" target="_blank" class="btn-view-all text-decoration-none" id="viewAllBtn">
+                <span class="badge">{{ count($this->UnifiedActivities ?? []) }} événements</span>
+                <a href="{{ route('admin.activites') }}" class="btn-refresh text-decoration-none">
                     <i class="fas fa-eye me-2"></i>Voir tous
-                    <i class="fas fa-arrow-right ms-2"></i>
                 </a>
             </div>
         </div>
-        <div class="table-responsive" style="max-height: 400px;">
+        <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
@@ -672,7 +474,7 @@
                         <th>Description</th>
                         <th>Utilisateur</th>
                         <th>Statut</th>
-                        <th class="text-end pe-4">Actions</th>
+                        <th class="text-end pe-4"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -689,24 +491,22 @@
                     @endphp
                     <tr>
                         <td class="ps-4">
-                            <span class="badge bg-{{ $color }}">
+                            <span class="badge badge-{{ $color }}">
                                 <i class="{{ $activity['icon'] ?? 'fas fa-circle' }} me-2"></i> 
                                 {{ $activity['type'] ?? 'N/A' }}
                             </span>
                         </td>
                         <td>
-                            <span class="fw-600">{{ $activity['title'] ?? '' }}</span>
+                            <span class="fw-500">{{ $activity['title'] ?? '' }}</span>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <div class="rounded-circle bg-{{ $color }} bg-opacity-10 p-2 me-2">
-                                    <i class="fas fa-user-circle text-{{ $color }}"></i>
-                                </div>
-                                <span class="text-muted">{{ $activity['user'] ?? '' }}</span>
+                                <i class="fas fa-user-circle me-2" style="color: var(--gray-400);"></i>
+                                <span>{{ $activity['user'] ?? '' }}</span>
                             </div>
                         </td>
                         <td>
-                            <span class="badge bg-{{ $color }} bg-opacity-10 text-{{ $color }}">
+                            <span class="badge badge-{{ $color }}">
                                 {{ $activity['status'] ?? '' }}
                             </span>
                         </td>
@@ -719,11 +519,8 @@
                     @empty
                     <tr>
                         <td colspan="5" class="text-center py-5">
-                            <div class="py-4">
-                                <i class="fas fa-inbox fa-3x mb-3" style="color: var(--gray);"></i>
-                                <h6 class="fw-600 mb-2">Aucune activité récente</h6>
-                                <p class="text-muted small mb-0">Les nouvelles activités apparaîtront ici</p>
-                            </div>
+                            <i class="fas fa-inbox fa-2x mb-2" style="color: var(--gray-300);"></i>
+                            <p class="text-muted mb-0">Aucune activité récente</p>
                         </td>
                     </tr>
                     @endforelse
@@ -739,50 +536,15 @@
     <script>
         let charts = {};
 
-        // Fullscreen table functionality
-        const fullscreenTable = document.getElementById('fullscreenTable');
-        const viewAllBtn = document.getElementById('viewAllBtn');
-        const closeFullscreen = document.getElementById('closeFullscreen');
-
-        if (viewAllBtn) {
-            viewAllBtn.addEventListener('click', () => {
-                fullscreenTable.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        }
-
-        if (closeFullscreen) {
-            closeFullscreen.addEventListener('click', () => {
-                fullscreenTable.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        }
-
-        // Close on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && fullscreenTable.classList.contains('active')) {
-                fullscreenTable.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // Close on click outside
-        fullscreenTable.addEventListener('click', (e) => {
-            if (e.target === fullscreenTable) {
-                fullscreenTable.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
         function initCharts() {
             try {
                 const dataTickets = @json($monthlyTicketsData ?? []);
                 const dataCheckouts = @json($monthlyCheckoutsData ?? []);
                 const dataEquip = @json($equipmentTypeData ?? []);
                 const dataSoft = @json($softwareCategoryData ?? []);
-                
-              incidentData = <?php echo json_encode(array_values($incidentTrendData['data'] ?? [0, 0, 0])); ?>;
+                const incidentData = @json(array_values($incidentTrendData['data'] ?? [0, 0, 0]));
 
+                // Détruire les anciens graphiques
                 for (let key in charts) {
                     if (charts[key] && typeof charts[key].destroy === 'function') {
                         try { charts[key].destroy(); } catch(e) {}
@@ -790,165 +552,137 @@
                 }
                 charts = {};
 
-                const createSpark = (id, data, color) => {
+                // Configuration commune pour les graphiques
+                const baseOptions = {
+                    chart: {
+                        toolbar: { show: false },
+                        animations: {
+                            enabled: true,
+                            easing: 'easeinout',
+                            speed: 800,
+                            animateGradually: { enabled: true, delay: 150 },
+                            dynamicAnimation: { enabled: true, speed: 350 }
+                        }
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'smooth', width: 2 },
+                    fill: { opacity: 1, type: 'solid' },
+                    colors: ['#5BC4BF'],
+                    grid: {
+                        borderColor: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#374151' : '#e5e7eb',
+                        strokeDashArray: 4,
+                        padding: { left: 10, right: 10 }
+                    },
+                    xaxis: {
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: { 
+                            style: { 
+                                colors: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#9ca3af' : '#6b7280',
+                                fontSize: '11px'
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: { 
+                            style: { 
+                                colors: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#9ca3af' : '#6b7280',
+                                fontSize: '11px'
+                            }
+                        }
+                    },
+                    tooltip: { 
+                        theme: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light',
+                        style: { fontSize: '12px' }
+                    }
+                };
+
+                // Sparklines
+                const createSpark = (id, data) => {
                     const element = document.getElementById(id);
                     if (!element) return;
                     
-                    try {
-                        charts[id] = new ApexCharts(element, {
-                            chart: { 
-                                type: 'area', 
-                                height: 40, 
-                                sparkline: { enabled: true },
-                                animations: { enabled: true, easing: 'easeinout', speed: 800 }
-                            },
-                            stroke: { curve: 'smooth', width: 2 },
-                            colors: [color],
-                            fill: { 
-                                opacity: 0.3,
-                                type: 'gradient',
-                                gradient: { shadeIntensity: 1, opacityFrom: 0.3, opacityTo: 0 }
-                            },
-                            series: [{ data: data }],
-                            tooltip: { enabled: false }
-                        });
-                        charts[id].render();
-                    } catch(e) {}
-                };
-
-                createSpark('spark1', incidentData, '#ef4444');
-                createSpark('spark2', Object.values(dataTickets).slice(-10), '#4361ee');
-                createSpark('spark3', Object.values(dataCheckouts).slice(-10), '#10b981');
-                createSpark('spark4', [80, 85, 90, 88, 92], '#f59e0b');
-
-                const chartTickets = document.getElementById('chartTickets');
-                if (chartTickets) {
-                    charts.t = new ApexCharts(chartTickets, {
-                        series: [{ name: 'Tickets', data: Object.values(dataTickets) }],
+                    charts[id] = new ApexCharts(element, {
                         chart: { 
                             type: 'area', 
-                            height: 280, 
-                            toolbar: { show: false },
+                            height: 40, 
+                            sparkline: { enabled: true },
                             animations: { enabled: true, easing: 'easeinout', speed: 800 }
                         },
-                        colors: ['#4fbbb2'],
-                        stroke: { curve: 'smooth', width: 3 },
-                        fill: { 
-                            opacity: 0.1, 
-                            type: 'gradient',
-                            gradient: { shadeIntensity: 1, opacityFrom: 0.2, opacityTo: 0 }
-                        },
-                        dataLabels: { enabled: false },
-                        grid: { borderColor: 'var(--border-light)', strokeDashArray: 5 },
-                        xaxis: { 
-                            categories: Object.keys(dataTickets), 
-                            axisBorder: { show: false },
-                            labels: { style: { colors: 'var(--gray)' } }
-                        },
-                        yaxis: { 
-                            labels: { style: { colors: 'var(--gray)' } }
-                        },
-                        tooltip: { theme: 'dark' }
+                        stroke: { curve: 'smooth', width: 1.5 },
+                        colors: [id === 'spark1' ? '#ef4444' : '#5BC4BF'],
+                        fill: { opacity: 0.2, type: 'solid' },
+                        series: [{ data: data }],
+                        tooltip: { enabled: false }
                     });
-                    charts.t.render();
+                    charts[id].render();
+                };
+
+                createSpark('spark1', incidentData);
+                createSpark('spark2', Object.values(dataTickets).slice(-10));
+                createSpark('spark3', Object.values(dataCheckouts).slice(-10));
+                createSpark('spark4', [80, 85, 90, 88, 92]);
+
+                // Graphique Tickets
+                if (document.getElementById('chartTickets')) {
+                    charts.tickets = new ApexCharts(document.getElementById('chartTickets'), {
+                        ...baseOptions,
+                        series: [{ name: 'Tickets', data: Object.values(dataTickets) }],
+                        chart: { ...baseOptions.chart, type: 'area', height: 250 },
+                        xaxis: { ...baseOptions.xaxis, categories: Object.keys(dataTickets) }
+                    });
+                    charts.tickets.render();
                 }
 
-                const chartCheckouts = document.getElementById('chartCheckouts');
-                if (chartCheckouts) {
-                    charts.c = new ApexCharts(chartCheckouts, {
+                // Graphique Sorties
+                if (document.getElementById('chartCheckouts')) {
+                    charts.checkouts = new ApexCharts(document.getElementById('chartCheckouts'), {
+                        ...baseOptions,
                         series: [{ name: 'Sorties', data: Object.values(dataCheckouts) }],
-                        chart: { 
-                            type: 'bar', 
-                            height: 280, 
-                            toolbar: { show: false },
-                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
-                        },
-                        colors: ['#8b5cf6'],
-                        plotOptions: { 
-                            bar: { 
-                                borderRadius: 8, 
-                                columnWidth: '60%',
-                                distributed: true
-                            } 
-                        },
-                        dataLabels: { enabled: false },
-                        grid: { borderColor: 'var(--border-light)', strokeDashArray: 5 },
-                        xaxis: { 
-                            categories: Object.keys(dataCheckouts), 
-                            axisBorder: { show: false },
-                            labels: { style: { colors: 'var(--gray)' } }
-                        },
-                        yaxis: { 
-                            labels: { style: { colors: 'var(--gray)' } }
-                        },
-                        tooltip: { theme: 'dark' }
+                        chart: { ...baseOptions.chart, type: 'bar', height: 250 },
+                        plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
+                        xaxis: { ...baseOptions.xaxis, categories: Object.keys(dataCheckouts) }
                     });
-                    charts.c.render();
+                    charts.checkouts.render();
                 }
 
-                const chartEquipments = document.getElementById('chartEquipments');
-                if (chartEquipments && Object.keys(dataEquip).length > 0) {
-                    charts.e = new ApexCharts(chartEquipments, {
+                // Graphique Équipements
+                if (document.getElementById('chartEquipments') && Object.keys(dataEquip).length > 0) {
+                    charts.equipments = new ApexCharts(document.getElementById('chartEquipments'), {
+                        ...baseOptions,
                         series: Object.values(dataEquip),
                         labels: Object.keys(dataEquip),
-                        chart: { 
-                            type: 'donut', 
-                            height: 280,
-                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
-                        },
-                        colors: ['#06b6d4', '#8b5cf6', '#2dd4bf', '#10b981', '#f59e0b'],
+                        chart: { ...baseOptions.chart, type: 'donut', height: 250 },
                         plotOptions: { 
                             pie: { 
-                                donut: { 
-                                    size: '65%',
-                                    labels: {
-                                        show: true,
-                                        name: { show: true },
-                                        value: { show: true, fontSize: '16px', fontWeight: 600 },
-                                        total: { show: true, label: 'Total' }
-                                    }
-                                } 
+                                donut: { size: '70%' },
+                                expandOnClick: false
                             } 
                         },
-                        legend: { 
-                            position: 'bottom', 
-                            fontSize: '12px',
-                            labels: { colors: 'var(--dark)' }
-                        },
-                        dataLabels: { enabled: false },
-                        stroke: { show: false },
-                        tooltip: { theme: 'dark' }
+                        legend: { position: 'bottom', fontSize: '12px' },
+                        stroke: { show: false }
                     });
-                    charts.e.render();
+                    charts.equipments.render();
                 }
 
-                const chartSoftware = document.getElementById('chartSoftware');
-                if (chartSoftware && Object.keys(dataSoft).length > 0) {
-                    charts.s = new ApexCharts(chartSoftware, {
+                // Graphique Logiciels
+                if (document.getElementById('chartSoftware') && Object.keys(dataSoft).length > 0) {
+                    charts.software = new ApexCharts(document.getElementById('chartSoftware'), {
+                        ...baseOptions,
                         series: Object.values(dataSoft),
                         labels: Object.keys(dataSoft),
-                        chart: { 
-                            type: 'pie', 
-                            height: 280,
-                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
-                        },
-                        colors: ['#4361ee', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
-                        legend: { 
-                            position: 'bottom', 
-                            fontSize: '12px',
-                            labels: { colors: 'var(--dark)' }
-                        },
-                        dataLabels: { enabled: false },
-                        stroke: { show: false },
-                        tooltip: { theme: 'dark' }
+                        chart: { ...baseOptions.chart, type: 'pie', height: 250 },
+                        legend: { position: 'bottom', fontSize: '12px' },
+                        stroke: { show: false }
                     });
-                    charts.s.render();
+                    charts.software.render();
                 }
             } catch(e) {
-                console.error('Erreur lors de l\'initialisation des graphiques:', e);
+                console.error('Erreur:', e);
             }
         }
 
+        // Theme toggle avec mise à jour des graphiques
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
             themeToggle.addEventListener('click', () => {
@@ -961,32 +695,36 @@
                 if (icon) {
                     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
                 }
+
+                // Mettre à jour les couleurs des graphiques
+                const textColor = theme === 'dark' ? '#9ca3af' : '#6b7280';
+                const gridColor = theme === 'dark' ? '#374151' : '#e5e7eb';
                 
                 Object.values(charts).forEach(chart => {
                     if (chart && chart.updateOptions) {
                         chart.updateOptions({
-                            xaxis: { labels: { style: { colors: theme === 'dark' ? '#94a3b8' : '#64748b' } } },
-                            yaxis: { labels: { style: { colors: theme === 'dark' ? '#94a3b8' : '#64748b' } } },
-                            grid: { borderColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' },
-                            legend: { labels: { colors: theme === 'dark' ? '#f8fafc' : '#1e293b' } }
+                            grid: { borderColor: gridColor },
+                            xaxis: { labels: { style: { colors: textColor } } },
+                            yaxis: { labels: { style: { colors: textColor } } },
+                            tooltip: { theme: theme === 'dark' ? 'dark' : 'light' }
                         });
                     }
                 });
             });
         }
 
+        // Initialisation
         document.addEventListener('DOMContentLoaded', () => {
-            try {
-                const saved = localStorage.getItem('theme') || 'light';
-                document.documentElement.setAttribute('data-bs-theme', saved);
-                const icon = document.querySelector('#themeToggle i');
-                if (icon) {
-                    icon.className = saved === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-                }
-                initCharts();
-            } catch(e) {}
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', saved);
+            const icon = document.querySelector('#themeToggle i');
+            if (icon) {
+                icon.className = saved === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            initCharts();
         });
 
+        // Refresh charts
         window.addEventListener('chartsRefreshed', () => {
             initCharts();
         });

@@ -151,21 +151,74 @@
                     </div>
 
                     <div class="col-md-1">
-                        <button wire:click="exportIncidents" class="btn btn-success btn-sm w-100 mt-3" 
-                                title="Exporter les incidents">
-                            <i class="fas fa-download"></i>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-success btn-sm w-100 mt-3 dropdown-toggle shadow-sm d-flex align-items-center justify-content-center gap-2" 
+                                    type="button" id="dropdownExportIncident" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <ul class="dropdown-menu border-0 shadow-lg p-2" aria-labelledby="dropdownExportIncident" style="border-radius: 12px;">
+                                <li>
+                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportIncidents('excel')" style="border-radius: 8px;">
+                                        <i class="fas fa-file-excel text-success"></i> Excel (.csv)
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportIncidents('pdf')" style="border-radius: 8px;">
+                                        <i class="fas fa-file-pdf text-danger"></i> PDF (Imprimer)
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="card-header border-0 bg-transparent py-4 px-4">
+            <!-- Header with title, filters and switch -->
+            
+            <!-- Print only form header (mimicking user image) -->
+            <div class="print-only-header">
+                <div class="form-logo">
+                    <img src="{{ asset('images/logoPivot.png') }}" alt="Logo">
+                </div>
+                
+                <div class="form-title-box">
+                    <h1>LISTE DES INCIDENTS</h1>
+                </div>
 
+                <div class="form-header-blocks">
+                    <div class="header-block">
+                        <span class="block-title">Service demandeur</span>
+                        <div class="block-content">
+                            Département : <span class="dotted-line">DSI / Support IT</span><br>
+                            Demandeur : <span class="dotted-line">{{ auth()->user()->name ?? 'Administrateur' }}</span>
+                        </div>
+                    </div>
+                    <div class="header-block">
+                        <span class="block-title">Lieu de bénéficiaire</span>
+                        <div class="block-content">
+                            Site : <span class="dotted-line">Siège Principal</span><br>
+                            Période : <span class="dotted-line">du {{ now()->startOfMonth()->format('d/m/Y') }} au {{ now()->format('d/m/Y') }}</span>
+                        </div>
+                    </div>
+                    <div class="header-block">
+                        <span class="block-title">Service Maintenance</span>
+                        <div class="block-content">
+                            N° de réf : <span class="dotted-line">INC-{{ now()->format('Ymd') }}</span><br>
+                            Date : <span class="dotted-line">{{ now()->format('d/m/Y') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
         <!-- Tableau des incidents -->
-        <div class="table-wrapper p-0 border-0 w-100 compact-mode mx-3">
+        <div class="table-wrapper p-0 border-0 w-100 compact-mode mx-3" id="printableIncidents">
             <table class="table table-hover border-0 shadow-sm text-center small">
                 <thead class="table-light">
                     <tr>
-                        <th class="py-2" style="width: 30px;">
+                        <th class="py-2 row-number-header" style="width: 40px;">N°</th>
+                        <th class="py-2 no-print" style="width: 30px;">
                             <input type="checkbox" wire:model="selectAll" class="checkbox-modern">
                         </th>
                         <th class="py-2 sortable" wire:click="sortBy('id')" style="width: 80px;">
@@ -203,10 +256,10 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2" style="width: 120px;">
+                        <th class="py-2 no-print" style="width: 120px;">
                             Rapport d'incident
                         </th>
-                        <th class="py-2" style="width: 120px;">
+                        <th class="py-2 no-print" style="width: 120px;">
                             Déclaration de perte
                         </th>
                         <th class="py-2 sortable" wire:click="sortBy('created_at')" style="width: 120px;">
@@ -217,7 +270,7 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('updated_at')" style="width: 120px;">
+                        <th class="py-2 sortable no-print" wire:click="sortBy('updated_at')" style="width: 120px;">
                             Date modification
                             @if($sortField === 'updated_at')
                                 <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
@@ -225,13 +278,16 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2" style="width: 80px;">Actions</th>
+                        <th class="py-2 no-print" style="width: 80px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($incidents as $incident)
+                    @forelse($incidents as $index => $incident)
                         <tr class="hover-row" style="cursor:pointer">
-                            <td class="py-2">
+                            <td class="py-2 fw-bold row-number">
+                                {{ $index + 1 }}
+                            </td>
+                            <td class="py-2 no-print">
                                 <input type="checkbox"
                                        wire:model="selectedTickets"
                                        value="{{ $incident->id }}"
@@ -243,7 +299,7 @@
                             <td class="py-2" wire:click="Visualiser({{ $incident->id }})">
                                 <div class="d-flex align-items-center justify-content-center">
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($incident->utilisateur->nom ?? 'Utilisateur') }}&size=24&background=random" 
-                                         class="rounded-circle me-2" width="20" height="20">
+                                         class="rounded-circle me-2 no-print" width="20" height="20">
                                     <span class="text-muted small">{{ $incident->utilisateur->nom ?? 'N/A' }}</span>
                                 </div>
                             </td>
@@ -266,19 +322,19 @@
                             <td class="py-2">
                                 @if($incident->statut == 1)
                                     <span class="badge bg-warning bg-opacity-10 text-warning border border-warning small">
-                                        <i class="bi bi-clock me-1"></i>En cours
+                                        <i class="bi bi-clock me-1 no-print"></i>En cours
                                     </span>
                                 @elseif($incident->statut == 2)
                                     <span class="badge bg-primary bg-opacity-10 text-primary border border-primary small">
-                                        <i class="bi bi-gear me-1"></i>En traitement
+                                        <i class="bi bi-gear me-1 no-print"></i>En traitement
                                     </span>
                                 @elseif($incident->statut == 0)
                                     <div class="d-flex flex-column gap-1">
                                         <span class="badge bg-danger bg-opacity-10 text-danger border border-danger small">
-                                            <i class="bi bi-x-circle me-1"></i>Demande annulation
+                                            <i class="bi bi-x-circle me-1 no-print"></i>Demande annulation
                                         </span>
                                         <button wire:click="SupprimerDemande({{ $incident->id }})"  
-                                                class="btn btn-outline-danger btn-xs shadow-sm">
+                                                class="btn btn-outline-danger btn-xs shadow-sm no-print">
                                             Supprimer
                                         </button>
                                     </div>
@@ -288,7 +344,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="py-2">
+                            <td class="py-2 no-print">
                                 @if($incident->rapport_incident)
                                     <a href="{{ asset('storage/' . $incident->rapport_incident) }}"
                                        target="_blank" 
@@ -301,7 +357,7 @@
                                     <span class="text-muted small">Non disponible</span>
                                 @endif
                             </td>
-                            <td class="py-2">
+                            <td class="py-2 no-print">
                                 @if($incident->declaration_perte)
                                     <a href="{{ asset('storage/' . $incident->declaration_perte) }}"
                                        target="_blank" 
@@ -316,15 +372,15 @@
                             </td>
                             <td class="py-2 text-muted small" wire:click="Visualiser({{ $incident->id }})">
                                 {{ $incident->created_at->format('d M Y') }}
-                                <br>
-                                <small class="text-muted">{{ $incident->created_at->format('H:i') }}</small>
+                                <br class="no-print">
+                                <small class="text-muted no-print">{{ $incident->created_at->format('H:i') }}</small>
                             </td>
-                            <td class="py-2 text-muted small" wire:click="Visualiser({{ $incident->id }})">
+                            <td class="py-2 text-muted small no-print" wire:click="Visualiser({{ $incident->id }})">
                                 {{ $incident->updated_at->format('d M Y') }}
                                 <br>
                                 <small class="text-muted">{{ $incident->updated_at->format('H:i') }}</small>
                             </td>
-                            <td class="py-2">
+                            <td class="py-2 no-print">
                                 <div class="action-buttons d-flex justify-content-center gap-1">
                                     <button class="btn-action btn-view btn-sm" 
                                             title="Voir détails">
@@ -354,7 +410,7 @@
                     @endforelse
                     @if($incidents->count() > 0)
                         <tr>
-                            <td colspan="11" class="py-2 bg-light text-muted small">
+                            <td colspan="11" class="py-2 bg-light text-muted small no-print">
                                 Affichage de {{ $incidents->count() }} incident(s) sur cette page
                             </td>
                         </tr>
@@ -365,7 +421,7 @@
 
         <!-- Pagination -->
         @if($incidents->hasPages())
-        <div class="table-footer bg-light p-3 rounded-bottom mx-3">
+        <div class="table-footer bg-light p-3 rounded-bottom mx-3 no-print">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="text-muted small">
                     @if($incidents->total() > 0)
@@ -383,11 +439,163 @@
     </div>
 </div>
 
+<div class="print-only-header">
+    <div class="print-header-top">
+        <div class="print-entity">
+            GESTION DES INCIDENTS
+        </div>
+        <div class="print-date">
+            Date d'impression: {{ now()->format('d/m/Y H:i') }}
+        </div>
+    </div>
+    <div class="print-title">
+        LISTE DES INCIDENTS
+    </div>
+</div>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<style>
-.small {
+    <script>
+        window.addEventListener('print-incidents', event => {
+            window.print();
+        });
+    </script>
+
+    <style>
+        .print-only-header {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-family: 'Times New Roman', serif;
+                padding: 10mm;
+            }
+
+            .print-only-header {
+                display: block !important;
+                width: 100%;
+            }
+
+            .form-logo {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .form-logo img {
+                height: 60px;
+                object-fit: contain;
+            }
+
+            .form-title-box {
+                border: 2px solid #000;
+                text-align: center;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .form-title-box h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .form-header-blocks {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                border: 1px solid #000;
+                margin-bottom: 20px;
+            }
+
+            .header-block {
+                padding: 5px 10px;
+                border: 0.5px solid #000;
+                font-size: 0.85rem;
+                min-height: 80px;
+            }
+
+            .block-title {
+                text-decoration: underline;
+                font-weight: 700;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .block-content {
+                line-height: 1.4;
+            }
+
+            .dotted-line {
+                border-bottom: 1px dotted #000;
+                display: inline-block;
+                min-width: 100px;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #printableIncidents, #printableIncidents *, .print-only-header, .print-only-header * {
+                visibility: visible;
+            }
+
+            #printableIncidents {
+                position: static !important;
+                margin-top: 0 !important;
+                width: 100% !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                border: 2px solid #000 !important;
+            }
+
+            .table th {
+                background-color: #e9ecef !important;
+                color: #000 !important;
+                border: 1px solid #000 !important;
+                padding: 8px 4px !important;
+                font-size: 0.8rem !important;
+                text-transform: uppercase;
+            }
+
+            .table td {
+                border: 1px solid #000 !important;
+                padding: 6px 4px !important;
+                font-size: 0.8rem !important;
+                vertical-align: middle !important;
+                text-align: center !important;
+            }
+            
+            .table td.text-start {
+                text-align: left !important;
+            }
+
+            .row-number {
+                width: 30px;
+                font-weight: bold;
+            }
+
+            .badge {
+                border: none !important;
+                background: transparent !important;
+                color: #000 !important;
+                padding: 0 !important;
+                font-weight: normal !important;
+            }
+        }
+
+    :root {
     font-size: 0.75rem;
 }
 

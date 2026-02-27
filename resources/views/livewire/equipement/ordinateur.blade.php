@@ -2,6 +2,11 @@
     <!-- Styles CSS -->
     <style>
         :root {
+            --primary: #5BC4BF !important;
+            --primary-dark: #4AA39E !important;
+            --primary-light: #7FD9D4 !important;
+            --primary-soft: rgba(91, 196, 191, 0.1) !important;
+            --primary-50: #E9F5F4 !important;
             --dark-green: #3D3E14;
             --turquoise: #66C0B7;
             --off-white: #EDEDE8;
@@ -10,47 +15,55 @@
         }
         
         .dashboard-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
-        }
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* neutre */
+    border: 1px solid rgba(0, 0, 0, 0.08);     /* neutre */
+    transition: all 0.2s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
+    border-color: var(--primary); /* ✅ primary gardé ici */
+}
+
+.stat-card {
+    padding: 16px;
+    border-left: 4px solid var(--primary); /* ✅ primary visible */
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+
+    background: rgba(91, 196, 191, 0.12); /* léger fond primary */
+    color: var(--primary);
+}
+
+.stat-icon-lg {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+
+    background: rgba(91, 196, 191, 0.12);
+    color: var(--primary);
+}
         
-        .dashboard-card:hover {
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        
-        .stat-card {
-            padding: 16px;
-        }
-        
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        .stat-icon-lg {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-        
-        .icon-primary { background: rgba(131, 175, 79, 0.1); color: var(--soft-green); }
-        .icon-success { background: rgba(102, 192, 183, 0.1); color: var(--turquoise); }
-        .icon-warning { background: rgba(227, 94, 47, 0.1); color: var(--orange); }
-        .icon-info { background: rgba(61, 62, 20, 0.1); color: var(--dark-green); }
-        .icon-danger { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
+        .icon-primary { background: rgba(91, 196, 191, 0.15); color: var(--primary); }
+        .icon-success { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .icon-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .icon-info { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .icon-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         
         .stat-number {
             font-size: 1.5rem;
@@ -67,25 +80,31 @@
             left: 10px;
             top: 50%;
             transform: translateY(-50%);
-            color: #6c757d;
+            color: var(--primary);
             font-size: 0.9rem;
         }
         
         .search-box .form-control {
             padding-left: 30px;
             font-size: 0.875rem;
+            border-color: rgba(91, 196, 191, 0.2) !important;
+        }
+        
+        .search-box .form-control:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(91, 196, 191, 0.15) !important;
         }
         
         .badge-sm {
             font-size: 0.7rem;
-            padding: 0.25em 0.5em;
+            padding: 0.35em 0.65em;
         }
         
         .table th {
             font-size: 0.8rem;
             font-weight: 600;
-            color: #495057;
-            border-bottom: 1px solid #dee2e6;
+            color: var(--primary-dark);
+            border-bottom: 2px solid rgba(91, 196, 191, 0.15);
         }
         
         .table td {
@@ -93,23 +112,96 @@
             vertical-align: middle;
         }
         
+        .table tbody tr:hover {
+            background: rgba(91, 196, 191, 0.03);
+        }
+        
         .btn {
             font-size: 0.8rem;
+            border-radius: 8px !important;
+        }
+        
+        .btn-primary {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+            color: white !important;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(91, 196, 191, 0.3);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary) !important;
+            border-color: rgba(91, 196, 191, 0.3) !important;
+            background: transparent !important;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary) !important;
+            color: white !important;
+            border-color: var(--primary) !important;
+            transform: translateY(-1px);
+        }
+        
+        .btn-danger {
+            background: var(--orange) !important;
+            border-color: var(--orange) !important;
+            color: white !important;
+        }
+        
+        .btn-danger:hover {
+            background: #c94f2a !important;
+            border-color: #c94f2a !important;
+        }
+        
+        .btn-outline-danger {
+            color: var(--orange) !important;
+            border-color: rgba(227, 94, 47, 0.3) !important;
+        }
+        
+        .btn-outline-danger:hover {
+            background: var(--orange) !important;
+            color: white !important;
+            border-color: var(--orange) !important;
+        }
+        
+        .btn-success {
+            background: #10b981 !important;
+            border-color: #10b981 !important;
+            color: white !important;
+        }
+        
+        .btn-outline-secondary {
+            color: var(--primary-dark) !important;
+            border-color: rgba(91, 196, 191, 0.3) !important;
+            background: white !important;
+        }
+        
+        .btn-outline-secondary:hover {
+            background: rgba(91, 196, 191, 0.1) !important;
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
         }
         
         .form-label {
             font-size: 0.8rem;
             font-weight: 500;
+            color: var(--primary-dark);
         }
         
         .modal-title {
             font-size: 1.1rem;
             font-weight: 600;
+            color: var(--primary-dark);
         }
         
         .detail-item {
             padding: 0.25rem 0;
-            border-bottom: 1px solid #f8f9fa;
+            border-bottom: 1px solid rgba(91, 196, 191, 0.1);
         }
         
         .detail-item:last-child {
@@ -117,7 +209,7 @@
         }
         
         .detail-item strong {
-            color: #495057;
+            color: var(--primary-dark);
             display: flex;
             align-items: center;
             margin-bottom: 0.125rem;
@@ -138,50 +230,177 @@
             z-index: 1050;
         }
         
+        .modal-content {
+            border-radius: 16px;
+            border: 1px solid rgba(91, 196, 191, 0.2);
+            box-shadow: 0 20px 40px rgba(91, 196, 191, 0.15);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, rgba(91, 196, 191, 0.05), transparent);
+            border-bottom: 1px solid rgba(91, 196, 191, 0.15);
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .modal-header.bg-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            color: white;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid rgba(91, 196, 191, 0.15);
+            background: rgba(91, 196, 191, 0.02);
+        }
+        
         .progress {
-            background-color: #f8f9fa;
+            background-color: rgba(91, 196, 191, 0.1);
             border-radius: 10px;
         }
         
         .progress-bar {
             border-radius: 10px;
         }
+        
+        .progress-bar.bg-primary { background: var(--primary) !important; }
+        .progress-bar.bg-success { background: #10b981 !important; }
+        .progress-bar.bg-warning { background: #f59e0b !important; }
+        .progress-bar.bg-info { background: #3b82f6 !important; }
+        .progress-bar.bg-danger { background: #ef4444 !important; }
 
         /* Styles supplémentaires pour les filtres */
         .search-box input:focus {
             background-color: white !important;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+            box-shadow: 0 0 0 3px rgba(91, 196, 191, 0.15) !important;
         }
 
         .input-group:focus-within {
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(91, 196, 191, 0.15);
             border-radius: 8px;
         }
 
         .form-select:focus, .form-control:focus {
-            box-shadow: none !important;
+            box-shadow: 0 0 0 3px rgba(91, 196, 191, 0.15) !important;
+            border-color: var(--primary) !important;
             background-color: white !important;
         }
 
         .bg-light {
-            background-color: #f8f9fa !important;
+            background: rgba(91, 196, 191, 0.03) !important;
         }
 
         .rounded-2 {
             border-radius: 8px !important;
         }
 
-        .btn {
-            border-radius: 6px !important;
-        }
-
         /* Animation pour les badges de filtre */
         .badge {
             transition: all 0.2s ease;
+            border-radius: 20px;
+            background: rgba(91, 196, 191, 0.1) !important;
+            color: var(--primary-dark) !important;
+            border: 1px solid rgba(91, 196, 191, 0.3) !important;
         }
 
         .badge:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(91, 196, 191, 0.2);
+        }
+
+        .badge.bg-success { background: rgba(16, 185, 129, 0.15) !important; color: #065f46 !important; border-color: rgba(16, 185, 129, 0.3) !important; }
+        .badge.bg-info { background: rgba(59, 130, 246, 0.15) !important; color: #1e40af !important; border-color: rgba(59, 130, 246, 0.3) !important; }
+        .badge.bg-warning { background: rgba(245, 158, 11, 0.15) !important; color: #92400e !important; border-color: rgba(245, 158, 11, 0.3) !important; }
+        .badge.bg-danger { background: rgba(239, 68, 68, 0.15) !important; color: #b91c1c !important; border-color: rgba(239, 68, 68, 0.3) !important; }
+        .badge.bg-secondary { background: rgba(100, 116, 139, 0.15) !important; color: #475569 !important; border-color: rgba(100, 116, 139, 0.3) !important; }
+
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        .text-success {
+            color: #10b981 !important;
+        }
+
+        .text-warning {
+            color: #f59e0b !important;
+        }
+
+        .text-info {
+            color: #3b82f6 !important;
+        }
+
+        .text-danger {
+            color: #ef4444 !important;
+        }
+
+        .border-top {
+            border-top-color: rgba(91, 196, 191, 0.15) !important;
+        }
+
+        .border-bottom {
+            border-bottom-color: rgba(91, 196, 191, 0.15) !important;
+        }
+
+        /* Pagination */
+        .pagination .page-link {
+            color: var(--primary);
+            border-color: rgba(91, 196, 191, 0.2);
+            border-radius: 8px;
+            margin: 0 2px;
+        }
+
+        .pagination .page-link:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pagination .active .page-link {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Checkbox */
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(91, 196, 191, 0.25);
+        }
+
+        /* Input group */
+        .input-group-text {
+            background: rgba(91, 196, 191, 0.05) !important;
+            border: 1px solid rgba(91, 196, 191, 0.2) !important;
+            color: var(--primary) !important;
+        }
+
+        /* Alerts */
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #065f46;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #b91c1c;
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #92400e;
+        }
+
+        .alert-info {
+            background: rgba(91, 196, 191, 0.1);
+            border-color: rgba(91, 196, 191, 0.3);
+            color: var(--primary-dark);
         }
 
         /* Responsive */
@@ -204,8 +423,8 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
-                        <h1 class="h4 fw-semibold text-dark mb-0">
-                            <i class="bi bi-laptop me-2 text-primary"></i> Gestion des Ordinateurs
+                        <h1 class="h4 fw-semibold mb-0" style="color: var(--primary-dark);">
+                            <i class="bi bi-laptop me-2" style="color: var(--primary);"></i> Gestion des Ordinateurs
                         </h1>
                         <p class="text-muted small">Gérez votre parc informatique efficacement</p>
                     </div>
@@ -231,28 +450,28 @@
         <!-- Messages flash -->
         @if (session()->has('message'))
             <div class="alert alert-success alert-dismissible fade show small" role="alert">
-                <i class="fas fa-check-circle me-2"></i> {{ session('message') }}
+                <i class="fas fa-check-circle me-2" style="color: #10b981;"></i> {{ session('message') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
         @endif
 
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show small" role="alert">
-                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
+                <i class="fas fa-check-circle me-2" style="color: #10b981;"></i> {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
         @endif
 
         @if (session()->has('error'))
             <div class="alert alert-danger alert-dismissible fade show small" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
+                <i class="fas fa-exclamation-triangle me-2" style="color: #ef4444;"></i> {{ session('error') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
         @endif
 
         @if (session()->has('warning'))
             <div class="alert alert-warning alert-dismissible fade show small" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> {{ session('warning') }}
+                <i class="fas fa-exclamation-circle me-2" style="color: #f59e0b;"></i> {{ session('warning') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
         @endif
@@ -265,7 +484,7 @@
                 <div class="dashboard-card stat-card h-100">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="flex-grow-1">
-                            <h3 class="stat-number text-primary mb-1">{{ $stats['total'] ?? 0 }}</h3>
+                            <h3 class="stat-number mb-1" style="color: var(--primary);">{{ $stats['total'] ?? 0 }}</h3>
                             <p class="text-muted small mb-0 fw-medium">Total Ordinateurs</p>
                             <div class="progress mt-2" style="height: 4px;">
                                 <div class="progress-bar bg-primary" style="width: 100%"></div>
@@ -385,7 +604,7 @@
         <!-- Filtres avec boutons Import/Export -->
         <div class="dashboard-card p-3 mb-3">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-semibold mb-0 text-dark small">Filtres et Actions</h6>
+                <h6 class="fw-semibold mb-0 small" style="color: var(--primary-dark);">Filtres et Actions</h6>
                 <div class="d-flex gap-2">
                     <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm" title="Réinitialiser les filtres">
                         <i class="bi bi-arrow-clockwise"></i>
@@ -399,9 +618,9 @@
             <div class="row g-3 align-items-end" id="filters-container">
                 <!-- Recherche -->
                 <div class="col-md-3 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Recherche</label>
+                    <label class="form-label small fw-medium">Recherche</label>
                     <div class="search-box position-relative">
-                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted small"></i>
+                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-2 small"></i>
                         <input type="text" wire:model.live.debounce.300ms="search"
                                class="form-control form-control-sm ps-4 border-0 bg-light rounded-2"
                                placeholder="Nom, IP, OS...">
@@ -410,9 +629,9 @@
 
                 <!-- Entité -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Entité</label>
+                    <label class="form-label small fw-medium">Entité</label>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-0 text-muted">
+                        <span class="input-group-text border-0">
                             <i class="bi bi-building"></i>
                         </span>
                         <input type="text" wire:model.live="entite" 
@@ -423,9 +642,9 @@
 
                 <!-- Statut -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Statut</label>
+                    <label class="form-label small fw-medium">Statut</label>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-0 text-muted">
+                        <span class="input-group-text border-0">
                             <i class="bi bi-circle-fill"></i>
                         </span>
                         <select wire:model.live="statut" class="form-select border-0 bg-light rounded-2">
@@ -439,9 +658,9 @@
 
                 <!-- Pagination -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Affichage</label>
+                    <label class="form-label small fw-medium">Affichage</label>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-0 text-muted">
+                        <span class="input-group-text border-0">
                             <i class="bi bi-list-ul"></i>
                         </span>
                         <select wire:model.live="perPage" class="form-select border-0 bg-light rounded-2">
@@ -478,19 +697,19 @@
                 <div class="d-flex align-items-center gap-2 flex-wrap">
                     <span class="text-muted small">Filtres actifs :</span>
                     @if($search)
-                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                    <span class="badge d-flex align-items-center">
                         Recherche: "{{ $search }}"
                         <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
                     </span>
                     @endif
                     @if($statut)
-                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                    <span class="badge d-flex align-items-center">
                         Statut: {{ $statut }}
                         <button wire:click="$set('statut', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
                     </span>
                     @endif
                     @if($entite)
-                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                    <span class="badge d-flex align-items-center">
                         Entité: {{ $entite }}
                         <button wire:click="$set('entite', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
                     </span>
@@ -503,7 +722,7 @@
         <!-- Tableau -->
         <div class="dashboard-card p-3">
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                <h5 class="fw-semibold mb-0">Liste des Ordinateurs</h5>
+                <h5 class="fw-semibold mb-0" style="color: var(--primary-dark);">Liste des Ordinateurs</h5>
             </div>
 
             <div class="table-responsive">
@@ -521,7 +740,7 @@
                                 @if ($sortField === 'entite')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
                                 @else
-                                    <i class="fas fa-sort text-muted small"></i>
+                                    <i class="fas fa-sort small" style="color: rgba(91, 196, 191, 0.5);"></i>
                                 @endif
                             </th>
                             <th wire:click="sortBy('statut')" style="cursor: pointer;">
@@ -529,7 +748,7 @@
                                 @if ($sortField === 'statut')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
                                 @else
-                                    <i class="fas fa-sort text-muted small"></i>
+                                    <i class="fas fa-sort small" style="color: rgba(91, 196, 191, 0.5);"></i>
                                 @endif
                             </th>
                             <th>Fabricant</th>
@@ -543,7 +762,7 @@
                                 @if ($sortField === 'updated_at')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
                                 @else
-                                    <i class="fas fa-sort text-muted small"></i>
+                                    <i class="fas fa-sort small" style="color: rgba(91, 196, 191, 0.5);"></i>
                                 @endif
                             </th>
                             <th>Actions</th>
@@ -584,8 +803,8 @@
     @endphp
     
     @if($liaisonActive && $liaisonActive->utilisateur)
-        <a href="#" class="text-decoration-none small">
-            <i class="bi bi-person-fill me-1 text-primary"></i>{{ $liaisonActive->utilisateur->nom }}
+        <a href="#" class="text-decoration-none small" style="color: var(--primary);">
+            <i class="bi bi-person-fill me-1" style="color: var(--primary);"></i>{{ $liaisonActive->utilisateur->nom }}
         </a>
     @else
         <span class="text-muted small">Non attribué</span>
@@ -598,19 +817,28 @@
                                 <div class="d-flex gap-1">
                                     <!-- Bouton Voir Détails -->
                                     <button wire:click="showDetails({{ $ordinateur->id }})"
-                                            class="btn btn-sm btn-outline-info border-0"
+                                            class="btn btn-sm border-0"
+                                            style="color: var(--primary); background: rgba(91, 196, 191, 0.1); border-radius: 6px;"
+                                            onmouseover="this.style.background='var(--primary)'; this.style.color='white';"
+                                            onmouseout="this.style.background='rgba(91, 196, 191, 0.1)'; this.style.color='var(--primary)';"
                                             title="Voir détails">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                     <!-- Bouton Modifier -->
                                     <button wire:click="edit({{ $ordinateur->id }})"
-                                            class="btn btn-sm btn-outline-primary border-0"
+                                            class="btn btn-sm border-0"
+                                            style="color: #f59e0b; background: rgba(245, 158, 11, 0.1); border-radius: 6px;"
+                                            onmouseover="this.style.background='#f59e0b'; this.style.color='white';"
+                                            onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.color='#f59e0b';"
                                             title="Modifier">
                                         <i class="bi bi-pencil"></i>
                                     </button>
                                     <!-- Bouton Supprimer -->
                                     <button wire:click="confirmDelete({{ $ordinateur->id }})"
-                                            class="btn btn-sm btn-outline-danger border-0"
+                                            class="btn btn-sm border-0"
+                                            style="color: #ef4444; background: rgba(239, 68, 68, 0.1); border-radius: 6px;"
+                                            onmouseover="this.style.background='#ef4444'; this.style.color='white';"
+                                            onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='#ef4444';"
                                             title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -620,7 +848,7 @@
                     @empty
                         <tr>
                             <td colspan="11" class="text-center py-3">
-                                <i class="fas fa-laptop display-6 text-muted d-block mb-2"></i>
+                                <i class="fas fa-laptop display-6 d-block mb-2" style="color: rgba(91, 196, 191, 0.3);"></i>
                                 <p class="text-muted mb-0 small">Aucun ordinateur trouvé</p>
                             </td>
                         </tr>
@@ -651,7 +879,7 @@
         <div class="modal-content">
             <div class="modal-header py-2">
                 <h5 class="modal-title small fw-semibold">
-                    <i class="bi {{ $isEditing ? 'bi-pencil' : 'bi-plus-circle' }} me-1"></i>
+                    <i class="bi {{ $isEditing ? 'bi-pencil' : 'bi-plus-circle' }} me-1" style="color: var(--primary);"></i>
                     {{ $isEditing ? 'Modifier l\'ordinateur' : 'Nouvel Ordinateur' }}
                 </h5>
                 <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
@@ -661,8 +889,8 @@
                     <div class="row g-2">
                         <!-- Informations de base -->
                         <div class="col-12 mb-2">
-                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                <i class="bi bi-info-circle me-1 text-primary"></i>Informations de base
+                            <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                <i class="bi bi-info-circle me-1" style="color: var(--primary);"></i>Informations de base
                             </h6>
                         </div>
 
@@ -688,19 +916,19 @@
 
                         <!-- Utilisateurs (Section déplacée plus haut pour plus de visibilité) -->
                         <div class="col-12 mt-2 mb-2">
-                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                <i class="bi bi-people me-1 text-primary"></i>Attribution des utilisateurs
+                            <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                <i class="bi bi-people me-1" style="color: var(--primary);"></i>Attribution des utilisateurs
                             </h6>
                         </div>
 
                         <div class="col-md-6 mb-2">
                             <label class="form-label small fw-medium">
-                                <i class="bi bi-person-circle me-1 text-primary"></i>
+                                <i class="bi bi-person-circle me-1" style="color: var(--primary);"></i>
                                 Utilisateur principal
                                 <span class="text-muted fw-light">(optionnel)</span>
                             </label>
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-light border-0">
+                                <span class="input-group-text border-0">
                                     <i class="bi bi-person"></i>
                                 </span>
                                 <select wire:model="utilisateur_id"
@@ -722,12 +950,12 @@
 
                         <div class="col-md-6 mb-2">
                             <label class="form-label small fw-medium">
-                                <i class="bi bi-person me-1 text-primary"></i>
+                                <i class="bi bi-person me-1" style="color: var(--primary);"></i>
                                 Usager secondaire
                                 <span class="text-muted fw-light">(optionnel)</span>
                             </label>
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-light border-0">
+                                <span class="input-group-text border-0">
                                     <i class="bi bi-person-plus"></i>
                                 </span>
                                 <select wire:model="usager_id" class="form-select form-select-sm">
@@ -747,17 +975,17 @@
 
                         <!-- Barre de recherche rapide pour les utilisateurs (optionnel) -->
                         <div class="col-12 mb-2">
-                            <div class="bg-light p-2 rounded-2 small">
+                            <div class="p-2 rounded-2 small" style="background: rgba(91, 196, 191, 0.03);">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="fw-medium">Utilisateurs disponibles :</span>
-                                    <span class="badge bg-primary badge-sm">{{ count($utilisateurs) }} total</span>
+                                    <span class="fw-medium" style="color: var(--primary-dark);">Utilisateurs disponibles :</span>
+                                    <span class="badge badge-sm" style="background: var(--primary); color: white;">{{ count($utilisateurs) }} total</span>
                                 </div>
                                 <div class="d-flex flex-wrap gap-1">
                                     @foreach($utilisateurs->take(5) as $user)
-                                        <span class="badge bg-light text-dark border">{{ $user->name }}</span>
+                                        <span class="badge" style="background: rgba(91, 196, 191, 0.1); color: var(--primary-dark); border-color: rgba(91, 196, 191, 0.3);">{{ $user->name }}</span>
                                     @endforeach
                                     @if(count($utilisateurs) > 5)
-                                        <span class="badge bg-light text-dark border">+{{ count($utilisateurs)-5 }} autres</span>
+                                        <span class="badge" style="background: rgba(91, 196, 191, 0.1); color: var(--primary-dark);">+{{ count($utilisateurs)-5 }} autres</span>
                                     @endif
                                 </div>
                             </div>
@@ -765,8 +993,8 @@
 
                         <!-- Spécifications matérielles -->
                         <div class="col-12 mt-2 mb-2">
-                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                <i class="bi bi-cpu me-1 text-primary"></i>Spécifications matérielles
+                            <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                <i class="bi bi-cpu me-1" style="color: var(--primary);"></i>Spécifications matérielles
                             </h6>
                         </div>
 
@@ -803,8 +1031,8 @@
 
                         <!-- Réseau et OS -->
                         <div class="col-12 mt-2 mb-2">
-                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                <i class="bi bi-wifi me-1 text-primary"></i>Réseau et Système
+                            <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                <i class="bi bi-wifi me-1" style="color: var(--primary);"></i>Réseau et Système
                             </h6>
                         </div>
 
@@ -831,8 +1059,8 @@
 
                         <!-- Organisation -->
                         <div class="col-12 mt-2 mb-2">
-                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                <i class="bi bi-building me-1 text-primary"></i>Organisation
+                            <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                <i class="bi bi-building me-1" style="color: var(--primary);"></i>Organisation
                             </h6>
                         </div>
 
@@ -853,8 +1081,8 @@
 
                         <!-- Dates importantes -->
                         <div class="col-12 mt-2 mb-2">
-                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                <i class="bi bi-calendar me-1 text-primary"></i>Dates importantes
+                            <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                <i class="bi bi-calendar me-1" style="color: var(--primary);"></i>Dates importantes
                             </h6>
                         </div>
 
@@ -872,8 +1100,8 @@
 
                         <!-- Notes -->
                         <div class="col-12 mt-2 mb-2">
-                            <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                <i class="bi bi-sticky me-1 text-primary"></i>Notes et informations
+                            <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                <i class="bi bi-sticky me-1" style="color: var(--primary);"></i>Notes et informations
                             </h6>
                             <textarea wire:model="notes" class="form-control form-control-sm" rows="3"
                                       placeholder="Informations supplémentaires..."></textarea>
@@ -909,7 +1137,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="fas fa-info-circle me-2"></i>Détails de l'Ordinateur
+                        <i class="fas fa-info-circle me-2" style="color: var(--primary);"></i>Détails de l'Ordinateur
                     </h5>
                     <button type="button" class="btn-close" wire:click="closeDetailsModal"></button>
                 </div>
@@ -918,17 +1146,17 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-laptop me-1"></i>Nom</strong>
+                                    <strong class="small"><i class="fas fa-laptop me-1" style="color: var(--primary);"></i>Nom</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->nom }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-building me-1"></i>Entité</strong>
+                                    <strong class="small"><i class="fas fa-building me-1" style="color: var(--primary);"></i>Entité</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->entite ?? 'Non spécifiée' }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-circle me-1"></i>Statut</strong>
+                                    <strong class="small"><i class="fas fa-circle me-1" style="color: var(--primary);"></i>Statut</strong>
                                     <p class="mb-0">
                                         @php
                                             $statusClasses = [
@@ -945,39 +1173,39 @@
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-industry me-1"></i>Fabricant</strong>
+                                    <strong class="small"><i class="fas fa-industry me-1" style="color: var(--primary);"></i>Fabricant</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->fabricant ?? 'Non spécifié' }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-barcode me-1"></i>Numéro de série</strong>
+                                    <strong class="small"><i class="fas fa-barcode me-1" style="color: var(--primary);"></i>Numéro de série</strong>
                                     <p class="mb-0 small font-monospace">{{ $selectedOrdinateur->numero_serie ?? 'Non renseigné' }}</p>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-cube me-1"></i>Modèle</strong>
+                                    <strong class="small"><i class="fas fa-cube me-1" style="color: var(--primary);"></i>Modèle</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->modele ?? 'Non spécifié' }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-network-wired me-1"></i>Adresse IP</strong>
+                                    <strong class="small"><i class="fas fa-network-wired me-1" style="color: var(--primary);"></i>Adresse IP</strong>
                                     <p class="mb-0 small font-monospace">{{ $selectedOrdinateur->reseau_ip ?? 'Non configurée' }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fab fa-windows me-1"></i>Version OS</strong>
+                                    <strong class="small"><i class="fab fa-windows me-1" style="color: var(--primary);"></i>Version OS</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->os_version ?? 'Non spécifié' }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-users me-1"></i>Utilisateur principal</strong>
+                                    <strong class="small"><i class="fas fa-users me-1" style="color: var(--primary);"></i>Utilisateur principal</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->utilisateur->name ?? 'Non attribué' }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-user me-1"></i>Usager secondaire</strong>
+                                    <strong class="small"><i class="fas fa-user me-1" style="color: var(--primary);"></i>Usager secondaire</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->usager->name ?? 'Non attribué' }}</p>
                                 </div>
                             </div>
@@ -994,9 +1222,9 @@
                         @if($liaisonsOrdinateur->count() > 0)
                             <div class="row mt-3">
                                 <div class="col-12">
-                                    <hr>
-                                    <h6 class="fw-semibold mb-2">
-                                        <i class="bi bi-people me-1 text-primary"></i> 
+                                    <hr style="border-color: rgba(91, 196, 191, 0.15);">
+                                    <h6 class="fw-semibold mb-2" style="color: var(--primary-dark);">
+                                        <i class="bi bi-people me-1" style="color: var(--primary);"></i> 
                                         Utilisateurs liés
                                     </h6>
                                     <div class="table-responsive">
@@ -1005,7 +1233,7 @@
                                                 @foreach($liaisonsOrdinateur as $liaison)
                                                 <tr>
                                                     <td class="small">
-                                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($liaison->utilisateur->nom ?? 'U') }}&size=20&background=0D6EFD&color=fff" 
+                                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($liaison->utilisateur->nom ?? 'U') }}&size=20&background=5BC4BF&color=fff" 
                                                              class="rounded-circle me-1" width="16" height="16" alt="">
                                                         {{ $liaison->utilisateur->nom ?? 'Utilisateur' }}
                                                     </td>
@@ -1032,12 +1260,12 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-calendar-plus me-1"></i>Date de création</strong>
+                                    <strong class="small"><i class="fas fa-calendar-plus me-1" style="color: var(--primary);"></i>Date de création</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->created_at->format('d/m/Y à H:i') }}</p>
                                 </div>
 
                                 <div class="detail-item mb-2">
-                                    <strong class="small"><i class="fas fa-calendar-check me-1"></i>Dernière modification</strong>
+                                    <strong class="small"><i class="fas fa-calendar-check me-1" style="color: var(--primary);"></i>Dernière modification</strong>
                                     <p class="mb-0 small">{{ $selectedOrdinateur->updated_at->format('d/m/Y à H:i') }}</p>
                                 </div>
                             </div>
@@ -1077,7 +1305,7 @@
                 </div>
                 <div class="modal-body p-4 text-center">
                     <div class="mb-3">
-                        <i class="bi bi-trash3 text-danger" style="font-size: 3rem;"></i>
+                        <i class="bi bi-trash3" style="color: #ef4444; font-size: 3rem;"></i>
                     </div>
                     @if($isBulkDelete)
                         <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer les <strong>{{ count($selectedOrdinateurs) }}</strong> ordinateurs sélectionnés ?</p>
@@ -1107,13 +1335,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-file-earmark-arrow-up me-2"></i>Importer des Ordinateurs
+                        <i class="bi bi-file-earmark-arrow-up me-2" style="color: var(--primary);"></i>Importer des Ordinateurs
                     </h5>
                     <button type="button" class="btn-close" wire:click="closeImportModal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-info small">
-                        <i class="bi bi-info-circle me-2"></i>
+                        <i class="bi bi-info-circle me-2" style="color: var(--primary);"></i>
                         Formats supportés: CSV, TXT. Taille max: 10MB
                     </div>
                     
@@ -1166,13 +1394,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-columns me-2"></i>Mapping des Colonnes
+                        <i class="bi bi-columns me-2" style="color: var(--primary);"></i>Mapping des Colonnes
                     </h5>
                     <button type="button" wire:click="cancelImport" class="btn-close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-info small">
-                        <i class="bi bi-info-circle me-2"></i>
+                        <i class="bi bi-info-circle me-2" style="color: var(--primary);"></i>
                         Associez les colonnes de votre fichier aux champs de la base de données.
                     </div>
 
@@ -1245,13 +1473,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="bi bi-check-circle me-2"></i>Aperçu des Données Importées
+                        <i class="bi bi-check-circle me-2" style="color: var(--primary);"></i>Aperçu des Données Importées
                     </h5>
                     <button type="button" wire:click="cancelImport" class="btn-close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-success small">
-                        <i class="bi bi-info-circle me-2"></i>
+                        <i class="bi bi-info-circle me-2" style="color: #10b981;"></i>
                         {{ $importSuccessCount }} enregistrement(s) prêt(s) à être importés.
                         @if($importErrors && count($importErrors) > 0)
                         <br><strong>{{ count($importErrors) }} erreur(s) détectée(s):</strong>

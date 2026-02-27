@@ -11,76 +11,56 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('liaison_equipements', function (Blueprint $table) {
+       Schema::create('liaison_equipements', function (Blueprint $table) {
 
-            $table->id();
+    $table->id();
 
-            // 🔗 Utilisateur lié
-            $table->unsignedBigInteger('utilisateur_id');
+    $table->foreignId('utilisateur_id')
+        ->constrained('utilisateurs')
+        ->cascadeOnDelete();
 
-            // 🔖 Type d’équipement (ordinateur, telephone, flotte, etc.)
-            $table->string('type');
+    $table->string('type');
 
-            // 🖥️ Équipements (nullable car un seul sera utilisé selon le type)
-            $table->unsignedBigInteger('ordinateur_id')->nullable();
-            $table->unsignedBigInteger('telephone_id')->nullable();
-            $table->unsignedBigInteger('flotte_id')->nullable();
-            $table->unsignedBigInteger('imprimante_id')->nullable();
-            $table->unsignedBigInteger('moniteur_id')->nullable();
-            $table->unsignedBigInteger('peripherique_id')->nullable();
+    $table->foreignId('ordinateur_id')
+        ->nullable()
+        ->constrained('ordinateurs')
+        ->nullOnDelete();
 
-            // 📅 Dates de gestion
-            $table->date('date_attribution')->nullable();
-            $table->date('date_retour_prevue')->nullable();
-            $table->date('date_retour_effectif')->nullable();
+    $table->foreignId('telephone_id')
+        ->nullable()
+        ->constrained('telephones')
+        ->nullOnDelete();
 
-            // 📝 Informations supplémentaires
-            $table->text('notes')->nullable();
+    $table->foreignId('flotte_id')
+        ->nullable()
+        ->constrained('flottes')
+        ->nullOnDelete();
 
-            // 🔄 Statut de la liaison (actif, retourné, perdu, etc.)
-            $table->string('statut')->default('actif');
+    $table->foreignId('imprimante_id')
+        ->nullable()
+        ->constrained('imprimantes')
+        ->nullOnDelete();
 
-            $table->timestamps();
+    $table->foreignId('moniteur_id')
+        ->nullable()
+        ->constrained('moniteurs')
+        ->nullOnDelete();
 
-            // ==============================
-            // 🔐 Clés étrangères
-            // ==============================
+    $table->foreignId('peripherique_id')
+        ->nullable()
+        ->constrained('peripheriques')
+        ->nullOnDelete();
 
-            $table->foreign('utilisateur_id')
-                ->references('id')
-                ->on('utilisateurs')
-                ->cascadeOnDelete();
+    $table->date('date_attribution')->nullable();
+    $table->date('date_retour_prevue')->nullable();
+    $table->date('date_retour_effectif')->nullable();
 
-            $table->foreign('ordinateur_id')
-                ->references('id')
-                ->on('ordinateurs')
-                ->nullOnDelete();
+    $table->text('notes')->nullable();
+    $table->string('statut')->default('actif');
 
-            $table->foreign('telephone_id')
-                ->references('id')
-                ->on('telephones')
-                ->nullOnDelete();
-
-            $table->foreign('flotte_id')
-                ->references('id')
-                ->on('flottes')
-                ->nullOnDelete();
-
-            $table->foreign('imprimante_id')
-                ->references('id')
-                ->on('imprimantes')
-                ->nullOnDelete();
-
-            $table->foreign('moniteur_id')
-                ->references('id')
-                ->on('moniteurs')
-                ->nullOnDelete();
-
-            $table->foreign('peripherique_id')
-                ->references('id')
-                ->on('peripheriques')
-                ->nullOnDelete();
-        });
+    $table->timestamps();
+});
+        
     }
 
     /**

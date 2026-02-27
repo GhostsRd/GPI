@@ -172,4 +172,20 @@ class Activites extends Component
             'activities' => $paginatedActivities
         ])->layout('layouts.plain');
     }
+
+    public function export($format = 'excel')
+    {
+        if ($format === 'pdf') {
+            $this->dispatchBrowserEvent('print-activities');
+            return;
+        }
+
+        $activities = $this->unifiedActivities;
+        $fileName = 'export_activites_' . now()->format('Y-m-d_H-i-s') . '.xlsx';
+
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new \App\Exports\ActivitesExport($activities), 
+            $fileName
+        );
+    }
 }

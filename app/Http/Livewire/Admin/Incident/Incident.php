@@ -98,13 +98,38 @@ class Incident extends Component
         $this->selectAll = false;
     }
 
-    public function exportIncidents()
+    public function exportIncidents($format = 'excel')
     {
-        // Implémentez l'exportation selon vos besoins
-        $this->dispatchBrowserEvent('show-toast', [
-            'type' => 'info',
-            'message' => 'Fonction d\'export à implémenter.'
-        ]);
+        if ($format === 'pdf') {
+            $this->dispatchBrowserEvent('print-incidents');
+            return;
+        }
+
+        $incidents = IncidentModel::query()
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('id', 'like', '%' . $this->search . '%')
+                      ->orWhereHas('utilisateur', function ($q) {
+                          $q->where('nom', 'like', '%' . $this->search . '%');
+                      });
+                });
+            })
+            ->when($this->statutFilter !== '', function ($query) {
+                $query->where('statut', $this->statutFilter);
+            })
+            ->when($this->typeMateriel, function ($query) {
+                $query->where('equipement_type', $this->typeMateriel);
+            })
+            ->with(['utilisateur'])
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->get();
+
+        $fileName = 'export_incidents_' . now()->format('Y-m-d_H-i-s') . '.xlsx';
+
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new \App\Exports\IncidentsExport($incidents), 
+            $fileName
+        );
     }
 
     public function confirmDelete($id)

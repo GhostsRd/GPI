@@ -5,6 +5,16 @@
             <div class="card border-0 shadow-lg fade-in" style="border-radius: 24px; animation-delay: 0.1s; background: var(--card-bg);">
                 <div class="card-header border-0 bg-transparent py-4 px-4">
                     <!-- Header with title, filters and switch -->
+                    
+                    <!-- Print only header -->
+                    <div class="print-only-header">
+                        <div class="print-header-top">
+                            <div class="print-entity">Gestion de Parc Informatique (GPI)</div>
+                            <div class="print-date">Imprimé le : {{ now()->format('d/m/Y H:i') }}</div>
+                        </div>
+                        <h1 class="print-title">Journal des Activités</h1>
+                    </div>
+
                     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-4">
                         <!-- Left side: Title and counter -->
                         <div class="d-flex align-items-center">
@@ -39,6 +49,27 @@
                                     <option value="checkout">🚪 Checkouts uniquement</option>
                                 </select>
                             </div>
+
+                                <div class="dropdown">
+                                <button class="btn btn-success dropdown-toggle border-0 shadow-sm d-flex align-items-center gap-2 px-4 h-45" 
+                                        type="button" id="dropdownExport" data-bs-toggle="dropdown" aria-expanded="false" 
+                                        style="border-radius: 50px; background: #198754;">
+                                    <i class="fas fa-file-export"></i>
+                                    <span class="fw-600">Exporter</span>
+                                </button>
+                                <ul class="dropdown-menu border-0 shadow-lg p-2" aria-labelledby="dropdownExport" style="border-radius: 15px;">
+                                    <li>
+                                        <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="export('excel')" style="border-radius: 10px;">
+                                            <i class="fas fa-file-excel text-success"></i> Excel (.csv)
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="export('pdf')" style="border-radius: 10px;">
+                                            <i class="fas fa-file-pdf text-danger"></i> PDF (Imprimer)
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
                         <!-- Right side: Active only switch -->
@@ -51,22 +82,25 @@
                     </div>
                 </div>
                 
-                <div class="table-responsive px-2">
+                <div class="table-responsive px-2" id="printableActivities">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="bg-light bg-opacity-50">
                             <tr>
+                                <th class="ps-2 py-3 border-0 text-muted small fw-700 uppercase row-number-header" style="letter-spacing: 0.05em; width: 40px;">N°</th>
                                 <th class="ps-4 py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Date & Heure</th>
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Type</th>
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Description</th>
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Utilisateur</th>
-                                <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Assigné à</th>
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Statut</th>
-                                <th class="text-end pe-4 py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Actions</th>
+                                <th class="text-end pe-4 py-3 border-0 text-muted small fw-700 uppercase no-print" style="letter-spacing: 0.05em;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($activities as $activity)
+                            @forelse($activities as $index => $activity)
                             <tr style="transition: all 0.2s ease;">
+                                <td class="ps-2 text-center fw-bold row-number">
+                                    {{ $index + 1 }}
+                                </td>
                                 <td class="ps-4">
                                     <div class="d-flex align-items-center">
                                         <div class="date-badge me-2">
@@ -104,7 +138,7 @@
                                         {{ $activity['status'] }}
                                     </span>
                                 </td>
-                                <td class="text-end pe-4">
+                                <td class="text-end pe-4 no-print">
                                     <button class="btn btn-icon-only border-0 bg-light rounded-circle shadow-sm" style="width: 34px; height: 34px; transition: all 0.3s ease;" title="Voir les détails">
                                         <i class="fas fa-eye text-muted small"></i>
                                     </button>
@@ -131,7 +165,7 @@
                 </div>
 
                 @if($activities->hasPages())
-                <div class="card-footer border-0 bg-transparent py-4 px-4">
+                <div class="card-footer border-0 bg-transparent py-4 px-4 no-print">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                         <div class="text-muted small">
                             Affichage de {{ $activities->firstItem() ?? 0 }} à {{ $activities->lastItem() ?? 0 }} sur {{ $activities->total() }} activités
@@ -157,7 +191,156 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
+    <script>
+        window.addEventListener('print-activities', event => {
+            window.print();
+        });
+    </script>
+
     <style>
+        .print-only-header {
+            display: none;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-family: 'Times New Roman', serif;
+                padding: 10mm;
+            }
+
+            .print-only-header {
+                display: block !important;
+                width: 100%;
+            }
+
+            .form-logo {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .form-logo img {
+                height: 60px;
+                object-fit: contain;
+            }
+
+            .form-title-box {
+                border: 2px solid #000;
+                text-align: center;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .form-title-box h1 {
+                margin: 0;
+                font-size: 1.8rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .form-header-blocks {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                border: 1px solid #000;
+                margin-bottom: 20px;
+            }
+
+            .header-block {
+                padding: 5px 10px;
+                border: 0.5px solid #000;
+                font-size: 0.85rem;
+                min-height: 80px;
+            }
+
+            .block-title {
+                text-decoration: underline;
+                font-weight: 700;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .block-content {
+                line-height: 1.4;
+            }
+
+            .dotted-line {
+                border-bottom: 1px dotted #000;
+                display: inline-block;
+                min-width: 100px;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #printableActivities, #printableActivities *, .print-only-header, .print-only-header * {
+                visibility: visible;
+            }
+
+            #printableActivities {
+                position: absolute;
+                left: 10mm;
+                right: 10mm;
+                top: 5mm;
+                width: calc(100% - 20mm);
+                margin-top: 180px; /* Offset for absolute positioning of header content if needed, but table follows flow below */
+            }
+
+            /* Restore flow for printing instead of absolute overlay if possible */
+            #printableActivities {
+                position: static !important;
+                margin-top: 0 !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                border: 2px solid #000 !important;
+            }
+
+            .table th {
+                background-color: #e9ecef !important;
+                color: #000 !important;
+                border: 1px solid #000 !important;
+                padding: 8px 4px !important;
+                font-size: 0.8rem !important;
+                text-transform: uppercase;
+            }
+
+            .table td {
+                border: 1px solid #000 !important;
+                padding: 6px 4px !important;
+                font-size: 0.8rem !important;
+                vertical-align: middle !important;
+            }
+
+            .row-number {
+                width: 30px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .badge {
+                border: none !important;
+                background: transparent !important;
+                color: #000 !important;
+                padding: 0 !important;
+                font-weight: normal !important;
+            }
+
+            .date-badge {
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+        }
+
         .fade-in {
             animation: fadeIn 0.4s ease-out forwards;
             opacity: 0;

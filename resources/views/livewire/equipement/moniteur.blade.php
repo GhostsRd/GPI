@@ -2,49 +2,77 @@
     <!-- Styles CSS -->
     <style>
         :root {
-            --dark-green: #3D3E14;
-            --turquoise: #66C0B7;
-            --off-white: #EDEDE8;
-            --orange: #E35E2F;
-            --soft-green: #83AF4B;
+            --primary: #5BC4BF !important;
+            --primary-dark: #4AA39E !important;
+            --primary-light: #7FD9D4 !important;
+            --primary-soft: rgba(91, 196, 191, 0.1) !important;
+            --primary-50: #F0FAF9 !important;
+            --white: #FFFFFF !important;
+            --gray-50: #F8FAFC !important;
+            --gray-100: #F1F5F9 !important;
+            --gray-200: #E2E8F0 !important;
+            --gray-300: #CBD5E1 !important;
+            --gray-400: #94A3B8 !important;
+            --gray-500: #64748B !important;
+            --gray-600: #475569 !important;
+            --gray-700: #334155 !important;
+            --shadow-sm: 0 1px 3px rgba(91, 196, 191, 0.08);
+            --shadow-md: 0 4px 6px rgba(91, 196, 191, 0.1);
+            --shadow-lg: 0 10px 15px rgba(91, 196, 191, 0.15);
+            --border-light: rgba(91, 196, 191, 0.15);
+            --border-medium: rgba(91, 196, 191, 0.25);
         }
         
         .dashboard-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.05);
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
             transition: all 0.2s ease;
         }
         
         .dashboard-card:hover {
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
         }
         
         .stat-card {
-            padding: 16px;
+            padding: 20px;
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
         }
         
         .stat-icon-lg {
             width: 60px;
             height: 60px;
-            border-radius: 12px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             flex-shrink: 0;
+            background: var(--primary-soft);
+            color: var(--primary);
+            box-shadow: 0 2px 8px var(--primary-soft);
+            transition: all 0.2s ease;
         }
         
-        .icon-primary { background: rgba(131, 175, 79, 0.1); color: var(--soft-green); }
-        .icon-success { background: rgba(102, 192, 183, 0.1); color: var(--turquoise); }
-        .icon-warning { background: rgba(227, 94, 47, 0.1); color: var(--orange); }
-        .icon-danger { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
+        .stat-icon-lg:hover {
+            transform: scale(1.05);
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .icon-primary, .icon-success, .icon-warning, .icon-danger, .icon-info {
+            background: var(--primary-soft) !important;
+            color: var(--primary) !important;
+        }
         
         .stat-number {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.75rem;
+            font-weight: 700;
             margin-bottom: 0;
+            color: var(--primary-dark);
         }
         
         .search-box {
@@ -53,52 +81,163 @@
         
         .search-box i {
             position: absolute;
-            left: 10px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: #6c757d;
+            color: var(--primary);
             font-size: 0.9rem;
+            z-index: 10;
         }
         
         .search-box .form-control {
-            padding-left: 30px;
+            padding-left: 35px;
             font-size: 0.875rem;
+            border-color: var(--border-light) !important;
+        }
+        
+        .search-box .form-control:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px var(--primary-soft) !important;
         }
         
         .badge-sm {
             font-size: 0.7rem;
-            padding: 0.25em 0.5em;
+            padding: 0.4em 0.8em;
+            border-radius: 30px;
         }
         
         .table th {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            color: #495057;
-            border-bottom: 1px solid #dee2e6;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--border-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .table td {
             font-size: 0.8rem;
             vertical-align: middle;
+            color: var(--gray-600);
+        }
+        
+        .table tbody tr:hover {
+            background: var(--primary-50);
         }
         
         .btn {
             font-size: 0.8rem;
+            border-radius: 8px !important;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+            color: var(--white) !important;
+            box-shadow: 0 2px 8px var(--primary-soft);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--primary-soft);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary) !important;
+            border-color: var(--border-medium) !important;
+            background: var(--white) !important;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary) !important;
+            color: var(--white) !important;
+            border-color: var(--primary) !important;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-info, .btn-outline-success, .btn-outline-secondary {
+            color: var(--primary) !important;
+            border-color: var(--border-light) !important;
+            background: var(--white) !important;
+        }
+        
+        .btn-outline-info:hover, .btn-outline-success:hover, .btn-outline-secondary:hover {
+            background: var(--primary-soft) !important;
+            color: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+        
+        .btn-danger {
+            background: #EF4444 !important;
+            border-color: #EF4444 !important;
+            color: var(--white) !important;
+        }
+        
+        .btn-danger:hover {
+            background: #DC2626 !important;
+            border-color: #DC2626 !important;
+        }
+        
+        .btn-outline-danger {
+            color: #EF4444 !important;
+            border-color: rgba(239, 68, 68, 0.3) !important;
+        }
+        
+        .btn-outline-danger:hover {
+            background: #EF4444 !important;
+            color: var(--white) !important;
+            border-color: #EF4444 !important;
+        }
+        
+        .btn-outline-warning {
+            color: #F59E0B !important;
+            border-color: rgba(245, 158, 11, 0.3) !important;
+        }
+        
+        .btn-outline-warning:hover {
+            background: #F59E0B !important;
+            color: var(--white) !important;
         }
         
         .form-label {
             font-size: 0.8rem;
             font-weight: 500;
+            color: var(--gray-600);
+            margin-bottom: 0.25rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px !important;
+            border: 1px solid var(--border-light) !important;
+            font-size: 0.875rem !important;
+            color: var(--gray-700) !important;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px var(--primary-soft) !important;
+            outline: none !important;
+        }
+        
+        .input-group-text {
+            background: var(--primary-50) !important;
+            border: 1px solid var(--border-light) !important;
+            color: var(--primary) !important;
+            border-radius: 8px 0 0 8px !important;
         }
         
         .modal-title {
             font-size: 1.1rem;
             font-weight: 600;
+            color: var(--primary-dark);
         }
         
         .detail-item {
-            padding: 0.25rem 0;
-            border-bottom: 1px solid #f8f9fa;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-light);
         }
         
         .detail-item:last-child {
@@ -106,10 +245,13 @@
         }
         
         .detail-item strong {
-            color: #495057;
+            color: var(--primary-dark);
             display: flex;
             align-items: center;
-            margin-bottom: 0.125rem;
+            margin-bottom: 0.25rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .modal-backdrop {
@@ -120,49 +262,153 @@
             z-index: 1050;
         }
         
-        .search-box input:focus {
-            background-color: white !important;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+        .modal-content {
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal-header {
+            background: var(--primary-50);
+            border-bottom: 1px solid var(--border-light);
+            border-radius: 16px 16px 0 0;
+            padding: 1rem 1.5rem;
+        }
+        
+        .modal-header.bg-danger {
+            background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+            color: var(--white);
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--border-light);
+            background: var(--primary-50);
+            border-radius: 0 0 16px 16px;
+            padding: 1rem 1.5rem;
+        }
+        
+        .progress {
+            background-color: var(--primary-50);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-bar.bg-primary { background: var(--primary) !important; }
+        .progress-bar.bg-success { background: #10B981 !important; }
+        .progress-bar.bg-warning { background: #F59E0B !important; }
+        .progress-bar.bg-info { background: #3B82F6 !important; }
+        .progress-bar.bg-danger { background: #EF4444 !important; }
+
+        .badge {
+            font-weight: 500;
+            border-radius: 30px;
+            border: 1px solid transparent;
+        }
+        
+        .badge.bg-success { background: rgba(16, 185, 129, 0.15) !important; color: #065F46 !important; border-color: rgba(16, 185, 129, 0.3); }
+        .badge.bg-info { background: rgba(91, 196, 191, 0.15) !important; color: var(--primary-dark) !important; border-color: var(--border-medium); }
+        .badge.bg-warning { background: rgba(245, 158, 11, 0.15) !important; color: #92400E !important; border-color: rgba(245, 158, 11, 0.3); }
+        .badge.bg-danger { background: rgba(239, 68, 68, 0.15) !important; color: #B91C1C !important; border-color: rgba(239, 68, 68, 0.3); }
+        .badge.bg-secondary { background: rgba(100, 116, 139, 0.15) !important; color: #475569 !important; border-color: rgba(100, 116, 139, 0.3); }
+        .badge.bg-light { background: var(--white) !important; color: var(--primary) !important; border-color: var(--border-medium); }
+
+        .text-primary { color: var(--primary) !important; }
+        .text-success { color: #10B981 !important; }
+        .text-warning { color: #F59E0B !important; }
+        .text-info { color: #3B82F6 !important; }
+        .text-danger { color: #EF4444 !important; }
+
+        .bg-light { background-color: var(--primary-50) !important; }
+        .border-top { border-top-color: var(--border-light) !important; }
+        .border-bottom { border-bottom-color: var(--border-light) !important; }
+
+        .checkbox-modern {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            accent-color: var(--primary);
+            cursor: pointer;
         }
 
-        .input-group:focus-within {
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        .font-mono {
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Pagination */
+        .pagination .page-link {
+            color: var(--primary);
+            border-color: var(--border-light);
             border-radius: 8px;
+            margin: 0 2px;
         }
 
-        .form-select:focus, .form-control:focus {
-            box-shadow: none !important;
-            background-color: white !important;
+        .pagination .page-link:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-color: var(--primary);
         }
 
-        .bg-light {
-            background-color: #f8f9fa !important;
+        .pagination .active .page-link {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--white);
         }
 
-        .rounded-2 {
-            border-radius: 8px !important;
+        /* Alertes */
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #065F46;
         }
 
-        .btn {
-            border-radius: 6px !important;
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #B91C1C;
         }
 
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #92400E;
+        }
+
+        .alert-info {
+            background: var(--primary-soft);
+            border-color: var(--border-medium);
+            color: var(--primary-dark);
+        }
+
+        /* Animation pour les badges de filtre */
         .badge {
             transition: all 0.2s ease;
         }
 
         .badge:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px var(--primary-soft);
         }
 
-        .checkbox-modern {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
+        /* Bouton de fermeture */
+        .btn-close:hover {
+            background-color: var(--primary-soft);
+            opacity: 1;
         }
 
-        .font-mono {
-            font-family: 'Courier New', monospace;
+        /* Form check */
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem var(--primary-soft);
         }
 
         @media (max-width: 768px) {
@@ -175,7 +421,6 @@
                 display: inline !important;
             }
         }
-        
     </style>
 
     <!-- Contenu principal -->
@@ -185,8 +430,8 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
-                        <h1 class="h4 fw-semibold text-dark mb-0">
-                            <i class="bi bi-display me-2 text-primary"></i> Gestion des Moniteurs
+                        <h1 class="h4 fw-semibold mb-0" style="color: var(--primary-dark);">
+                            <i class="bi bi-display me-2" style="color: var(--primary);"></i> Gestion des Moniteurs
                         </h1>
                         <p class="text-muted small">Inventaire complet des écrans et moniteurs</p>
                     </div>
@@ -237,13 +482,13 @@
         <div class="dashboard-card stat-card h-100">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="flex-grow-1">
-                    <h3 class="stat-number text-primary mb-1">{{ $stats['total'] ?? 0 }}</h3>
+                    <h3 class="stat-number mb-1" style="color: var(--primary);">{{ $stats['total'] ?? 0 }}</h3>
                     <p class="text-muted small mb-0 fw-medium">Total Moniteurs</p>
                     <div class="progress mt-2" style="height: 4px;">
                         <div class="progress-bar bg-primary" style="width: 100%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg icon-primary ms-3">
+                <div class="stat-icon-lg ms-3">
                     <i class="bi bi-display"></i>
                 </div>
             </div>
@@ -262,7 +507,7 @@
                              style="width: {{ $stats['total'] > 0 ? ($stats['en_service'] / $stats['total'] * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg icon-success ms-3">
+                <div class="stat-icon-lg ms-3" style="color: #10B981;">
                     <i class="bi bi-check-circle-fill"></i>
                 </div>
             </div>
@@ -281,7 +526,7 @@
                              style="width: {{ $stats['total'] > 0 ? ($stats['en_reparation'] / $stats['total'] * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg icon-warning ms-3">
+                <div class="stat-icon-lg ms-3" style="color: #F59E0B;">
                     <i class="bi bi-tools"></i>
                 </div>
             </div>
@@ -300,7 +545,7 @@
                              style="width: {{ $stats['total'] > 0 ? ($stats['en_stock'] / $stats['total'] * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg icon-info ms-3">
+                <div class="stat-icon-lg ms-3" style="color: #3B82F6;">
                     <i class="bi bi-box-seam"></i>
                 </div>
             </div>
@@ -319,7 +564,7 @@
                              style="width: {{ $stats['total'] > 0 ? ($stats['hors_service'] / $stats['total'] * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg icon-danger ms-3">
+                <div class="stat-icon-lg ms-3" style="color: #EF4444;">
                     <i class="bi bi-x-circle-fill"></i>
                 </div>
             </div>
@@ -345,7 +590,7 @@
                              style="width: {{ $taux }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg {{ $taux >= 80 ? 'icon-success' : ($taux >= 60 ? 'icon-warning' : 'icon-danger') }} ms-3">
+                <div class="stat-icon-lg ms-3 {{ $taux >= 80 ? 'text-success' : ($taux >= 60 ? 'text-warning' : 'text-danger') }}">
                     <i class="bi bi-speedometer2"></i>
                 </div>
             </div>
@@ -357,7 +602,7 @@
         <!-- Filtres avec boutons Import/Export -->
         <div class="dashboard-card p-3 mb-3">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-semibold mb-0 text-dark small">Filtres et Actions</h6>
+                <h6 class="fw-semibold mb-0 small" style="color: var(--primary-dark);">Filtres et Actions</h6>
                 <div class="d-flex gap-2">
                     <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm" title="Réinitialiser les filtres">
                         <i class="bi bi-arrow-clockwise"></i>
@@ -371,9 +616,9 @@
             <div class="row g-3 align-items-end" id="filters-container">
                 <!-- Recherche -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Recherche</label>
+                    <label class="form-label small fw-medium">Recherche</label>
                     <div class="search-box position-relative">
-                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted small"></i>
+                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-2 small"></i>
                         <input type="text" wire:model.live.debounce.300ms="search"
                                class="form-control form-control-sm ps-4 border-0 bg-light rounded-2"
                                placeholder="Nom, n° série, fabricant...">
@@ -382,9 +627,9 @@
 
                 <!-- Statut -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Statut</label>
+                    <label class="form-label small fw-medium">Statut</label>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-0 text-muted">
+                        <span class="input-group-text border-0">
                             <i class="fas fa-circle"></i>
                         </span>
                         <select wire:model.live="statut" class="form-select border-0 bg-light rounded-2">
@@ -398,9 +643,9 @@
 
                 <!-- Entité -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Entité</label>
+                    <label class="form-label small fw-medium">Entité</label>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-0 text-muted">
+                        <span class="input-group-text border-0">
                             <i class="fas fa-building"></i>
                         </span>
                         <select wire:model.live="entite" class="form-select border-0 bg-light rounded-2">
@@ -414,9 +659,9 @@
 
                 <!-- Fabricant -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium text-muted">Fabricant</label>
+                    <label class="form-label small fw-medium">Fabricant</label>
                     <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-0 text-muted">
+                        <span class="input-group-text border-0">
                             <i class="fas fa-industry"></i>
                         </span>
                         <select wire:model.live="fabricant" class="form-select border-0 bg-light rounded-2">
@@ -431,11 +676,11 @@
                 <!-- Boutons d'action -->
                 <div class="col-md-4">
                     <div class="d-flex gap-2 flex-wrap justify-content-end">
-                        <button wire:click="openImportModal" class="btn btn-outline-info btn-sm d-flex align-items-center">
+                        <button wire:click="openImportModal" class="btn btn-outline-primary btn-sm d-flex align-items-center">
                             <i class="fas fa-file-import me-1"></i>
                             <span class="d-none d-sm-inline">Importer</span>
                         </button>
-                        <button wire:click="exportToCsv" class="btn btn-outline-success btn-sm d-flex align-items-center">
+                        <button wire:click="exportToCsv" class="btn btn-outline-primary btn-sm d-flex align-items-center">
                             <i class="fas fa-file-export me-1"></i>
                             <span class="d-none d-sm-inline">Exporter</span>
                         </button>
@@ -453,25 +698,25 @@
                 <div class="d-flex align-items-center gap-2 flex-wrap">
                     <span class="text-muted small">Filtres actifs :</span>
                     @if($search)
-                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                    <span class="badge bg-light d-flex align-items-center">
                         Recherche: "{{ $search }}"
                         <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
                     </span>
                     @endif
                     @if($statut)
-                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                    <span class="badge bg-light d-flex align-items-center">
                         Statut: {{ $statut }}
                         <button wire:click="$set('statut', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
                     </span>
                     @endif
                     @if($entite)
-                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                    <span class="badge bg-light d-flex align-items-center">
                         Entité: {{ $entite }}
                         <button wire:click="$set('entite', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
                     </span>
                     @endif
                     @if($fabricant)
-                    <span class="badge bg-light text-dark border small d-flex align-items-center">
+                    <span class="badge bg-light d-flex align-items-center">
                         Fabricant: {{ $fabricant }}
                         <button wire:click="$set('fabricant', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
                     </span>
@@ -484,7 +729,7 @@
         <!-- Tableau -->
         <div class="dashboard-card p-3">
             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                <h5 class="fw-semibold mb-0">Liste des Moniteurs ({{ $moniteurs->total() }})</h5>
+                <h5 class="fw-semibold mb-0" style="color: var(--primary-dark);">Liste des Moniteurs ({{ $moniteurs->total() }})</h5>
                 @if(!empty($selectedMoniteurs))
                 <button wire:click="confirmBulkDelete" class="btn btn-danger btn-sm" title="Supprimer les moniteurs sélectionnés">
                     <i class="fas fa-trash me-1"></i>
@@ -505,7 +750,7 @@
                                 @if ($sortField === 'nom')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
                                 @else
-                                    <i class="fas fa-sort text-muted small"></i>
+                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
                                 @endif
                             </th>
                             <th wire:click="sortBy('entite')" style="cursor: pointer;">
@@ -513,7 +758,7 @@
                                 @if ($sortField === 'entite')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
                                 @else
-                                    <i class="fas fa-sort text-muted small"></i>
+                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
                                 @endif
                             </th>
                             <th wire:click="sortBy('statut')" style="cursor: pointer;">
@@ -521,7 +766,7 @@
                                 @if ($sortField === 'statut')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
                                 @else
-                                    <i class="fas fa-sort text-muted small"></i>
+                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
                                 @endif
                             </th>
                             <th>Fabricant</th>
@@ -536,7 +781,7 @@
                                 @if ($sortField === 'updated_at')
                                     <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
                                 @else
-                                    <i class="fas fa-sort text-muted small"></i>
+                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
                                 @endif
                             </th>
                             <th>Actions</th>
@@ -553,9 +798,9 @@
                             </td>
                             <td class="fw-medium small">
                                 <div class="d-flex align-items-center">
-                                    {{ $moniteur->nom }}
+                                    <span style="color: var(--primary-dark);">{{ $moniteur->nom }}</span>
                                     @if($moniteur->commentaires)
-                                        <i class="fas fa-sticky-note text-warning ms-1" title="{{ $moniteur->commentaires }}"></i>
+                                        <i class="fas fa-sticky-note ms-1" style="color: #F59E0B;" title="{{ $moniteur->commentaires }}"></i>
                                     @endif
                                 </div>
                             </td>
@@ -575,17 +820,17 @@
                             </td>
                             <td class="small">{{ $moniteur->fabricant ?? 'N/A' }}</td>
                             <td class="small">{{ $moniteur->modele ?? 'N/A' }}</td>
-                            <td class="small font-monospace">{{ $moniteur->numero_serie ?? 'N/A' }}</td>
+                            <td class="small font-mono">{{ $moniteur->numero_serie ?? 'N/A' }}</td>
                             <td class="small">
                                 @if($moniteur->utilisateur)
-                                    <span class="badge bg-light text-dark border small">{{ $moniteur->utilisateur->nom }}</span>
+                                    <span class="badge bg-light">{{ $moniteur->utilisateur->nom }}</span>
                                 @else
                                     <span class="text-muted small">Non attribué</span>
                                 @endif
                             </td>
                             <td class="small">
                                 @if($moniteur->usager)
-                                    <span class="badge bg-light text-dark border small">{{ $moniteur->usager->nom }}</span>
+                                    <span class="badge bg-light">{{ $moniteur->usager->nom }}</span>
                                 @else
                                     <span class="text-muted small">N/A</span>
                                 @endif
@@ -593,7 +838,7 @@
                             <td class="small">{{ $moniteur->lieu ?? 'N/A' }}</td>
                             <td class="small">
                                 @if($moniteur->type)
-                                    <span class="badge bg-light text-dark border small">{{ $moniteur->type }}</span>
+                                    <span class="badge bg-light">{{ $moniteur->type }}</span>
                                 @else
                                     <span class="text-muted small">N/A</span>
                                 @endif
@@ -603,25 +848,37 @@
     <div class="d-flex gap-1">
         <!-- Bouton Voir Détails -->
         <button wire:click="showDetails({{ $moniteur->id }})"
-                class="btn btn-sm btn-outline-info border-0"
+                class="btn btn-sm border-0"
+                style="color: var(--primary); background: var(--primary-soft); border-radius: 6px;"
+                onmouseover="this.style.background='var(--primary)'; this.style.color='white';"
+                onmouseout="this.style.background='var(--primary-soft)'; this.style.color='var(--primary)';"
                 title="Voir détails">
             <i class="bi bi-eye"></i>
         </button>
         <!-- Bouton Modifier -->
         <button wire:click="edit({{ $moniteur->id }})"
-                class="btn btn-sm btn-outline-primary border-0"
+                class="btn btn-sm border-0"
+                style="color: #F59E0B; background: rgba(245, 158, 11, 0.1); border-radius: 6px;"
+                onmouseover="this.style.background='#F59E0B'; this.style.color='white';"
+                onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.color='#F59E0B';"
                 title="Modifier">
             <i class="bi bi-pencil"></i>
         </button>
         <!-- Bouton Supprimer -->
         <button wire:click="confirmDelete({{ $moniteur->id }})"
-                class="btn btn-sm btn-outline-danger border-0"
+                class="btn btn-sm border-0"
+                style="color: #EF4444; background: rgba(239, 68, 68, 0.1); border-radius: 6px;"
+                onmouseover="this.style.background='#EF4444'; this.style.color='white';"
+                onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='#EF4444';"
                 title="Supprimer">
             <i class="bi bi-trash"></i>
         </button>
         <!-- Bouton Fichiers -->
         <button wire:click="openFileModal({{ $moniteur->id }})"
-                class="btn btn-sm btn-outline-secondary border-0"
+                class="btn btn-sm border-0"
+                style="color: #3B82F6; background: rgba(59, 130, 246, 0.1); border-radius: 6px;"
+                onmouseover="this.style.background='#3B82F6'; this.style.color='white';"
+                onmouseout="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#3B82F6';"
                 title="Gérer les fichiers">
             <i class="bi bi-paperclip"></i>
         </button>
@@ -631,7 +888,7 @@
                     @empty
                         <tr>
                             <td colspan="14" class="text-center py-3">
-                                <i class="fas fa-desktop display-6 text-muted d-block mb-2"></i>
+                                <i class="fas fa-desktop display-6 d-block mb-2" style="color: var(--border-medium);"></i>
                                 <p class="text-muted mb-0 small">Aucun moniteur trouvé</p>
                                 @if($search || $statut || $entite || $fabricant)
                                     <button wire:click="resetFilters" class="btn btn-outline-primary btn-sm mt-2">
@@ -668,7 +925,7 @@
             <div class="modal-content">
                 <div class="modal-header py-2">
                     <h5 class="modal-title small fw-semibold">
-                        <i class="fas {{ $isEditing ? 'fa-edit' : 'fa-plus' }} me-1"></i>
+                        <i class="fas {{ $isEditing ? 'fa-edit' : 'fa-plus' }} me-1" style="color: var(--primary);"></i>
                         {{ $isEditing ? 'Modifier le moniteur' : 'Nouveau Moniteur' }}
                     </h5>
                     <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
@@ -678,8 +935,8 @@
                         <div class="row g-2">
                             <!-- Informations de base -->
                             <div class="col-12 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="fas fa-info-circle me-1 text-primary"></i>Informations de base
+                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                    <i class="fas fa-info-circle me-1" style="color: var(--primary);"></i>Informations de base
                                 </h6>
                             </div>
 
@@ -705,8 +962,8 @@
 
                             <!-- Spécifications techniques -->
                             <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="fas fa-desktop me-1 text-primary"></i>Spécifications techniques
+                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                    <i class="fas fa-desktop me-1" style="color: var(--primary);"></i>Spécifications techniques
                                 </h6>
                             </div>
 
@@ -743,8 +1000,8 @@
 
                             <!-- Organisation -->
                             <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="fas fa-building me-1 text-primary"></i>Organisation
+                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                    <i class="fas fa-building me-1" style="color: var(--primary);"></i>Organisation
                                 </h6>
                             </div>
 
@@ -764,8 +1021,8 @@
 
                             <!-- Attribution utilisateurs -->
                             <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="fas fa-users me-1 text-primary"></i>Attribution utilisateurs
+                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                    <i class="fas fa-users me-1" style="color: var(--primary);"></i>Attribution utilisateurs
                                 </h6>
                             </div>
 
@@ -791,8 +1048,8 @@
 
                             <!-- Notes -->
                             <div class="col-12 mt-2 mb-2">
-                                <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">
-                                    <i class="fas fa-sticky-note me-1 text-primary"></i>Notes et informations
+                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
+                                    <i class="fas fa-sticky-note me-1" style="color: var(--primary);"></i>Notes et informations
                                 </h6>
                                 <textarea wire:model="commentaires" class="form-control form-control-sm" rows="3"
                                           placeholder="Commentaires supplémentaires..."></textarea>
@@ -800,7 +1057,7 @@
                         </div>
                     </div>
                     <div class="modal-footer py-2">
-                        <button type="button" class="btn btn-secondary btn-sm" wire:click="closeModal">Annuler</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeModal">Annuler</button>
                         <button type="submit" class="btn btn-primary btn-sm">
                             <span wire:loading.remove>
                                 <i class="fas {{ $isEditing ? 'fa-check' : 'fa-plus' }} me-1"></i>
@@ -826,7 +1083,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="fas fa-desktop me-2"></i>Détails du Moniteur
+                        <i class="fas fa-desktop me-2" style="color: var(--primary);"></i>Détails du Moniteur
                     </h5>
                     <button type="button" class="btn-close" wire:click="closeDetailsModal"></button>
                 </div>
@@ -834,17 +1091,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-desktop me-1"></i>Nom</strong>
+                                <strong class="small"><i class="fas fa-desktop me-1" style="color: var(--primary);"></i>Nom</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->nom }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-building me-1"></i>Entité</strong>
+                                <strong class="small"><i class="fas fa-building me-1" style="color: var(--primary);"></i>Entité</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->entite ?? 'Non spécifiée' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-circle me-1"></i>Statut</strong>
+                                <strong class="small"><i class="fas fa-circle me-1" style="color: var(--primary);"></i>Statut</strong>
                                 <p class="mb-0">
                                     @php
                                         $statusClasses = [
@@ -861,39 +1118,39 @@
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-industry me-1"></i>Fabricant</strong>
+                                <strong class="small"><i class="fas fa-industry me-1" style="color: var(--primary);"></i>Fabricant</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->fabricant ?? 'Non spécifié' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-barcode me-1"></i>Numéro de série</strong>
-                                <p class="mb-0 small font-monospace">{{ $selectedMoniteur->numero_serie ?? 'Non renseigné' }}</p>
+                                <strong class="small"><i class="fas fa-barcode me-1" style="color: var(--primary);"></i>Numéro de série</strong>
+                                <p class="mb-0 small font-mono">{{ $selectedMoniteur->numero_serie ?? 'Non renseigné' }}</p>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-cube me-1"></i>Modèle</strong>
+                                <strong class="small"><i class="fas fa-cube me-1" style="color: var(--primary);"></i>Modèle</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->modele ?? 'Non spécifié' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-map-marker-alt me-1"></i>Lieu</strong>
+                                <strong class="small"><i class="fas fa-map-marker-alt me-1" style="color: var(--primary);"></i>Lieu</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->lieu ?? 'Non spécifié' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-tag me-1"></i>Type</strong>
+                                <strong class="small"><i class="fas fa-tag me-1" style="color: var(--primary);"></i>Type</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->type ?? 'Non spécifié' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-users me-1"></i>Utilisateur principal</strong>
+                                <strong class="small"><i class="fas fa-users me-1" style="color: var(--primary);"></i>Utilisateur principal</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->utilisateur->nom ?? 'Non attribué' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-user me-1"></i>Usager secondaire</strong>
+                                <strong class="small"><i class="fas fa-user me-1" style="color: var(--primary);"></i>Usager secondaire</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->usager->nom ?? 'Non attribué' }}</p>
                             </div>
                         </div>
@@ -902,12 +1159,12 @@
                     <div class="row mt-3">
                         <div class="col-12">
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-calendar-plus me-1"></i>Date de création</strong>
+                                <strong class="small"><i class="fas fa-calendar-plus me-1" style="color: var(--primary);"></i>Date de création</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->created_at->format('d/m/Y à H:i') }}</p>
                             </div>
 
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-calendar-check me-1"></i>Dernière modification</strong>
+                                <strong class="small"><i class="fas fa-calendar-check me-1" style="color: var(--primary);"></i>Dernière modification</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->updated_at->format('d/m/Y à H:i') }}</p>
                             </div>
                         </div>
@@ -917,7 +1174,7 @@
                     <div class="row mt-3">
                         <div class="col-12">
                             <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-sticky-note me-1"></i>Commentaires</strong>
+                                <strong class="small"><i class="fas fa-sticky-note me-1" style="color: var(--primary);"></i>Commentaires</strong>
                                 <p class="mb-0 small">{{ $selectedMoniteur->commentaires }}</p>
                             </div>
                         </div>
@@ -925,7 +1182,7 @@
                     @endif
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeDetailsModal">Fermer</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeDetailsModal">Fermer</button>
                     @if($selectedMoniteur)
                         <button type="button" class="btn btn-primary btn-sm" wire:click="edit({{ $selectedMoniteur->id }})">
                             <i class="fas fa-edit me-1"></i>Modifier
@@ -952,7 +1209,7 @@
                 </div>
                 <div class="modal-body p-4 text-center">
                     <div class="mb-3">
-                        <i class="bi bi-trash3 text-danger" style="font-size: 3rem;"></i>
+                        <i class="bi bi-trash3" style="color: #EF4444; font-size: 3rem;"></i>
                     </div>
                     @if($isBulkDelete)
                         <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer les <strong>{{ count($selectedMoniteurs) }}</strong> moniteurs sélectionnés ?</p>
@@ -982,7 +1239,7 @@
             <div class="modal-content">
                 <div class="modal-header py-2">
                     <h5 class="modal-title small fw-semibold">
-                        <i class="fas fa-file-import me-1 text-primary"></i>
+                        <i class="fas fa-file-import me-1" style="color: var(--primary);"></i>
                         Importer des Moniteurs
                     </h5>
                     <button type="button" class="btn-close btn-close-sm" wire:click="closeImportModal"></button>
@@ -991,8 +1248,8 @@
                     <!-- Étape 1 : Upload du fichier -->
                     @if(!$showMappingModal && !$showImportedData)
                     <div class="text-center mb-3">
-                        <i class="fas fa-file-csv display-6 text-primary mb-3"></i>
-                        <h6 class="fw-semibold">Importer depuis un fichier CSV</h6>
+                        <i class="fas fa-file-csv display-6 mb-3" style="color: var(--primary);"></i>
+                        <h6 class="fw-semibold" style="color: var(--primary-dark);">Importer depuis un fichier CSV</h6>
                         <p class="text-muted small">Téléchargez le template ou importez votre fichier CSV</p>
                     </div>
 
@@ -1032,8 +1289,8 @@
                     <!-- Étape 2 : Mapping simplifié -->
                     @if($showMappingModal)
                     <div class="text-center mb-3">
-                        <i class="fas fa-map-marked-alt display-6 text-warning mb-3"></i>
-                        <h6 class="fw-semibold">Association des colonnes</h6>
+                        <i class="fas fa-map-marked-alt display-6 mb-3" style="color: #F59E0B;"></i>
+                        <h6 class="fw-semibold" style="color: var(--primary-dark);">Association des colonnes</h6>
                         <p class="text-muted small">Associez les colonnes de votre fichier aux champs du système</p>
                     </div>
 
@@ -1045,7 +1302,7 @@
                     <!-- Aperçu des données -->
                     @if(count($csvPreview) > 0)
                     <div class="mb-3">
-                        <h6 class="small fw-semibold">Aperçu de vos données :</h6>
+                        <h6 class="small fw-semibold" style="color: var(--primary-dark);">Aperçu de vos données :</h6>
                         <div class="table-responsive">
                             <table class="table table-sm table-bordered small">
                                 <thead class="table-light">
@@ -1090,7 +1347,7 @@
 
                     <!-- Champs optionnels groupés -->
                     <div class="mt-3">
-                        <h6 class="small fw-semibold">Champs optionnels :</h6>
+                        <h6 class="small fw-semibold" style="color: var(--primary-dark);">Champs optionnels :</h6>
                         <div class="row g-2">
                             @foreach(['numero_serie' => 'N° Série', 'lieu' => 'Lieu', 'type' => 'Type', 'modele' => 'Modèle'] as $field => $label)
                             <div class="col-md-6">
@@ -1121,8 +1378,8 @@
                     <!-- Étape 3 : Aperçu et confirmation -->
                     @if($showImportedData)
                     <div class="text-center mb-3">
-                        <i class="fas fa-check-circle display-6 text-success mb-3"></i>
-                        <h6 class="fw-semibold">Confirmation d'import</h6>
+                        <i class="fas fa-check-circle display-6 mb-3" style="color: #10B981;"></i>
+                        <h6 class="fw-semibold" style="color: var(--primary-dark);">Confirmation d'import</h6>
                         <p class="text-muted small">Vérifiez les données avant l'import final</p>
                     </div>
 
@@ -1163,12 +1420,12 @@
                                     <td>{{ $data['nom'] }}</td>
                                     <td>{{ $data['entite'] ?? 'N/A' }}</td>
                                     <td>
-                                        <span class="badge badge-sm bg-{{ $this->getBadgeColor($data['statut'] ?? 'En stock') }}">
+                                        <span class="badge badge-sm" style="background: {{ $this->getBadgeColor($data['statut'] ?? 'En stock') }}; color: white;">
                                             {{ $data['statut'] ?? 'En stock' }}
                                         </span>
                                     </td>
                                     <td>{{ $data['fabricant'] ?? 'N/A' }}</td>
-                                    <td class="font-monospace">{{ $data['numero_serie'] ?? 'N/A' }}</td>
+                                    <td class="font-mono">{{ $data['numero_serie'] ?? 'N/A' }}</td>
                                 </tr>
                                 @endforeach
                                 @if(count($importedData) > 5)
@@ -1187,7 +1444,7 @@
                 <div class="modal-footer py-2">
                     @if(!$showMappingModal && !$showImportedData)
                     <!-- Boutons étape 1 -->
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeImportModal">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeImportModal">
                         <i class="fas fa-times me-1"></i>
                         Annuler
                     </button>
@@ -1206,7 +1463,7 @@
 
                     @if($showMappingModal)
                     <!-- Boutons étape 2 -->
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="cancelImport">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="cancelImport">
                         <i class="fas fa-arrow-left me-1"></i>
                         Retour
                     </button>
@@ -1225,7 +1482,7 @@
 
                     @if($showImportedData)
                     <!-- Boutons étape 3 -->
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="cancelImport">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="cancelImport">
                         <i class="fas fa-times me-1"></i>
                         Annuler
                     </button>
@@ -1255,7 +1512,7 @@
             <div class="modal-content">
                 <div class="modal-header py-2">
                     <h5 class="modal-title small fw-semibold">
-                        <i class="fas fa-paperclip me-1 text-primary"></i>
+                        <i class="fas fa-paperclip me-1" style="color: var(--primary);"></i>
                         Fichiers attachés - {{ $selectedMoniteurForFiles->nom }}
                     </h5>
                     <button type="button" class="btn-close btn-close-sm" wire:click="closeFileModal"></button>
@@ -1279,7 +1536,7 @@
                     @endif
 
                     <!-- Liste des fichiers -->
-                    <h6 class="text-dark fw-medium mb-2 small border-bottom pb-1">Fichiers attachés</h6>
+                    <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">Fichiers attachés</h6>
                     @if(count($attachedFiles) > 0)
                         <div class="table-responsive">
                             <table class="table table-sm">
@@ -1317,7 +1574,7 @@
                     @endif
                 </div>
                 <div class="modal-footer py-2">
-                    <button type="button" class="btn btn-secondary btn-sm" wire:click="closeFileModal">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeFileModal">
                         <i class="fas fa-times me-1"></i>
                         Fermer
                     </button>
