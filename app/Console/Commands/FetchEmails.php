@@ -41,6 +41,9 @@ class FetchEmails extends Command
      */
     public function handle(ticket $ticket,Commentaire $commentaire , Incident $incident)
     {
+
+
+            
         $client = Client::account('default');
         $client->connect();
 

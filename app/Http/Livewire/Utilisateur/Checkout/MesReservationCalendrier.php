@@ -41,16 +41,14 @@ class MesReservationCalendrier extends Component
             
             
             $ordinateurs = ordinateur::where('nom', "like","%".$this->recherche."%")
-               ->where('statut','==','Disponible')
-               ->orWhere('statut','==','En stock')
+           ->where('statut','!=','En service')
             ->get();
             $telephones = TelephoneTablette::where('nom', "like","%".$this->recherche."%")
-            ->where('statut','==','Disponible')
-            ->orWhere('statut','==','En stock')
+            ->where('statut','!=','En service')
             ->get();
             $peripheriques = Peripherique::where('type', "like","%".$this->recherche."%")
-            ->orWhere('statut','==','En stock')
-            ->Orwhere('statut','==','Disponible')
+            ->where('statut','!=','En service')
+            
             ->get();
 
             $firstEvent = reserverEquipement::where('responsable_id', $this->userConnected)->first();
