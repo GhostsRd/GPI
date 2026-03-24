@@ -36,7 +36,8 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       - name: Setup environment
-        run: 
+        run: |
+          cp .env.example .env
           php artisan key:generate
 
       - name: Configure DB
