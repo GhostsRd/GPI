@@ -42,7 +42,7 @@ jobs:
         run: touch .env
 
       - name: 🔑 Generate app key
-        run: php artisan key:generate
+        run: php artisan key:generate --env=testing
 
       - name: 🗄️ Run migrations
         env:
