@@ -1,15 +1,12 @@
-name: Laravel CI/CD
+name: Laravel CI/Cd MySQL Tests
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
 
+    # 1. On lance le service MySQL
     services:
       mysql:
         image: mysql:8.0
@@ -18,11 +15,7 @@ jobs:
           MYSQL_DATABASE: laravel_test
         ports:
           - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: 📥 Checkout code
@@ -32,30 +25,34 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
-          extensions: mbstring, bcmath, mysql
+          extensions: mbstring, bcmath, mysql, dom, curl
           coverage: none
 
       - name: 📦 Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: ⚙️ Copy .env
-        run: touch .env.examp .env.testing
+      - name: ⚙️ Prepare Environment
+        run: |
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
 
-      - name: 🔑 Generate app key
-        run: php artisan key:generate --env=testing
-
+      # 2. On passe les variables DB à TOUTES les étapes qui touchent à la base
       - name: 🗄️ Run migrations
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          APP_KEY: ${{ secrets.APP_KEY }}
           DB_DATABASE: laravel_test
           DB_USERNAME: root
           DB_PASSWORD: root
-          APP_ENV: testing
         run: php artisan migrate --force
 
       - name: 🧪 Run tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: laravel_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
         run: php artisan test --without-tty
-
