@@ -53,6 +53,7 @@ jobs:
           DB_DATABASE: laravel_test
           DB_USERNAME: root
           DB_PASSWORD: root
+          APP_ENV: testing
         run: php artisan migrate --force
 
       - name: 🧪 Run tests
