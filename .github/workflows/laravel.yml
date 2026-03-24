@@ -34,11 +34,11 @@ jobs:
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
-
       - name: Setup environment
-        run: |
-          cp .env.example .env
-          php artisan key:generate
+        run: cp .env.example .env
+  
+      - name: Setup environment
+        run:  php artisan key:generate
 
       - name: Configure DB
         run: |
