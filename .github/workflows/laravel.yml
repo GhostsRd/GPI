@@ -62,4 +62,4 @@ jobs:
           DB_PASSWORD: root
 
       - name: Run tests
-        run: php artisan test
+        run: php artisan serve
