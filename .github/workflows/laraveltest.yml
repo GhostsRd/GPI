@@ -64,8 +64,8 @@ jobs:
     steps:
       - name: 🚀 Mise à jour locale
         run: |
-          #cd /home/fraduis/laravel-app/GPI
-          cd C:\Users\CHECK-OUT\Desktop\laravel-app\GPI
+          cd /home/fraduis/laravel-app/GPI
+          #cd C:\Users\CHECK-OUT\Desktop\laravel-app\GPI
           git pull origin main
           composer install 
           php artisan migrate --force
