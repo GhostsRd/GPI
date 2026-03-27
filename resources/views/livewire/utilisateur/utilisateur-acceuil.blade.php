@@ -36,7 +36,7 @@
         <div class="col-lg-6 text-lg-start text-center">
 
           <h1 class="fw-bold text-uppercase mb-3 " style="font-size:3rem;" data-aos="fade-zoom-in"
-            data-aos-duration="3000">• GPI - Pivot •</h1>
+            data-aos-duration="3000">• GPI - Pivot12 •</h1>
           <p class="lead mb-4">
             Nous accompagnons les organisations dans la gestion, le suivi et la maintenance de leurs ressources
             informatiques.
