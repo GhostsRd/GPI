@@ -64,8 +64,8 @@ jobs:
     steps:
       - name: 🚀 Mise à jour locale
         run: |
-          cd /home/fraduis/laravel-app
+          cd /home/fraduis/laravel-app/GPI
           git pull origin main
-          php composer.phar install 
+          php ../../composer.phar install 
           php artisan migrate --force
           php artisan optimize
