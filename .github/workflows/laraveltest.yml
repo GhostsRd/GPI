@@ -64,7 +64,7 @@ jobs:
     steps:
       - name: 🚀 Mise à jour locale
         run: |
-          cd /home/fradius/laravel-app
+          cd /home/fraduis/laravel-app
           git pull origin main
           composer install --no-dev --optimize-autoloader
           php artisan migrate --force
