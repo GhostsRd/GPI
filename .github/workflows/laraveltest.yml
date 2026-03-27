@@ -56,3 +56,16 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
         run: php artisan test --without-tty
+  deploy:
+    runs-on: self-hosted # <--- C'est ici que la magie opère
+    needs: laravel-tests
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 🚀 Mise à jour locale
+        run: |
+          cd /var/www/mon-app-laravel
+          git pull origin main
+          composer install --no-dev --optimize-autoloader
+          php artisan migrate --force
+          php artisan optimize
