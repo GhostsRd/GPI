@@ -66,6 +66,6 @@ jobs:
         run: |
           cd /home/fraduis/laravel-app
           git pull origin main
-          composer install --no-dev --optimize-autoloader
+          php composer.phar install 
           php artisan migrate --force
           php artisan optimize
