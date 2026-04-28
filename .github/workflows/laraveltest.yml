@@ -1,0 +1,72 @@
+name: Laravel CI/Cd MySQL Tests
+
+on: [push, pull_request]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    # 1. On lance le service MySQL
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: laravel_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐘 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: mbstring, bcmath, mysql, dom, curl
+          coverage: none
+
+      - name: 📦 Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: ⚙️ Prepare Environment
+        run: |
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
+
+      # 2. On passe les variables DB à TOUTES les étapes qui touchent à la base
+      - name: 🗄️ Run migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: laravel_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: php artisan migrate --force
+
+      - name: 🧪 Run tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: laravel_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
+        run: php artisan test --without-tty
+  deploy:
+    runs-on: self-hosted # <--- C'est ici que la magie opère
+    needs: laravel-tests
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 🚀 Mise à jour locale
+        run: |
+          cd /home/fraduis/laravel-app/GPI
+          #cd C:\Users\CHECK-OUT\Desktop\laravel-app\GPI
+          git pull origin main
+          composer install 
+          php artisan migrate --force
+          php artisan optimize

@@ -12,10 +12,14 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function testBasicTest()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
+        public function test_it_redirects_correctly(): void
+        {
+            $response = $this->get('/');
+        
+            // On change 200 par 302 car ton middleware redirige
+            $response->assertStatus(302);
+            
+            // Optionnel : vérifier la destination
+            // $response->assertRedirect('/login');
+        }
 }

@@ -1604,16 +1604,29 @@
 
                                         <div class="d-flex w-100 py-1 justify-content-between">
                                             <p class="mb-1 text-capitalize mx-3">
-                                                 @if ($incident->equipement_type == 'Ordinateur')
-                                                     {{ $incident->equipement_type }}  {{ $incident->ordinateur->nom }}
-                                                    {{ $incident->ordinateur->os_version }}
-                                                @elseif($incident->equipement_type == 'Telephone')
-                                                    {{ $incident->equipement_type }}  {{ $incident->telephone->nom }} {{ $incident->telephone->marque }}
-                                                @elseif($incident->equipement_type == 'Peripherique')
-                                                      {{ $incident->equipement_type }}   {{ $incident->peripherique->type }} {{ $incident->peripherique->nom }} 
-                                                @endif
+                                                @switch($incident?->equipement_type)
+
+                                                    @case('Ordinateur')
+                                                        {{ $incident?->equipement_type }}
+                                                        {{ $incident?->ordinateur?->nom }}
+                                                        {{ $incident?->ordinateur?->os_version }}
+                                                        @break
+
+                                                    @case('Telephone')
+                                                        {{ $incident?->equipement_type }}
+                                                        {{ $incident?->telephone?->nom }}
+                                                        {{ $incident?->telephone?->marque }}
+                                                        @break
+
+                                                    @case('Peripherique')
+                                                        {{ $incident?->equipement_type }}
+                                                        {{ $incident?->peripherique?->type }}
+                                                        {{ $incident?->peripherique?->nom }}
+                                                        @break
+
+                                                @endswitch
                                                 <br>
-                                                {{ $incident->incident_description }}
+                                                {{ $incident?->incident_description }}
                                             </p>
                                             <small
                                                 class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">

@@ -80,7 +80,7 @@ Route::get(uri: '/contact', action: [App\Http\Controllers\Contact::class, 'index
 
 
 Route::get('/moniteur', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');
-Route::get('/admin-doc', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('moniteur');
+Route::get('/admin-doc', [App\Http\Controllers\equipement\Moniteur::class, 'index'])->name('admin.doc');
 
 Route::get('/logiciel', [App\Http\Controllers\equipement\logiciel::class, 'index'])->name('logiciel');
 Route::get('/ordinateur', [App\Http\Controllers\equipement\ordinateur::class, 'index'])->name('ordinateur');
