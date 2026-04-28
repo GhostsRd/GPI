@@ -495,10 +495,29 @@
                             <i class="bi bi-upload me-1"></i>
                             <span class="d-none d-sm-inline">Importer</span>
                         </button>
-                        <button wire:click="exportToCsv" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                            <i class="bi bi-download me-1"></i>
-                            <span class="d-none d-sm-inline">Exporter</span>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-download me-1"></i>
+                                <span class="d-none d-sm-inline">Exporter</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="exportDropdown">
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('xlsx')">
+                                        <i class="bi bi-file-earmark-excel me-2 text-success"></i> Excel (.xlsx)
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('csv')">
+                                        <i class="bi bi-file-earmark-text me-2 text-primary"></i> CSV
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('pdf')">
+                                        <i class="bi bi-file-earmark-pdf me-2 text-danger"></i> PDF
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                         <button wire:click="create" class="btn btn-primary btn-sm d-flex align-items-center">
                             <i class="bi bi-plus-lg me-1"></i>
                             <span class="d-none d-sm-inline">Nouveau</span>
@@ -591,6 +610,7 @@
                             <th>Usager</th>
                             <th>Localisation</th>
                             <th>Numéro Série</th>
+                            <th>N° Appel</th>
                             <th>IMEI</th>
                             <th wire:click="sortBy('updated_at')" style="cursor: pointer;">
                                 Dernière modif.
@@ -656,6 +676,7 @@
                                 @endif
                             </td>
                             <td class="small font-monospace">{{ $telephone->numero_serie ?? 'N/A' }}</td>
+                            <td class="small fw-bold text-primary">{{ $telephone->numero_appel ?? 'N/A' }}</td>
                             <td class="small font-monospace">
                                 @if($telephone->imei)
                                     {{ substr($telephone->imei, 0, 8) }}...
@@ -689,7 +710,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="text-center py-3">
+                            <td colspan="12" class="text-center py-3">
                                 <i class="fas fa-mobile-alt display-6 text-muted d-block mb-2"></i>
                                 <p class="text-muted mb-0 small">Aucun équipement trouvé</p>
                                 @if($search || $filterStatut || $filterType || $filterFabricant)
@@ -736,8 +757,8 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label small fw-medium">Fichier CSV</label>
-                    <input type="file" wire:model="importFile" class="form-control form-control-sm" accept=".csv,.txt">
+                    <label class="form-label small fw-medium">Fichier à importer</label>
+                    <input type="file" wire:model="importFile" class="form-control form-control-sm" accept=".xlsx,.xls,.csv">
                     @error('importFile') <span class="text-danger small">{{ $message }}</span> @enderror
                 </div>
 
@@ -770,14 +791,11 @@
             </div>
             <div class="modal-footer py-2">
                 <button type="button" class="btn btn-secondary btn-sm" wire:click="closeImportModal">Annuler</button>
-                <button type="button" class="btn btn-primary btn-sm" wire:click="importTelephones" 
+                <button type="button" class="btn btn-primary btn-sm" wire:click="storeImportFile" 
                         wire:loading.attr="disabled" {{ !$importFile ? 'disabled' : '' }}>
                     <i class="bi bi-upload me-1"></i>
-                    <span wire:loading.remove>Importer</span>
-                    <span wire:loading>
-                        <i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i>
-                        Import...
-                    </span>
+                    <span wire:loading.remove>Suivant (Mapping)</span>
+                    <span wire:loading>Chargement...</span>
                 </button>
             </div>
         </div>
@@ -850,7 +868,7 @@
                             </div>
 
                             <!-- Numéro de série et IMEI -->
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-4 mb-2">
                                 <label class="form-label small fw-medium">Numéro de série <span class="text-danger">*</span></label>
                                 <input type="text" wire:model="numero_serie"
                                        class="form-control form-control-sm @error('numero_serie') is-invalid @enderror"
@@ -858,12 +876,20 @@
                                 @error('numero_serie') <div class="invalid-feedback small">{{ $message }}</div> @enderror
                             </div>
 
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-4 mb-2">
                                 <label class="form-label small fw-medium">IMEI</label>
                                 <input type="text" wire:model="imei"
                                        class="form-control form-control-sm @error('imei') is-invalid @enderror"
-                                       placeholder="Numéro IMEI (15 chiffres)">
+                                       placeholder="Numéro IMEI">
                                 @error('imei') <div class="invalid-feedback small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="col-md-4 mb-2">
+                                <label class="form-label small fw-medium">N° Appel (Lien SIM)</label>
+                                <input type="text" wire:model="numero_appel"
+                                       class="form-control form-control-sm @error('numero_appel') is-invalid @enderror"
+                                       placeholder="Ex: 034 00 000 01">
+                                @error('numero_appel') <div class="invalid-feedback small">{{ $message }}</div> @enderror
                             </div>
 
                             <!-- Statut et Localisation -->
@@ -1050,6 +1076,11 @@
                             <div class="detail-item mb-2">
                                 <strong class="small"><i class="fas fa-user me-1"></i>Usager</strong>
                                 <p class="mb-0 small">{{ $selectedTelephone->usager ?? 'Non assigné' }}</p>
+                            </div>
+
+                            <div class="detail-item mb-2">
+                                <strong class="small"><i class="fas fa-phone me-1"></i>N° Appel</strong>
+                                <p class="mb-0 small fw-bold text-primary">{{ $selectedTelephone->numero_appel ?? 'N/A' }}</p>
                             </div>
 
                             <div class="detail-item mb-2">

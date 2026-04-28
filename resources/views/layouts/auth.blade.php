@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <script src="{{ asset('js/theme.js') }}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -23,13 +24,14 @@
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modern-theme.css') }}" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     @livewireStyles
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white  rounded-2">
+        <nav class="navbar navbar-expand-md shadow-sm rounded-2">
             <div class="container">
               {{-- <img id="logo" src="images/ee.png" alt=""> --}}
                 {{-- <a class="navbar-brand" href="{{ url('/') }}" style="color:#012970;font-family:Geneva;"> --}}
@@ -51,6 +53,9 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto offset-11">
+                        <li class="nav-item d-flex align-items-center me-3">
+                            <div class="theme-switch theme-toggle-btn" title="Toggle Theme"></div>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

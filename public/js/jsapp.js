@@ -38,16 +38,27 @@ class ModernSidebar {
             }
         });
 
-        // Smooth scrolling for anchor links
+        // Smooth scrolling for anchor links - refined to avoid conflicts with Bootstrap collapse
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const href = this.getAttribute('href');
+                
+                // Skip empty anchors and Bootstrap collapse triggers
+                if (href === '#' || this.hasAttribute('data-bs-toggle')) {
+                    return;
+                }
+
+                try {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                } catch (err) {
+                    console.warn('Invalid selector in smooth scroll:', href);
                 }
             });
         });

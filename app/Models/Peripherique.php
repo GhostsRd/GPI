@@ -28,7 +28,7 @@ class Peripherique extends Model
 
     public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+        return $this->belongsTo(utilisateur::class, 'utilisateur_id');
     }
 
     public function usager()

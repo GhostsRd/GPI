@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\MaterielReseauImport;
+use App\Imports\MaterielReseauxImport;
+use App\Exports\MaterielReseauxExport;
 
 class MaterielReseau extends Component
 {
@@ -748,7 +749,9 @@ class MaterielReseau extends Component
 
             // Validation des données requises
             if (empty($mappedData['nom'])) {
-                $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
+                $errorMsg = "Ligne {$lineNumber}: Le champ 'Nom' est obligatoire dans votre mapping.";
+                logger($errorMsg);
+                $this->importErrors[] = $errorMsg;
                 return;
             }
 
@@ -811,46 +814,30 @@ class MaterielReseau extends Component
         $this->resetImport();
     }
 
-    public function exportToCsv()
+    /**
+     * Exporter les matériels réseau dans différents formats
+     */
+    public function export($format)
     {
-        $materiels = MaterielReseauModel::all();
+        $date = date('Y-m-d');
+        $fileName = "materiel_reseau_{$date}.{$format}";
 
-        $fileName = 'materiels-reseau-export-' . date('Y-m-d-H-i') . '.csv';
-
-        $headers = [
-            'Content-Type' => 'text/csv; charset=utf-8',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-        ];
-
-        $callback = function() use ($materiels) {
-            $file = fopen('php://output', 'w');
-            
-            // En-têtes CSV
-            fputcsv($file, [
-                'Nom', 'Entité', 'Statut', 'Fabricant', 'Type', 
-                'Modèle', 'Numéro de série', 'IP Réseau', 'Lieu', 'Date création'
-            ]);
-
-            // Données
-            foreach ($materiels as $materiel) {
-                fputcsv($file, [
-                    $materiel->nom,
-                    $materiel->entite ?? '',
-                    $materiel->statut,
-                    $materiel->fabricant ?? '',
-                    $materiel->type ?? '',
-                    $materiel->modele ?? '',
-                    $materiel->numero_serie ?? '',
-                    $materiel->reseau_ip ?? '',
-                    $materiel->lieu ?? '',
-                    $materiel->created_at->format('d/m/Y H:i')
-                ]);
+        try {
+            switch ($format) {
+                case 'xlsx':
+                    return Excel::download(new \App\Exports\MaterielReseauxExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                case 'csv':
+                    return Excel::download(new \App\Exports\MaterielReseauxExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+                case 'pdf':
+                    return Excel::download(new \App\Exports\MaterielReseauxExport, $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+                default:
+                    session()->flash('error', "Format d'exportation non supporté.");
+                    return null;
             }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        } catch (\Exception $e) {
+            session()->flash('error', "Erreur lors de l'exportation: " . $e->getMessage());
+            return null;
+        }
     }
 
     // ==================== MÉTHODES UTILITAIRES ====================

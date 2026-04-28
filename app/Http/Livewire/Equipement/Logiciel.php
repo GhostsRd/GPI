@@ -8,6 +8,9 @@ use Livewire\WithFileUploads;
 use App\Models\Logiciel as LogicielModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\LogicielsImport;
+use App\Exports\LogicielsExport;
 
 class Logiciel extends Component
 {
@@ -45,17 +48,33 @@ class Logiciel extends Component
     public $confirmingDelete = false;
     public $selectedLogicielName = '';
     public $isBulkDelete = false;
-
-    // Import simple
-    public $fichierExcel;
-    public $showStats = true;
-
-    // Statistiques
+    public $showStats = false;
     public $stats = [];
-
-    // Sélection multiple
     public $selectedLogiciels = [];
     public $selectAll = false;
+
+    // Import avancé avec mapping
+    public $importFile;
+    public $importErrors = [];
+    public $importSuccessCount = 0;
+    public $isImporting = false;
+    public $showMappingModal = false;
+    public $showImportedData = false;
+    public $csvHeaders = [];
+    public $csvPreview = [];
+    public $fieldMapping = [
+        'nom' => '',
+        'editeur' => '',
+        'version_nom' => '',
+        'version_systeme_exploitation' => '',
+        'nombre_installations' => '',
+        'nombre_licences' => '',
+        'date_achat' => '',
+        'date_expiration' => '',
+        'description' => ''
+    ];
+    public $importedData = [];
+
 
     protected $rules = [
         'nom' => 'required|string|max:150',
@@ -220,124 +239,220 @@ class Logiciel extends Component
         $this->showDetailsModal = true;
     }
 
-    // ==================== IMPORT SIMPLIFIÉ ====================
+    // ==================== IMPORT AVEC MAPPING ====================
 
     public function openImportModal()
     {
         $this->showImportModal = true;
-        $this->reset(['fichierExcel']);
+        $this->resetImport();
     }
 
     public function closeImportModal()
     {
         $this->showImportModal = false;
+        $this->resetImport();
     }
 
-    public function importLogiciels()
+    private function resetImport()
+    {
+        $this->reset([
+            'importFile', 
+            'importErrors', 
+            'importSuccessCount',
+            'isImporting',
+            'csvHeaders',
+            'csvPreview',
+            'importedData',
+            'showImportedData'
+        ]);
+        $this->fieldMapping = [
+            'nom' => '',
+            'editeur' => '',
+            'version_nom' => '',
+            'version_systeme_exploitation' => '',
+            'nombre_installations' => '',
+            'nombre_licences' => '',
+            'date_achat' => '',
+            'date_expiration' => '',
+            'description' => ''
+        ];
+        $this->resetErrorBag();
+    }
+
+    public function storeImportFile()
     {
         $this->validate([
-            'fichierExcel' => 'required|file|mimes:csv,txt|max:10240'
+            'importFile' => 'required|file|mimes:csv,txt|max:10240'
         ]);
 
         try {
-            // Sauvegarder le fichier
-            $filePath = $this->fichierExcel->storeAs(
+            $filePath = $this->importFile->storeAs(
                 'imports/logiciels',
                 'import_' . time() . '.csv',
                 'public'
             );
 
-            // Traiter le fichier
-            $result = $this->processCSV(storage_path('app/public/' . $filePath));
-            
-            session()->flash('message', "Import réussi: {$result['imported']} logiciel(s) importé(s)");
-            $this->closeImportModal();
-            $this->chargerStatistiques();
-
+            $this->readCsvFile(storage_path('app/public/' . $filePath));
+            $this->showImportModal = false;
+            $this->showMappingModal = true;
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur import: ' . $e->getMessage());
+            session()->flash('error', 'Erreur stockage fichier: ' . $e->getMessage());
         }
     }
 
-    private function processCSV($filePath)
+    private function readCsvFile($filePath)
     {
-        $file = fopen($filePath, 'r');
-        
-        // Lire et ignorer les en-têtes
-        $headers = fgetcsv($file);
-        
-        $importedCount = 0;
-        $lineNumber = 1;
-        $errors = [];
-
-        while (($row = fgetcsv($file)) !== FALSE) {
-            $lineNumber++;
+        try {
+            $handle = fopen($filePath, 'r');
+            $this->csvHeaders = fgetcsv($handle);
             
-            try {
-                // Format fixe: nom, editeur, version_nom, systeme_exploitation, installations, licences, date_achat, date_expiration, description
-                $data = [
-                    'nom' => trim($row[0] ?? ''),
-                    'editeur' => isset($row[1]) ? trim($row[1]) : null,
-                    'version_nom' => isset($row[2]) ? trim($row[2]) : null,
-                    'version_systeme_exploitation' => isset($row[3]) ? trim($row[3]) : null,
-                    'nombre_installations' => isset($row[4]) && is_numeric($row[4]) ? intval($row[4]) : 0,
-                    'nombre_licences' => isset($row[5]) && is_numeric($row[5]) ? intval($row[5]) : 0,
-                    'date_achat' => isset($row[6]) ? $this->parseDate(trim($row[6])) : null,
-                    'date_expiration' => isset($row[7]) ? $this->parseDate(trim($row[7])) : null,
-                    'description' => isset($row[8]) ? trim($row[8]) : null,
-                ];
-
-                // Vérifier le nom (obligatoire)
-                if (empty($data['nom'])) {
-                    $errors[] = "Ligne $lineNumber: Nom manquant - ignorée";
-                    continue;
+            $this->csvPreview = [];
+            $count = 0;
+            while (($row = fgetcsv($handle)) !== FALSE && $count < 5) {
+                $rowData = [];
+                foreach ($this->csvHeaders as $index => $header) {
+                    $rowData[$header] = $row[$index] ?? '';
                 }
+                $this->csvPreview[] = $rowData;
+                $count++;
+            }
+            fclose($handle);
+            $this->autoMapFields();
+        } catch (\Exception $e) {
+            $this->importErrors[] = 'Erreur lecture CSV: ' . $e->getMessage();
+        }
+    }
 
-                // Éviter les doublons
-                if (!LogicielModel::where('nom', $data['nom'])->exists()) {
-                    LogicielModel::create($data);
-                    $importedCount++;
+    private function autoMapFields()
+    {
+        $fieldPatterns = [
+            'nom' => ['nom', 'name', 'logiciel', 'software'],
+            'editeur' => ['editeur', 'editor', 'publisher', 'manufacturer'],
+            'version_nom' => ['version', 'release', 'edition'],
+            'version_systeme_exploitation' => ['systeme', 'os', 'exploitation', 'compatible'],
+            'nombre_installations' => ['installation', 'installe', 'used', 'usage'],
+            'nombre_licences' => ['licence', 'license', 'total', 'count'],
+            'date_achat' => ['achat', 'purchase', 'bought'],
+            'date_expiration' => ['expiration', 'expire', 'warranty', 'fin'],
+            'description' => ['description', 'note', 'comment', 'detail']
+        ];
+
+        foreach ($this->csvHeaders as $header) {
+            $headerLower = strtolower(trim($header));
+            foreach ($fieldPatterns as $field => $patterns) {
+                foreach ($patterns as $pattern) {
+                    if (str_contains($headerLower, $pattern) && empty($this->fieldMapping[$field])) {
+                        $this->fieldMapping[$field] = $header;
+                        break 2;
+                    }
                 }
-
-            } catch (\Exception $e) {
-                $errors[] = "Ligne $lineNumber: " . $e->getMessage();
             }
         }
-
-        fclose($file);
-        
-        // Sauvegarder le rapport
-        $this->saveImportReport($importedCount, $lineNumber - 1, $errors);
-        
-        return [
-            'imported' => $importedCount,
-            'total' => $lineNumber - 1,
-            'errors' => $errors
-        ];
     }
 
-    private function parseDate($dateString)
+    public function processMappedData()
     {
-        if (empty($dateString)) return null;
-
         try {
-            return \Carbon\Carbon::parse($dateString)->format('Y-m-d');
+            $this->importErrors = [];
+            $this->importedData = [];
+
+            $files = Storage::disk('public')->files('imports/logiciels');
+            if (empty($files)) throw new \Exception('Fichier non trouvé');
+
+            $latestFile = last($files);
+            $filePath = storage_path('app/public/' . $latestFile);
+
+            $handle = fopen($filePath, 'r');
+            $headers = fgetcsv($handle);
+            $lineNumber = 1;
+
+            while (($row = fgetcsv($handle)) !== FALSE) {
+                $lineNumber++;
+                $record = array_combine($headers, $row);
+                $mappedData = [];
+
+                foreach ($this->fieldMapping as $field => $csvHeader) {
+                    $mappedData[$field] = !empty($csvHeader) && isset($record[$csvHeader]) ? trim($record[$csvHeader]) : '';
+                }
+
+                if (empty($mappedData['nom'])) {
+                    $errorMsg = "Ligne {$lineNumber}: Le champ 'Nom' est obligatoire dans votre mapping.";
+                    $this->importErrors[] = $errorMsg;
+                    return;
+                }
+
+                $this->importedData[] = $this->cleanMappedData($mappedData);
+            }
+            fclose($handle);
+
+            $this->importSuccessCount = count($this->importedData);
+            $this->showMappingModal = false;
+            $this->showImportedData = true;
         } catch (\Exception $e) {
-            return null;
+            session()->flash('error', 'Erreur traitement: ' . $e->getMessage());
         }
     }
 
-    private function saveImportReport($imported, $totalLines, $errors)
+    private function cleanMappedData($data)
     {
-        $report = [
-            'date' => now()->format('Y-m-d H:i:s'),
-            'fichier' => $this->fichierExcel->getClientOriginalName(),
-            'lignes_traitees' => $totalLines,
-            'logiciels_importes' => $imported,
-            'erreurs' => $errors
-        ];
+        foreach ($data as $key => $value) {
+            $data[$key] = trim($value);
+            if (in_array($key, ['nombre_installations', 'nombre_licences'])) {
+                $data[$key] = is_numeric($value) ? intval($value) : 0;
+            }
+            if (in_array($key, ['date_achat', 'date_expiration'])) {
+                $data[$key] = !empty($value) ? $this->parseDate($value) : null;
+            }
+        }
+        return $data;
+    }
 
-        Storage::disk('local')->put('imports/reports/logiciel_' . time() . '.json', json_encode($report, JSON_PRETTY_PRINT));
+    public function saveImportedData()
+    {
+        try {
+            DB::beginTransaction();
+            $savedCount = 0;
+            $errors = [];
+
+            foreach ($this->importedData as $index => $data) {
+                try {
+                    $existing = LogicielModel::where('nom', $data['nom'])
+                                            ->where('editeur', $data['editeur'])
+                                            ->first();
+                    if ($existing) continue;
+
+                    LogicielModel::create($data);
+                    $savedCount++;
+                } catch (\Exception $e) {
+                    $errors[] = "Ligne " . ($index + 1) . ": " . $e->getMessage();
+                }
+            }
+
+            DB::commit();
+            $this->cleanImportFiles();
+            $this->showImportedData = false;
+            $this->chargerStatistiques();
+
+            if ($savedCount > 0) session()->flash('message', "{$savedCount} logiciel(s) importé(s) !");
+            if (!empty($errors)) $this->importErrors = $errors;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Erreur sauvegarde: ' . $e->getMessage());
+        }
+    }
+
+    private function cleanImportFiles()
+    {
+        $files = Storage::disk('public')->files('imports/logiciels');
+        foreach ($files as $file) Storage::disk('public')->delete($file);
+    }
+
+    public function cancelImport()
+    {
+        $this->cleanImportFiles();
+        $this->resetImport();
+        $this->showMappingModal = false;
+        $this->showImportedData = false;
     }
 
     // ==================== STATISTIQUES ====================
@@ -463,46 +578,29 @@ class Logiciel extends Component
         }, $fileName);
     }
 
-    public function exportLogiciel()
+    /**
+     * Exporter les logiciels dans différents formats
+     */
+    public function export($format)
     {
+        $date = date('Y-m-d');
+        $fileName = "logiciels_{$date}.{$format}";
+
         try {
-            $query = LogicielModel::query();
-
-            if ($this->search) {
-                $query->where('nom', 'like', "%{$this->search}%");
+            switch ($format) {
+                case 'xlsx':
+                    return Excel::download(new LogicielsExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                case 'csv':
+                    return Excel::download(new LogicielsExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+                case 'pdf':
+                    return Excel::download(new LogicielsExport, $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+                default:
+                    session()->flash('error', "Format d'exportation non supporté.");
+                    return null;
             }
-
-            $logiciels = $query->orderBy('nom')->get();
-
-            $fileName = 'logiciels_export_' . date('Y-m-d_H-i-s') . '.csv';
-
-            return response()->streamDownload(function () use ($logiciels) {
-                $file = fopen('php://output', 'w');
-
-                fputcsv($file, [
-                    'nom', 'editeur', 'version_nom', 'systeme_exploitation',
-                    'installations', 'licences', 'date_achat', 'date_expiration', 'description'
-                ]);
-
-                foreach ($logiciels as $logiciel) {
-                    fputcsv($file, [
-                        $logiciel->nom,
-                        $logiciel->editeur,
-                        $logiciel->version_nom,
-                        $logiciel->version_systeme_exploitation,
-                        $logiciel->nombre_installations,
-                        $logiciel->nombre_licences,
-                        $logiciel->date_achat?->format('Y-m-d') ?? '',
-                        $logiciel->date_expiration?->format('Y-m-d') ?? '',
-                        $logiciel->description
-                    ]);
-                }
-
-                fclose($file);
-            }, $fileName);
-
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur export: ' . $e->getMessage());
+            session()->flash('error', "Erreur lors de l'exportation: " . $e->getMessage());
+            return null;
         }
     }
 }

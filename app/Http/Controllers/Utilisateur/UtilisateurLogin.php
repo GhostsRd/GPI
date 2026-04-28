@@ -34,7 +34,9 @@ class UtilisateurLogin extends Controller
         return redirect('/utilisateur-login');
     }
     public function index(){
-
+        if (Auth::guard('utilisateur')->check()) {
+            return redirect('/utilisateur');
+        }
         return view("Utilisateur.utilisateur-login");
     }
 }

@@ -25,7 +25,8 @@ class TelephoneTablette extends Model
         'numero_serie',
         'statut',
         'emplacement_actuel',
-        'imei'
+        'imei',
+        'numero_appel'
     ];
 
     protected $casts = [
@@ -53,4 +54,9 @@ class TelephoneTablette extends Model
     {
         return $query->where('statut', 'En réparation');
     }
-}
+
+    public function utilisateur()
+    {
+        return $this->belongsTo(utilisateur::class, 'utilisateur_id');
+    }
+}

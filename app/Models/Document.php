@@ -34,7 +34,7 @@ class Document extends Model
         'file_size',
         'file_extension',
         'video_url',
-        'tags',
+        'allow_download',
     ];
 
     /**
@@ -47,11 +47,11 @@ class Document extends Model
         'views' => 'integer',
         'downloads' => 'integer',
         'is_published' => 'boolean',
+        'allow_download' => 'boolean',
         'published_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'file_size' => 'integer',
-        'tags' => 'array',
     ];
 
     /**
@@ -64,7 +64,6 @@ class Document extends Model
         'views' => 0,
         'downloads' => 0,
         'is_published' => true,
-        'tags' => '[]',
     ];
 
     /**
@@ -99,6 +98,14 @@ class Document extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(DocumentCategory::class, 'category_id');
+    }
+
+    /**
+     * Relation avec l'utilisateur (auteur).
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
     /**
@@ -205,7 +212,18 @@ class Document extends Model
             return null;
         }
         
-        return Storage::url($this->file_path);
+        // Gestion Google Drive
+        if (str_starts_with($this->file_path, 'google:')) {
+            try {
+                $path = str_replace('google:', '', $this->file_path);
+                return Storage::disk('google')->url($path);
+            } catch (\Exception $e) {
+                \Log::error('Google Drive URL Error: ' . $e->getMessage());
+                return null;
+            }
+        }
+        
+        return Storage::disk('public')->url($this->file_path);
     }
 
     /**

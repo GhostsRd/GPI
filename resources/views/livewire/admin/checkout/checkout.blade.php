@@ -17,6 +17,11 @@
                     <i class="fas fa-sliders me-1"></i>
                     <span id="toggleFiltersText">Masquer les filtres</span>
                 </button>
+                <!-- Bouton Nouveau -->
+                <button class="btn btn-sm" wire:click="nouveauCheckout" title="Nouveau Checkout" style="background: #5BC4BF; border: none; color: white; border-radius: 10px; padding: 0.4rem 1rem; transition: all 0.3s ease;" onmouseover="this.style.background='#4AA39E'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='#5BC4BF'; this.style.transform='translateY(0)';">
+                    <i class="fas fa-plus me-1"></i>
+                    <span>Nouveau</span>
+                </button>
             </div>
         </div>
 
@@ -171,11 +176,24 @@
                     </div>
 
                     <div class="col-md-1">
-                        <button wire:click="exportCheckouts" class="btn btn-sm w-100 mt-3" 
-                                title="Exporter les checkouts"
-                                style="background: #10B981; border: none; color: white; border-radius: 8px;">
-                            <i class="fas fa-download"></i>
-                        </button>
+                        <div class="dropdown w-100 mt-3">
+                            <button class="btn btn-sm w-100 dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                                    style="background: #10B981; border: none; color: white; border-radius: 8px;">
+                                <i class="fas fa-download me-1"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="exportDropdown" style="border-radius: 12px; font-size: 0.8rem;">
+                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportExcel">
+                                    <i class="fas fa-file-excel me-2 text-success"></i> Excel (.xlsx)
+                                </a></li>
+                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportCSV">
+                                    <i class="fas fa-file-csv me-2 text-info"></i> CSV (.csv)
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportPDF">
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i> PDF (.pdf)
+                                </a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -184,44 +202,44 @@
         <!-- Tableau des checkouts -->
         <div class="table-wrapper p-0 border-0 w-100 compact-mode mx-3">
             <table class="table table-hover border-0 shadow-sm text-center small" wire:poll.5s style="border-radius: 16px; overflow: hidden;">
-                <thead style="background: rgba(91, 196, 191, 0.05);">
+                <thead style="background: rgba(59, 130, 246, 0.05);">
                     <tr>
-                        <th class="py-2" style="width: 30px; color: #4AA39E;">
-                            <input type="checkbox" wire:model="selectAll" class="checkbox-modern" style="accent-color: #5BC4BF;">
+                        <th class="py-2" style="width: 30px; color: #1d4ed8;">
+                            <input type="checkbox" wire:model="selectAll" class="checkbox-modern" style="accent-color: #3b82f6;">
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('id')" style="width: 80px; color: #4AA39E;">
+                        <th class="py-2 sortable" wire:click="sortBy('id')" style="width: 80px; color: #1d4ed8;">
                             Référence
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('utilisateur_id')" style="width: 120px; color: #4AA39E;">
+                        <th class="py-2 sortable" wire:click="sortBy('utilisateur_id')" style="width: 120px; color: #1d4ed8;">
                             Utilisateur
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('materiel_type')" style="width: 120px; color: #4AA39E;">
+                        <th class="py-2 sortable" wire:click="sortBy('materiel_type')" style="width: 120px; color: #1d4ed8;">
                             Type matériel
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
-                        <th class="py-2" style="width: 150px; color: #4AA39E;">
+                        <th class="py-2" style="width: 150px; color: #1d4ed8;">
                             Détails matériel
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('statut')" style="width: 120px; color: #4AA39E;">
+                        <th class="py-2 sortable" wire:click="sortBy('statut')" style="width: 120px; color: #1d4ed8;">
                             Statut
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
                        
-                        <th class="py-2 sortable" wire:click="sortBy('date_debut')" style="width: 100px; color: #4AA39E;">
+                        <th class="py-2 sortable" wire:click="sortBy('date_debut')" style="width: 100px; color: #1d4ed8;">
                             Date début
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('date_fin')" style="width: 100px; color: #4AA39E;">
+                        <th class="py-2 sortable" wire:click="sortBy('date_fin')" style="width: 100px; color: #1d4ed8;">
                             Date fin
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('created_at')" style="width: 120px; color: #4AA39E;">
+                        <th class="py-2 sortable" wire:click="sortBy('created_at')" style="width: 120px; color: #1d4ed8;">
                             Date création
                             <i class="bi bi-arrow-down-up ms-1"></i>
                         </th>
-                        <th class="py-2" style="width: 80px; color: #4AA39E;">Actions</th>
+                        <th class="py-2" style="width: 80px; color: #1d4ed8;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -232,9 +250,9 @@
                                        wire:model="selectedTickets"
                                        value="{{ $checkout->id }}"
                                        class="checkbox-modern"
-                                       style="accent-color: #5BC4BF;">
+                                       style="accent-color: #3b82f6;">
                             </td>
-                            <td class="py-2 fw-bold" wire:click="Visualiser({{ $checkout->id }})" style="color: #5BC4BF;">
+                            <td class="py-2 fw-bold" wire:click="Visualiser({{ $checkout->id }})" style="color: #3b82f6;">
                                 #{{ $checkout->id }}
                             </td>
                             <td class="py-2" wire:click="Visualiser({{ $checkout->id }})">
@@ -246,14 +264,14 @@
                                          <span class="text-muted small text-capitalize">{{ $checkout->utilisateur->nom ?? 'N/A' }}</span>
 
                                     @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($checkout->utilisateur->nom ?? 'Utilisateur') }}&size=24&background=5BC4BF&color=fff" 
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($checkout->utilisateur->nom ?? 'Utilisateur') }}&size=24&background=3b82f6&color=fff" 
                                          class="rounded-circle me-2" width="20" height="20">
                                          <span class="text-muted small">{{ $checkout->utilisateur->nom ?? 'N/A' }}</span>
                                     @endif
                                 </div>
                             </td>
                             <td class="py-2" wire:click="Visualiser({{ $checkout->id }})">
-                                <span class="badge small" style="background: rgba(91, 196, 191, 0.15); color: #4AA39E; border: 1px solid rgba(91, 196, 191, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
+                                <span class="badge small" style="background: rgba(59, 130, 246, 0.15); color: #1d4ed8; border: 1px solid rgba(59, 130, 246, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
                                     {{ $checkout->materiel_type }}
                                 </span>
                             </td>
@@ -333,6 +351,14 @@
                                             onmouseout="this.style.background='transparent'; this.style.transform='scale(1)';">
                                         <i class="fas fa-edit" style="color: #F59E0B;"></i>
                                     </button>
+                                    <button wire:click="insererVersCompteUtilisateur({{ $checkout->id }})"
+                                            class="btn-action btn-sync btn-sm" 
+                                            title="Insérer au compte utilisateur"
+                                            style="width: 24px; height: 24px; border-radius: 6px; border: none; background: transparent; color: #10B981; transition: all 0.2s ease;"
+                                            onmouseover="this.style.background='rgba(16, 185, 129, 0.1)'; this.style.transform='scale(1.1)';"
+                                            onmouseout="this.style.background='transparent'; this.style.transform='scale(1)';">
+                                        <i class="fas fa-user-plus" style="color: #10B981;"></i>
+                                    </button>
                                     <button wire:click="confirmDelete({{ $checkout->id }})"
                                             class="btn-action btn-delete btn-sm" 
                                             title="Supprimer"
@@ -380,6 +406,98 @@
         </div>
         @endif
     </div>
+
+    <!-- Modal Nouveau Checkout -->
+    @if($showModal)
+    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;" wire:click.self="fermerModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow" style="border-radius: 20px; overflow: hidden;">
+                <!-- Header -->
+                <div class="modal-header border-0 py-3 px-4" style="background: linear-gradient(135deg, #5BC4BF, #4AA39E);">
+                    <h5 class="modal-title text-white fw-bold">
+                        <i class="fas fa-plus-circle me-2"></i>Nouveau Checkout
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" wire:click="fermerModal"></button>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body p-4">
+                    <form wire:submit.prevent="saveCheckout">
+                        <div class="row g-3">
+                            <!-- Utilisateur -->
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold" style="color: #4AA39E;">
+                                    <i class="fas fa-user me-1"></i>Utilisateur <span class="text-danger">*</span>
+                                </label>
+                                <select wire:model.defer="newUtilisateurId" class="form-select" style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
+                                    <option value="">-- Sélectionner un utilisateur --</option>
+                                    @foreach($utilisateursList as $user)
+                                        <option value="{{ $user->id }}">{{ $user->nom }} {{ $user->email ? '('.$user->email.')' : '' }}</option>
+                                    @endforeach
+                                </select>
+                                @error('newUtilisateurId')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Type matériel -->
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold" style="color: #4AA39E;">
+                                    <i class="fas fa-laptop me-1"></i>Type de matériel <span class="text-danger">*</span>
+                                </label>
+                                <select wire:model.defer="newMaterielType" class="form-select" style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
+                                    <option value="">-- Sélectionner un type --</option>
+                                    <option value="ordinateur">Ordinateur</option>
+                                    <option value="telephone">Téléphone / Tablette</option>
+                                    <option value="peripherique">Périphérique</option>
+                                    <option value="imprimante">Imprimante</option>
+                                    <option value="moniteur">Moniteur</option>
+                                </select>
+                                @error('newMaterielType')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Détails matériel -->
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold" style="color: #4AA39E;">
+                                    <i class="fas fa-info-circle me-1"></i>Détails du matériel
+                                </label>
+                                <input type="text" wire:model.defer="newMaterielDetails" class="form-control" placeholder="Ex: Dell Latitude 5520, Samsung Galaxy..." style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
+                                @error('newMaterielDetails')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Date de rendu -->
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold" style="color: #4AA39E;">
+                                    <i class="fas fa-calendar-alt me-1"></i>Date de retour prévue
+                                </label>
+                                <input type="date" wire:model.defer="newDateRendu" class="form-control" style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
+                                @error('newDateRendu')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Footer Buttons -->
+                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3" style="border-top: 1px solid rgba(91, 196, 191, 0.15);">
+                            <button type="button" wire:click="fermerModal" class="btn px-4" style="background: white; border: 1px solid rgba(91, 196, 191, 0.3); color: #4AA39E; border-radius: 10px; padding: 0.5rem 1.5rem; transition: all 0.3s ease;" onmouseover="this.style.background='#f8f9fa';" onmouseout="this.style.background='white';">
+                                <i class="fas fa-times me-1"></i>Annuler
+                            </button>
+                            <button type="submit" class="btn px-4" style="background: linear-gradient(135deg, #5BC4BF, #4AA39E); border: none; color: white; border-radius: 10px; padding: 0.5rem 1.5rem; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(91, 196, 191, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                <i class="fas fa-save me-1"></i>Créer le checkout
+                                <span wire:loading wire:target="saveCheckout" class="spinner-border spinner-border-sm ms-1"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -488,20 +606,20 @@
 
 .form-control-sm, .form-select-sm {
     font-size: 0.75rem;
-    border-color: rgba(91, 196, 191, 0.2) !important;
+    border-color: rgba(59, 130, 246, 0.2) !important;
     border-radius: 8px !important;
 }
 
 .form-control-sm:focus, .form-select-sm:focus {
-    border-color: #5BC4BF !important;
-    box-shadow: 0 0 0 3px rgba(91, 196, 191, 0.15) !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
     outline: none !important;
 }
 
 .checkbox-modern {
     width: 16px;
     height: 16px;
-    accent-color: #5BC4BF;
+    accent-color: #3b82f6;
 }
 
 /* Animations pour le masquage/affichage */
@@ -520,7 +638,7 @@
 
 .btn-outline-primary:hover, .btn-outline-secondary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(91, 196, 191, 0.15);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.15);
 }
 
 .btn-outline-primary i, .btn-outline-secondary i {
@@ -533,21 +651,21 @@
 
 /* Personnalisation de la pagination */
 .pagination .page-link {
-    color: #5BC4BF;
-    border-color: rgba(91, 196, 191, 0.2);
+    color: #3b82f6;
+    border-color: rgba(59, 130, 246, 0.2);
     border-radius: 8px;
     margin: 0 2px;
 }
 
 .pagination .page-link:hover {
-    background: #5BC4BF;
+    background: #3b82f6;
     color: white;
-    border-color: #5BC4BF;
+    border-color: #3b82f6;
 }
 
 .pagination .active .page-link {
-    background: #5BC4BF;
-    border-color: #5BC4BF;
+    background: #3b82f6;
+    border-color: #3b82f6;
     color: white;
 }
 

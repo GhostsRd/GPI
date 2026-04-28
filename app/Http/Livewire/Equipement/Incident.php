@@ -9,11 +9,12 @@ use App\Models\Service;
 use App\Models\Department;
 use App\Models\Ordinateur;
 use App\Models\Imprimante;
-use App\Models\Telephone;
+use App\Models\TelephoneTablette as Telephone;
 use App\Models\Logiciel;
 use App\Models\Peripherique;
 use App\Models\Moniteur;
 use App\Models\MaterielReseau;
+use App\Models\SimCard;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +60,7 @@ class Incident extends Component
         'utilisateur_id' => 'required|exists:users,id',
         'service_id' => 'nullable',
         'department_id' => 'nullable',
-        'type_materiel' => 'required|in:ordinateur,imprimante,telephone,logiciel,peripherique,moniteur,reseau,autre',
+        'type_materiel' => 'required|in:ordinateur,imprimante,telephone,logiciel,peripherique,moniteur,reseau,flotte,autre',
         'materiel_id' => 'nullable',
         'date_incident' => 'required|date',
         'nature_incident' => 'required|string|max:255',
@@ -112,6 +113,8 @@ class Incident extends Component
                     return class_exists(Moniteur::class) ? Moniteur::all() : collect();
                 case 'reseau':
                     return class_exists(MaterielReseau::class) ? MaterielReseau::all() : collect();
+                case 'flotte':
+                    return class_exists(SimCard::class) ? SimCard::all() : collect();
                 default:
                     return collect();
             }
@@ -131,6 +134,7 @@ class Incident extends Component
             'peripherique' => 'yellow',
             'moniteur' => 'blue',
             'reseau' => 'red',
+            'flotte' => 'teal',
             'autre' => 'gray'
         ];
 
@@ -147,6 +151,7 @@ class Incident extends Component
             'peripherique' => '⌨️',
             'moniteur' => '🖥️',
             'reseau' => '🌐',
+            'flotte' => '📳',
             'autre' => '🔧'
         ];
 
@@ -277,8 +282,32 @@ class Incident extends Component
                 IncidentModel::find($this->incident_id)->update($data);
                 $message = 'Incident modifié avec succès.';
             } else {
-                IncidentModel::create($data);
+                $incident = IncidentModel::create($data);
                 $message = 'Incident créé avec succès.';
+
+                // Logic for automatic SIM status update on loss
+                if ($this->nature_incident == 'perte' || $this->nature_incident == 'vol') {
+                    if ($this->type_materiel == 'telephone' && $this->materiel_id) {
+                        $phone = Telephone::find($this->materiel_id);
+                        if ($phone && $phone->numero_appel) {
+                            $sim = SimCard::where('phone_number', $phone->numero_appel)->first();
+                            if ($sim) {
+                                $sim->update([
+                                    'status' => 'lost',
+                                    'remarks' => "Perdue automatiquement suite à l'incident téléphone #" . $incident->numero_rapport
+                                ]);
+                            }
+                        }
+                    } elseif ($this->type_materiel == 'flotte' && $this->materiel_id) {
+                        $sim = SimCard::find($this->materiel_id);
+                        if ($sim) {
+                            $sim->update([
+                                'status' => 'lost',
+                                'remarks' => "Déclarée perdue via l'incident #" . $incident->numero_rapport
+                            ]);
+                        }
+                    }
+                }
             }
 
             $this->showForm = false;
@@ -330,7 +359,7 @@ class Incident extends Component
     public function render()
     {
         try {
-            $query = IncidentModel::with(['utilisateur', 'service', 'department', 'technicien'])
+            $query = IncidentModel::with(['utilisateur', 'service', 'department', 'technicien', 'sim_card'])
                 ->when($this->nature, function ($query) {
                     $query->where("nature_incident", "like", "%" . $this->nature . "%");
                 })

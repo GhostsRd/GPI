@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
 
 <head>
+    <script src="{{ asset('js/theme.js') }}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -20,6 +21,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -31,6 +33,7 @@
 
     <link href="{{ asset('css/cssticket.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styleapp.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modern-theme.css') }}" rel="stylesheet">
     <link href='{{ asset('css/calendrier/assets/css/fullcalendar.css') }}' rel='stylesheet' />
     <link href='{{ asset('css/calendrier/assets/css/fullcalendar.print.css') }}' rel='stylesheet' media='print' />
     <script src='{{ asset('css/calendrier/assets/js/jquery-1.10.2.js') }}' type="text/javascript"></script>
@@ -195,12 +198,13 @@
         }
 
         .btn-two {
-            background-color: #5BC4BF;
+            background-color: #e65e4b;
             border: none;
         }
 
         .btn-two:hover {
-            color: #000 !important;
+            background-color: #d45241;
+            color: #fff !important;
         }
 
         .btn-one:hover {
@@ -234,6 +238,68 @@
 
         .bg-blue {
             background: #8bd0e5;
+        }
+
+        /* === Navbar Premium Improvements === */
+        .navbar-actions-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 15px;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 12px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none !important;
+            color: white !important;
+        }
+
+        .profile-trigger:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-avatar-container {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e65e4b;
+        }
+
+        .profile-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            max-width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-separator {
+            width: 1px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 5px;
+        }
+
+        .theme-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* === Feature cards === */
@@ -417,77 +483,62 @@
                     <li class="nav-item"><a class="nav-link" href="/contact">• Contact</a></li>
 
                     <hr class="d-block d-lg-none">
-                    <li class="nav-item ms-lg-3 bg-teal dropdown dropdown-toggle" id="userDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-target="#logoutmenu">
-                        <a href="#" class="btn btn-one py-0 text-white fw-bold text-sm  px-3">
-                            @if (empty(Auth::guard('utilisateur')->user()->photo))
-                                <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                    src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
-                                    alt="Profil" width="20" height="20" class="rounded-circle me-2">
-                            @else
-                                <img width="30" height="30" class="rounded-pill my-0 py-0"
-                                    src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
-                                    alt="">
-                            @endif
-                            {{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2"
-                            aria-labelledby="logoutmenu" id="logoutmenu">
-                            <!-- Profil -->
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center px-3 py-2"
-                                    href="{{ url('/utilisateur-profile') }}">
+                    <div class="navbar-actions-group">
+                        <!-- Profile Dropdown -->
+                        <div class="dropdown" id="userDropdown">
+                            <a href="#" class="profile-trigger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="profile-avatar-container">
                                     @if (empty(Auth::guard('utilisateur')->user()->photo))
-                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                            src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}"
-                                            alt="Profil" width="20" height="20" class="rounded-circle me-2">
+                                        <img src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}&background=e65e4b&color=fff"
+                                            alt="Profil" width="32" height="32">
                                     @else
-                                        <img width="30" height="30" class="rounded-pill my-0 py-0"
-                                            src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
-                                            alt="">
+                                        <img src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
+                                            alt="Profil" width="32" height="32">
                                     @endif
-                                    <span>Mon profil</span>
-                                </a>
-                            </li>
+                                </div>
+                                <span class="profile-name">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</span>
+                            </a>
 
-                            <li>
-                                <hr class="dropdown-divider my-1">
-                            </li>
+                            <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2"
+                                aria-labelledby="userDropdown">
+                                <!-- Profil -->
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2"
+                                        href="{{ url('/utilisateur-profile') }}">
+                                        <i class="fas fa-user-circle me-2 text-primary"></i>
+                                        <span>Mon profil</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2"
+                                        href="{{ url('/utilisateur-parametres') }}">
+                                        <i class="fas fa-cog me-2 text-secondary"></i>
+                                        <span>Paramètres</span>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2 text-danger"
+                                        href="{{ route('utilisateurLogout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="fas fa-sign-out-alt me-2"></i>
+                                        <span>Se déconnecter</span>
+                                    </a>
+                                    <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
 
-                            <!-- Paramètres -->
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center px-3 py-2"
-                                    href="{{ url('/utilisateur-parametres') }}">
-                                    <i class="bi bi-gear text-secondary fs-5 me-2"></i>
-                                    <span>Paramètres</span>
-                                </a>
-                            </li>
+                        <!-- Separator -->
+                        <div class="nav-separator d-none d-lg-block"></div>
 
-                            <li>
-                                <hr class="dropdown-divider my-1">
-                            </li>
-
-                            <!-- Déconnexion -->
-                            <li>
-                                <a class="dropdown-item d-flex align-items-center px-3 py-2 text-danger"
-                                    href="{{ route('utilisateurLogout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="bi bi-box-arrow-right fs-5 me-2"></i>
-                                    <span>Se déconnecter</span>
-                                </a>
-
-                                <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST"
-                                    class="d-none">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-
-
-                    </li>
-
-
+                        <!-- Theme Toggle -->
+                        <div class="theme-toggle-wrapper">
+                            <div class="theme-switch theme-toggle-btn" title="Changer le thème"></div>
+                        </div>
+                    </div>
                 </ul>
             </div>
         </div>

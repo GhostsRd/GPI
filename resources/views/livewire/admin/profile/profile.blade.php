@@ -184,6 +184,10 @@
                                                             $icone = 'bi-truck';
                                                             $couleur = 'text-warning';
                                                             $nomEquip = $liaison->flotte->nom ?? 'Véhicule';
+                                                        } elseif($liaison->type == 'sim_card') {
+                                                            $icone = 'bi-sim';
+                                                            $couleur = 'text-info';
+                                                            $nomEquip = $liaison->sim_card->phone_number ?? 'Carte SIM';
                                                         } elseif($liaison->type == 'imprimante') {
                                                             $icone = 'bi-printer';
                                                             $couleur = 'text-info';
@@ -210,6 +214,8 @@
                                                         Téléphone
                                                     @elseif($liaison->type == 'flotte')
                                                         Flotte
+                                                    @elseif($liaison->type == 'sim_card')
+                                                        Carte SIM
                                                     @elseif($liaison->type == 'imprimante')
                                                         Imprimante
                                                     @elseif($liaison->type == 'moniteur')
@@ -237,6 +243,10 @@
                                                 @elseif($liaison->type == 'flotte' && $liaison->flotte)
                                                     <small class="text-muted">
                                                         {{ $liaison->flotte->immatriculation ?? 'Sans immatriculation' }}
+                                                    </small>
+                                                @elseif($liaison->type == 'sim_card' && $liaison->sim_card)
+                                                    <small class="text-muted">
+                                                        {{ $liaison->sim_card->operator ?? '' }} - {{ $liaison->sim_card->iccid ?? '' }}
                                                     </small>
                                                 @elseif($liaison->type == 'imprimante' && $liaison->imprimante)
                                                     <small class="text-muted">
@@ -494,6 +504,7 @@
                                                 <option value="ordinateur">💻 Ordinateur</option>
                                                 <option value="telephone">📱 Téléphone</option>
                                                 <option value="flotte">🚗 Flotte</option>
+                                                <option value="sim_card">📲 Carte SIM</option>
                                                 <option value="imprimante">🖨️ Imprimante</option>
                                                 <option value="moniteur">🖥️ Moniteur</option>
                                                 <option value="peripherique">⌨️ Périphérique</option>

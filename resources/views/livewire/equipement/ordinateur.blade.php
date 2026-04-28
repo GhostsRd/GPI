@@ -679,10 +679,29 @@
                             <i class="bi bi-upload me-1"></i>
                             <span class="d-none d-sm-inline">Importer</span>
                         </button>
-                        <button wire:click="exportOrdinateur" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                            <i class="bi bi-download me-1"></i>
-                            <span class="d-none d-sm-inline">Exporter</span>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-download me-1"></i>
+                                <span class="d-none d-sm-inline">Exporter</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="exportDropdown">
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('xlsx')">
+                                        <i class="bi bi-file-earmark-excel me-2 text-success"></i> Excel (.xlsx)
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('csv')">
+                                        <i class="bi bi-file-earmark-text me-2 text-primary"></i> CSV
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('pdf')">
+                                        <i class="bi bi-file-earmark-pdf me-2 text-danger"></i> PDF
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                         <button wire:click="create" class="btn btn-primary btn-sm d-flex align-items-center">
                             <i class="bi bi-plus-lg me-1"></i>
                             <span class="d-none d-sm-inline">Nouveau</span>
@@ -1342,12 +1361,12 @@
                 <div class="modal-body">
                     <div class="alert alert-info small">
                         <i class="bi bi-info-circle me-2" style="color: var(--primary);"></i>
-                        Formats supportés: CSV, TXT. Taille max: 10MB
+                        Formats supportés: CSV, XLSX. Taille max: 10MB
                     </div>
                     
                     <div class="mb-3">
                         <label class="form-label small">Fichier à importer</label>
-                        <input type="file" wire:model="fichierExcel" class="form-control form-control-sm" accept=".csv,.txt">
+                        <input type="file" wire:model="fichierExcel" class="form-control form-control-sm" accept=".csv,.xlsx">
                         @error('fichierExcel') <span class="text-danger small">{{ $message }}</span> @enderror
                     </div>
 
@@ -1416,10 +1435,12 @@
                                 @foreach($fieldMapping as $field => $mappedHeader)
                                 <tr>
                                     <td class="small fw-medium">
-                                        <span class="badge {{ $field === 'nom' ? 'bg-danger' : 'bg-secondary' }} badge-sm me-2">
-                                            {{ $field === 'nom' ? 'Obligatoire' : 'Optionnel' }}
-                                        </span>
-                                        {{ $field }}
+                                        @if($field === 'nom')
+                                            <span class="badge bg-danger badge-sm me-2">Obligatoire</span>
+                                        @else
+                                            <span class="badge bg-secondary badge-sm me-2">Optionnel</span>
+                                        @endif
+                                        {{ ucwords(str_replace('_', ' ', $field)) }}
                                     </td>
                                     <td>
                                         <select class="form-select form-select-sm" wire:model="fieldMapping.{{ $field }}">

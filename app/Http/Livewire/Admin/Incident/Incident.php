@@ -98,38 +98,113 @@ class Incident extends Component
         $this->selectAll = false;
     }
 
-    public function exportIncidents($format = 'excel')
+    public function exportExcel()
     {
-        if ($format === 'pdf') {
-            $this->dispatchBrowserEvent('print-incidents');
-            return;
+        try {
+            $incidents = IncidentModel::query()
+                ->when($this->search, function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('id', 'like', '%' . $this->search . '%')
+                          ->orWhereHas('utilisateur', function ($q) {
+                              $q->where('nom', 'like', '%' . $this->search . '%');
+                          });
+                    });
+                })
+                ->when($this->statutFilter !== '', function ($query) {
+                    $query->where('statut', $this->statutFilter);
+                })
+                ->when($this->typeMateriel, function ($query) {
+                    $query->where('equipement_type', $this->typeMateriel);
+                })
+                ->with(['utilisateur'])
+                ->orderBy($this->sortField, $this->sortDirection)
+                ->get();
+
+            $fileName = 'export_incidents_' . now()->format('Ymd_His') . '.xlsx';
+            
+            if (ob_get_level()) ob_end_clean();
+
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\IncidentsExport($incidents), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::XLSX
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export Excel : ' . $e->getMessage()]);
         }
+    }
 
-        $incidents = IncidentModel::query()
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('id', 'like', '%' . $this->search . '%')
-                      ->orWhereHas('utilisateur', function ($q) {
-                          $q->where('nom', 'like', '%' . $this->search . '%');
-                      });
-                });
-            })
-            ->when($this->statutFilter !== '', function ($query) {
-                $query->where('statut', $this->statutFilter);
-            })
-            ->when($this->typeMateriel, function ($query) {
-                $query->where('equipement_type', $this->typeMateriel);
-            })
-            ->with(['utilisateur'])
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->get();
+    public function exportCSV()
+    {
+        try {
+            $incidents = IncidentModel::query()
+                ->when($this->search, function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('id', 'like', '%' . $this->search . '%')
+                          ->orWhereHas('utilisateur', function ($q) {
+                              $q->where('nom', 'like', '%' . $this->search . '%');
+                          });
+                    });
+                })
+                ->when($this->statutFilter !== '', function ($query) {
+                    $query->where('statut', $this->statutFilter);
+                })
+                ->when($this->typeMateriel, function ($query) {
+                    $query->where('equipement_type', $this->typeMateriel);
+                })
+                ->with(['utilisateur'])
+                ->orderBy($this->sortField, $this->sortDirection)
+                ->get();
 
-        $fileName = 'export_incidents_' . now()->format('Y-m-d_H-i-s') . '.xlsx';
+            $fileName = 'export_incidents_' . now()->format('Ymd_His') . '.csv';
+            
+            if (ob_get_level()) ob_end_clean();
 
-        return \Maatwebsite\Excel\Facades\Excel::download(
-            new \App\Exports\IncidentsExport($incidents), 
-            $fileName
-        );
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\IncidentsCsvExport($incidents), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::CSV
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export CSV : ' . $e->getMessage()]);
+        }
+    }
+
+    public function exportPDF()
+    {
+        try {
+            $incidents = IncidentModel::query()
+                ->when($this->search, function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('id', 'like', '%' . $this->search . '%')
+                          ->orWhereHas('utilisateur', function ($q) {
+                              $q->where('nom', 'like', '%' . $this->search . '%');
+                          });
+                    });
+                })
+                ->when($this->statutFilter !== '', function ($query) {
+                    $query->where('statut', $this->statutFilter);
+                })
+                ->when($this->typeMateriel, function ($query) {
+                    $query->where('equipement_type', $this->typeMateriel);
+                })
+                ->with(['utilisateur'])
+                ->orderBy($this->sortField, $this->sortDirection)
+                ->get();
+
+            if (ob_get_level()) ob_end_clean();
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.incidents', [
+                'incidents' => $incidents,
+                'is_pdf' => true
+            ])->setPaper('a4', 'landscape');
+
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, 'export_incidents_' . now()->format('Ymd_His') . '.pdf');
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export PDF : ' . $e->getMessage()]);
+        }
     }
 
     public function confirmDelete($id)

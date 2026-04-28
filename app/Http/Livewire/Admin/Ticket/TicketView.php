@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 
 use App\Models\Commentaire;
+use App\Models\utilisateur;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Momemail;
 
 class TicketView extends Component
 {
@@ -103,6 +106,20 @@ public function affecter()
     $ticket = ticket::findOrFail($this->ticketId);
     $ticket->responsable_id = $this->assigned_to;
     $ticket->save();
+
+    // Envoi de l'email au responsable
+    try {
+        $technicien = utilisateur::find($this->assigned_to);
+        if ($technicien && $technicien->email) {
+            $details = [
+                'title' => 'Nouveau ticket affecté : #' . $ticket->id,
+                'message' => 'Un nouveau ticket vous a été affecté. Veuillez le consulter dans votre tableau de bord.'
+            ];
+            Mail::to($technicien->email)->send(new Momemail($details));
+        }
+    } catch (\Exception $e) {
+        \Log::error('Mail affectation error: ' . $e->getMessage());
+    }
 
     $this->dispatchBrowserEvent('closeAffectationModal'); // fermer le modal côté JS
     session()->flash('message', 'Ticket affecté avec succès ✅');

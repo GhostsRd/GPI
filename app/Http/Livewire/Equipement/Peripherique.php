@@ -9,8 +9,9 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use League\Csv\Reader;
-use League\Csv\Statement;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\PeripheriquesImport;
+use App\Exports\PeripheriquesExport;
 
 class Peripherique extends Component
 {
@@ -398,13 +399,17 @@ public $viewMode = 'compact';
 
                     // Validation des données requises
                     if (empty($mappedData['nom'])) {
-                        $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
-                        continue;
+                        $errorMsg = "Ligne {$lineNumber}: Le champ 'Nom' est obligatoire dans votre mapping.";
+                        logger($errorMsg);
+                        $this->importErrors[] = $errorMsg;
+                        return;
                     }
 
                     if (empty($mappedData['type'])) {
-                        $this->importErrors[] = "Ligne {$lineNumber}: Le type est obligatoire";
-                        continue;
+                        $errorMsg = "Ligne {$lineNumber}: Le champ 'Type' est obligatoire dans votre mapping.";
+                        logger($errorMsg);
+                        $this->importErrors[] = $errorMsg;
+                        return;
                     }
 
                     // Nettoyer et formater les données
@@ -573,63 +578,29 @@ public $viewMode = 'compact';
     /**
      * Exporter les périphériques en CSV
      */
-    public function exportToCsv()
+    /**
+     * Exporter les périphériques dans différents formats
+     */
+    public function export($format)
     {
+        $date = date('Y-m-d');
+        $fileName = "peripheriques_{$date}.{$format}";
+
         try {
-            $query = PeripheriqueModel::query()
-                ->when($this->search, function($query) {
-                    $query->where(function($q) {
-                        $q->where('nom', 'like', '%'.$this->search.'%')
-                          ->orWhere('modele', 'like', '%'.$this->search.'%')
-                          ->orWhere('fabricant', 'like', '%'.$this->search.'%')
-                          ->orWhere('entite', 'like', '%'.$this->search.'%');
-                    });
-                })
-                ->when($this->filterStatut, function($query) {
-                    $query->where('statut', $this->filterStatut);
-                })
-                ->when($this->filterType, function($query) {
-                    $query->where('type', $this->filterType);
-                })
-                ->when($this->filterFabricant, function($query) {
-                    $query->where('fabricant', $this->filterFabricant);
-                })
-                ->orderBy($this->sortField, $this->sortDirection);
-
-            $peripheriques = $query->get();
-
-            $fileName = 'peripheriques_export_' . date('Y-m-d_H-i-s') . '.csv';
-
-            return response()->streamDownload(function () use ($peripheriques) {
-                $file = fopen('php://output', 'w');
-
-                // En-têtes
-                fputcsv($file, [
-                    'Nom', 'Entité', 'Statut', 'Fabricant', 'Lieu', 
-                    'Type', 'Modèle', 'Usager', 'Date création', 'Date modification'
-                ]);
-
-                // Données
-                foreach ($peripheriques as $peripherique) {
-                    fputcsv($file, [
-                        $peripherique->nom,
-                        $peripherique->entite ?? 'N/A',
-                        $peripherique->statut,
-                        $peripherique->fabricant ?? 'N/A',
-                        $peripherique->lieu ?? 'N/A',
-                        $peripherique->type,
-                        $peripherique->modele ?? 'N/A',
-                        $peripherique->usager ?? 'N/A',
-                        $peripherique->created_at->format('d/m/Y'),
-                        $peripherique->updated_at->format('d/m/Y'),
-                    ]);
-                }
-
-                fclose($file);
-            }, $fileName);
-
+            switch ($format) {
+                case 'xlsx':
+                    return Excel::download(new PeripheriquesExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                case 'csv':
+                    return Excel::download(new PeripheriquesExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+                case 'pdf':
+                    return Excel::download(new PeripheriquesExport, $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+                default:
+                    session()->flash('error', "Format d'exportation non supporté.");
+                    return null;
+            }
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de l\'export: ' . $e->getMessage());
+            session()->flash('error', "Erreur lors de l'exportation: " . $e->getMessage());
+            return null;
         }
     }
 

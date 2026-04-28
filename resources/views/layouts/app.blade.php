@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <!-- Theme Switcher Script for early execution to prevent FOUC -->
+    <script src="{{ asset('js/theme.js') }}"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -28,6 +30,7 @@
     <link href="{{ asset('css/modalview.css') }}" rel="stylesheet">
     <link href="{{ asset('css/checkout.css') }}" rel="stylesheet">
     <link href="{{ asset('/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/modern-theme.css') }}" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -119,7 +122,7 @@
 <body>
 <div id="app">
     <!-- Modern Navbar -->
-    <nav class="navbar-modern navbar navbar-expand-lg navbar-light shadow-sm">
+    <nav class="navbar-modern navbar navbar-expand-lg shadow-sm">
         <div class="container-fluid">
             <!-- Logo and Brand -->
             <a class="navbar-brand-modern text-muted" href="{{ url('/home') }}">
@@ -128,22 +131,20 @@
             </a>
 
             <!-- Mobile Toggle -->
-            <button id="mobileMenuToggle" class="navbar-toggler" type="button">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Theme Toggle -->
-                <button id="themeToggle" class="theme-toggle ms-auto">
-                    <i id="themeIcon" class="bi {{ session('theme', 'light') === 'light' ? 'bi-moon' : 'bi-sun' }}"></i>
-                </button>
+                <div class="theme-switch theme-toggle-btn ms-auto" style="margin-right: 15px;" title="Toggle Theme"></div>
 
-                <!-- Notifications -->
-                <div class="nav-item dropdown me-2">
-                    <div class="dropdown-menu dropdown-menu-modern dropdown-menu-end">
-                        <!-- Notification items -->
-                    </div>
-                </div>
+                <!-- Notifications Menu -->
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item">
+                        @livewire('notifications.notification-dropdown')
+                    </li>
+                </ul>
 
                 <!-- User Menu avec Déconnexion -->
                 <ul class="navbar-nav">
@@ -214,7 +215,6 @@
                                 <!-- Disconnect Button -->
                                 <a class="dropdown-item d-flex align-items-center px-4 py-2 rounded-3 logout-btn" 
                                    href="{{ route('logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                    style="font-size: 0.9rem; color: #dc2626;">
                                     <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; background: #fee2e2; border-radius: 10px;">
                                         <i class="bi bi-box-arrow-right" style="color: #dc2626; font-size: 1.1rem;"></i>
@@ -236,279 +236,6 @@
             </div>
         </div>
     </nav>
-        <!-- Dans la section du navbar, juste avant le User Menu -->
-<!-- Notifications -->
-<ul class="navbar-nav me-3">
-    <li class="nav-item dropdown">
-        <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="notification-bell">
-                <i class="bi bi-bell fs-5"></i>
-                <!-- Badge de notification (à activer dynamiquement) -->
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; display: none;">
-                    3
-                    <span class="visually-hidden">notifications non lues</span>
-                </span>
-            </div>
-        </a>
-
-        <!-- Dropdown des notifications -->
-        <div class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown" style="width: 380px; max-width: 380px; border-radius: 20px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.15); padding: 0; background: white; z-index: 9999;">
-
-            <!-- En-tête des notifications -->
-            <div class="notification-header d-flex justify-content-between align-items-center p-3 border-bottom" style="background: #f8fafc; border-radius: 20px 20px 0 0;">
-                <div>
-                    <h6 class="mb-0 fw-bold">Notifications</h6>
-                    <small class="text-muted">3 non lues</small>
-                </div>
-                <div>
-                    <button class="btn btn-sm btn-link text-primary text-decoration-none" onclick="markAllAsRead()">
-                        <i class="bi bi-check2-all"></i> Tout marquer comme lu
-                    </button>
-                </div>
-            </div>
-
-            <!-- Liste des notifications -->
-            <div class="notification-list" style="max-height: 400px; overflow-y: auto;">
-                <!-- Notification non lue -->
-                <a href="#" class="dropdown-item notification-item unread px-3 py-3 border-bottom" style="background: #f0f9ff; transition: all 0.2s;">
-                    <div class="d-flex">
-                        <div class="notification-icon me-3">
-                            <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #e0f2fe; border-radius: 12px;">
-                                <i class="bi bi-ticket-perforated text-primary" style="font-size: 1.2rem;"></i>
-                            </div>
-                        </div>
-                        <div class="notification-content flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="mb-1 fw-semibold" style="font-size: 0.9rem;">Nouveau ticket créé</p>
-                                    <small class="text-muted d-block">Ticket #1234 a été créé par Jean Dupont</small>
-                                </div>
-                                <small class="text-muted ms-2" style="font-size: 0.7rem;">5 min</small>
-                            </div>
-                            <div class="mt-1">
-                                <span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-pill" style="font-size: 0.6rem;">Ticket</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Notification non lue -->
-                <a href="#" class="dropdown-item notification-item unread px-3 py-3 border-bottom" style="background: #f0f9ff;">
-                    <div class="d-flex">
-                        <div class="notification-icon me-3">
-                            <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #dcfce7; border-radius: 12px;">
-                                <i class="bi bi-check-circle-fill text-success" style="font-size: 1.2rem;"></i>
-                            </div>
-                        </div>
-                        <div class="notification-content flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="mb-1 fw-semibold" style="font-size: 0.9rem;">Check-out approuvé</p>
-                                    <small class="text-muted d-block">Votre demande pour l'ordinateur portable a été approuvée</small>
-                                </div>
-                                <small class="text-muted ms-2" style="font-size: 0.7rem;">30 min</small>
-                            </div>
-                            <div class="mt-1">
-                                <span class="badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-pill" style="font-size: 0.6rem;">Check-out</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Notification lue -->
-                <a href="#" class="dropdown-item notification-item px-3 py-3 border-bottom">
-                    <div class="d-flex">
-                        <div class="notification-icon me-3">
-                            <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #fef9c3; border-radius: 12px;">
-                                <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 1.2rem;"></i>
-                            </div>
-                        </div>
-                        <div class="notification-content flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="mb-1 fw-semibold" style="font-size: 0.9rem;">Maintenance planifiée</p>
-                                    <small class="text-muted d-block">Maintenance du serveur prévue demain à 14h</small>
-                                </div>
-                                <small class="text-muted ms-2" style="font-size: 0.7rem;">2h</small>
-                            </div>
-                            <div class="mt-1">
-                                <span class="badge bg-warning bg-opacity-10 text-warning px-2 py-1 rounded-pill" style="font-size: 0.6rem;">Système</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Notification lue -->
-                <a href="#" class="dropdown-item notification-item px-3 py-3 border-bottom">
-                    <div class="d-flex">
-                        <div class="notification-icon me-3">
-                            <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #f3e8ff; border-radius: 12px;">
-                                <i class="bi bi-person-plus-fill text-purple" style="color: #8b5cf6; font-size: 1.2rem;"></i>
-                            </div>
-                        </div>
-                        <div class="notification-content flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <p class="mb-1 fw-semibold" style="font-size: 0.9rem;">Nouvel utilisateur</p>
-                                    <small class="text-muted d-block">Marie Martin a rejoint l'équipe</small>
-                                </div>
-                                <small class="text-muted ms-2" style="font-size: 0.7rem;">1j</small>
-                            </div>
-                            <div class="mt-1">
-                                <span class="badge bg-purple bg-opacity-10 text-purple px-2 py-1 rounded-pill" style="color: #8b5cf6; font-size: 0.6rem;">Utilisateur</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Footer des notifications -->
-            <div class="notification-footer p-3 text-center border-top">
-                <a href="#" class="text-decoration-none text-primary small fw-semibold">
-                    Voir toutes les notifications
-                    <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-            </div>
-        </div>
-    </li>
-</ul>
-
-<!-- Styles supplémentaires pour les notifications -->
-<style>
-    /* Style pour la cloche de notification */
-    .notification-bell {
-        position: relative;
-        padding: 8px;
-        background: #f8fafc;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-    
-    .notification-bell:hover {
-        background: #eef2ff;
-        transform: scale(1.05);
-    }
-    
-    .notification-bell i {
-        color: #4b5563;
-        transition: color 0.3s;
-    }
-    
-    .notification-bell:hover i {
-        color: #6366f1;
-    }
-    
-    /* Style pour les items de notification */
-    .notification-item {
-        transition: all 0.2s;
-        border-left: 3px solid transparent;
-    }
-    
-    .notification-item:hover {
-        background: #f8fafc !important;
-        transform: translateX(5px);
-        border-left-color: #6366f1;
-    }
-    
-    .notification-item.unread:hover {
-        background: #e6f4ff !important;
-    }
-    
-    /* Animation pour la cloche */
-    @keyframes bellShake {
-        0% { transform: rotate(0); }
-        15% { transform: rotate(5deg); }
-        30% { transform: rotate(-5deg); }
-        45% { transform: rotate(4deg); }
-        60% { transform: rotate(-4deg); }
-        75% { transform: rotate(2deg); }
-        85% { transform: rotate(-2deg); }
-        92% { transform: rotate(1deg); }
-        100% { transform: rotate(0); }
-    }
-    
-    .notification-bell.has-notifications {
-        animation: bellShake 1s ease-in-out;
-    }
-    
-    /* Scroll personnalisé pour la liste des notifications */
-    .notification-list::-webkit-scrollbar {
-        width: 6px;
-    }
-    
-    .notification-list::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    
-    .notification-list::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 10px;
-    }
-    
-    .notification-list::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-</style>
-
-<!-- Script pour les notifications -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Simuler des notifications non lues (à remplacer par des données dynamiques)
-        const hasUnread = true;
-        const unreadCount = 3;
-        
-        const badge = document.querySelector('.notification-bell .badge');
-        if (badge && hasUnread) {
-            badge.style.display = 'inline';
-            badge.textContent = unreadCount;
-            
-            // Ajouter l'animation si des notifications non lues
-            document.querySelector('.notification-bell').classList.add('has-notifications');
-        }
-        
-        // Animation de la cloche au clic
-        const notificationBell = document.querySelector('.notification-bell');
-        if (notificationBell) {
-            notificationBell.addEventListener('click', function() {
-                this.classList.remove('has-notifications');
-            });
-        }
-    });
-    
-    // Fonction pour marquer toutes les notifications comme lues
-    function markAllAsRead() {
-        const unreadItems = document.querySelectorAll('.notification-item.unread');
-        unreadItems.forEach(item => {
-            item.classList.remove('unread');
-            item.style.background = '';
-        });
-        
-        // Cacher le badge
-        const badge = document.querySelector('.notification-bell .badge');
-        if (badge) {
-            badge.style.display = 'none';
-        }
-        
-        // Mettre à jour le compteur dans l'en-tête
-        const unreadText = document.querySelector('.notification-header small');
-        if (unreadText) {
-            unreadText.textContent = '0 non lue';
-        }
-        
-        // Afficher une notification de succès
-        Swal.fire({
-            icon: 'success',
-            title: 'Succès',
-            text: 'Toutes les notifications ont été marquées comme lues',
-            timer: 2000,
-            showConfirmButton: false,
-            toast: true,
-            position: 'top-end'
-        });
-    }
-</script>
     <!-- Modern Sidebar -->
     <aside class="sidebar-modern shadow border-0" style="z-index: 1000 !important" id="sidebarModern">
         <nav class="sidebar-nav-modern">
@@ -698,16 +425,16 @@
                 </a>
                 <div class="collapse" id="gestion">
                     <div class="nav-submenu">
-                        <a href="#" class="submenu-item">
-                            <i class="bi bi-box-arrow-in-right"></i>
-                            Commentaire
+                        <a href="{{ route('admin.notifications') }}" class="submenu-item">
+                            <i class="bi bi-bell-fill"></i>
+                            Notifications
                         </a>
                         <a href="#" class="submenu-item">
-                            <i class="bi bi-box-arrow-right"></i>
+                            <i class="bi bi-chat-dots"></i>
                             Chat
                         </a>
                         <a href="#" class="submenu-item">
-                            <i class="bi bi-box-arrow-right"></i>
+                            <i class="bi bi-archive"></i>
                             Archive
                         </a>
                     </div>
@@ -717,19 +444,29 @@
             <!-- Carte SIM -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#simCollapse">
-                    <span>Carte SIM</span>
+                    <i class="bi bi-sim text-secondary fs-6"></i>
+                    <span>Gestion SIM</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
                 <div class="collapse" id="simCollapse">
                     <div class="nav-submenu">
-                        <a href="{{ url('/produit') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
-                            Flotte
-                        </a>
-                        <a href="{{ url('/parametres') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
-                            --
-                        </a>
+                        @if(Auth::user()->isAdmin() || Auth::user()->isManager())
+                            <a href="{{ route('admin.sim.dashboard') }}" class="submenu-item">
+                                <i class="bi bi-graph-up"></i>
+                                Dashboard
+                            </a>
+                            <a href="{{ route('admin.sim.list') }}" class="submenu-item">
+                                <i class="bi bi-list-ul"></i>
+                                Flotte SIM
+                            </a>
+                        @endif
+                        
+                        @if(Auth::user()->isUser())
+                            <a href="{{ route('utilisateur.sim.my-sims') }}" class="submenu-item">
+                                <i class="bi bi-person-badge"></i>
+                                Mes SIMs
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -770,6 +507,84 @@
     </form>
 </div>
 
+<!-- Styles supplémentaires pour les notifications -->
+<style>
+    /* Style pour la cloche de notification */
+    .notification-bell {
+        position: relative;
+        padding: 8px;
+        background: #f8fafc;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .notification-bell:hover {
+        background: #eef2ff;
+        transform: scale(1.05);
+    }
+    
+    .notification-bell i {
+        color: #4b5563;
+        transition: color 0.3s;
+    }
+    
+    .notification-bell:hover i {
+        color: #6366f1;
+    }
+    
+    /* Style pour les items de notification */
+    .notification-item {
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+    }
+    
+    .notification-item:hover {
+        background: #f8fafc !important;
+        transform: translateX(5px);
+        border-left-color: #6366f1;
+    }
+    
+    .notification-item.unread:hover {
+        background: #e6f4ff !important;
+    }
+    
+    /* Animation pour la cloche */
+    @keyframes bellShake {
+        0% { transform: rotate(0); }
+        15% { transform: rotate(5deg); }
+        30% { transform: rotate(-5deg); }
+        45% { transform: rotate(4deg); }
+        60% { transform: rotate(-4deg); }
+        75% { transform: rotate(2deg); }
+        85% { transform: rotate(-2deg); }
+        92% { transform: rotate(1deg); }
+        100% { transform: rotate(0); }
+    }
+    
+    .notification-bell.has-notifications {
+        animation: bellShake 1s ease-in-out;
+    }
+    
+    /* Scroll personnalisé pour la liste des notifications */
+    .notification-list::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .notification-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    .notification-list::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+    
+    .notification-list::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+</style>
 @livewireScripts
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -825,5 +640,84 @@
 </script>
 
 @stack('scripts')
+
+    <script>
+        // Script pour les notifications - Mis à jour pour Livewire
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('notificationsMarkedAsRead', event => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès',
+                    text: 'Toutes les notifications ont été marquées comme lues',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            });
+
+            window.addEventListener('toast', event => {
+                const data = event.detail[0] || event.detail;
+                Swal.fire({
+                    icon: data.type || 'success',
+                    title: data.type == 'success' ? 'Réussi' : (data.type == 'error' ? 'Erreur' : 'Info'),
+                    text: data.message,
+                    timer: 3000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            });
+
+            // Gestion des flash messages
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès',
+                    text: "{{ session('success') }}",
+                    timer: 3000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erreur',
+                    text: "{{ session('error') }}",
+                    timer: 5000,
+                    showConfirmButton: true,
+                    toast: false,
+                    position: 'center'
+                });
+            @endif
+
+            @if(session('warning'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Attention',
+                    text: "{{ session('warning') }}",
+                    timer: 4000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            @endif
+
+            @if(session('info'))
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Information',
+                    text: "{{ session('info') }}",
+                    timer: 3000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            @endif
+        });
+    </script>
 </body>
 </html>

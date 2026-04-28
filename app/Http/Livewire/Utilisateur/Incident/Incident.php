@@ -7,6 +7,7 @@ use App\Models\liaison_equipement;
 use App\Models\ordinateur;
 use App\Models\Peripherique;
 use App\Models\TelephoneTablette;
+use App\Models\SimCard;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Incident as IncidentModel;
@@ -66,11 +67,15 @@ class Incident extends Component
             'declaration_perte' => 'nullable|file|mimes:pdf,jpg,png,docx|max:2048',
         ]);
        
+        $rapport_path = null;
+        $declaration_perte_path = null;
+
         if ($this->rapport_incident) {
-            // Enregistre le fichier dans storage/app/public/rapports/
             $rapport_path = $this->rapport_incident->store('rapport_incident', 'public');
+        }
+
+        if ($this->declaration_perte) {
             $declaration_perte_path = $this->declaration_perte->store('declaration_perte', 'public');
-           
         }
 
 
@@ -82,6 +87,10 @@ class Incident extends Component
         }
         elseif($this->equipement_type == "Peripherique"){
             Peripherique::where('id',$this->equipement_id)->update(['statut'=>'En réparation']);
+        }
+        elseif($this->equipement_type == "sim_card"){
+            $newStatus = ($this->incident_nature == 'Vol' || $this->incident_nature == 'Perte') ? 'lost' : 'repairing';
+            SimCard::where('id',$this->equipement_id)->update(['status' => $newStatus]);
         }
 
 

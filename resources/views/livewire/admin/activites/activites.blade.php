@@ -6,13 +6,39 @@
                 <div class="card-header border-0 bg-transparent py-4 px-4">
                     <!-- Header with title, filters and switch -->
                     
-                    <!-- Print only header -->
+                    <!-- Print only form header (mimicking user image) -->
                     <div class="print-only-header">
-                        <div class="print-header-top">
-                            <div class="print-entity">Gestion de Parc Informatique (GPI)</div>
-                            <div class="print-date">Imprimé le : {{ now()->format('d/m/Y H:i') }}</div>
+                        <div class="form-logo">
+                            <img src="{{ asset('images/logoPivot.png') }}" alt="Logo">
                         </div>
-                        <h1 class="print-title">Journal des Activités</h1>
+                        
+                        <div class="form-title-box">
+                            <h1>JOURNAL DES ACTIVITÉS</h1>
+                        </div>
+
+                        <div class="form-header-blocks">
+                            <div class="header-block">
+                                <span class="block-title">Service demandeur</span>
+                                <div class="block-content">
+                                    Département : <span class="dotted-line">DSI / Support IT</span><br>
+                                    Demandeur : <span class="dotted-line">{{ auth()->user()->name ?? 'Administrateur' }}</span>
+                                </div>
+                            </div>
+                            <div class="header-block">
+                                <span class="block-title">Lieu de bénéficiaire</span>
+                                <div class="block-content">
+                                    Site : <span class="dotted-line">Siège Principal</span><br>
+                                    Période : <span class="dotted-line">du {{ now()->startOfMonth()->format('d/m/Y') }} au {{ now()->format('d/m/Y') }}</span>
+                                </div>
+                            </div>
+                            <div class="header-block">
+                                <span class="block-title">Service Maintenance</span>
+                                <div class="block-content">
+                                    N° de réf : <span class="dotted-line">ACT-{{ now()->format('Ymd') }}</span><br>
+                                    Date : <span class="dotted-line">{{ now()->format('d/m/Y') }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-4">
@@ -24,6 +50,19 @@
                                 </span>
                             </div>
                             <h5 class="fw-700 mb-0 ms-2">Historique complet</h5>
+                        </div>
+
+                        <!-- TV Display Controls -->
+                        <div class="d-flex gap-2 tv-controls no-print">
+                            <button class="btn btn-icon-only border-0 bg-light rounded-circle shadow-sm" id="tvModeBtn" style="width: 40px; height: 40px;" title="Mode TV">
+                                <i class="fas fa-tv text-muted"></i>
+                            </button>
+                            <button class="btn btn-icon-only border-0 bg-light rounded-circle shadow-sm" id="fullscreenBtn" style="width: 40px; height: 40px;" title="Plein écran">
+                                <i class="fas fa-expand text-muted"></i>
+                            </button>
+                            <button class="btn btn-icon-only border-0 bg-light rounded-circle shadow-sm" id="tvSettingsBtn" style="width: 40px; height: 40px;" title="Paramètres TV">
+                                <i class="fas fa-cog text-muted"></i>
+                            </button>
                         </div>
 
                         <!-- Center: Search and filters -->
@@ -50,7 +89,7 @@
                                 </select>
                             </div>
 
-                                <div class="dropdown">
+                            <div class="dropdown">
                                 <button class="btn btn-success dropdown-toggle border-0 shadow-sm d-flex align-items-center gap-2 px-4 h-45" 
                                         type="button" id="dropdownExport" data-bs-toggle="dropdown" aria-expanded="false" 
                                         style="border-radius: 50px; background: #198754;">
@@ -59,13 +98,18 @@
                                 </button>
                                 <ul class="dropdown-menu border-0 shadow-lg p-2" aria-labelledby="dropdownExport" style="border-radius: 15px;">
                                     <li>
-                                        <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="export('excel')" style="border-radius: 10px;">
-                                            <i class="fas fa-file-excel text-success"></i> Excel (.csv)
+                                        <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportExcel()" style="border-radius: 10px;">
+                                            <i class="fas fa-file-excel text-success"></i> Excel (.xlsx)
                                         </button>
                                     </li>
                                     <li>
-                                        <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="export('pdf')" style="border-radius: 10px;">
-                                            <i class="fas fa-file-pdf text-danger"></i> PDF (Imprimer)
+                                        <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportCSV()" style="border-radius: 10px;">
+                                            <i class="fas fa-file-csv text-info"></i> CSV (.csv)
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportPDF()" style="border-radius: 10px;">
+                                            <i class="fas fa-file-pdf text-danger"></i> PDF (.pdf)
                                         </button>
                                     </li>
                                 </ul>
@@ -81,9 +125,71 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- TV Settings Panel -->
+                <div class="tv-settings-panel" id="tvSettingsPanel">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0"><i class="fas fa-tv me-2"></i>Paramètres d'affichage TV - Journal des activités</h6>
+                        <button class="btn-icon-only border-0 bg-transparent rounded-circle" id="closeSettingsBtn" style="width: 30px; height: 30px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mode d'affichage</label>
+                            <select class="form-select" id="displayMode">
+                                <option value="normal">Normal</option>
+                                <option value="tv">Mode TV (Plein écran auto)</option>
+                                <option value="kiosk">Mode Kiosque</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Rafraîchissement automatique</label>
+                            <select class="form-select" id="autoRefresh">
+                                <option value="0">Désactivé</option>
+                                <option value="15">15 secondes</option>
+                                <option value="30">30 secondes</option>
+                                <option value="60">1 minute</option>
+                                <option value="300">5 minutes</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Masquer les éléments</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="hideControls">
+                                <label class="form-check-label">Masquer les contrôles TV</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="hideSearch">
+                                <label class="form-check-label">Masquer la recherche et les filtres</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="hidePagination">
+                                <label class="form-check-label">Masquer la pagination</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Taille du texte</label>
+                            <select class="form-select" id="textSize">
+                                <option value="normal">Normal</option>
+                                <option value="large">Grand</option>
+                                <option value="xlarge">Très grand</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="d-grid gap-2">
+                            <button class="btn-refresh" id="applyTVSettings">
+                                <i class="fas fa-check me-2"></i>Appliquer
+                            </button>
+                            <button class="btn-refresh" id="exitTVMode" style="background: #ef4444;">
+                                <i class="fas fa-sign-out-alt me-2"></i>Quitter mode TV
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="table-responsive px-2" id="printableActivities">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0" id="activitiesTable">
                         <thead class="bg-light bg-opacity-50">
                             <tr>
                                 <th class="ps-2 py-3 border-0 text-muted small fw-700 uppercase row-number-header" style="letter-spacing: 0.05em; width: 40px;">N°</th>
@@ -91,6 +197,7 @@
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Type</th>
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Description</th>
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Utilisateur</th>
+                                <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Assigné à</th>
                                 <th class="py-3 border-0 text-muted small fw-700 uppercase" style="letter-spacing: 0.05em;">Statut</th>
                                 <th class="text-end pe-4 py-3 border-0 text-muted small fw-700 uppercase no-print" style="letter-spacing: 0.05em;">Actions</th>
                             </tr>
@@ -146,7 +253,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center py-5">
+                                <td colspan="8" class="text-center py-5">
                                     <div class="py-4">
                                         <div class="empty-state-icon mb-3">
                                             <i class="fas fa-search fa-4x" style="color: var(--gray-300);"></i>
@@ -165,7 +272,7 @@
                 </div>
 
                 @if($activities->hasPages())
-                <div class="card-footer border-0 bg-transparent py-4 px-4 no-print">
+                <div class="card-footer border-0 bg-transparent py-4 px-4 no-print" id="paginationContainer">
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                         <div class="text-muted small">
                             Affichage de {{ $activities->firstItem() ?? 0 }} à {{ $activities->lastItem() ?? 0 }} sur {{ $activities->total() }} activités
@@ -188,18 +295,382 @@
         </div>
     </div>
 
+    <!-- Fullscreen Indicator -->
+    <div class="fullscreen-indicator" id="fullscreenIndicator">
+        <i class="fas fa-expand me-1"></i> Mode plein écran activé
+    </div>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
     <script>
+        let autoRefreshTimer = null;
+
+        // Fonction pour entrer en plein écran
+        function enterFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+            
+            const indicator = document.getElementById('fullscreenIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+
+        // Fonction pour quitter le mode TV
+        function exitTVMode() {
+            localStorage.removeItem('tvModeActivities');
+            localStorage.removeItem('autoRefreshActivities');
+            localStorage.removeItem('hideControlsActivities');
+            localStorage.removeItem('hideSearchActivities');
+            localStorage.removeItem('hidePaginationActivities');
+            localStorage.removeItem('textSizeActivities');
+            localStorage.removeItem('displayModeActivities');
+            
+            if (autoRefreshTimer) {
+                clearInterval(autoRefreshTimer);
+                autoRefreshTimer = null;
+            }
+            
+            document.body.classList.remove('tv-mode');
+            
+            // Afficher les éléments masqués
+            document.querySelectorAll('.tv-hidden').forEach(el => {
+                el.classList.remove('tv-hidden');
+            });
+            
+            // Réinitialiser la taille du texte
+            document.body.style.fontSize = '';
+            document.querySelectorAll('.table td, .table th').forEach(el => {
+                el.style.fontSize = '';
+            });
+            
+            location.reload();
+        }
+
+        // Fonction pour appliquer les paramètres TV
+        function applyTVSettings() {
+            const displayMode = document.getElementById('displayMode').value;
+            const autoRefresh = parseInt(document.getElementById('autoRefresh').value);
+            const hideControls = document.getElementById('hideControls').checked;
+            const hideSearch = document.getElementById('hideSearch').checked;
+            const hidePagination = document.getElementById('hidePagination').checked;
+            const textSize = document.getElementById('textSize').value;
+            
+            // Sauvegarder les paramètres
+            localStorage.setItem('displayModeActivities', displayMode);
+            localStorage.setItem('autoRefreshActivities', autoRefresh);
+            localStorage.setItem('hideControlsActivities', hideControls);
+            localStorage.setItem('hideSearchActivities', hideSearch);
+            localStorage.setItem('hidePaginationActivities', hidePagination);
+            localStorage.setItem('textSizeActivities', textSize);
+            
+            // Appliquer le mode d'affichage
+            if (displayMode === 'tv' || displayMode === 'kiosk') {
+                localStorage.setItem('tvModeActivities', 'true');
+                document.body.classList.add('tv-mode');
+                
+                if (displayMode === 'kiosk') {
+                    setTimeout(() => {
+                        enterFullscreen();
+                    }, 500);
+                }
+            } else {
+                localStorage.removeItem('tvModeActivities');
+                document.body.classList.remove('tv-mode');
+            }
+            
+            // Appliquer le rafraîchissement automatique
+            if (autoRefreshTimer) {
+                clearInterval(autoRefreshTimer);
+                autoRefreshTimer = null;
+            }
+            
+            if (autoRefresh > 0) {
+                autoRefreshTimer = setInterval(() => {
+                    if (window.Livewire) {
+                        window.Livewire.dispatch('refreshActivities');
+                    }
+                }, autoRefresh * 1000);
+            }
+            
+            // Masquer les éléments
+            if (hideControls) {
+                document.querySelectorAll('.tv-controls').forEach(el => {
+                    el.classList.add('tv-hidden');
+                });
+            } else {
+                document.querySelectorAll('.tv-controls').forEach(el => {
+                    el.classList.remove('tv-hidden');
+                });
+            }
+            
+            if (hideSearch) {
+                document.querySelectorAll('.search-input-wrapper, .filter-select-wrapper, .dropdown, .custom-switch').forEach(el => {
+                    el.classList.add('tv-hidden');
+                });
+            } else {
+                document.querySelectorAll('.search-input-wrapper, .filter-select-wrapper, .dropdown, .custom-switch').forEach(el => {
+                    el.classList.remove('tv-hidden');
+                });
+            }
+            
+            if (hidePagination) {
+                const pagination = document.getElementById('paginationContainer');
+                if (pagination) pagination.classList.add('tv-hidden');
+            } else {
+                const pagination = document.getElementById('paginationContainer');
+                if (pagination) pagination.classList.remove('tv-hidden');
+            }
+            
+            // Appliquer la taille du texte
+            let fontSize = '';
+            let tableFontSize = '';
+            switch(textSize) {
+                case 'large':
+                    fontSize = '1.1rem';
+                    tableFontSize = '0.95rem';
+                    break;
+                case 'xlarge':
+                    fontSize = '1.2rem';
+                    tableFontSize = '1rem';
+                    break;
+                default:
+                    fontSize = '';
+                    tableFontSize = '';
+            }
+            
+            if (fontSize) {
+                document.body.style.fontSize = fontSize;
+                document.querySelectorAll('.table td, .table th').forEach(el => {
+                    el.style.fontSize = tableFontSize;
+                });
+            } else {
+                document.body.style.fontSize = '';
+                document.querySelectorAll('.table td, .table th').forEach(el => {
+                    el.style.fontSize = '';
+                });
+            }
+            
+            // Fermer le panneau
+            document.getElementById('tvSettingsPanel').classList.remove('show');
+            
+            // Afficher une notification
+            const indicator = document.getElementById('fullscreenIndicator');
+            indicator.textContent = '✓ Paramètres TV appliqués';
+            indicator.classList.add('show');
+            setTimeout(() => {
+                indicator.classList.remove('show');
+                indicator.innerHTML = '<i class="fas fa-expand me-1"></i> Mode plein écran activé';
+            }, 2000);
+        }
+
+        // Charger les paramètres sauvegardés
+        function loadTVSettings() {
+            const displayMode = localStorage.getItem('displayModeActivities');
+            const autoRefresh = localStorage.getItem('autoRefreshActivities');
+            const hideControls = localStorage.getItem('hideControlsActivities');
+            const hideSearch = localStorage.getItem('hideSearchActivities');
+            const hidePagination = localStorage.getItem('hidePaginationActivities');
+            const textSize = localStorage.getItem('textSizeActivities');
+            const tvMode = localStorage.getItem('tvModeActivities');
+            
+            if (displayMode && document.getElementById('displayMode')) {
+                document.getElementById('displayMode').value = displayMode;
+            }
+            if (autoRefresh && document.getElementById('autoRefresh')) {
+                document.getElementById('autoRefresh').value = autoRefresh;
+            }
+            if (hideControls && document.getElementById('hideControls')) {
+                document.getElementById('hideControls').checked = hideControls === 'true';
+            }
+            if (hideSearch && document.getElementById('hideSearch')) {
+                document.getElementById('hideSearch').checked = hideSearch === 'true';
+            }
+            if (hidePagination && document.getElementById('hidePagination')) {
+                document.getElementById('hidePagination').checked = hidePagination === 'true';
+            }
+            if (textSize && document.getElementById('textSize')) {
+                document.getElementById('textSize').value = textSize;
+            }
+            
+            if (tvMode === 'true') {
+                applyTVSettings();
+            }
+        }
+
+        // Gestion du plein écran
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', enterFullscreen);
+        }
+
+        // Gestion du mode TV
+        const tvModeBtn = document.getElementById('tvModeBtn');
+        if (tvModeBtn) {
+            tvModeBtn.addEventListener('click', () => {
+                document.getElementById('displayMode').value = 'tv';
+                applyTVSettings();
+            });
+        }
+
+        // Gestion du panneau des paramètres TV
+        const tvSettingsBtn = document.getElementById('tvSettingsBtn');
+        const tvSettingsPanel = document.getElementById('tvSettingsPanel');
+        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        const applyTVSettingsBtn = document.getElementById('applyTVSettings');
+        const exitTVModeBtn = document.getElementById('exitTVMode');
+
+        if (tvSettingsBtn) {
+            tvSettingsBtn.addEventListener('click', () => {
+                tvSettingsPanel.classList.toggle('show');
+            });
+        }
+
+        if (closeSettingsBtn) {
+            closeSettingsBtn.addEventListener('click', () => {
+                tvSettingsPanel.classList.remove('show');
+            });
+        }
+
+        if (applyTVSettingsBtn) {
+            applyTVSettingsBtn.addEventListener('click', applyTVSettings);
+        }
+
+        if (exitTVModeBtn) {
+            exitTVModeBtn.addEventListener('click', exitTVMode);
+        }
+
+        // Fermer le panneau en cliquant en dehors
+        document.addEventListener('click', (e) => {
+            if (tvSettingsPanel && tvSettingsPanel.classList.contains('show')) {
+                if (!tvSettingsPanel.contains(e.target) && !tvSettingsBtn.contains(e.target)) {
+                    tvSettingsPanel.classList.remove('show');
+                }
+            }
+        });
+
+        // Détection de la souris pour mode TV
+        let mouseTimeout;
+        document.addEventListener('mousemove', () => {
+            if (document.body.classList.contains('tv-mode')) {
+                document.body.style.cursor = 'auto';
+                clearTimeout(mouseTimeout);
+                mouseTimeout = setTimeout(() => {
+                    document.body.style.cursor = 'none';
+                }, 3000);
+            }
+        });
+
+        // Écouter l'événement d'impression
         window.addEventListener('print-activities', event => {
             window.print();
+        });
+
+        // Charger les paramètres au démarrage
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTVSettings();
         });
     </script>
 
     <style>
         .print-only-header {
             display: none;
+        }
+
+        /* Mode TV */
+        .tv-mode {
+            cursor: none;
+        }
+
+        .tv-mode:hover {
+            cursor: default;
+        }
+
+        .tv-mode .tv-hidden {
+            display: none !important;
+        }
+
+        /* TV Settings Panel */
+        .tv-settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 10000;
+            width: 450px;
+            max-width: 90%;
+            display: none;
+        }
+
+        [data-bs-theme="dark"] .tv-settings-panel {
+            background: var(--gray-100);
+        }
+
+        .tv-settings-panel.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .btn-refresh {
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            border: none;
+            background: var(--primary, #5BC4BF);
+            color: white;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-refresh:hover {
+            background: var(--primary-dark, #3A9692);
+            color: white;
+        }
+
+        .fullscreen-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .fullscreen-indicator.show {
+            opacity: 1;
         }
 
         @media print {
@@ -280,22 +751,22 @@
             }
 
             #printableActivities {
-                position: absolute;
-                left: 10mm;
-                right: 10mm;
-                top: 5mm;
-                width: calc(100% - 20mm);
-                margin-top: 180px; /* Offset for absolute positioning of header content if needed, but table follows flow below */
-            }
-
-            /* Restore flow for printing instead of absolute overlay if possible */
-            #printableActivities {
                 position: static !important;
                 margin-top: 0 !important;
+                width: 100% !important;
             }
 
             .no-print {
                 display: none !important;
+            }
+
+            .tv-controls, .tv-settings-panel {
+                display: none !important;
+            }
+
+            .card {
+                border: none !important;
+                box-shadow: none !important;
             }
 
             .table {
@@ -482,6 +953,22 @@
             
             .filter-select-wrapper select {
                 width: 100% !important;
+            }
+        }
+
+        /* Grand écran optimizations */
+        @media (min-width: 1920px) {
+            .container-fluid {
+                max-width: 1920px;
+                margin: 0 auto;
+            }
+            
+            .table td, .table th {
+                padding: 1rem 0.75rem !important;
+            }
+            
+            .card-header .d-flex {
+                gap: 1.5rem !important;
             }
         }
     </style>

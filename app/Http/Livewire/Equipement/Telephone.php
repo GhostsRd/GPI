@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Storage;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\TelephoneImport;
+use App\Imports\TelephonesImport;
+use App\Exports\TelephonesExport;
 
 class Telephone extends Component
 {
@@ -31,6 +32,7 @@ class Telephone extends Component
     public $statut = 'En service';
     public $emplacement_actuel;
     public $imei;
+    public $numero_appel;
     public $selectedTelephones = [];
     public $selectAll = false;
 
@@ -99,6 +101,11 @@ class Telephone extends Component
                 'string',
                 'max:50',
                 Rule::unique('telephones_tablettes', 'imei')->ignore($this->telephoneId)
+            ],
+            'numero_appel' => [
+                'nullable',
+                'string',
+                'max:20'
             ]
         ];
     }
@@ -179,6 +186,7 @@ class Telephone extends Component
         $this->statut = $telephone->statut;
         $this->emplacement_actuel = $telephone->emplacement_actuel;
         $this->imei = $telephone->imei;
+        $this->numero_appel = $telephone->numero_appel;
 
         $this->isEditing = true;
         $this->showModal = true;
@@ -201,6 +209,7 @@ class Telephone extends Component
             'statut' => $this->statut,
             'emplacement_actuel' => $this->emplacement_actuel,
             'imei' => $this->imei,
+            'numero_appel' => $this->numero_appel,
         ];
 
         if ($this->isEditing) {
@@ -285,7 +294,8 @@ class Telephone extends Component
             'numero_serie',
             'statut',
             'emplacement_actuel',
-            'imei'
+            'imei',
+            'numero_appel'
         ]);
         $this->statut = 'En service';
         $this->resetErrorBag();
@@ -353,7 +363,8 @@ class Telephone extends Component
             'numero_serie' => '',
             'statut' => '',
             'emplacement_actuel' => '',
-            'imei' => ''
+            'imei' => '',
+            'numero_appel' => ''
         ];
     }
 
@@ -427,13 +438,8 @@ private function processCSVFile($filePath)
                 continue;
             }
 
-            if (empty($data['numero_serie'])) {
-                $errors[] = "Ligne $lineNumber: Numéro de série manquant - ignorée";
-                continue;
-            }
-
-            // Éviter les doublons
             if (!TelephoneModel::where('numero_serie', $data['numero_serie'])->exists()) {
+                $data['numero_appel'] = isset($row[12]) ? trim($row[12]) : null;
                 TelephoneModel::create($data);
                 $importedCount++;
             }
@@ -541,7 +547,8 @@ public function storeImportFile()
             'numero_serie' => ['numero_serie','serial','serial_number','sn','no_serie','num_serie'],
             'statut' => ['statut','status','etat','state','situation'],
             'emplacement_actuel' => ['emplacement_actuel','localisation','position','emplacement','current_location'],
-            'imei' => ['imei','imei_number','imei_code']
+            'imei' => ['imei','imei_number','imei_code'],
+            'numero_appel' => ['appel','telephone','phone','numero','num_tel','msisdn']
         ];
 
         foreach ($this->csvHeaders as $header) {
@@ -623,7 +630,9 @@ public function storeImportFile()
             }
 
             if (empty($mappedData['nom'])) {
-                $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
+                $errorMsg = "Ligne {$lineNumber}: Le champ 'Nom' est obligatoire dans votre mapping.";
+                logger($errorMsg);
+                $this->importErrors[] = $errorMsg;
                 return;
             }
 
@@ -652,6 +661,7 @@ public function storeImportFile()
                 'statut' => $mappedData['statut'] ?? 'En stock',
                 'emplacement_actuel' => $mappedData['emplacement_actuel'] ?? 'Non spécifié',
                 'imei' => $mappedData['imei'] ?? null,
+                'numero_appel' => $mappedData['numero_appel'] ?? null,
             ]);
 
             $this->importSuccessCount++;
@@ -690,48 +700,30 @@ public function storeImportFile()
         $this->resetImport();
     }
 
-    public function exportToCsv()
+    /**
+     * Exporter les téléphones/tablettes dans différents formats
+     */
+    public function export($format)
     {
-        $telephones = TelephoneModel::all();
+        $date = date('Y-m-d');
+        $fileName = "telephones_{$date}.{$format}";
 
-        $fileName = 'telephones-export-' . date('Y-m-d-H-i') . '.csv';
-
-        $headers = [
-            'Content-Type' => 'text/csv; charset=utf-8',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-        ];
-
-        $callback = function() use ($telephones) {
-            $file = fopen('php://output', 'w');
-            
-            fputcsv($file, [
-                'Nom', 'Entité', 'Usager', 'Lieu', 'Services', 'Type', 
-                'Marque', 'Modèle', 'Numéro de série', 'Statut', 
-                'Emplacement actuel', 'IMEI', 'Date création'
-            ]);
-
-            foreach ($telephones as $telephone) {
-                fputcsv($file, [
-                    $telephone->nom,
-                    $telephone->entite ?? '',
-                    $telephone->usager ?? '',
-                    $telephone->lieu,
-                    $telephone->services ?? '',
-                    $telephone->type,
-                    $telephone->marque,
-                    $telephone->modele,
-                    $telephone->numero_serie,
-                    $telephone->statut,
-                    $telephone->emplacement_actuel,
-                    $telephone->imei ?? '',
-                    $telephone->created_at->format('d/m/Y H:i')
-                ]);
+        try {
+            switch ($format) {
+                case 'xlsx':
+                    return Excel::download(new TelephonesExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                case 'csv':
+                    return Excel::download(new TelephonesExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+                case 'pdf':
+                    return Excel::download(new TelephonesExport, $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+                default:
+                    session()->flash('error', "Format d'exportation non supporté.");
+                    return null;
             }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        } catch (\Exception $e) {
+            session()->flash('error', "Erreur lors de l'exportation: " . $e->getMessage());
+            return null;
+        }
     }
 
     public function updatedSelectAll($value)
@@ -753,8 +745,8 @@ public function storeImportFile()
                     ->orWhere('usager', 'like', '%' . $this->search . '%')
                     ->orWhere('numero_serie', 'like', '%' . $this->search . '%')
                     ->orWhere('imei', 'like', '%' . $this->search . '%')
-                    ->orWhere('marque', 'like', '%' . $this->search . '%')
-                    ->orWhere('modele', 'like', '%' . $this->search . '%');
+                    ->orWhere('modele', 'like', '%' . $this->search . '%')
+                    ->orWhere('numero_appel', 'like', '%' . $this->search . '%');
             });
         }
 

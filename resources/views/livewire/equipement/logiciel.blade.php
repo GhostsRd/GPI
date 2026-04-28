@@ -446,14 +446,47 @@
                 <!-- Boutons d'action -->
                 <div class="col-md-3">
                     <div class="d-flex gap-2 flex-wrap justify-content-end">
-                        <button wire:click="openImportModal" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                            <i class="bi bi-upload me-1"></i>
-                            <span class="d-none d-sm-inline">Importer</span>
-                        </button>
-                        <button wire:click="exportLogiciel" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                            <i class="bi bi-download me-1"></i>
-                            <span class="d-none d-sm-inline">Exporter</span>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="importDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-upload me-1"></i>
+                                <span class="d-none d-sm-inline">Importer</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="importDropdown" style="z-index: 1001;">
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="openImportModal('simple')">
+                                        <i class="bi bi-file-earmark-arrow-up me-2 text-primary"></i> Importation simple
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="openImportModal('advanced')">
+                                        <i class="bi bi-gear me-2 text-secondary"></i> Importation avancée
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-download me-1"></i>
+                                <span class="d-none d-sm-inline">Exporter</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="exportDropdown" style="z-index: 1001;">
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('xlsx')">
+                                        <i class="bi bi-file-earmark-excel me-2 text-success"></i> Excel (.xlsx)
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('csv')">
+                                        <i class="bi bi-file-earmark-text me-2 text-primary"></i> CSV
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('pdf')">
+                                        <i class="bi bi-file-earmark-pdf me-2 text-danger"></i> PDF
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                         <button wire:click="create" class="btn btn-primary btn-sm d-flex align-items-center">
                             <i class="bi bi-plus-lg me-1"></i>
                             <span class="d-none d-sm-inline">Nouveau</span>
@@ -913,50 +946,270 @@
     </div>
     @endif
 
-    <!-- Modal d'import SIMPLIFIÉE -->
-@if($showImportModal)
-<div class="modal-backdrop fade show"></div>
-<div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="bi bi-upload me-2"></i>Importer des Logiciels
-                </h5>
-                <button type="button" class="btn-close" wire:click="closeImportModal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-info small">
-                    <strong>Format CSV requis:</strong><br>
-                    Colonnes dans cet ordre:<br>
-                    <code>nom, éditeur, version, système, installations, licences, date_achat, date_expiration, description</code>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label small">Fichier CSV</label>
-                    <input type="file" wire:model="fichierExcel" class="form-control form-control-sm" accept=".csv,.txt">
-                    @error('fichierExcel') <span class="text-danger small">{{ $message }}</span> @enderror
-                </div>
+    <!-- Modal Import -->
+    @if($showImportModal)
+        <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-file-import me-2"></i>
+                            Importer des logiciels
+                        </h5>
+                        <button type="button" wire:click="closeImportModal" class="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Sélectionnez un fichier CSV contenant les données des logiciels.
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Fichier CSV</label>
+                            <input type="file" class="form-control" wire:model="importFile" accept=".csv,.txt">
+                            @error('importFile') <span class="text-danger small">{{ $message }}</span> @enderror
+                        </div>
 
-                <div class="mb-3">
-                    <button wire:click="downloadTemplate" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-download me-1"></i>Télécharger le template
-                    </button>
+                        <div class="mt-3">
+                            <button type="button" wire:click="downloadTemplate" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download me-1"></i>
+                                Télécharger le template
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" wire:click="closeImportModal" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i>
+                            Annuler
+                        </button>
+                        <button type="button" wire:click="storeImportFile" class="btn btn-primary" 
+                                {{ !$importFile ? 'disabled' : '' }}>
+                            <i class="fas fa-arrow-right me-1"></i>
+                            Suivant
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" wire:click="closeImportModal">Annuler</button>
-                <button type="button" class="btn btn-primary btn-sm" wire:click="importLogiciels" 
-                        wire:loading.attr="disabled" {{ !$fichierExcel ? 'disabled' : '' }}>
-                    <i class="bi bi-upload me-1"></i>
-                    <span wire:loading.remove>Importer</span>
-                    <span wire:loading>Import...</span>
-                </button>
             </div>
         </div>
-    </div>
-</div>
-@endif
+    @endif
+
+    <!-- Modal Mapping -->
+    @if($showMappingModal)
+        <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-table me-2"></i>
+                            Mapping des colonnes
+                        </h5>
+                        <button type="button" wire:click="cancelImport" class="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Associez les colonnes de votre fichier CSV aux champs de l'application.
+                        </div>
+
+                        <!-- Aperçu des données -->
+                        @if(count($csvPreview) > 0)
+                            <div class="mb-4">
+                                <h6>Aperçu des données :</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered">
+                                        <thead>
+                                            <tr>
+                                                @foreach($csvHeaders as $header)
+                                                    <th class="small">{{ $header }}</th>
+                                                @endforeach
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($csvPreview as $row)
+                                                <tr>
+                                                    @foreach($csvHeaders as $header)
+                                                        <td class="small">{{ $row[$header] ?? '' }}</td>
+                                                    @endforeach
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Formulaire de mapping -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nom <span class="badge bg-danger ms-1">Obligatoire</span></label>
+                                    <select class="form-select" wire:model="fieldMapping.nom">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Éditeur</label>
+                                    <select class="form-select" wire:model="fieldMapping.editeur">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Version</label>
+                                    <select class="form-select" wire:model="fieldMapping.version_nom">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Système d'exploitation</label>
+                                    <select class="form-select" wire:model="fieldMapping.version_systeme_exploitation">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Installations</label>
+                                    <select class="form-select" wire:model="fieldMapping.nombre_installations">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Licences</label>
+                                    <select class="form-select" wire:model="fieldMapping.nombre_licences">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Date achat</label>
+                                    <select class="form-select" wire:model="fieldMapping.date_achat">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Date expiration</label>
+                                    <select class="form-select" wire:model="fieldMapping.date_expiration">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <select class="form-select" wire:model="fieldMapping.description">
+                                        <option value="">Sélectionnez la colonne</option>
+                                        @foreach($csvHeaders as $header)
+                                            <option value="{{ $header }}">{{ $header }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" wire:click="cancelImport" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i> Annuler
+                        </button>
+                        <button type="button" wire:click="processMappedData" class="btn btn-primary">
+                            <i class="fas fa-cog me-1"></i> Traiter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal Aperçu des données importées -->
+    @if($showImportedData)
+        <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-eye me-2"></i>
+                            Aperçu des données à importer
+                        </h5>
+                        <button type="button" wire:click="cancelImport" class="btn-close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @if($importSuccessCount > 0)
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                {{ $importSuccessCount }} ligne(s) prête(s) à être importée(s).
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="small">Nom</th>
+                                            <th class="small">Éditeur</th>
+                                            <th class="small">Version</th>
+                                            <th class="small">Installations</th>
+                                            <th class="small">Licences</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($importedData as $data)
+                                            <tr>
+                                                <td class="small">{{ $data['nom'] }}</td>
+                                                <td class="small">{{ $data['editeur'] }}</td>
+                                                <td class="small">{{ $data['version_nom'] }}</td>
+                                                <td class="small">{{ $data['nombre_installations'] }}</td>
+                                                <td class="small">{{ $data['nombre_licences'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+
+                        @if(count($importErrors) > 0)
+                            <div class="alert alert-danger mt-3">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Erreurs détectées :</h6>
+                                <ul class="mb-0 small">
+                                    @foreach($importErrors as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" wire:click="cancelImport" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i> Annuler
+                        </button>
+                        @if($importSuccessCount > 0)
+                            <button type="button" wire:click="saveImportedData" class="btn btn-success">
+                                <i class="fas fa-save me-1"></i> Importer
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Liens CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">

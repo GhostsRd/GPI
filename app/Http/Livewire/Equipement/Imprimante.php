@@ -15,6 +15,7 @@ use League\Csv\Reader;
 use League\Csv\Statement;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImprimantesImport;
+use App\Exports\ImprimantesExport;
 
 class Imprimante extends Component
 {
@@ -87,6 +88,8 @@ class Imprimante extends Component
     // Propriétés pour le mapping
     public $csvHeaders = [];
     public $csvPreview = [];
+    public $importedData = [];
+    public $showImportedData = false;
     public $fieldMapping = [
         'nom' => '',
         'entite' => '',
@@ -746,7 +749,7 @@ private function processDataRow($record, $lineNumber)
 
         // Validation des données requises
         if (empty($mappedData['nom'])) {
-            $errorMsg = "Ligne {$lineNumber}: Le nom est obligatoire";
+            $errorMsg = "Ligne {$lineNumber}: Le champ 'Nom' est obligatoire dans votre mapping.";
             logger($errorMsg);
             $this->importErrors[] = $errorMsg;
             return;
@@ -829,45 +832,28 @@ private function processDataRow($record, $lineNumber)
     }
 
     /**
-     * Exporter les imprimantes en CSV
+     * Exporter les imprimantes dans différents formats
      */
-    public function exportToCsv()
+    public function export($format)
     {
+        $date = date('Y-m-d');
+        $fileName = "imprimantes_{$date}.{$format}";
+
         try {
-            $imprimantes = ImprimanteModel::all();
-
-            $fileName = 'imprimantes_export_' . date('Y-m-d_H-i-s') . '.csv';
-
-            return response()->streamDownload(function () use ($imprimantes) {
-                $file = fopen('php://output', 'w');
-
-                // En-têtes
-                fputcsv($file, [
-                    'Nom', 'Entité', 'Statut', 'Fabricant', 'Modèle', 
-                    'Numéro de série', 'Adresse IP', 'Lieu', 'Type', 'Commentaires'
-                ]);
-
-                // Données
-                foreach ($imprimantes as $imprimante) {
-                    fputcsv($file, [
-                        $imprimante->nom,
-                        $imprimante->entite ?? 'N/A',
-                        $imprimante->statut,
-                        $imprimante->fabricant ?? 'N/A',
-                        $imprimante->modele ?? 'N/A',
-                        $imprimante->numero_serie ?? 'N/A',
-                        $imprimante->reseau_ip ?? 'N/A',
-                        $imprimante->lieu ?? 'N/A',
-                        $imprimante->type ?? 'N/A',
-                        $imprimante->commentaires ?? '',
-                    ]);
-                }
-
-                fclose($file);
-            }, $fileName);
-
+            switch ($format) {
+                case 'xlsx':
+                    return Excel::download(new ImprimantesExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                case 'csv':
+                    return Excel::download(new ImprimantesExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+                case 'pdf':
+                    return Excel::download(new ImprimantesExport, $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+                default:
+                    session()->flash('error', "Format d'exportation non supporté.");
+                    return null;
+            }
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de l\'export: ' . $e->getMessage());
+            session()->flash('error', "Erreur lors de l'exportation: " . $e->getMessage());
+            return null;
         }
     }
 

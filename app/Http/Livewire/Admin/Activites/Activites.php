@@ -173,19 +173,59 @@ class Activites extends Component
         ])->layout('layouts.plain');
     }
 
-    public function export($format = 'excel')
+    public function exportExcel()
     {
-        if ($format === 'pdf') {
-            $this->dispatchBrowserEvent('print-activities');
-            return;
+        try {
+            $activities = $this->unifiedActivities;
+            $fileName = 'export_activites_' . now()->format('Ymd_His') . '.xlsx';
+            
+            if (ob_get_level()) ob_end_clean();
+            
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\ActivitesExport($activities), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::XLSX
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export Excel : ' . $e->getMessage()]);
         }
+    }
 
-        $activities = $this->unifiedActivities;
-        $fileName = 'export_activites_' . now()->format('Y-m-d_H-i-s') . '.xlsx';
+    public function exportCSV()
+    {
+        try {
+            $activities = $this->unifiedActivities;
+            $fileName = 'export_activites_' . now()->format('Ymd_His') . '.csv';
+            
+            if (ob_get_level()) ob_end_clean();
+            
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\ActivitesCsvExport($activities), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::CSV
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export CSV : ' . $e->getMessage()]);
+        }
+    }
 
-        return \Maatwebsite\Excel\Facades\Excel::download(
-            new \App\Exports\ActivitesExport($activities), 
-            $fileName
-        );
+    public function exportPDF()
+    {
+        try {
+            $activities = $this->unifiedActivities;
+            
+            if (ob_get_level()) ob_end_clean();
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.activites', [
+                'activities' => $activities,
+                'is_pdf' => true
+            ])->setPaper('a4', 'landscape');
+
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, 'export_activites_' . now()->format('Ymd_His') . '.pdf');
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export PDF : ' . $e->getMessage()]);
+        }
     }
 }

@@ -158,13 +158,18 @@
                             </button>
                             <ul class="dropdown-menu border-0 shadow-lg p-2" aria-labelledby="dropdownExportIncident" style="border-radius: 12px;">
                                 <li>
-                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportIncidents('excel')" style="border-radius: 8px;">
-                                        <i class="fas fa-file-excel text-success"></i> Excel (.csv)
+                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportExcel()" style="border-radius: 8px;">
+                                        <i class="fas fa-file-excel text-success"></i> Excel (.xlsx)
                                     </button>
                                 </li>
                                 <li>
-                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportIncidents('pdf')" style="border-radius: 8px;">
-                                        <i class="fas fa-file-pdf text-danger"></i> PDF (Imprimer)
+                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportCSV()" style="border-radius: 8px;">
+                                        <i class="fas fa-file-csv text-info"></i> CSV (.csv)
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2" wire:click="exportPDF()" style="border-radius: 8px;">
+                                        <i class="fas fa-file-pdf text-danger"></i> PDF (.pdf)
                                     </button>
                                 </li>
                             </ul>
@@ -173,45 +178,42 @@
                 </div>
             </div>
         </div>
-        <div class="card-header border-0 bg-transparent py-4 px-4">
-            <!-- Header with title, filters and switch -->
-            
-            <!-- Print only form header (mimicking user image) -->
-            <div class="print-only-header">
-                <div class="form-logo">
-                    <img src="{{ asset('images/logoPivot.png') }}" alt="Logo">
-                </div>
-                
-                <div class="form-title-box">
-                    <h1>LISTE DES INCIDENTS</h1>
-                </div>
 
-                <div class="form-header-blocks">
-                    <div class="header-block">
-                        <span class="block-title">Service demandeur</span>
-                        <div class="block-content">
-                            Département : <span class="dotted-line">DSI / Support IT</span><br>
-                            Demandeur : <span class="dotted-line">{{ auth()->user()->name ?? 'Administrateur' }}</span>
-                        </div>
+        <!-- Print only form header (mimicking user image) -->
+        <div class="print-only-header">
+            <div class="form-logo">
+                <img src="{{ asset('images/logoPivot.png') }}" alt="Logo">
+            </div>
+            
+            <div class="form-title-box">
+                <h1>LISTE DES INCIDENTS</h1>
+            </div>
+
+            <div class="form-header-blocks">
+                <div class="header-block">
+                    <span class="block-title">Service demandeur</span>
+                    <div class="block-content">
+                        Département : <span class="dotted-line">DSI / Support IT</span><br>
+                        Demandeur : <span class="dotted-line">{{ auth()->user()->name ?? 'Administrateur' }}</span>
                     </div>
-                    <div class="header-block">
-                        <span class="block-title">Lieu de bénéficiaire</span>
-                        <div class="block-content">
-                            Site : <span class="dotted-line">Siège Principal</span><br>
-                            Période : <span class="dotted-line">du {{ now()->startOfMonth()->format('d/m/Y') }} au {{ now()->format('d/m/Y') }}</span>
-                        </div>
+                </div>
+                <div class="header-block">
+                    <span class="block-title">Lieu de bénéficiaire</span>
+                    <div class="block-content">
+                        Site : <span class="dotted-line">Siège Principal</span><br>
+                        Période : <span class="dotted-line">du {{ now()->startOfMonth()->format('d/m/Y') }} au {{ now()->format('d/m/Y') }}</span>
                     </div>
-                    <div class="header-block">
-                        <span class="block-title">Service Maintenance</span>
-                        <div class="block-content">
-                            N° de réf : <span class="dotted-line">INC-{{ now()->format('Ymd') }}</span><br>
-                            Date : <span class="dotted-line">{{ now()->format('d/m/Y') }}</span>
-                        </div>
+                </div>
+                <div class="header-block">
+                    <span class="block-title">Service Maintenance</span>
+                    <div class="block-content">
+                        N° de réf : <span class="dotted-line">INC-{{ now()->format('Ymd') }}</span><br>
+                        Date : <span class="dotted-line">{{ now()->format('d/m/Y') }}</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
         <!-- Tableau des incidents -->
         <div class="table-wrapper p-0 border-0 w-100 compact-mode mx-3" id="printableIncidents">
             <table class="table table-hover border-0 shadow-sm text-center small">
@@ -439,28 +441,14 @@
     </div>
 </div>
 
-<div class="print-only-header">
-    <div class="print-header-top">
-        <div class="print-entity">
-            GESTION DES INCIDENTS
-        </div>
-        <div class="print-date">
-            Date d'impression: {{ now()->format('d/m/Y H:i') }}
-        </div>
-    </div>
-    <div class="print-title">
-        LISTE DES INCIDENTS
-    </div>
-</div>
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <script>
-        window.addEventListener('print-incidents', event => {
-            window.print();
-        });
-    </script>
+<script>
+    window.addEventListener('print-incidents', event => {
+        window.print();
+    });
+</script>
 
     <style>
         .print-only-header {

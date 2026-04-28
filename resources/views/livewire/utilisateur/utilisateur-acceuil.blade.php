@@ -6145,91 +6145,66 @@
     </div>
   </section>
 
-  <section id="documentation" class="py-5 bg-light-subtle">
-  <div class="container text-center py-5">
-    <h2 class="fw-bold">Documentation & Ressources</h2>
-    <p class="py-4 text-muted">Accédez à notre bibliothèque complète de guides, tutoriels et ressources pour tirer le meilleur parti de notre plateforme.</p>
-    
-    <div class="row g-4 py-4">
-      @php
-        // Récupérer les derniers documents publiés
-        $documents = \App\Models\Document::published()
-            ->with('category')
-            ->orderBy('published_at', 'desc')
-            ->limit(8)
-            ->get();
-        
-        // Fonction pour obtenir l'icône Bootstrap
-        function getBootstrapIcon($type) {
-            $icons = [
-                'guide' => 'bi-book',
-                'tutorial' => 'bi-play-circle',
-                'reference' => 'bi-bookmark',
-                'faq' => 'bi-question-circle',
-                'procedure' => 'bi-list-check',
-                'security' => 'bi-shield',
-                'pdf' => 'bi-file-pdf',
-                'word' => 'bi-file-word',
-                'excel' => 'bi-file-excel',
-                'image' => 'bi-file-image',
-                'video' => 'bi-film',
-                'document' => 'bi-file-earmark-text',
-            ];
-            return $icons[$type] ?? 'bi-file-earmark';
-        }
-      @endphp
+  <section id="documentation" class="py-5" style="background: #f8fafc;">
+    <div class="container py-5">
+      <div class="text-center mb-5" data-aos="fade-down">
+        <h2 class="fw-bold">Documentation & Ressources</h2>
+        <div class="mx-auto" style="width: 60px; height: 3px; background: var(--orange); border-radius: 2px; margin-top: 10px;"></div>
+        <p class="mt-4 text-muted mx-auto" style="max-width: 700px;">
+          Accédez à notre bibliothèque complète de guides, tutoriels et ressources pour tirer le meilleur parti de notre plateforme.
+        </p>
+      </div>
+      
+      <div class="row g-4 justify-content-center">
+        @php
+          $documents = \App\Models\Document::published()
+              ->with('category')
+              ->orderBy('published_at', 'desc')
+              ->limit(8)
+              ->get();
+          
+          function getBootstrapIcon($type) {
+              $icons = [
+                  'guide' => 'bi-book', 'tutorial' => 'bi-play-circle', 'reference' => 'bi-bookmark',
+                  'faq' => 'bi-question-circle', 'procedure' => 'bi-list-check', 'security' => 'bi-shield',
+                  'pdf' => 'bi-file-pdf', 'word' => 'bi-file-word', 'excel' => 'bi-file-excel',
+                  'image' => 'bi-file-image', 'video' => 'bi-film', 'document' => 'bi-file-earmark-text',
+              ];
+              return $icons[$type] ?? 'bi-file-earmark';
+          }
+        @endphp
 
-      @if($documents->count() > 0)
-        @foreach($documents->chunk(4) as $chunkIndex => $chunk)
-          @foreach($chunk as $index => $document)
-            @php
-              $animationDelay = 500 + (($chunkIndex * 4 + $index) * 200);
-            @endphp
-            
-            <div class="col-md-3" data-aos="fade-up" data-aos-duration="{{ $animationDelay }}">
-              <div class="card bg-white border-0 shadow-sm h-100 document-card">
-                <div class="card-body position-relative">
-                  {{-- Badge de catégorie --}}
-                  @if($document->category)
-                    <div class="position-absolute top-0 end-0 m-3">
-                      <span class="badge bg-primary rounded-pill">
-                        {{ $document->category_id }}
-                      </span>
+        @if($documents->count() > 0)
+          @foreach($documents as $index => $document)
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+              <div class="card bg-white blob-bg border-0 shadow-sm h-100">
+                <div class="card-body text-center d-flex flex-column">
+                  {{-- Category Badge --}}
+                  <div class="mb-3">
+                    <span class="badge bg-light text-primary rounded-pill border py-1 px-3" style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">
+                      <i class="bi bi-tag-fill me-1"></i>
+                      {{ $document->category?->name ?? 'Général' }}
+                    </span>
+                  </div>
+                  
+                  {{-- Icon Section --}}
+                  <div class="mb-4">
+                    <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle bg-light" style="width: 60px; height: 60px; color: var(--primary); border: 1px solid rgba(0,0,0,0.05);">
+                      <i class="bi {{ getBootstrapIcon($document->type) }} fs-3"></i>
                     </div>
-                  @endif
-                  
-                  {{-- Icône --}}
-                  <div class="mb-4 mt-2 text-center">
-                    <i class="bi {{ getBootstrapIcon($document->type) }} fs-1 text-primary"></i>
                   </div>
                   
-                  {{-- Titre --}}
-                  <h5 class="card-title fw-bold text-center">
-                    {{ Str::limit($document->title, 50) }}
-                  </h5>
+                  {{-- Content --}}
+                  <h5 class="fw-bold mb-2 doc-title-overflow">{{ Str::limit($document->title, 40) }}</h5>
+                  <p class="text-muted small mb-4 doc-desc-overflow">{{ Str::limit($document->description, 80) }}</p>
                   
-                  {{-- Description --}}
-                  <p class="card-text text-muted small text-center mb-4">
-                    {{ Str::limit($document->description, 80) }}
-                  </p>
-                  
-                  {{-- Métadonnées --}}
-                  <div class="d-flex justify-content-center gap-2 mb-3">
-                    <span class="badge bg-light text-dark border">
-                      <i class="bi bi-clock me-1"></i>
-                      {{ $document->reading_time }} min
-                    </span>
-                    <span class="badge bg-light text-dark border">
-                      <i class="bi bi-eye me-1"></i>
-                      {{ $document->views }}
-                    </span>
-                  </div>
-                  
-                  {{-- Bouton d'action --}}
-                  <div class="text-center">
-                    <a href="{{ route('documents.show', $document->slug) }}" 
-                       class="btn btn-two text-white fw-bold btn-xs-sm rounded-pill shadow-sm">
-                      <i class="bi bi-eye me-1"></i>
+                  <div class="mt-auto">
+                    <div class="d-flex justify-content-center gap-3 mb-3 text-muted" style="font-size: 0.75rem;">
+                      <span><i class="bi bi-clock me-1 text-primary"></i>{{ $document->reading_time }} min</span>
+                      <span><i class="bi bi-eye me-1 text-orange"></i>{{ $document->views }}</span>
+                    </div>
+                    
+                    <a href="{{ route('documents.show', $document->slug) }}" class="btn btn-two text-white fw-bold btn-xs-sm rounded-pill shadow-sm w-100">
                       @if($document->is_video)
                         Regarder ⮕
                       @elseif($document->is_pdf)
@@ -6241,64 +6216,54 @@
                   </div>
                 </div>
                 
-                {{-- Pied de carte --}}
-                <div class="card-footer bg-transparent border-0 pt-0 text-center">
-                  <small class="text-muted">
-                    <i class="bi bi-calendar me-1"></i>
-                    {{ $document->published_at?->format('d/m/Y') ?? '—' }}
-
+                <div class="card-footer bg-transparent border-0 text-center pb-3 pt-0">
+                   <small class="text-muted" style="font-size: 0.7rem;">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    {{ $document->published_at?->format('d M Y') ?? '—' }}
                   </small>
                 </div>
               </div>
             </div>
           @endforeach
-        @endforeach
-      @else
-        <div class="col-12">
-          <div class="alert alert-info">
-            <div class="d-flex align-items-center">
-              <i class="bi bi-info-circle fs-4 me-3"></i>
+        @else
+          <div class="col-12">
+            <div class="glass-alert">
+              <i class="bi bi-info-circle-fill fs-3 me-3 text-primary"></i>
               <div>
-                <h5 class="alert-heading mb-1">Aucun document disponible</h5>
-                <p class="mb-0">La documentation sera bientôt disponible. Revenez plus tard !</p>
+                <h5 class="mb-1 fw-bold">Bientôt disponible</h5>
+                <p class="mb-0 opacity-75">La bibliothèque est en cours de mise à jour.</p>
               </div>
             </div>
           </div>
+        @endif
+      </div>
+      
+      @php
+        $totalDocuments = \App\Models\Document::published()->count();
+      @endphp
+      
+      @if($totalDocuments > 8)
+        <div class="text-center mt-5">
+          <a href="{{ route('utilisateur-doc') }}" class="btn btn-two text-white fw-bold btn-lg rounded-pill px-5 shadow-sm">
+            Voir toute la documentation ({{ $totalDocuments }})
+          </a>
         </div>
       @endif
     </div>
-    
-    {{-- Bouton pour voir tous les documents --}}
-    @php
-      $totalDocuments = \App\Models\Document::published()->count();
-    @endphp
-    
-    @if($totalDocuments > 0)
-      <div class="mt-5">
-        <a href="{{ route('utilisateur-doc') }}" 
-           class="btn btn-outline-primary btn-lg rounded-pill px-4 py-2 shadow-sm">
-          <i class="bi bi-arrow-right-circle me-2"></i>
-          Voir toute la documentation
-          <span class="badge bg-primary rounded-pill ms-2">
-            {{ $totalDocuments }}
-          </span>
-        </a>
-      </div>
-    @endif
-  </div>
-</section>
+  </section>
 
-<style>
-  .document-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.05);
-  }
-  
-  .document-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-  }
-</style>
+  <style>
+    .doc-title-overflow, .doc-desc-overflow {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    
+    /* Ensure blob-bg is respected */
+    .blob-bg {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
 
 
   <section id="" class="py-5 bg-white">

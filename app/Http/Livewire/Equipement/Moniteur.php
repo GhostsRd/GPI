@@ -9,8 +9,10 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use League\Csv\Reader;
 use League\Csv\Statement;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MoniteursImport;
+use App\Exports\MoniteursExport;
 
 class Moniteur extends Component
 {
@@ -573,7 +575,9 @@ public function storeImportFile()
                     }
 
                     if (empty($mappedData['nom'])) {
-                        $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
+                        $errorMsg = "Ligne {$lineNumber}: Le champ 'Nom' est obligatoire dans votre mapping.";
+                        logger($errorMsg);
+                        $this->importErrors[] = $errorMsg;
                         continue;
                     }
 
@@ -709,42 +713,29 @@ public function storeImportFile()
         }
     }
 
-    public function exportToCsv()
+    /**
+     * Exporter les moniteurs dans différents formats
+     */
+    public function export($format)
     {
+        $date = date('Y-m-d');
+        $fileName = "moniteurs_{$date}.{$format}";
+
         try {
-            $query = $this->getMoniteursQuery();
-            $moniteurs = $query->get();
-
-            $fileName = 'moniteurs_export_' . date('Y-m-d_H-i-s') . '.csv';
-
-            return response()->streamDownload(function () use ($moniteurs) {
-                $file = fopen('php://output', 'w');
-
-                fputcsv($file, [
-                    'Nom', 'Entité', 'Statut', 'Fabricant', 'Modèle', 
-                    'Numéro de série', 'Utilisateur', 'Lieu', 'Type', 'Commentaires'
-                ]);
-
-                foreach ($moniteurs as $moniteur) {
-                    fputcsv($file, [
-                        $moniteur->nom,
-                        $moniteur->entite ?? 'N/A',
-                        $moniteur->statut,
-                        $moniteur->fabricant ?? 'N/A',
-                        $moniteur->modele ?? 'N/A',
-                        $moniteur->numero_serie ?? 'N/A',
-                        $moniteur->utilisateur->name ?? 'Non attribué',
-                        $moniteur->lieu ?? 'N/A',
-                        $moniteur->type ?? 'N/A',
-                        $moniteur->commentaires ?? '',
-                    ]);
-                }
-
-                fclose($file);
-            }, $fileName);
-
+            switch ($format) {
+                case 'xlsx':
+                    return Excel::download(new MoniteursExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                case 'csv':
+                    return Excel::download(new MoniteursExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+                case 'pdf':
+                    return Excel::download(new MoniteursExport, $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+                default:
+                    session()->flash('error', "Format d'exportation non supporté.");
+                    return null;
+            }
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de l\'export: ' . $e->getMessage());
+            session()->flash('error', "Erreur lors de l'exportation: " . $e->getMessage());
+            return null;
         }
     }
 

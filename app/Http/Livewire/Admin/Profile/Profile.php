@@ -18,6 +18,7 @@ use App\Models\Flotte;
 use App\Models\Imprimante;
 use App\Models\moniteur;
 use App\Models\Peripherique;
+use App\Models\SimCard;
 use App\Models\liaison_equipement;
 
 class Profile extends Component
@@ -30,6 +31,7 @@ class Profile extends Component
     public $ordinateurs = [];
     public $telephones = [];
     public $flottes = [];
+    public $sim_cards = [];
     public $imprimantes = [];
     public $moniteurs = [];
     public $peripheriques = [];
@@ -62,6 +64,7 @@ class Profile extends Component
         $ordinateurIds = $liaisonsActives->whereNotNull('ordinateur_id')->pluck('ordinateur_id')->toArray();
         $telephoneIds = $liaisonsActives->whereNotNull('telephone_id')->pluck('telephone_id')->toArray();
         $flotteIds = $liaisonsActives->whereNotNull('flotte_id')->pluck('flotte_id')->toArray();
+        $simCardIds = $liaisonsActives->whereNotNull('sim_card_id')->pluck('sim_card_id')->toArray();
         $imprimanteIds = $liaisonsActives->whereNotNull('imprimante_id')->pluck('imprimante_id')->toArray();
         $moniteurIds = $liaisonsActives->whereNotNull('moniteur_id')->pluck('moniteur_id')->toArray();
         $peripheriqueIds = $liaisonsActives->whereNotNull('peripheriques_id')->pluck('peripheriques_id')->toArray();
@@ -70,6 +73,7 @@ class Profile extends Component
         $this->ordinateurs = ordinateur::whereNotIn('id', $ordinateurIds)->get();
         $this->telephones = Telephone::whereNotIn('id', $telephoneIds)->get();
         $this->flottes = Flotte::whereNotIn('id', $flotteIds)->get();
+        $this->sim_cards = SimCard::whereNotIn('id', $simCardIds)->get();
         $this->imprimantes = Imprimante::whereNotIn('id', $imprimanteIds)->get();
         $this->moniteurs = moniteur::whereNotIn('id', $moniteurIds)->get();
         $this->peripheriques = Peripherique::whereNotIn('id', $peripheriqueIds)->get();
@@ -77,7 +81,7 @@ class Profile extends Component
 
     public function chargerEquipementsLies()
     {
-        $this->equipements_lies = liaison_equipement::with(['ordinateur', 'telephone', 'flotte', 'imprimante', 'moniteur', 'peripherique'])
+        $this->equipements_lies = liaison_equipement::with(['ordinateur', 'telephone', 'flotte', 'sim_card', 'imprimante', 'moniteur', 'peripherique'])
             ->where('utilisateur_id', $this->profileId)
             ->where('statut', 'actif')
             ->orderBy('created_at', 'desc')
@@ -102,7 +106,7 @@ class Profile extends Component
     public function lierEquipement()
     {
         $this->validate([
-            'items_a_lier.*.type' => 'required|in:ordinateur,telephone,flotte,imprimante,moniteur,peripherique',
+            'items_a_lier.*.type' => 'required|in:ordinateur,telephone,flotte,sim_card,imprimante,moniteur,peripherique',
             'items_a_lier.*.id' => 'required',
             'date_attribution' => 'required|date',
         ], [

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\utilisateur;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Utilisateur;
+use App\Models\utilisateur;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Momemail;
 
 class UtilisateurInscription extends Controller
 {
@@ -37,7 +39,7 @@ class UtilisateurInscription extends Controller
         
         try {
             // Générer le matricule
-            $matricule = Utilisateur::max('matricule') + 1;
+            $matricule = utilisateur::max('matricule') + 1;
 
             // Gestion de l'upload de la photo
             $photoPath = null;
@@ -46,7 +48,7 @@ class UtilisateurInscription extends Controller
             }
 
             // Création de l'utilisateur
-            Utilisateur::create([
+            utilisateur::create([
                 'matricule' => $matricule,
                 'nom' => $validatedData['nom'],
                 'poste' => $validatedData['poste'],
@@ -62,11 +64,24 @@ class UtilisateurInscription extends Controller
                 'password' => Hash::make($validatedData['password']),
                 'role' => 'user',
             ]);
+
+            // Envoi de l'email de bienvenue
+            try {
+                $details = [
+                    'title' => 'Bienvenue chez ' . config('app.name'),
+                    'message' => 'Votre inscription a été réussie. Vous pouvez maintenant vous connecter à votre espace personnel.'
+                ];
+                Mail::to($validatedData['email'])->send(new Momemail($details));
+            } catch (\Exception $e) {
+                \Log::error('Mail error: ' . $e->getMessage());
+                // On ne bloque pas l'utilisateur si l'email échoue
+            }
         
             return redirect()->route('LoginUser')
     ->with('success', 'Inscription réussie ! Vous pouvez maintenant vous connecter.');
 
         } catch (\Exception $e) {
+            \Log::error('Registration error: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', 'Erreur lors de l\'inscription: ' . $e->getMessage())
                 ->withInput();

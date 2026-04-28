@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('js/theme.js') }}"></script>
     <title>Journal des Activités</title>
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{{ asset('css/modern-theme.css') }}" rel="stylesheet">
     
     <style>
         :root {
@@ -44,8 +46,6 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
-            background: var(--gray-50);
-            color: var(--dark);
             margin: 0;
             padding: 0;
             min-height: 100vh;

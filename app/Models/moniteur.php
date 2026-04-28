@@ -30,7 +30,7 @@ class moniteur extends Model
      */
     public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
+        return $this->belongsTo(utilisateur::class, 'utilisateur_id');
     }
 
     /**
@@ -70,7 +70,7 @@ class moniteur extends Model
      */
     public function getUtilisateurNomAttribute()
     {
-        return $this->utilisateur ? $this->utilisateur->name : 'Non attribué';
+        return $this->utilisateur ? $this->utilisateur->nom : 'Non attribué';
     }
 
     /**
@@ -78,7 +78,7 @@ class moniteur extends Model
      */
     public function getUsagerNomAttribute()
     {
-        return $this->usager ? $this->usager->name : 'Non attribué';
+        return $this->usager ? $this->usager->nom : 'Non attribué';
     }
 
     /**

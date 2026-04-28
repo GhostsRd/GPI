@@ -346,6 +346,7 @@
                         <option value="peripherique">Périphérique</option>
                         <option value="moniteur">Moniteur</option>
                         <option value="reseau">Matériel Réseau</option>
+                        <option value="flotte">Carte SIM / Flotte</option>
                         <option value="autre">Autre</option>
                     </select>
                     @error('type_materiel') <span class="form-error">{{ $message }}</span> @enderror
@@ -789,6 +790,7 @@
     .category-badge.purple { background: rgba(139, 92, 246, 0.1); color: #5b21b6; }
     .category-badge.red { background: rgba(239, 68, 68, 0.1); color: #991b1b; }
     .category-badge.indigo { background: rgba(79, 70, 229, 0.1); color: #3730a3; }
+    .category-badge.teal { background: rgba(6, 182, 212, 0.1); color: #0891b2; }
 
     .category-icon {
         font-size: 0.9rem;

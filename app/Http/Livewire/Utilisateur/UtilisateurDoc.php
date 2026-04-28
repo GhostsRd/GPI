@@ -103,6 +103,33 @@ class UtilisateurDoc extends Component
         return $colors[$type] ?? 'primary';
     }
 
+    // Fonction pour obtenir le nom lisible du type
+    public function getTypeName($type)
+    {
+        $names = [
+            'guide' => 'Guide',
+            'guides' => 'Guide',
+            'tutorial' => 'Tutoriel',
+            'tutorials' => 'Tutoriel',
+            'reference' => 'Référence',
+            'references' => 'Référence',
+            'procedure' => 'Procédure',
+            'procedures' => 'Procédure',
+            'faq' => 'FAQ',
+            'security' => 'Sécurité',
+            'video' => 'Vidéo',
+            'audio' => 'Audio',
+            'pdf' => 'PDF',
+            'image' => 'Image',
+            'spreadsheet' => 'Tableur (Excel)',
+            'word' => 'Document (Word)',
+            'ppt' => 'Présentation',
+            'link' => 'Lien',
+        ];
+
+        return $names[$type] ?? ucfirst($type);
+    }
+
     // Obtenir la couleur de la catégorie
     private function getCategoryColor($categorySlug)
     {
@@ -239,7 +266,7 @@ class UtilisateurDoc extends Component
         try {
             if (!Auth::check()) {
                 // Pour les non-connectés, montrer les plus récents
-                $recentDocuments = Document::with(['category'])
+                $recentDocuments = Document::with(['category', 'user'])
                     ->where('is_published', true)
                     ->orderBy('created_at', 'desc')
                     ->take(6)
@@ -247,7 +274,7 @@ class UtilisateurDoc extends Component
             } else {
                 // Pour les connectés, montrer les favoris ou les plus récents
                 $recentDocuments = Auth::user()->bookmarks()
-                    ->with(['category'])
+                    ->with(['category', 'user'])
                     ->where('is_published', true)
                     ->orderBy('created_at', 'desc')
                     ->take(6)
@@ -255,7 +282,7 @@ class UtilisateurDoc extends Component
 
                 // Si pas assez de favoris, compléter avec les plus récents
                 if ($recentDocuments->count() < 6) {
-                    $additional = Document::with(['category'])
+                    $additional = Document::with(['category', 'user'])
                         ->where('is_published', true)
                         ->whereNotIn('id', $recentDocuments->pluck('id'))
                         ->orderBy('created_at', 'desc')
@@ -288,7 +315,7 @@ class UtilisateurDoc extends Component
                 ->map(function ($type) {
                     return [
                         'id' => $type,
-                        'name' => ucfirst($type),
+                        'name' => $this->getTypeName($type),
                         'icon' => $this->getTypeIcon($type),
                         'color' => $this->getTypeColor($type),
                     ];
@@ -307,7 +334,7 @@ class UtilisateurDoc extends Component
     {
         try {
             $query = Document::query()
-                ->with(['category'])
+                ->with(['category', 'user'])
                 ->where('is_published', true);
 
             // Filtrer par favoris si activé
@@ -387,19 +414,46 @@ class UtilisateurDoc extends Component
                 'category' => $category->name ?? 'Général',
                 'category_slug' => $category->slug ?? 'general',
                 'type' => $type,
-                'type_name' => ucfirst($type),
+                'type_name' => $this->getTypeName($type),
                 'type_icon' => $this->getTypeIcon($type),
                 'type_color' => $this->getTypeColor($type),
+                'author_name' => $document->user->name ?? 'Admin',
                 'file_name' => $document->file_name,
                 'file_size' => $this->formatFileSize($document->file_size ?? 0),
                 'file_extension' => $fileExtension,
                 'file_path' => $document->file_path,
-                'file_url' => $document->file_url,
+                'file_url' => $document->getFileUrl(),
                 'views' => $document->views ?? 0,
                 'downloads' => $document->downloads ?? 0,
                 'reading_time' => $document->reading_time ?? 0,
                 'is_favorite' => $isFavorite,
-                'video_url' => $document->video_url,
+                'video_url' => $document->video_url ?: ($document->file_path 
+                    ? (str_starts_with($document->file_path, 'google:') 
+                        ? Storage::disk('google')->url(str_replace('google:', '', $document->file_path)) 
+                        : ( ($document->type === 'video' || in_array($fileExtension, ['mp4', 'webm', 'ogg'])) ? Storage::disk('public')->url($document->file_path) : null ))
+                    : null),
+                'audio_url' => ($document->file_path 
+                    ? (str_starts_with($document->file_path, 'google:') 
+                        ? Storage::disk('google')->url(str_replace('google:', '', $document->file_path)) 
+                        : (($document->type === 'audio' || in_array($fileExtension, ['mp3', 'wav', 'ogg'])) ? Storage::disk('public')->url($document->file_path) : null))
+                    : null),
+                'pdf_url' => ($document->file_path && ($fileExtension === 'pdf' || str_starts_with($document->file_path, 'google:'))) 
+                    ? (str_starts_with($document->file_path, 'google:') 
+                        ? Storage::disk('google')->url(str_replace('google:', '', $document->file_path)) 
+                        : Storage::disk('public')->url($document->file_path)) 
+                    : null,
+                'office_url' => ($document->file_path && in_array($fileExtension, ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'])) 
+                    ? 'https://docs.google.com/viewer?url=' . urlencode(
+                        str_starts_with($document->file_path, 'google:') 
+                            ? Storage::disk('google')->url(str_replace('google:', '', $document->file_path)) 
+                            : Storage::disk('public')->url($document->file_path)
+                      ) . '&embedded=true' 
+                    : null,
+                'image_url' => ($document->file_path && ($type === 'image' || in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp']))) 
+                    ? (str_starts_with($document->file_path, 'google:') 
+                        ? Storage::disk('google')->url(str_replace('google:', '', $document->file_path)) 
+                        : Storage::disk('public')->url($document->file_path)) 
+                    : null,
                 'updated_at' => $document->updated_at,
                 'created_at' => $document->created_at,
                 'file_icon' => $fileIcon,
@@ -458,21 +512,29 @@ class UtilisateurDoc extends Component
     public function viewContent($documentId)
     {
         try {
-            $document = Document::with(['category'])
+            $this->selectedContent = Document::with(['category'])
                 ->where('is_published', true)
                 ->findOrFail($documentId);
             
             // Incrémenter le compteur de vues
-            $document->increment('views');
+            $this->selectedContent->increment('views');
             
-            // Enregistrer comme favori pour l'utilisateur connecté
+            // Enregistrer comme favori pour l'utilisateur connecté (historique)
             if (Auth::check()) {
                 Auth::user()->bookmarks()->syncWithoutDetaching([$documentId]);
             }
 
-            $this->selectedContent = $this->formatDocumentData($document);
+            $this->dispatchBrowserEvent('toast', [
+                'type' => 'info',
+                'title' => 'Consultation',
+                'message' => 'Ouverture du document...'
+            ]);
         } catch (\Exception $e) {
-            session()->flash('error', 'Document non trouvé');
+            $this->dispatchBrowserEvent('toast', [
+                'type' => 'error',
+                'title' => 'Erreur',
+                'message' => 'Document non trouvé'
+            ]);
         }
     }
 
@@ -491,10 +553,10 @@ class UtilisateurDoc extends Component
             
             if (in_array($documentId, $favorites)) {
                 $favorites = array_diff($favorites, [$documentId]);
-                session()->flash('info', 'Document retiré des favoris');
+                $this->dispatchBrowserEvent('toast', ['type' => 'info', 'title' => 'Favoris', 'message' => 'Document retiré des favoris']);
             } else {
                 $favorites[] = $documentId;
-                session()->flash('success', 'Document ajouté aux favoris');
+                $this->dispatchBrowserEvent('toast', ['type' => 'success', 'title' => 'Favoris', 'message' => 'Document ajouté aux favoris']);
             }
             
             session()->put('document_favorites', $favorites);
@@ -505,11 +567,11 @@ class UtilisateurDoc extends Component
             if (in_array($documentId, $this->favorites)) {
                 $user->bookmarks()->detach($documentId);
                 $this->favorites = array_diff($this->favorites, [$documentId]);
-                session()->flash('info', 'Document retiré des favoris');
+                $this->dispatchBrowserEvent('toast', ['type' => 'info', 'title' => 'Favoris', 'message' => 'Document retiré des favoris']);
             } else {
                 $user->bookmarks()->attach($documentId);
                 $this->favorites[] = $documentId;
-                session()->flash('success', 'Document ajouté aux favoris');
+                $this->dispatchBrowserEvent('toast', ['type' => 'success', 'title' => 'Favoris', 'message' => 'Document ajouté aux favoris']);
             }
         }
 
@@ -532,17 +594,25 @@ class UtilisateurDoc extends Component
             $document->increment('downloads');
 
             // Retourner le fichier pour téléchargement
-            if ($document->file_path && Storage::exists($document->file_path)) {
-                return Storage::download($document->file_path, $document->file_name);
+            if ($document->file_path && Storage::disk('public')->exists($document->file_path)) {
+                return Storage::disk('public')->download($document->file_path, $document->file_name);
             } elseif ($document->file_url) {
                 // Rediriger vers l'URL du fichier
                 return redirect()->away($document->file_url);
             }
 
-            session()->flash('error', 'Le fichier n\'existe pas.');
+            $this->dispatchBrowserEvent('toast', [
+                'type' => 'error',
+                'title' => 'Erreur',
+                'message' => 'Le fichier n\'existe pas.'
+            ]);
             return null;
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors du téléchargement');
+            $this->dispatchBrowserEvent('toast', [
+                'type' => 'error',
+                'title' => 'Erreur',
+                'message' => 'Erreur lors du téléchargement'
+            ]);
             return null;
         }
     }

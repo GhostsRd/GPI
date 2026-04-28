@@ -178,9 +178,28 @@
                     <i class="fas fa-file-import "></i>
                 </button>
 
-                <button wire:click="exportToCsv" class="btn btn-outline-success btn-sm" title="Exporter">
-                    <i class="fas fa-file-export "></i>
-                </button>
+                <div class="dropdown">
+                    <button class="btn btn-outline-success btn-sm dropdown-toggle d-flex align-items-center" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-file-export "></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="exportDropdown" style="z-index: 1001;">
+                        <li>
+                            <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('xlsx')">
+                                <i class="bi bi-file-earmark-excel me-2 text-success"></i> Excel (.xlsx)
+                            </button>
+                        </li>
+                        <li>
+                            <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('csv')">
+                                <i class="bi bi-file-earmark-text me-2 text-primary"></i> CSV
+                            </button>
+                        </li>
+                        <li>
+                            <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('pdf')">
+                                <i class="bi bi-file-earmark-pdf me-2 text-danger"></i> PDF
+                            </button>
+                        </li>
+                    </ul>
+                </div>
 
                 <button wire:click="confirmBulkDelete" class="btn btn-outline-danger btn-sm" title="Supprimer sélection"
                     {{ empty($selectedPeripheriques) ? 'disabled' : '' }}>
@@ -538,7 +557,7 @@
                                 </select>
                             </div>
 
-                            <div class="mb-3">
+                             <div class="mb-3">
                                 <label class="form-label">Usager</label>
                                 <select class="form-select" wire:model="fieldMapping.usager">
                                     <option value="">Sélectionnez la colonne</option>

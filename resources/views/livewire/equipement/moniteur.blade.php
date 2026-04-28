@@ -680,10 +680,29 @@
                             <i class="fas fa-file-import me-1"></i>
                             <span class="d-none d-sm-inline">Importer</span>
                         </button>
-                        <button wire:click="exportToCsv" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                            <i class="fas fa-file-export me-1"></i>
-                            <span class="d-none d-sm-inline">Exporter</span>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-file-export me-1"></i>
+                                <span class="d-none d-sm-inline">Exporter</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="exportDropdown">
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('xlsx')">
+                                        <i class="bi bi-file-earmark-excel me-2 text-success"></i> Excel (.xlsx)
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('csv')">
+                                        <i class="bi bi-file-earmark-text me-2 text-primary"></i> CSV
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('pdf')">
+                                        <i class="bi bi-file-earmark-pdf me-2 text-danger"></i> PDF
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                         <button wire:click="create" class="btn btn-primary btn-sm d-flex align-items-center">
                             <i class="fas fa-plus me-1"></i>
                             <span class="d-none d-sm-inline">Ajouter</span>
@@ -1439,9 +1458,9 @@
                         </table>
                     </div>
                     @endif
-                    @endif
                 </div>
-                <div class="modal-footer py-2">
+            @endif
+            <div class="modal-footer py-2">
                     @if(!$showMappingModal && !$showImportedData)
                     <!-- Boutons étape 1 -->
                     <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeImportModal">
@@ -1467,16 +1486,11 @@
                         <i class="fas fa-arrow-left me-1"></i>
                         Retour
                     </button>
-                    <button type="button" class="btn btn-warning btn-sm" 
-                            wire:click="processMappedData"
-                            wire:loading.attr="disabled"
-                            {{ empty($fieldMapping['nom']) ? 'disabled' : '' }}>
-                        <i class="fas fa-check me-1"></i>
-                        <span wire:loading.remove>Valider le mapping</span>
-                        <span wire:loading>
-                            <i class="fas fa-spinner fa-spin me-1"></i>
-                            Traitement...
-                        </span>
+                    <button type="button" wire:click="processMappedData" class="btn btn-primary btn-sm" 
+                            wire:loading.attr="disabled" {{ empty($fieldMapping['nom']) ? 'disabled' : '' }}>
+                        <i class="fas fa-gear me-1"></i>
+                        <span wire:loading.remove>Traiter les données</span>
+                        <span wire:loading>Traitement en cours...</span>
                     </button>
                     @endif
 

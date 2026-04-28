@@ -8,6 +8,9 @@ use App\Models\Utilisateur;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Models\liaison_equipement;
+use Illuminate\Support\Facades\Auth;
+
 
 class Checkout extends Component
 {   
@@ -22,6 +25,13 @@ class Checkout extends Component
     public $sortDirection = 'desc';
     public $selectedTickets = [];
     public $selectAll = false;
+
+    // Propriétés pour le modal Nouveau Checkout
+    public $showModal = false;
+    public $newUtilisateurId = '';
+    public $newMaterielType = '';
+    public $newMaterielDetails = '';
+    public $newDateRendu = '';
     
 
     public function render()
@@ -53,7 +63,8 @@ class Checkout extends Component
             ->paginate(10);
 
         return view('livewire.admin.checkout.checkout', [
-            'checkouts' => $checkouts
+            'checkouts' => $checkouts,
+            'utilisateursList' => Utilisateur::orderBy('nom')->get(),
         ]);
     }
 
@@ -84,9 +95,65 @@ class Checkout extends Component
         }
     }
 
-    public function exportCheckouts()
+    public function exportExcel()
     {
-        $checkouts = CheckoutModel::with(['utilisateur', 'materiel'])
+        try {
+            $checkouts = $this->getExportData();
+            $fileName = 'export_checkouts_' . now()->format('Ymd_His') . '.xlsx';
+            
+            if (ob_get_level()) ob_end_clean();
+            
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\CheckoutsExport($checkouts), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::XLSX
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export Excel : ' . $e->getMessage()]);
+        }
+    }
+
+    public function exportCSV()
+    {
+        try {
+            $checkouts = $this->getExportData();
+            $fileName = 'export_checkouts_' . now()->format('Ymd_His') . '.csv';
+            
+            if (ob_get_level()) ob_end_clean();
+            
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\CheckoutsCsvExport($checkouts), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::CSV
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export CSV : ' . $e->getMessage()]);
+        }
+    }
+
+    public function exportPDF()
+    {
+        try {
+            $checkouts = $this->getExportData();
+            
+            if (ob_get_level()) ob_end_clean();
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.checkouts', [
+                'checkouts' => $checkouts,
+                'is_pdf' => true
+            ])->setPaper('a4', 'landscape');
+
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, 'export_checkouts_' . now()->format('Ymd_His') . '.pdf');
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export PDF : ' . $e->getMessage()]);
+        }
+    }
+
+    protected function getExportData()
+    {
+        return CheckoutModel::with(['utilisateur', 'materiel'])
             ->when($this->statutFilter, function($query, $statut) {
                 return $query->where('statut', $statut);
             })
@@ -104,50 +171,6 @@ class Checkout extends Component
             })
             ->orderBy($this->sortField, $this->sortDirection)
             ->get();
-
-        $fileName = 'checkouts_' . date('Y-m-d_H-i-s') . '.csv';
-        
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
-        ];
-
-        return new StreamedResponse(function () use ($checkouts) {
-            $handle = fopen('php://output', 'w');
-            
-            // En-têtes CSV
-            fputcsv($handle, [
-                'ID', 'Utilisateur', 'Email', 'Type Matériel', 
-                'Détails Matériel', 'Statut', 'Raison', 
-                'Date Début', 'Date Fin', 'Date Création'
-            ]);
-
-            // Données
-            foreach ($checkouts as $checkout) {
-                $statut = match($checkout->statut) {
-                    'en_cours' => 'En cours',
-                    'termine' => 'Terminé',
-                    'annule' => 'Annulé',
-                    'en_retard' => 'En retard',
-                    default => $checkout->statut
-                };
-
-                fputcsv($handle, [
-                    $checkout->id,
-                    $checkout->utilisateur->nom ?? 'N/A',
-                    $checkout->utilisateur->email ?? 'N/A',
-                    $checkout->materiel_type,
-                    $checkout->materiel_details,
-                    $statut,
-                    $checkout->raison,
-                    $checkout->date_debut?->format('Y-m-d') ?? 'N/A',
-                    $checkout->date_fin?->format('Y-m-d') ?? 'N/A',
-                    $checkout->created_at->format('Y-m-d H:i:s')
-                ]);
-            }
-
-            fclose($handle);
-        }, 200, $headers);
     }
 
     public function confirmDelete($id)
@@ -203,6 +226,116 @@ class Checkout extends Component
     {
         return redirect("/admin/checkout-view-".$id);
     }
+
+    public function nouveauCheckout()
+    {
+        $this->resetModalFields();
+        $this->showModal = true;
+    }
+
+    public function fermerModal()
+    {
+        $this->showModal = false;
+        $this->resetModalFields();
+    }
+
+    public function resetModalFields()
+    {
+        $this->newUtilisateurId = '';
+        $this->newMaterielType = '';
+        $this->newMaterielDetails = '';
+        $this->newDateRendu = '';
+        $this->resetValidation();
+    }
+
+    public function saveCheckout()
+    {
+        $this->validate([
+            'newUtilisateurId' => 'required|exists:utilisateurs,id',
+            'newMaterielType' => 'required|string',
+            'newMaterielDetails' => 'nullable|string|max:255',
+            'newDateRendu' => 'nullable|date',
+        ], [
+            'newUtilisateurId.required' => 'Veuillez sélectionner un utilisateur.',
+            'newMaterielType.required' => 'Veuillez sélectionner un type de matériel.',
+        ]);
+
+        try {
+            CheckoutModel::create([
+                'utilisateur_id' => $this->newUtilisateurId,
+                'responsable_id' => Auth::id(),
+                'statut' => 1,
+                'materiel_type' => $this->newMaterielType,
+                'materiel_details' => $this->newMaterielDetails,
+                'date_rendu' => $this->newDateRendu ?: null,
+            ]);
+
+            $this->showModal = false;
+            $this->resetModalFields();
+            $this->dispatchBrowserEvent('swal:success', ['message' => 'Checkout créé avec succès.']);
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de la création : ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Insère les informations du checkout dans le compte utilisateur (liaison_equipements)
+     */
+    public function insererVersCompteUtilisateur($checkoutId)
+    {
+        $checkout = CheckoutModel::find($checkoutId);
+        
+        if (!$checkout) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Checkout non trouvé.']);
+            return;
+        }
+
+        if (!$checkout->utilisateur_id) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Aucun utilisateur associé à ce checkout.']);
+            return;
+        }
+
+        // Vérifier si une liaison existe déjà pour cet équipement et cet utilisateur
+        $exists = liaison_equipement::where('utilisateur_id', $checkout->utilisateur_id)
+            ->where(function($query) use ($checkout) {
+                if ($checkout->materiel_type === 'ordinateur') {
+                    $query->where('ordinateur_id', $checkout->equipement_id);
+                } elseif ($checkout->materiel_type === 'telephone') {
+                    $query->where('telephone_id', $checkout->equipement_id);
+                } elseif ($checkout->materiel_type === 'peripherique') {
+                    $query->where('peripherique_id', $checkout->equipement_id);
+                }
+            })->exists();
+
+        if ($exists) {
+            $this->dispatchBrowserEvent('swal:info', ['message' => 'Cet équipement est déjà lié au compte de cet utilisateur.']);
+            return;
+        }
+
+        try {
+            $liaison = new liaison_equipement();
+            $liaison->utilisateur_id = $checkout->utilisateur_id;
+            $liaison->type = $checkout->materiel_type;
+            $liaison->date_attribution = now();
+            $liaison->statut = 'actif';
+            
+            // Mapper l'ID d'équipement selon le type
+            if ($checkout->materiel_type === 'ordinateur') {
+                $liaison->ordinateur_id = $checkout->equipement_id;
+            } elseif ($checkout->materiel_type === 'telephone') {
+                $liaison->telephone_id = $checkout->equipement_id;
+            } elseif ($checkout->materiel_type === 'peripherique') {
+                $liaison->peripherique_id = $checkout->equipement_id;
+            }
+
+            $liaison->save();
+
+            $this->dispatchBrowserEvent('swal:success', ['message' => 'Informations insérées dans le compte utilisateur avec succès.']);
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'insertion : ' . $e->getMessage()]);
+        }
+    }
+
 
     // Méthode pour changer le statut d'un checkout
     public function changerStatut($id, $nouveauStatut)

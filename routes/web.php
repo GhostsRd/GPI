@@ -24,6 +24,35 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Route de secours pour le stockage (si le lien symbolique public/storage est absent ou cassé)
+Route::get('/storage/{path}', function ($path) {
+    // Nettoyage du chemin pour éviter les traversées de répertoire
+    $path = str_replace(['../', '..\\'], '', $path);
+    
+    // Remplacer les slashs pour la compatibilité Windows si nécessaire
+    $normalizedPath = str_replace('/', DIRECTORY_SEPARATOR, $path);
+    
+    $disk = \Illuminate\Support\Facades\Storage::disk('public');
+    $targetPath = $disk->exists($path) ? $path : ($disk->exists($normalizedPath) ? $normalizedPath : null);
+
+    if ($targetPath) {
+        $mimeType = $disk->mimeType($targetPath);
+        
+        // Si le paramètre download=1 est présent, on force le téléchargement
+        if (request()->has('download')) {
+            return $disk->download($targetPath, basename($targetPath));
+        }
+
+        return response()->file($disk->path($targetPath), [
+            'Content-Type' => $mimeType,
+            'Access-Control-Allow-Origin' => '*',
+            'Cache-Control' => 'public, max-age=3600',
+        ]);
+    }
+    
+    abort(404);
+})->where('path', '.*');
+
 
 
 Route::get('/utilisateur', [App\Http\Controllers\Utilisateur\UtilisateurAcceuil::class, 'index'])->name('utilisateur');
@@ -39,6 +68,7 @@ Route::middleware(['LoginUser'])->group(function () {
     Route::get('/utilisateur-doc', [App\Http\Controllers\Utilisateur\UtilisateurDoc::class, 'index'])->name('utilisateur-doc');
     Route::get('/utilisateur-checkout-{id}-{type}', [App\Http\Controllers\Utilisateur\checkout\CalendrierReservationCheckout::class, 'index'])->name('checkout.calendrier');
     Route::get('/utilisateur-calendrier', [App\Http\Controllers\Utilisateur\checkout\MesReservationCalendrier::class, 'index'])->name('mes.reservation');
+    Route::get('/utilisateur/sim/mes-sims', App\Http\Livewire\Utilisateur\Sim\MySims::class)->name('utilisateur.sim.my-sims');
 });
 Route::post('/utilisateur-logout', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'logout'])->name('utilisateurLogout');
 Route::get('/utilisateur-login', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'index'])->name('LoginUser');
@@ -87,6 +117,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/documentation/admin-doc',[App\Http\Controllers\Documentation\AdminDoc::class,'index'])->name('documentation.admin-doc');
 
+    // Notifications
+    Route::get('/admin/notifications', App\Http\Livewire\Notifications\NotificationList::class)->name('admin.notifications');
+
+    // Gestion de Flotte SIM
+    Route::get('/admin/sim/dashboard', App\Http\Livewire\Admin\Sim\SimDashboard::class)->name('admin.sim.dashboard');
+    Route::get('/admin/sim/list', App\Http\Livewire\Admin\Sim\SimList::class)->name('admin.sim.list');
+
     // Routes AJAX pour la gestion des documents via le composant Livewire (utilisé comme contrôleur par le dashboard)
     Route::get('/admin/documents/{id}/edit', [App\Http\Livewire\Documentation\AdminDoc::class, 'edit']);
     Route::post('/admin/documents', [App\Http\Livewire\Documentation\AdminDoc::class, 'store']);
@@ -95,6 +132,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/documents/bulk-delete', [App\Http\Livewire\Documentation\AdminDoc::class, 'bulkDelete']);
     Route::post('/admin/documents/{id}/toggle-publish', [App\Http\Livewire\Documentation\AdminDoc::class, 'togglePublish']);
     Route::get('/admin/documents/{id}/download', [App\Http\Livewire\Documentation\AdminDoc::class, 'download']);
+    
+    // Nouvelles routes de prévisualisation sécurisée
+    Route::get('/admin/documents/{id}/stream', [App\Http\Controllers\Documentation\DocumentPreviewController::class, 'stream'])->name('admin.documents.stream');
 });
 // Route temporaire pour tester les téléchargements
 Route::get('/documents/{id}/download', function ($id) {
@@ -151,4 +191,10 @@ Route::get('/documents/{slug}', function ($slug) {
 Route::get('/documents', function () {
     return redirect()->route('utilisateur-doc');
 })->name('documents.index');
-// Route temporaire pour éviter l'erreur
+// Route temporaire pour éviter l'erreur RouteNotFoundException
+Route::get('/ticket/show/{id}', function ($id) {
+    if (Auth::guard('utilisateur')->check()) {
+        return redirect()->route('utilisateurTicket', $id);
+    }
+    return redirect()->route('checkTicketview', $id);
+})->name('ticket.show');

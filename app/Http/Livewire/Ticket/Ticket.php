@@ -105,4 +105,76 @@ class Ticket extends Component
             "resolvedTickets" => TicketModel::where("status", "Résolu")->count(),
         ]);
     }
+
+    public function exportExcel()
+    {
+        try {
+            $tickets = $this->getExportData();
+            $fileName = 'export_tickets_' . now()->format('Ymd_His') . '.xlsx';
+            
+            if (ob_get_level()) ob_end_clean();
+            
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\TicketsExport($tickets), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::XLSX
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export Excel : ' . $e->getMessage()]);
+        }
+    }
+
+    public function exportCSV()
+    {
+        try {
+            $tickets = $this->getExportData();
+            $fileName = 'export_tickets_' . now()->format('Ymd_His') . '.csv';
+            
+            if (ob_get_level()) ob_end_clean();
+            
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\TicketsCsvExport($tickets), 
+                $fileName,
+                \Maatwebsite\Excel\Excel::CSV
+            );
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export CSV : ' . $e->getMessage()]);
+        }
+    }
+
+    public function exportPDF()
+    {
+        try {
+            $tickets = $this->getExportData();
+            
+            if (ob_get_level()) ob_end_clean();
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.tickets', [
+                'tickets' => $tickets,
+                'is_pdf' => true
+            ])->setPaper('a4', 'landscape');
+
+            return response()->streamDownload(function() use ($pdf) {
+                echo $pdf->output();
+            }, 'export_tickets_' . now()->format('Ymd_His') . '.pdf');
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:error', ['message' => 'Erreur lors de l\'export PDF : ' . $e->getMessage()]);
+        }
+    }
+
+    protected function getExportData()
+    {
+        return TicketModel::where("responsable_id", Auth::user()->id)
+            ->where("categorie", "like", "%" . $this->categorie . "%")
+            ->where("archive", "like", "%" . $this->archive . "%")
+            ->when($this->recherche, function ($query) {
+                $query->where(function ($q) {
+                    $q->where("reference", "like", "%" . $this->recherche . "%")
+                        ->orWhere("sujet", "like", "%" . $this->recherche . "%");
+                });
+            })
+            ->orderBy("priorite", "asc")
+            ->orderBy("created_at", "desc")
+            ->get();
+    }
 }

@@ -44,6 +44,22 @@ class User extends Authenticatable
         return $this->hasMany(Ticket::class, 'responsable_id');
     }
 
+    /**
+     * RELATION AJOUTÉE : Attributions de cartes SIM
+     */
+    public function simAssignments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SimAssignment::class);
+    }
+
+    /**
+     * RELATION AJOUTÉE : Cartes SIM actuellement assignées
+     */
+    public function currentSimCards(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SimCard::class, 'current_user_id');
+    }
+
     // RELATION AJOUTÉE : Documents bookmarkés (favoris)
     public function bookmarks(): BelongsToMany
     {
@@ -90,17 +106,17 @@ class User extends Authenticatable
     // Méthodes utilitaires pour les rôles
     public function isAdmin(): bool
     {
-        return $this->role === self::ROLE_ADMIN;
+        return strtolower($this->role) === self::ROLE_ADMIN;
     }
 
     public function isUser(): bool
     {
-        return $this->role === self::ROLE_USER;
+        return strtolower($this->role) === self::ROLE_USER;
     }
 
     public function isManager(): bool
     {
-        return $this->role === self::ROLE_MANAGER;
+        return strtolower($this->role) === self::ROLE_MANAGER;
     }
 
     // Méthodes utilitaires pour les statuts

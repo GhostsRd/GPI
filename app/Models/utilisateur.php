@@ -32,8 +32,19 @@ class utilisateur extends Authenticatable
 
     public function tickets()
     {
-    return $this->hasMany(Ticket::class, 'utilisateur_id');
-}
+        return $this->hasMany(Ticket::class, 'utilisateur_id');
+    }
+
+    public function checkouts()
+    {
+        return $this->hasMany(Checkout::class, 'utilisateur_id');
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(checkoutreserver::class, 'responsable_id');
+    }
+
     public function commentaires()
     {
         return $this->hasMany(Commentaire::class, 'user_id');
@@ -41,5 +52,15 @@ class utilisateur extends Authenticatable
 
     public function chat(){
         return $this->belongsTo(Chat::class,'targetmsg_id');
+    }
+
+    public function bookmarks()
+    {
+        return $this->belongsToMany(
+            Document::class,
+            'bookmarks',
+            'user_id',
+            'document_id'
+        )->withTimestamps();
     }
 }

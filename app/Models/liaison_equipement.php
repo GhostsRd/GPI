@@ -17,6 +17,7 @@ class liaison_equipement extends Model
         'ordinateur_id',
         'telephone_id',
         'flotte_id',
+        'sim_card_id',
         'imprimante_id',
         'moniteur_id',
         'peripherique_id',
@@ -55,6 +56,12 @@ class liaison_equipement extends Model
     public function flotte()
     {
         return $this->belongsTo(Flotte::class, 'flotte_id');
+    }
+
+    // Relation avec la carte SIM
+    public function sim_card()
+    {
+        return $this->belongsTo(SimCard::class, 'sim_card_id');
     }
 
     // Relation avec l'imprimante

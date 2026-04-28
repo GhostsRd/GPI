@@ -35,12 +35,12 @@ class ordinateur extends Model
 
     public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class);
+        return $this->belongsTo(utilisateur::class, 'utilisateur_id');
     }
 
     public function usager()
     {
-        return $this->belongsTo(Utilisateur::class, 'usager_id');
+        return $this->belongsTo(utilisateur::class, 'usager_id');
     }
 
       public function reservedCheckout()

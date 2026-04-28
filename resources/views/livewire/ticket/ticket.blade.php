@@ -157,10 +157,24 @@
                         </button>
                     </div>
                     <div class="col-md-1">
-                        <button wire:click="exportTickets" class="btn btn-success btn-sm w-100" title="Exporter les tickets">
-                            <i class="bi bi-box-arrow-up-right"></i>
-                            Exporter
-                        </button>
+                        <div class="dropdown w-100">
+                            <button class="btn btn-success btn-sm w-100 dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-box-arrow-up-right me-1"></i>
+                                Exporter
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="exportDropdown" style="border-radius: 12px; font-size: 0.8rem;">
+                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportExcel">
+                                    <i class="fas fa-file-excel me-2 text-success"></i> Excel (.xlsx)
+                                </a></li>
+                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportCSV">
+                                    <i class="fas fa-file-csv me-2 text-info"></i> CSV (.csv)
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportPDF">
+                                    <i class="fas fa-file-pdf me-2 text-danger"></i> PDF (.pdf)
+                                </a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

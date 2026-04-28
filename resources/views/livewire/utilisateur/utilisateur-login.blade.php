@@ -8,7 +8,49 @@
     
     <link rel="stylesheet" href="{{asset('css/login.css')}}">
     <style>
-      
+        :root {
+            --accent: #5BC4BF;
+            --text-secondary: #666;
+        }
+        
+        .theme-switcher i {
+            color: var(--accent);
+        }
+        
+        .btn {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .btn:hover {
+            background-color: #4aa39e;
+        }
+        
+        a {
+            color: var(--accent) !important;
+        }
+        
+        .feature-icon {
+            background-color: var(--accent);
+        }
+        
+        .social-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .input-container i {
+            color: var(--accent);
+        }
+        
+        .input-container input:focus {
+            border-color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -115,18 +157,20 @@
                     <div class="divider">
                         <span>Ou continuer avec</span>
                     </div>
-
-                    <div class="social-login">
-                        <div class="social-btn">
-                            <i class="fab fa-microsoft"></i>
-                        </div>
-                        <div class="social-btn">
-                            <i class="fab fa-google"></i>
-                        </div>
-                        <div class="social-btn">
-                            <i class="fab fa-apple"></i>
-                        </div>
-                    </div>
+<div class="social-login">
+    <div class="social-btn">
+        <i class="fab fa-microsoft"></i>
+        <span>Microsoft</span>
+    </div>
+    <div class="social-btn">
+        <i class="fab fa-google"></i>
+        <span>Google</span>
+    </div>
+    <div class="social-btn">
+        <i class="fab fa-apple"></i>
+        <span>Apple</span>
+    </div>
+</div>
 
                     @if (Route::has('password.request'))
                         <a class="forgot-link" href="{{ route('password.request') }}">
@@ -144,5 +188,9 @@
 </div>
 <script src="{{asset('js/login.js')}}"></script>
 
+<script>
+    // Année courante
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>

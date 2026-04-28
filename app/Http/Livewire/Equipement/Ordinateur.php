@@ -14,6 +14,7 @@ use League\Csv\Reader;
 use League\Csv\Statement;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\OrdinateursImport;
+use App\Exports\OrdinateursExport;
 use Illuminate\Http\Request;
 
 class Ordinateur extends Component
@@ -125,7 +126,7 @@ class Ordinateur extends Component
 
     protected $messages = [
         'fichierExcel.required' => 'Veuillez sélectionner un fichier',
-        'fichierExcel.mimes' => 'Le fichier doit être de type CSV',
+        'fichierExcel.mimes' => 'Le fichier doit être de type CSV ou Excel (.xlsx)',
         'fichierExcel.max' => 'Le fichier ne doit pas dépasser 10MB'
     ];
 
@@ -666,7 +667,7 @@ class Ordinateur extends Component
 
                     // Validation des données requises
                     if (empty($mappedData['nom'])) {
-                        $this->importErrors[] = "Ligne {$lineNumber}: Le nom est obligatoire";
+                        $this->importErrors[] = "Ligne {$lineNumber}: Le champ 'Nom' est obligatoire dans votre mapping.";
                         continue;
                     }
 
@@ -678,6 +679,10 @@ class Ordinateur extends Component
                 } catch (\Exception $e) {
                     $this->importErrors[] = "Ligne {$lineNumber}: " . $e->getMessage();
                 }
+            }
+
+            if (empty($this->importedData) && empty($this->importErrors)) {
+                $this->importErrors[] = "Aucune donnée valide trouvée dans le fichier.";
             }
 
             $this->importSuccessCount = count($this->importedData);
@@ -870,79 +875,29 @@ class Ordinateur extends Component
     // ==================== MÉTHODES D'EXPORT ====================
 
     /**
-     * Exporter les ordinateurs en CSV
+     * Exporter les ordinateurs dans différents formats
      */
-    public function exportOrdinateur()
+    public function export($format)
     {
+        $date = date('Y-m-d');
+        $fileName = "ordinateurs_{$date}.{$format}";
+
         try {
-            $query = OrdinateurModel::with(['utilisateur', 'usager']);
-
-            if ($this->search) {
-                $query->where(function ($q) {
-                    $q->where('nom', 'LIKE', "%{$this->search}%")
-                        ->orWhere('numero_serie', 'LIKE', "%{$this->search}%")
-                        ->orWhere('fabricant', 'LIKE', "%{$this->search}%")
-                        ->orWhere('modele', 'LIKE', "%{$this->search}%")
-                        ->orWhere('reseau_ip', 'LIKE', "%{$this->search}%")
-                        ->orWhereHas('utilisateur', function ($q) {
-                            $q->where('nom', 'LIKE', "%{$this->search}%");
-                        });
-                });
+            switch ($format) {
+                case 'xlsx':
+                    return Excel::download(new OrdinateursExport, $fileName, \Maatwebsite\Excel\Excel::XLSX);
+                case 'csv':
+                    return Excel::download(new OrdinateursExport, $fileName, \Maatwebsite\Excel\Excel::CSV);
+                case 'pdf':
+                    // Note: Requires dompdf or other PDF library to be configured in Laravel-Excel
+                    return Excel::download(new OrdinateursExport, $fileName, \Maatwebsite\Excel\Excel::DOMPDF);
+                default:
+                    session()->flash('error', "Format d'exportation non supporté.");
+                    return null;
             }
-
-            if ($this->statut) {
-                $query->where('statut', $this->statut);
-            }
-
-            if ($this->entite) {
-                $query->where('entite', 'LIKE', "%{$this->entite}%");
-            }
-
-            $ordinateurs = $query->orderBy('nom')->get();
-
-            $fileName = 'ordinateurs_export_' . date('Y-m-d_H-i-s') . '.csv';
-
-            return response()->streamDownload(function () use ($ordinateurs) {
-                $file = fopen('php://output', 'w');
-
-                // En-têtes
-                fputcsv($file, [
-                    'Nom', 'Entité', 'Sous-entité', 'Statut', 'Fabricant',
-                    'Modèle', 'Numéro de série', 'Utilisateur', 'Usager',
-                    'Date inventaire', 'IP', 'Disque dur', 'OS Version',
-                    'OS Noyau', 'Dernier démarrage', 'Notes'
-                ]);
-
-                // Données
-                foreach ($ordinateurs as $ord) {
-                    fputcsv($file, [
-                        $ord->nom,
-                        $ord->entite,
-                        $ord->sous_entite,
-                        $ord->statut,
-                        $ord->fabricant,
-                        $ord->modele,
-                        $ord->numero_serie,
-                        $ord->utilisateur->nom?? 'N/A',
-                        $ord->usager->nom?? 'N/A',
-                        $ord->date_dernier_inventaire?->format('d/m/Y') ?? '',
-                        $ord->reseau_ip,
-                        $ord->disque_dur,
-                        $ord->os_version,
-                        $ord->os_noyau,
-                        $ord->derniere_date_demarrage?->format('d/m/Y H:i') ?? '',
-                        $ord->notes
-                    ]);
-                }
-
-                fclose($file);
-            }, $fileName, [
-                'Content-Type' => 'text/csv',
-            ]);
-
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur lors de l\'export: ' . $e->getMessage());
-            return back();
+            session()->flash('error', "Erreur lors de l'exportation: " . $e->getMessage());
+            return null;
         }
     }
 }

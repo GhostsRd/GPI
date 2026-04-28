@@ -3,16 +3,19 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromView;
-use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use Illuminate\Contracts\View\View;
 
-class ActivitesExport implements FromView, ShouldAutoSize
+class ActivitesExport implements FromView, ShouldAutoSize, WithDrawings
 {
     protected $activities;
 
     public function __construct($activities)
     {
-        $this->activities = $activities;
+        // On s'assure d'avoir une collection propre
+        $this->activities = collect($activities);
     }
 
     public function view(): View
@@ -20,5 +23,17 @@ class ActivitesExport implements FromView, ShouldAutoSize
         return view('exports.activites', [
             'activities' => $this->activities
         ]);
+    }
+
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo Pivot');
+        $drawing->setDescription('Logo Pivot');
+        $drawing->setPath(public_path('images/logoPivot.png'));
+        $drawing->setHeight(50);
+        $drawing->setCoordinates('A1');
+
+        return [$drawing];
     }
 }

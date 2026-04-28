@@ -80,6 +80,7 @@
                                 <option value="Ordinateur">Ordinateur</option>
                                 <option value="Telephone">Téléphone</option>
                                 <option value="Peripherique">Périphérique</option>
+                                <option value="sim_card">Carte SIM</option>
                                 <option value="Moniteur">Moniteur</option>
                                 <option value="Autre">Autre</option>
                             </select>
@@ -198,6 +199,30 @@
                                     @endforeach
 
                         
+                                </select>
+                            </div>
+                            @error('equipement_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @elseif($equipement_type == 'sim_card')
+                        <div class="mb-3 ">
+                            <label for="equipement_id" class="form-label fw-bold text-muted">Sélectionner la carte SIM
+                                <span class="text-danger">*</span></label>
+                            <div class="position-relative">
+                                <i class="bi bi-list position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                <select id="equipement_id"
+                                    class="modern-textarea py-2 px-4 form-select-sm ps-5 text-muted border-0 border-bottom @error('equipement_id') is-invalid @enderror"
+                                    wire:model="equipement_id">
+                                    <option value="">Sélectionner </option>
+
+                                    @foreach ($EquipementLier as $equipement)
+                                        @if($equipement->sim_card?->id && !$incidents->contains('equipement_id', $equipement->sim_card->id))
+                                            <option value="{{ $equipement->sim_card->id  }}">
+                                                SIM : {{ $equipement->sim_card->phone_number }} - {{ $equipement->sim_card->operator }}
+                                            </option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
                             @error('equipement_id')
