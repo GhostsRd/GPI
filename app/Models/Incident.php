@@ -69,9 +69,7 @@ class Incident extends Model
 
 
 
-    public function utilisateur(){
-        return $this->belongsTo(utilisateur::class, 'utilisateur_id');
-    }
+   
 
 
 }
