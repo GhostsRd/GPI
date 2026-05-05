@@ -16,19 +16,17 @@ return new class extends Migration
     $table->id();
 
     $table->foreignId('utilisateur_id')
+        ->nullable()
         ->constrained('utilisateurs')
         ->cascadeOnDelete();
+
+    
 
     $table->string('type');
 
     $table->foreignId('ordinateur_id')
         ->nullable()
         ->constrained('ordinateurs')
-        ->nullOnDelete();
-
-    $table->foreignId('telephone_id')
-        ->nullable()
-        ->constrained('telephones')
         ->nullOnDelete();
 
     $table->foreignId('flotte_id')
@@ -60,38 +58,8 @@ return new class extends Migration
 
             $table->timestamps();
 
-            // ==============================
-            // 🔐 Clés étrangères
-            // ==============================
+  
 
-            $table->foreign('utilisateur_id')
-                ->references('id')
-                ->on('utilisateurs')
-                ->cascadeOnDelete();
-
-            $table->foreign('ordinateur_id')
-                ->references('id')
-                ->on('ordinateurs')
-                ->nullOnDelete();
-
-        
-
-         
-
-            $table->foreign('imprimante_id')
-                ->references('id')
-                ->on('imprimantes')
-                ->nullOnDelete();
-
-            $table->foreign('moniteur_id')
-                ->references('id')
-                ->on('moniteurs')
-                ->nullOnDelete();
-
-            $table->foreign('peripherique_id')
-                ->references('id')
-                ->on('peripheriques')
-                ->nullOnDelete();
         });
     }
 

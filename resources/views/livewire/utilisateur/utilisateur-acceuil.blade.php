@@ -6108,8 +6108,8 @@
           <div class="card bg-white blob-bg border-0 shadow-sm h-100">
             <div class="card-body">
               <h5 class="card-title">Ticket contenu</h5>
-              <p class="card-text">Création de sites modernes, rapides et optimisés pour tous les appareils.</p>
-              <a href="{{ url('/utilisateur-service') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕ </a>
+              <p class="card-text">Créez et gérez vos tickets de support.</p>
+              <a href="{{ url('/utilisateur-service') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Creer ticket </a>
             </div>
           </div>
         </div>
@@ -6118,26 +6118,26 @@
           <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
               <h5 class="card-title">CheckIn / CheckOut</h5>
-              <p class="card-text">Des applications intuitives conçues pour Android et iOS.</p>
-              <a href="{{ url('/utilisateur-checkout') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
+              <p class="card-text">Faites vos demandes de check-in et check-out en ligne.</p>
+              <a href="{{ url('/utilisateur-checkout') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Faire une demande de CheckOut</a>
             </div>
           </div>
         </div>
         <div class="col-md-3" data-aos="fade-up" data-aos-duration="1500">
           <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
-              <h5 class="card-title">Inventaire</h5>
-              <p class="card-text">Expériences utilisateurs soignées et interfaces modernes.</p>
-              <a href="#" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
+              <h5 class="card-title">Incident</h5>
+              <p class="card-text">Signalez rapidement tout incident ou problème rencontré.</p>
+              <a href="{{ url('/utilisateur-incident') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Signaler un incident</a>
             </div>
           </div>
         </div>
         <div class="col-md-3" data-aos="fade-left" data-aos-duration="1500">
           <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
-              <h5 class="card-title">Documentation</h5>
-              <p class="card-text">Expériences utilisateurs soignées et interfaces modernes.</p>
-              <a href="#" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Commencer   ⮕</a>
+              <h5 class="card-title">Reservation</h5>
+              <p class="card-text">Reservez vos équipements en ligne.</p>
+              <a href="{{ url('/utilisateur-reservation') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Faire une réservation</a>
             </div>
           </div>
         </div>
