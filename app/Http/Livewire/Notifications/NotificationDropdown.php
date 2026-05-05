@@ -26,7 +26,7 @@ class NotificationDropdown extends Component
                 ->take(10)
                 ->get();
             
-            $this->unreadCount = $user->unreadNotifications->count();
+            $this->unreadCount = $user->unreadNotifications()->count();
         }
     }
 
@@ -36,13 +36,24 @@ class NotificationDropdown extends Component
         if ($notification) {
             $notification->markAsRead();
             $this->loadNotifications();
-            $this->emit('notificationReceived'); // Notify other components
+            $this->emit('notificationReceived'); // Notifier les autres composants
+            
+            // Redirection vers le lien si présent
+            if (isset($notification->data['link']) && $notification->data['link'] !== '#') {
+                return redirect($notification->data['link']);
+            } else {
+                // Si pas de lien, afficher le contenu dans un toast
+                $this->dispatchBrowserEvent('toast', [
+                    'type' => 'info',
+                    'message' => $notification->data['message'] ?? 'Notification lue'
+                ]);
+            }
         }
     }
 
     public function markAllAsRead()
     {
-        Auth::user()->unreadNotifications->markAsRead();
+        Auth::user()->unreadNotifications()->update(['read_at' => now()]);
         
         $this->loadNotifications();
         $this->dispatchBrowserEvent('notificationsMarkedAsRead');

@@ -121,121 +121,7 @@
 </head>
 <body>
 <div id="app">
-    <!-- Modern Navbar -->
-    <nav class="navbar-modern navbar navbar-expand-lg shadow-sm">
-        <div class="container-fluid">
-            <!-- Logo and Brand -->
-            <a class="navbar-brand-modern text-muted" href="{{ url('/home') }}">
-                <img class="shadow-sm rounded-pill" width="35" src="{{ asset('/images/logoPivot.png') }}" alt="">
-                GPI - Pivot
-            </a>
 
-            <!-- Mobile Toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Theme Toggle -->
-                <div class="theme-switch theme-toggle-btn ms-auto" style="margin-right: 15px;" title="Toggle Theme"></div>
-
-                <!-- Notifications Menu -->
-                <ul class="navbar-nav me-3">
-                    <li class="nav-item">
-                        @livewire('notifications.notification-dropdown')
-                    </li>
-                </ul>
-
-                <!-- User Menu avec Déconnexion -->
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="user-dropdown nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                            <div class="d-flex align-items-center">
-                                @if(Auth::check() && Auth::user()->photo)
-                                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="user-avatar rounded-circle" width="40" height="40" alt="Photo de profil" style="object-fit: cover; border: 2px solid #6366f1;">
-                                @else
-                                    <img src="{{ asset('images/avtar_1.png') }}" class="user-avatar rounded-circle" width="40" height="40" alt="Photo par défaut" style="object-fit: cover; border: 2px solid #6366f1;">
-                                @endif
-                                <span class="ms-2 fw-bold text-dark">
-                                    {{ Auth::check() ? Auth::user()->name : 'Invité' }}
-                                </span>
-                                <i class="bi bi-chevron-down ms-1" style="font-size: 0.8rem; color: #6b7280;"></i>
-                            </div>
-                        </a>
-
-                        <!-- Dropdown Menu avec Déconnexion -->
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="min-width: 280px; border-radius: 20px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.15); padding: 1rem 0.5rem; background: white; z-index: 9999;">
-
-                            <!-- User Info Header -->
-                            <div class="px-4 py-3 text-center">
-                                <div class="position-relative d-inline-block">
-                                    @if(Auth::check() && Auth::user()->photo)
-                                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded-circle mb-2" width="72" height="72" alt="Photo" style="object-fit: cover; border: 4px solid #6366f1; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
-                                    @else
-                                        <img src="{{ asset('images/avtar_1.png') }}" class="rounded-circle mb-2" width="72" height="72" alt="Photo" style="object-fit: cover; border: 4px solid #6366f1; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
-                                    @endif
-                                    <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle p-1"></span>
-                                </div>
-                                <div class="fw-bold" style="font-size: 1.1rem;">{{ Auth::check() ? Auth::user()->name : 'Invité' }}</div>
-                                <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::check() ? Auth::user()->email : '' }}</div>
-                                @if(Auth::check() && Auth::user()->role)
-                                    <span class="badge bg-primary bg-opacity-10 text-primary mt-1 px-3 py-1 rounded-pill" style="font-size: 0.7rem; font-weight: 600;">
-                                        {{ Auth::user()->role }}
-                                    </span>
-                                @endif
-                            </div>
-
-                            <!-- Menu Items -->
-                            <div class="mt-2">
-                                <!-- Profile Link -->
-                                <a class="dropdown-item d-flex align-items-center px-4 py-2 rounded-3" href="{{ url('/profile') }}" style="font-size: 0.9rem; transition: all 0.2s;">
-                                    <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; background: #eef2ff; border-radius: 10px;">
-                                        <i class="bi bi-person-circle" style="color: #6366f1; font-size: 1.1rem;"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold">Mon Profil</div>
-                                        <small class="text-muted">Gérer vos informations</small>
-                                    </div>
-                                </a>
-
-                                <!-- Settings Link (Optionnel) -->
-                                <a class="dropdown-item d-flex align-items-center px-4 py-2 rounded-3" href="{{ url('/parametres') }}" style="font-size: 0.9rem; transition: all 0.2s;">
-                                    <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; background: #f3e8ff; border-radius: 10px;">
-                                        <i class="bi bi-gear-fill" style="color: #8b5cf6; font-size: 1.1rem;"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold">Paramètres</div>
-                                        <small class="text-muted">Préférences système</small>
-                                    </div>
-                                </a>
-
-                                <!-- Divider -->
-                                <div class="dropdown-divider my-2"></div>
-
-                                <!-- Disconnect Button -->
-                                <a class="dropdown-item d-flex align-items-center px-4 py-2 rounded-3 logout-btn" 
-                                   href="{{ route('logout') }}"
-                                   style="font-size: 0.9rem; color: #dc2626;">
-                                    <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; background: #fee2e2; border-radius: 10px;">
-                                        <i class="bi bi-box-arrow-right" style="color: #dc2626; font-size: 1.1rem;"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold">Déconnexion</div>
-                                        <small class="text-muted">Quitter votre session</small>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <!-- Footer -->
-                            <div class="px-4 mt-3 pt-2 text-center border-top" style="border-color: #f3f4f6 !important;">
-                                <small class="text-muted" style="font-size: 0.7rem;">Version 2.0.0 • GPI Pivot</small>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <!-- Modern Sidebar -->
     <aside class="sidebar-modern shadow border-0" style="z-index: 1000 !important" id="sidebarModern">
         <nav class="sidebar-nav-modern">
@@ -512,58 +398,94 @@
     /* Style pour la cloche de notification */
     .notification-bell {
         position: relative;
-        padding: 8px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background: #f8fafc;
         border-radius: 12px;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         cursor: pointer;
+        border: 1px solid rgba(0,0,0,0.05);
     }
     
+    [data-bs-theme="dark"] .notification-bell {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.1);
+    }
+
     .notification-bell:hover {
-        background: #eef2ff;
-        transform: scale(1.05);
+        background: #f1f5f9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-color: #6366f1;
     }
     
     .notification-bell i {
-        color: #4b5563;
-        transition: color 0.3s;
+        color: #64748b;
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
     }
     
     .notification-bell:hover i {
         color: #6366f1;
+        transform: rotate(15deg);
     }
     
-    /* Style pour les items de notification */
-    .notification-item {
-        transition: all 0.2s;
-        border-left: 3px solid transparent;
+    /* Indicateur de notification (Ping) */
+    .notification-bell.has-notifications::after {
+        content: '';
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 10px;
+        height: 10px;
+        background: #ef4444;
+        border-radius: 50%;
+        border: 2px solid white;
+        z-index: 2;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
     }
-    
-    .notification-item:hover {
-        background: #f8fafc !important;
-        transform: translateX(5px);
-        border-left-color: #6366f1;
+
+    [data-bs-theme="dark"] .notification-bell.has-notifications::after {
+        border-color: #1e293b;
     }
-    
-    .notification-item.unread:hover {
-        background: #e6f4ff !important;
-    }
-    
+
     /* Animation pour la cloche */
     @keyframes bellShake {
         0% { transform: rotate(0); }
-        15% { transform: rotate(5deg); }
-        30% { transform: rotate(-5deg); }
-        45% { transform: rotate(4deg); }
-        60% { transform: rotate(-4deg); }
-        75% { transform: rotate(2deg); }
-        85% { transform: rotate(-2deg); }
-        92% { transform: rotate(1deg); }
+        15% { transform: rotate(15deg); }
+        30% { transform: rotate(-15deg); }
+        45% { transform: rotate(10deg); }
+        60% { transform: rotate(-10deg); }
+        75% { transform: rotate(5deg); }
+        85% { transform: rotate(-5deg); }
         100% { transform: rotate(0); }
     }
     
-    .notification-bell.has-notifications {
-        animation: bellShake 1s ease-in-out;
+    .notification-bell.has-notifications i {
+        animation: bellShake 1.5s ease-in-out infinite;
+        color: #f59e0b;
+    }
+    
+    /* Animation de pulsation (Ping) */
+    @keyframes pingEffect {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    .notification-bell.has-notifications::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 10px;
+        height: 10px;
+        background: #ef4444;
+        border-radius: 50%;
+        z-index: 1;
+        animation: pingEffect 2s cubic-bezier(0, 0, 0.2, 1) infinite;
     }
     
     /* Scroll personnalisé pour la liste des notifications */
@@ -583,6 +505,22 @@
     
     .notification-list::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
+    }
+    /* Animation pour le dropdown des notifications */
+    .notification-dropdown {
+        transform-origin: top right;
+        animation: dropdownFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes dropdownFadeIn {
+        from { 
+            opacity: 0; 
+            transform: translateY(15px) scale(0.95); 
+        }
+        to { 
+            opacity: 1; 
+            transform: translateY(0) scale(1); 
+        }
     }
 </style>
 @livewireScripts

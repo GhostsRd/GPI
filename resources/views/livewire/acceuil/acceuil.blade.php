@@ -1,4 +1,4 @@
-<div class="container-fluid py-4" style="min-height: 100vh; background: var(--gray-50);">
+<div class="container-fluid py-2" style="min-height: 100vh; background: var(--gray-50); font-size: 0.7rem;">
     <!-- Assets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -20,11 +20,9 @@
             --gray-800: #1e293b;
             --gray-900: #0f172a;
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.03);
-            --radius: 12px;
-            --radius-lg: 16px;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
         }
 
         * { font-family: 'Inter', sans-serif; }
@@ -45,67 +43,64 @@
 
         [data-bs-theme="dark"] .container-fluid { background: var(--gray-50) !important; }
 
-        /* Cards */
+        /* Cards compactes */
         .card {
             background: white;
             border: none !important;
             border-radius: var(--radius-lg);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
-            transition: transform 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+            transition: transform 0.15s ease;
             overflow: hidden;
         }
 
         [data-bs-theme="dark"] .card {
             background: var(--gray-100);
-            border-color: var(--gray-200);
         }
 
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
         }
 
-        /* Mode TV - désactiver animations */
         .tv-mode .card:hover {
-            transform: none;
-        }
-
-        .tv-mode .btn-icon:hover {
             transform: none;
         }
 
         .card-header {
             background: transparent;
-            border-bottom: none;
-            padding: 1.25rem 1.5rem 0.5rem 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.5rem 0.8rem;
         }
 
         .card-header h6 {
             color: var(--gray-800);
             font-weight: 600;
+            font-size: 0.65rem;
+            margin: 0;
+            letter-spacing: 0.3px;
         }
 
-        .card-body { padding: 1.5rem; }
+        .card-body { 
+            padding: 0.7rem; 
+        }
 
-        /* Stats cards */
+        /* Stats cards compactes */
         .stat-card {
-            padding: 1.5rem;
+            padding: 0.6rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: none;
         }
 
         .stat-info h3 {
-            font-size: 2rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--gray-900);
-            margin-bottom: 0.125rem;
+            margin-bottom: 0;
             line-height: 1.2;
         }
 
         .stat-info p {
-            font-size: 0.8rem;
+            font-size: 0.55rem;
             font-weight: 500;
             color: var(--gray-500);
             margin-bottom: 0;
@@ -114,32 +109,32 @@
         }
 
         .stat-icon {
-            width: 52px;
-            height: 52px;
+            width: 28px;
+            height: 28px;
             border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 0.7rem;
             color: var(--primary-dark);
             background: var(--primary-light);
         }
 
         .stat-trend {
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
+            font-size: 0.55rem;
+            margin-top: 0.2rem;
             color: var(--gray-500);
         }
 
         .stat-trend .up { color: #10b981; }
         .stat-trend .down { color: #ef4444; }
 
-        /* Badges */
+        /* Badges très petits */
         .badge {
-            padding: 0.35rem 0.75rem;
+            padding: 0.15rem 0.4rem;
             font-weight: 500;
-            font-size: 0.75rem;
-            border-radius: 6px;
+            font-size: 0.55rem;
+            border-radius: 4px;
             border: none;
         }
 
@@ -174,19 +169,25 @@
         [data-bs-theme="dark"] .badge-danger { background: rgba(239,68,68,0.15); }
         [data-bs-theme="dark"] .badge-info { background: rgba(59,130,246,0.15); }
 
-        /* Buttons */
+        .text-grey-dashboard { 
+            color: #000000 !important; 
+            opacity: 0.7;
+        }
+
+        /* Boutons compacts */
         .btn-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius);
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
             border: 1px solid var(--gray-200);
             background: white;
             color: var(--gray-600);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             cursor: pointer;
+            font-size: 0.65rem;
         }
 
         [data-bs-theme="dark"] .btn-icon {
@@ -201,14 +202,14 @@
         }
 
         .btn-refresh {
-            padding: 0.5rem 1.25rem;
-            border-radius: var(--radius);
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
             border: none;
             background: var(--primary);
             color: white;
             font-weight: 500;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
+            font-size: 0.65rem;
+            transition: all 0.15s ease;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
@@ -220,31 +221,33 @@
             color: white;
         }
 
-        /* Tables */
-        .table { margin-bottom: 0; }
+        /* Tables compactes */
+        .table { 
+            margin-bottom: 0; 
+        }
 
         .table thead th {
             background: var(--gray-50);
             color: var(--gray-500);
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.55rem;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            padding: 0.75rem 1.25rem;
+            padding: 0.4rem 0.6rem;
             border-bottom: 1px solid var(--gray-200);
             border-top: none;
         }
 
         .table td {
-            padding: 0.875rem 1.25rem;
+            padding: 0.4rem 0.6rem;
             color: var(--gray-700);
             border-bottom: 1px solid var(--gray-100);
             vertical-align: middle;
-            font-size: 0.875rem;
+            font-size: 0.65rem;
         }
 
         .table tbody tr {
-            transition: background 0.15s ease;
+            transition: background 0.1s ease;
         }
 
         .table tbody tr:hover {
@@ -254,37 +257,37 @@
         [data-bs-theme="dark"] .table thead th { background: var(--gray-200); }
         [data-bs-theme="dark"] .table td { border-color: var(--gray-200); }
 
-        /* Progress bar */
+        /* Progress bar fine */
         .progress {
-            height: 6px;
-            border-radius: 3px;
+            height: 3px;
+            border-radius: 2px;
             background: var(--gray-200);
             overflow: hidden;
         }
 
         .progress-bar {
             background: var(--primary);
-            border-radius: 3px;
+            border-radius: 2px;
         }
 
-        /* Page header */
+        /* Page header compact */
         .page-title {
-            font-size: 1.75rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--gray-900);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.1rem;
         }
 
         .page-subtitle {
             color: var(--gray-500);
-            font-size: 0.9rem;
+            font-size: 0.6rem;
             font-weight: 400;
         }
 
-        /* Timeline */
+        /* Timeline compacte */
         .timeline {
             position: relative;
-            padding-left: 2.5rem;
+            padding-left: 1.5rem;
         }
 
         .timeline::before {
@@ -293,41 +296,41 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 2px;
+            width: 1.5px;
             background: var(--gray-200);
-            border-radius: 2px;
+            border-radius: 1px;
         }
 
         .timeline-item {
             position: relative;
-            padding-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
         }
 
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -2.5rem;
-            top: 0.5rem;
-            width: 10px;
-            height: 10px;
+            left: -1.5rem;
+            top: 0.3rem;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--primary);
-            border: 2px solid white;
-            box-shadow: 0 0 0 2px var(--primary-light);
+            border: 1.5px solid white;
+            box-shadow: 0 0 0 1.5px var(--primary-light);
         }
 
         .timeline-date {
-            font-size: 0.75rem;
+            font-size: 0.5rem;
             color: var(--gray-400);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.15rem;
         }
 
         .timeline-content {
             background: var(--gray-50);
-            padding: 1rem 1.25rem;
+            padding: 0.5rem 0.6rem;
             border-radius: var(--radius);
             border: 1px solid var(--gray-200);
-            transition: border-color 0.2s ease;
+            transition: border-color 0.15s ease;
         }
 
         .timeline-content:hover {
@@ -336,22 +339,27 @@
 
         .timeline-content h6 {
             color: var(--gray-800);
-            font-size: 0.875rem;
+            font-size: 0.65rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-content p {
+            font-size: 0.55rem;
+            margin-bottom: 0;
         }
 
         [data-bs-theme="dark"] .timeline-content { background: var(--gray-200); }
 
-        /* Chart container */
+        /* Chart containers compacts */
         .chart-container {
             width: 100%;
-            height: 300px;
-            margin-top: 0.5rem;
+            height: 200px;
         }
 
         .small-chart {
-            height: 40px;
+            height: 35px;
             width: 100%;
-            margin-top: 0.5rem;
+            margin-top: 0.3rem;
         }
 
         .rainbow-text {
@@ -360,20 +368,29 @@
         }
 
         .fw-600 { font-weight: 600; }
+        .text-xs { font-size: 0.6rem; }
+        .text-xxs { font-size: 0.55rem; }
 
-        /* Form select override */
+        /* Form select compact */
         .form-select-sm {
             border-radius: var(--radius);
             border-color: var(--gray-200);
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             color: var(--gray-700);
             background-color: white;
+            padding: 0.2rem 1.5rem 0.2rem 0.5rem;
         }
 
         [data-bs-theme="dark"] .form-select-sm {
             background-color: var(--gray-200);
             border-color: var(--gray-300);
             color: var(--gray-700);
+        }
+
+        /* Grille compacte */
+        .row.g-3 {
+            --bs-gutter-y: 0.6rem;
+            --bs-gutter-x: 0.6rem;
         }
 
         /* Mode TV Optimizations */
@@ -400,9 +417,9 @@
             right: 20px;
             background: rgba(0,0,0,0.7);
             color: white;
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
             z-index: 9999;
             opacity: 0;
             transition: opacity 0.3s;
@@ -420,15 +437,13 @@
                 margin: 0 auto;
             }
             
-            .page-title { font-size: 2.5rem; }
-            .stat-info h3 { font-size: 2.8rem; }
-            .card-header h6 { font-size: 1.2rem; }
-            .chart-container { height: 400px; }
-            .row.g-4 { --bs-gutter-y: 2rem; --bs-gutter-x: 2rem; }
-            .table td, .table th { font-size: 1rem; }
+            .page-title { font-size: 1.2rem; }
+            .stat-info h3 { font-size: 1.2rem; }
+            .card-header h6 { font-size: 0.75rem; }
+            .chart-container { height: 250px; }
         }
 
-        /* Mode TV settings panel */
+        /* TV Settings Panel */
         .tv-settings-panel {
             position: fixed;
             top: 50%;
@@ -436,9 +451,9 @@
             transform: translate(-50%, -50%);
             background: white;
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow);
             z-index: 10000;
-            width: 400px;
+            width: 350px;
             max-width: 90%;
             display: none;
         }
@@ -449,7 +464,7 @@
 
         .tv-settings-panel.show {
             display: block;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.2s ease;
         }
 
         @keyframes slideIn {
@@ -462,15 +477,36 @@
                 transform: translate(-50%, -50%);
             }
         }
+
+        .tv-settings-panel .card-header {
+            padding: 0.6rem 1rem;
+        }
+
+        .tv-settings-panel .card-body {
+            padding: 1rem;
+        }
+
+        .tv-settings-panel .form-label {
+            font-size: 0.7rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tv-settings-panel .form-check-label {
+            font-size: 0.65rem;
+        }
+
+        .tv-settings-panel hr {
+            margin: 0.8rem 0;
+        }
     </style>
 
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Header compact -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
             <h1 class="page-title">Tableau de bord</h1>
-            <p class="page-subtitle">Vue d'ensemble de l'activité — Gestion de Parc & Support</p>
+            <p class="page-subtitle">Vue d'ensemble — Gestion de Parc & Support</p>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-1">
             <button class="btn-icon" id="fullscreenBtn" title="Plein écran">
                 <i class="fas fa-expand"></i>
             </button>
@@ -481,7 +517,7 @@
                 <i class="fas fa-moon"></i>
             </button>
             <button class="btn-refresh" wire:click="$refresh">
-                <i class="fas fa-sync-alt me-2"></i>Actualiser
+                <i class="fas fa-sync-alt me-1"></i>Act.
             </button>
         </div>
     </div>
@@ -489,55 +525,48 @@
     <!-- TV Settings Panel -->
     <div class="tv-settings-panel" id="tvSettingsPanel">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="mb-0"><i class="fas fa-tv me-2"></i>Paramètres d'affichage TV</h6>
-            <button class="btn-icon btn-sm" id="closeSettingsBtn" style="width: 30px; height: 30px;">
+            <h6 class="mb-0"><i class="fas fa-tv me-2"></i>Paramètres TV</h6>
+            <button class="btn-icon btn-sm" id="closeSettingsBtn" style="width: 24px; height: 24px;">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <div class="card-body">
-            <div class="mb-3">
+            <div class="mb-2">
                 <label class="form-label fw-bold">Mode d'affichage</label>
-                <select class="form-select" id="displayMode">
+                <select class="form-select form-select-sm" id="displayMode">
                     <option value="normal">Normal</option>
-                    <option value="tv">Mode TV (Plein écran auto)</option>
+                    <option value="tv">Mode TV</option>
                     <option value="kiosk">Mode Kiosque</option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Rafraîchissement automatique</label>
-                <select class="form-select" id="autoRefresh">
+            <div class="mb-2">
+                <label class="form-label fw-bold">Rafraîchissement</label>
+                <select class="form-select form-select-sm" id="autoRefresh">
                     <option value="0">Désactivé</option>
-                    <option value="15">15 secondes</option>
-                    <option value="30">30 secondes</option>
-                    <option value="60">1 minute</option>
-                    <option value="300">5 minutes</option>
+                    <option value="15">15 sec</option>
+                    <option value="30">30 sec</option>
+                    <option value="60">1 min</option>
+                    <option value="300">5 min</option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Masquer les éléments</label>
+            <div class="mb-2">
+                <label class="form-label fw-bold">Masquer</label>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="hideButtons">
-                    <label class="form-check-label">Masquer les boutons d'action</label>
+                    <label class="form-check-label">Boutons d'action</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="hideHeader">
-                    <label class="form-check-label">Masquer l'en-tête</label>
+                    <label class="form-check-label">En-tête</label>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-bold">Qualité d'affichage</label>
-                <select class="form-select" id="qualityMode">
-                    <option value="high">Haute qualité (animations)</option>
-                    <option value="low">Basse qualité (performances)</option>
-                </select>
             </div>
             <hr>
             <div class="d-grid gap-2">
                 <button class="btn-refresh" id="applyTVSettings">
-                    <i class="fas fa-check me-2"></i>Appliquer
+                    <i class="fas fa-check me-1"></i>Appliquer
                 </button>
                 <button class="btn-refresh" id="exitTVMode" style="background: #ef4444;">
-                    <i class="fas fa-sign-out-alt me-2"></i>Quitter mode TV
+                    <i class="fas fa-sign-out-alt me-1"></i>Quitter
                 </button>
             </div>
         </div>
@@ -545,260 +574,347 @@
 
     <!-- Fullscreen Indicator -->
     <div class="fullscreen-indicator" id="fullscreenIndicator">
-        <i class="fas fa-expand me-1"></i> Mode plein écran activé
+        <i class="fas fa-expand me-1"></i> Plein écran
     </div>
 
-    <!-- Stats Cards Principales (DONNÉES RÉELLES DEPUIS LA BASE) -->
-    <div class="row g-4 mb-4">
-        <!-- Incidents -->
-        <div class="col-md-6 col-xl-4 col-xxl-3" data-aos="fade-up" data-aos-delay="100">
-            <div class="card stat-card shadow-sm border-0">
-                <div class="stat-info">
-                    <p class="text-xs text-uppercase fw-bold text-muted mb-1">Incidents</p>
-                    <h3 class="h2 fw-bold mb-0 text-dark">{{ number_format($stats['total_incidents'] ?? 0) }}</h3>
-                    <div class="stat-trend mt-2">
-                        <i class="fas fa-arrow-up text-danger me-1"></i>
-                        <span class="small text-muted">{{ $stats['incidents_trend'] ?? '+0%' }} cette semaine</span>
-                    </div>
-                </div>
-                <div class="stat-icon bg-danger-subtle rounded-3 p-3 text-danger">
-                    <i class="fas fa-exclamation-triangle fs-4"></i>
-                </div>
-            </div>
-        </div>
+    @php
+        $hasPrimaryData = ($stats['total_incidents'] ?? 0) > 0 || 
+                          ($stats['total_tickets'] ?? 0) > 0 || 
+                          ($stats['total_equipments'] ?? 0) > 0 || 
+                          ($stats['total_sims'] ?? 0) > 0 || 
+                          ($stats['total_checkouts'] ?? 0) > 0;
+        
+        $hasSecondaryData = ($stats['active_users'] ?? 0) > 0 || 
+                            ($stats['total_software'] ?? 0) > 0 || 
+                            ($stats['resolution_rate'] ?? 0) > 0 || 
+                            ($stats['average_rating'] ?? 0) > 0;
+    @endphp
 
-        <!-- Tickets -->
-        <div class="col-md-6 col-xl-4 col-xxl-3" data-aos="fade-up" data-aos-delay="200">
-            <div class="card stat-card shadow-sm border-0">
-                <div class="stat-info">
-                    <p class="text-xs text-uppercase fw-bold text-muted mb-1">Tickets</p>
-                    <h3 class="h2 fw-bold mb-0 text-dark">{{ number_format($stats['total_tickets'] ?? 0) }}</h3>
-                    <div class="stat-trend mt-2">
-                        <i class="fas fa-clock text-primary me-1"></i>
-                        <span class="small text-muted">{{ number_format($stats['pending_tickets'] ?? 0) }} en attente</span>
+    @if($hasPrimaryData)
+    <!-- Stats Cards Principales - TOUTES UNIFORMISÉES -->
+    <div class="row g-3 mb-3">
+    <!-- Incidents -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Incidents</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['total_incidents'] ?? 0) }}</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-exclamation-triangle text-white" style="font-size: 0.7rem;"></i>
                     </div>
                 </div>
-                <div class="stat-icon bg-primary-subtle rounded-3 p-3 text-primary" style="background: var(--primary-light) !important; color: var(--primary-dark) !important;">
-                    <i class="fas fa-ticket-alt fs-4"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Équipements -->
-        <div class="col-md-6 col-xl-4 col-xxl-3" data-aos="fade-up" data-aos-delay="300">
-            <div class="card stat-card shadow-sm border-0">
-                <div class="stat-info">
-                    <p class="text-xs text-uppercase fw-bold text-muted mb-1">Équipements</p>
-                    <h3 class="h2 fw-bold mb-0 text-dark">{{ number_format($stats['total_equipments'] ?? 0) }}</h3>
-                    <div class="stat-trend mt-2">
-                        <i class="fas fa-check-circle text-success me-1"></i>
-                        <span class="small text-muted">{{ number_format($stats['available_equipments'] ?? 0) }} disponibles</span>
-                    </div>
-                </div>
-                <div class="stat-icon bg-success-subtle rounded-3 p-3 text-success">
-                    <i class="fas fa-laptop fs-4"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- SIM Flotte -->
-        <div class="col-md-6 col-xl-4 col-xxl-3" data-aos="fade-up" data-aos-delay="400">
-            <div class="card stat-card shadow-sm border-0">
-                <div class="stat-info">
-                    <p class="text-xs text-uppercase fw-bold text-muted mb-1">Flotte SIM</p>
-                    <h3 class="h2 fw-bold mb-0 text-dark">{{ number_format($stats['total_sims'] ?? 0) }}</h3>
-                    <div class="stat-trend mt-2">
-                        <i class="fas fa-user-tag text-warning me-1"></i>
-                        <span class="small text-muted">{{ number_format($stats['assigned_sims'] ?? 0) }} attribuées</span>
-                    </div>
-                </div>
-                <div class="stat-icon bg-warning-subtle rounded-3 p-3 text-warning">
-                    <i class="fas fa-sim-card fs-4"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sorties -->
-        <div class="col-md-6 col-xl-4 col-xxl-3" data-aos="fade-up" data-aos-delay="500">
-            <div class="card stat-card shadow-sm border-0">
-                <div class="stat-info">
-                    <p class="text-xs text-uppercase fw-bold text-muted mb-1">Sorties</p>
-                    <h3 class="h2 fw-bold mb-0 text-dark">{{ number_format($stats['total_checkouts'] ?? 0) }}</h3>
-                    <div class="stat-trend mt-2">
-                        <i class="fas fa-arrow-right text-info me-1"></i>
-                        <span class="small text-muted">{{ number_format($stats['pending_checkouts'] ?? 0) }} en attente</span>
-                    </div>
-                </div>
-                <div class="stat-icon bg-info-subtle rounded-3 p-3 text-info">
-                    <i class="fas fa-exchange-alt fs-4"></i>
+                <div class="mt-1">
+                    <span class="badge bg-white text-danger fw-bold me-1 text-xxs">{{ $stats['incidents_trend'] ?? '+0%' }}</span>
+                    <span class="text-grey-dashboard text-xxs">cette semaine</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Stats Cards Secondaires (DONNÉES RÉELLES) -->
-    <div class="row g-4 mb-4">
-        <!-- Utilisateurs -->
-        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="500">
-            <div class="card stat-card">
-                <div class="stat-info">
-                    <p>Utilisateurs actifs</p>
-                    <h3>{{ number_format($stats['active_users'] ?? 0) }}</h3>
-                    <div class="stat-trend">
-                        <i class="fas fa-user-plus up"></i>
-                        <span>+{{ number_format($stats['new_users'] ?? 0) }} ce mois</span>
+    <!-- Tickets -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Tickets</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['total_tickets'] ?? 0) }}</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-ticket-alt text-white" style="font-size: 0.7rem;"></i>
                     </div>
                 </div>
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Logiciels -->
-        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="600">
-            <div class="card stat-card">
-                <div class="stat-info">
-                    <p>Logiciels</p>
-                    <h3>{{ number_format($stats['total_software'] ?? 0) }}</h3>
-                    <div class="stat-trend">
-                        <i class="fas fa-key me-1"></i>
-                        <span>{{ number_format($stats['total_licenses'] ?? 0) }} licences</span>
-                    </div>
-                </div>
-                <div class="stat-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Résolution -->
-        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="700">
-            <div class="card stat-card">
-                <div class="stat-info">
-                    <p>Taux de résolution</p>
-                    <h3>{{ $stats['resolution_rate'] ?? 0 }}%</h3>
-                    <div class="progress mt-2" style="width: 90%;">
-                        <div class="progress-bar" style="width: {{ $stats['resolution_rate'] ?? 0 }}%"></div>
-                    </div>
-                </div>
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div id="sparkResolution" class="small-chart mt-3" wire:ignore></div>
-            </div>
-        </div>
-
-        <!-- Satisfaction -->
-        <div class="col-md-6 col-xl-3" data-aos="fade-up" data-aos-delay="800">
-            <div class="card stat-card">
-                <div class="stat-info">
-                    <p>Satisfaction</p>
-                    <h3>{{ number_format($stats['average_rating'] ?? 0, 1) }}/5</h3>
-                    <div class="stat-trend">
-                        <i class="fas fa-star" style="color: #fbbf24;"></i>
-                        <span>Basé sur {{ number_format($stats['total_feedbacks'] ?? 0) }} avis</span>
-                    </div>
-                </div>
-                <div class="stat-icon">
-                    <i class="fas fa-smile"></i>
+                <div class="mt-1 text-grey-dashboard text-xxs">
+                    <i class="fas fa-clock me-1"></i> {{ number_format($stats['pending_tickets'] ?? 0) }} en attente
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Charts Row 1 - Évolution (DONNÉES RÉELLES) -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="900">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600 rainbow-text">Évolution des tickets & incidents</h6>
-                    <span class="badge badge-primary">{{ $stats['tickets_growth'] ?? '+0%' }} vs mois dernier</span>
+    <!-- Équipements -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Équipements</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['total_equipments'] ?? 0) }}</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-laptop text-white" style="font-size: 0.7rem;"></i>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div id="chartTicketsIncidents" class="chart-container" wire:ignore></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="1000">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600 rainbow-text">Activité des sorties & retours</h6>
-                    <span class="badge badge-primary">{{ $stats['checkouts_growth'] ?? '+0%' }} vs mois dernier</span>
-                </div>
-                <div class="card-body">
-                    <div id="chartCheckoutsReturns" class="chart-container" wire:ignore></div>
+                <div class="mt-1 text-grey-dashboard text-xxs">
+                    <i class="fas fa-check-circle me-1"></i> {{ number_format($stats['available_equipments'] ?? 0) }} disponibles
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Charts Row 2 - Répartition (DONNÉES RÉELLES) -->
-    <div class="row g-4 mb-4">
-        <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="1100">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Équipements par type</h6>
-                    <span class="badge badge-primary">Total: {{ number_format($stats['total_equipments'] ?? 0) }}</span>
+    <!-- SIM Flotte -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Flotte SIM</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['total_sims'] ?? 0) }}</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-sim-card text-white" style="font-size: 0.7rem;"></i>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div id="chartEquipments" class="chart-container" wire:ignore></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="1200">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Logiciels par catégorie</h6>
-                    <span class="badge badge-primary">{{ number_format($stats['total_licenses'] ?? 0) }} licences</span>
-                </div>
-                <div class="card-body">
-                    <div id="chartSoftware" class="chart-container" wire:ignore></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="1300">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Incidents par priorité</h6>
-                    <span class="badge badge-primary">{{ number_format($stats['total_incidents'] ?? 0) }} incidents</span>
-                </div>
-                <div class="card-body">
-                    <div id="chartIncidentsPriority" class="chart-container" wire:ignore></div>
+                <div class="mt-1 text-grey-dashboard text-xxs">
+                    <i class="fas fa-user-tag me-1"></i> {{ number_format($stats['assigned_sims'] ?? 0) }} attribuées
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Tableaux récapitulatifs avec Voir plus (DONNÉES RÉELLES) -->
-    <div class="row g-4 mb-4">
-        <!-- Derniers tickets -->
-        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="1400">
+    <!-- Sorties -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #10b981 0%, #047857 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Sorties</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['total_checkouts'] ?? 0) }}</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-exchange-alt text-white" style="font-size: 0.7rem;"></i>
+                    </div>
+                </div>
+                <div class="mt-1 text-grey-dashboard text-xxs">
+                    <i class="fas fa-arrow-right me-1"></i> {{ number_format($stats['pending_checkouts'] ?? 0) }} en attente
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if($hasSecondaryData)
+    <!-- Stats Cards Secondaires - TOUTES UNIFORMISÉES (même taille que les principales) -->
+    <div class="row g-3 mb-3">
+    <!-- Utilisateurs -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Utilisateurs</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['active_users'] ?? 0) }}</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-users text-white" style="font-size: 0.7rem;"></i>
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <span class="badge bg-white text-dark fw-bold me-1 text-xxs">+{{ number_format($stats['new_users'] ?? 0) }}</span>
+                    <span class="text-grey-dashboard text-xxs">ce mois</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logiciels -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Logiciels</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['total_software'] ?? 0) }}</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-code text-white" style="font-size: 0.7rem;"></i>
+                    </div>
+                </div>
+                <div class="mt-1 text-grey-dashboard text-xxs">
+                    <i class="fas fa-key me-1"></i> {{ number_format($stats['total_licenses'] ?? 0) }} licences
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Résolution -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #2dd4bf 0%, #0d9488 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Résolution</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ $stats['resolution_rate'] ?? 0 }}%</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-chart-line text-white" style="font-size: 0.7rem;"></i>
+                    </div>
+                </div>
+                <div class="progress mt-1" style="height: 3px;">
+                    <div class="progress-bar bg-white" style="width: {{ $stats['resolution_rate'] ?? 0 }}%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Satisfaction -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Satisfaction</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">{{ number_format($stats['average_rating'] ?? 0, 1) }}/5</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-smile text-white" style="font-size: 0.7rem;"></i>
+                    </div>
+                </div>
+                <div class="mt-1 text-grey-dashboard text-xxs">
+                    <i class="fas fa-star text-white me-1"></i> {{ number_format($stats['total_feedbacks'] ?? 0) }} avis
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Performance</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">99.9%</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-server text-white" style="font-size: 0.7rem;"></i>
+                    </div>
+                </div>
+                <div class="progress mt-1" style="height: 3px; background: rgba(255,255,255,0.2);">
+                    <div class="progress-bar bg-white" style="width: 99%;"></div>
+                </div>
+                <div class="mt-1 text-grey-dashboard text-xxs">
+                    <i class="fas fa-check-circle me-1"></i> Services opérationnels
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Temps réponse -->
+    <div class="col-md-6 col-xl-2-4 col-xxl-2">
+        <div class="card border-0 shadow-sm text-white h-100" style="background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);">
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-grey-dashboard text-xxs text-uppercase mb-0">Temps réponse</p>
+                        <h3 class="fw-bold mb-0 text-white" style="font-size: 1rem;">12m</h3>
+                    </div>
+                    <div class="rounded-circle p-1" style="background: rgba(255,255,255,0.2); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-bolt text-white" style="font-size: 0.7rem;"></i>
+                    </div>
+                </div>
+                <div class="mt-1">
+                    <span class="badge bg-white text-pink fw-bold me-1 text-xxs">-15%</span>
+                    <span class="text-grey-dashboard text-xxs">vs hier</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+ 
+
+    <!-- Graphiques -->
+    <div class="row g-3 mb-3">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Derniers tickets</h6>
-                    <a href="{{ route('ticket') }}" class="btn-refresh text-decoration-none tv-hidden">
-                        <i class="fas fa-eye me-2"></i>Voir tous
+                    <h6 class="mb-0">📈 Évolution tickets & incidents</h6>
+                    <span class="badge badge-primary text-xxs">{{ $stats['tickets_growth'] ?? '+0%' }} vs mois dernier</span>
+                </div>
+                <div class="card-body">
+                    <div id="chartTicketsIncidents" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">📊 Activité sorties & retours</h6>
+                    <span class="badge badge-primary text-xxs">{{ $stats['checkouts_growth'] ?? '+0%' }} vs mois dernier</span>
+                </div>
+                <div class="card-body">
+                    <div id="chartCheckoutsReturns" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="row g-3 mb-3">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">🖥️ Équipements par type</h6>
+                    <span class="badge badge-primary text-xxs">Total: {{ number_format($stats['total_equipments'] ?? 0) }}</span>
+                </div>
+                <div class="card-body">
+                    <div id="chartEquipments" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">💿 Logiciels par catégorie</h6>
+                    <span class="badge badge-primary text-xxs">{{ number_format($stats['total_licenses'] ?? 0) }} licences</span>
+                </div>
+                <div class="card-body">
+                    <div id="chartSoftware" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">⚠️ Incidents par priorité</h6>
+                    <span class="badge badge-primary text-xxs">{{ number_format($stats['total_incidents'] ?? 0) }} incidents</span>
+                </div>
+                <div class="card-body">
+                    <div id="chartIncidentsPriority" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tableaux -->
+    <div class="row g-3 mb-3">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">🎫 Derniers tickets</h6>
+                    <a href="{{ route('ticket') }}" class="btn-refresh text-decoration-none tv-hidden" style="padding: 0.2rem 0.5rem; font-size: 0.55rem;">
+                        <i class="fas fa-eye me-1"></i>Voir tous
                     </a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th class="ps-4">ID</th>
+                                <th class="ps-3">ID</th>
                                 <th>Titre</th>
-                                <th>Utilisateur</th>
                                 <th>Priorité</th>
                                 <th>Statut</th>
-                                <th class="text-end pe-4">Date</th>
+                                <th class="text-end pe-3">Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($recentTickets as $ticket)
                             <tr>
-                                <td class="ps-4">#{{ $ticket['id'] }}</td>
-                                <td>{{ $ticket['title'] }}</td>
-                                <td>{{ $ticket['user'] }}</td>
+                                <td class="ps-3 text-xxs">#{{ $ticket['id'] }}</td>
+                                <td class="text-xs">{{ Str::limit($ticket['title'], 25) }}</td>
                                 <td>
                                     @php
                                         $priorityClass = match($ticket['priority']) {
@@ -821,13 +937,12 @@
                                     @endphp
                                     <span class="badge badge-{{ $statusClass }}">{{ $ticket['status'] }}</span>
                                 </td>
-                                <td class="text-end pe-4">{{ $ticket['date'] }}</td>
+                                <td class="text-end pe-3 text-xxs">{{ $ticket['date'] }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4">
-                                    <i class="fas fa-inbox fa-2x mb-2" style="color: var(--gray-300);"></i>
-                                    <p class="text-muted mb-0">Aucun ticket récent</p>
+                                <td colspan="5" class="text-center py-2">
+                                    <p class="text-muted mb-0 text-xxs">Aucun ticket récent</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -837,33 +952,30 @@
             </div>
         </div>
 
-        <!-- Derniers incidents -->
-        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="1500">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Derniers incidents</h6>
-                    <a href="{{ route('admin.incident.list') }}" class="btn-refresh text-decoration-none tv-hidden">
-                        <i class="fas fa-eye me-2"></i>Voir tous
+                    <h6 class="mb-0">🚨 Derniers incidents</h6>
+                    <a href="{{ route('admin.incident.list') }}" class="btn-refresh text-decoration-none tv-hidden" style="padding: 0.2rem 0.5rem; font-size: 0.55rem;">
+                        <i class="fas fa-eye me-1"></i>Voir tous
                     </a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th class="ps-4">ID</th>
+                                <th class="ps-3">ID</th>
                                 <th>Titre</th>
-                                <th>Équipement</th>
                                 <th>Priorité</th>
                                 <th>Statut</th>
-                                <th class="text-end pe-4">Date</th>
+                                <th class="text-end pe-3">Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($recentIncidents as $incident)
                             <tr>
-                                <td class="ps-4">#{{ $incident['id'] }}</td>
-                                <td>{{ $incident['title'] }}</td>
-                                <td>{{ $incident['equipment'] }}</td>
+                                <td class="ps-3 text-xxs">#{{ $incident['id'] }}</td>
+                                <td class="text-xs">{{ Str::limit($incident['title'], 25) }}</td>
                                 <td>
                                     @php
                                         $priorityClass = match($incident['priority']) {
@@ -887,13 +999,12 @@
                                     @endphp
                                     <span class="badge badge-{{ $statusClass }}">{{ $incident['status'] }}</span>
                                 </td>
-                                <td class="text-end pe-4">{{ $incident['date'] }}</td>
+                                <td class="text-end pe-3 text-xxs">{{ $incident['date'] }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4">
-                                    <i class="fas fa-inbox fa-2x mb-2" style="color: var(--gray-300);"></i>
-                                    <p class="text-muted mb-0">Aucun incident récent</p>
+                                <td colspan="5" class="text-center py-2">
+                                    <p class="text-muted mb-0 text-xxs">Aucun incident récent</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -905,32 +1016,31 @@
     </div>
 
     <!-- Derniers équipements et sorties -->
-    <div class="row g-4 mb-4">
-        <!-- Derniers équipements -->
-        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="1600">
+    <div class="row g-3 mb-3">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Derniers équipements ajoutés</h6>
-                    <a href="{{ route('equipement') }}" class="btn-refresh text-decoration-none tv-hidden">
-                        <i class="fas fa-eye me-2"></i>Voir tous
+                    <h6 class="mb-0">🖥️ Derniers équipements</h6>
+                    <a href="{{ route('equipement') }}" class="btn-refresh text-decoration-none tv-hidden" style="padding: 0.2rem 0.5rem; font-size: 0.55rem;">
+                        <i class="fas fa-eye me-1"></i>Voir tous
                     </a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th class="ps-4">Nom</th>
+                                <th class="ps-3">Nom</th>
                                 <th>Type</th>
                                 <th>Statut</th>
                                 <th>Attribué à</th>
-                                <th class="text-end pe-4">Date d'ajout</th>
+                                <th class="text-end pe-3">Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($recentEquipments as $equipment)
                             <tr>
-                                <td class="ps-4">{{ $equipment['name'] }}</td>
-                                <td>{{ $equipment['type'] }}</td>
+                                <td class="ps-3 text-xs">{{ Str::limit($equipment['name'], 20) }}</td>
+                                <td class="text-xxs">{{ $equipment['type'] }}</td>
                                 <td>
                                     @php
                                         $statusClass = match($equipment['status']) {
@@ -943,14 +1053,13 @@
                                     @endphp
                                     <span class="badge badge-{{ $statusClass }}">{{ $equipment['status'] }}</span>
                                 </td>
-                                <td>{{ $equipment['assigned_to'] ?? '-' }}</td>
-                                <td class="text-end pe-4">{{ $equipment['date_added'] }}</td>
+                                <td class="text-xxs">{{ Str::limit($equipment['assigned_to'] ?? '-', 15) }}</td>
+                                <td class="text-end pe-3 text-xxs">{{ $equipment['date_added'] }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center py-4">
-                                    <i class="fas fa-inbox fa-2x mb-2" style="color: var(--gray-300);"></i>
-                                    <p class="text-muted mb-0">Aucun équipement récent</p>
+                                <td colspan="5" class="text-center py-2">
+                                    <p class="text-muted mb-0 text-xxs">Aucun équipement récent</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -960,35 +1069,33 @@
             </div>
         </div>
 
-        <!-- Dernières sorties -->
-        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="1700">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Dernières sorties</h6>
-                    <a href="{{ route('checkoutadmin') }}" class="btn-refresh text-decoration-none tv-hidden">
-                        <i class="fas fa-eye me-2"></i>Voir tous
+                    <h6 class="mb-0">📤 Dernières sorties</h6>
+                    <a href="{{ route('checkoutadmin') }}" class="btn-refresh text-decoration-none tv-hidden" style="padding: 0.2rem 0.5rem; font-size: 0.55rem;">
+                        <i class="fas fa-eye me-1"></i>Voir tous
                     </a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th class="ps-4">Équipement</th>
+                                <th class="ps-3">Équipement</th>
                                 <th>Utilisateur</th>
                                 <th>Date sortie</th>
                                 <th>Retour prévu</th>
-                                <th>Statut</th>
-                                <th class="text-end pe-4"></th>
+                                <th class="text-end pe-3">Statut</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($recentCheckouts as $checkout)
                             <tr>
-                                <td class="ps-4">{{ $checkout['equipment'] }}</td>
-                                <td>{{ $checkout['user'] }}</td>
-                                <td>{{ $checkout['checkout_date'] }}</td>
-                                <td>{{ $checkout['expected_return'] ?? 'N/A' }}</td>
-                                <td>
+                                <td class="ps-3 text-xs">{{ Str::limit($checkout['equipment'], 20) }}</td>
+                                <td class="text-xxs">{{ Str::limit($checkout['user'], 15) }}</td>
+                                <td class="text-xxs">{{ $checkout['checkout_date'] }}</td>
+                                <td class="text-xxs">{{ $checkout['expected_return'] ?? 'N/A' }}</td>
+                                <td class="text-end pe-3">
                                     @php
                                         $today = \Carbon\Carbon::now();
                                         $expectedReturn = $checkout['expected_return'] ?? null;
@@ -1008,17 +1115,11 @@
                                         <span class="badge badge-success">En cours</span>
                                     @endif
                                 </td>
-                                <td class="text-end pe-4">
-                                    <button class="btn-icon btn-sm tv-hidden" title="Voir détails">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4">
-                                    <i class="fas fa-inbox fa-2x mb-2" style="color: var(--gray-300);"></i>
-                                    <p class="text-muted mb-0">Aucune sortie récente</p>
+                                <td colspan="5" class="text-center py-2">
+                                    <p class="text-muted mb-0 text-xxs">Aucune sortie récente</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -1029,30 +1130,22 @@
         </div>
     </div>
 
-    <!-- Historique complet des activités -->
-    <div class="row g-4 mb-4">
-        <div class="col-12" data-aos="fade-up" data-aos-delay="1800">
+    <!-- Historique des activités -->
+    <div class="row g-3 mb-3">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-600">Historique des activités</h6>
-                    <div class="d-flex gap-3 align-items-center">
-                        <span class="badge">{{ count($unifiedActivities ?? []) }} événements</span>
-                        <select class="form-select form-select-sm tv-hidden" style="width: auto; background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: var(--gray-800);">
-                            <option>Toutes les activités</option>
-                            <option>Tickets</option>
-                            <option>Incidents</option>
-                            <option>Équipements</option>
-                            <option>Sorties</option>
-                            <option>Utilisateurs</option>
-                        </select>
-                        <a href="{{ route('admin.activites') }}" class="btn-refresh text-decoration-none tv-hidden">
-                            <i class="fas fa-eye me-2"></i>Voir tous
+                    <h6 class="mb-0">📋 Historique des activités</h6>
+                    <div class="d-flex gap-2 align-items-center">
+                        <span class="badge badge-primary text-xxs">{{ count($unifiedActivities ?? []) }} événements</span>
+                        <a href="{{ route('admin.activites') }}" class="btn-refresh text-decoration-none tv-hidden" style="padding: 0.2rem 0.5rem; font-size: 0.55rem;">
+                            <i class="fas fa-eye me-1"></i>Voir tous
                         </a>
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div class="timeline p-4">
-                        @forelse($unifiedActivities ?? [] as $activity)
+                    <div class="timeline p-3">
+                        @forelse(collect($unifiedActivities ?? [])->take(10) as $activity)
                         <div class="timeline-item">
                             <div class="timeline-date">
                                 <i class="far fa-clock me-1"></i>
@@ -1060,24 +1153,24 @@
                             </div>
                             <div class="timeline-content">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <span class="badge badge-{{ $activity['color'] ?? 'primary' }} mb-2">
-                                            <i class="{{ $activity['icon'] ?? 'fas fa-bell' }} me-2"></i>
+                                    <div class="flex-grow-1">
+                                        <span class="badge badge-{{ $activity['color'] ?? 'primary' }} mb-1">
+                                            <i class="{{ $activity['icon'] ?? 'fas fa-bell' }} me-1"></i>
                                             {{ ucfirst($activity['type'] ?? 'Activité') }}
                                         </span>
                                         <h6 class="mb-1">{{ $activity['title'] ?? '' }}</h6>
-                                        <p class="text-muted mb-0 small">{{ $activity['description'] ?? '' }}</p>
+                                        <p class="text-muted mb-0 text-xxs">{{ $activity['description'] ?? '' }}</p>
                                     </div>
-                                    <div class="text-end">
-                                        <small class="text-muted">{{ $activity['user'] ?? '' }}</small>
+                                    <div class="text-end ms-2">
+                                        <small class="text-muted text-xxs">{{ $activity['user'] ?? '' }}</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         @empty
-                        <div class="text-center py-5">
-                            <i class="fas fa-history fa-3x mb-3" style="color: var(--gray-300);"></i>
-                            <p class="text-muted mb-0">Aucune activité récente</p>
+                        <div class="text-center py-3">
+                            <i class="fas fa-history fa-2x mb-2" style="color: var(--gray-300);"></i>
+                            <p class="text-muted mb-0 text-xxs">Aucune activité récente</p>
                         </div>
                         @endforelse
                     </div>
@@ -1095,7 +1188,6 @@
         let refreshInterval = null;
         let autoRefreshTimer = null;
 
-        // Fonction pour entrer en plein écran
         function enterFullscreen() {
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
@@ -1113,7 +1205,6 @@
             }, 2000);
         }
 
-        // Fonction pour quitter le mode TV
         function exitTVMode() {
             localStorage.removeItem('tvMode');
             localStorage.removeItem('autoRefresh');
@@ -1128,7 +1219,6 @@
             
             document.body.classList.remove('tv-mode');
             
-            // Afficher les éléments masqués
             document.querySelectorAll('.tv-hidden').forEach(el => {
                 el.classList.remove('tv-hidden');
             });
@@ -1140,22 +1230,17 @@
             location.reload();
         }
 
-        // Fonction pour appliquer les paramètres TV
         function applyTVSettings() {
             const displayMode = document.getElementById('displayMode').value;
             const autoRefresh = parseInt(document.getElementById('autoRefresh').value);
             const hideButtons = document.getElementById('hideButtons').checked;
             const hideHeader = document.getElementById('hideHeader').checked;
-            const qualityMode = document.getElementById('qualityMode').value;
             
-            // Sauvegarder les paramètres
             localStorage.setItem('displayMode', displayMode);
             localStorage.setItem('autoRefresh', autoRefresh);
             localStorage.setItem('hideButtons', hideButtons);
             localStorage.setItem('hideHeader', hideHeader);
-            localStorage.setItem('qualityMode', qualityMode);
             
-            // Appliquer le mode d'affichage
             if (displayMode === 'tv' || displayMode === 'kiosk') {
                 localStorage.setItem('tvMode', 'true');
                 document.body.classList.add('tv-mode');
@@ -1170,7 +1255,6 @@
                 document.body.classList.remove('tv-mode');
             }
             
-            // Appliquer le rafraîchissement automatique
             if (autoRefreshTimer) {
                 clearInterval(autoRefreshTimer);
                 autoRefreshTimer = null;
@@ -1181,12 +1265,10 @@
                     if (window.Livewire) {
                         window.Livewire.dispatch('refreshCharts');
                     }
-                    // Rafraîchir les graphiques sans recharger la page
                     initCharts();
                 }, autoRefresh * 1000);
             }
             
-            // Masquer les éléments
             if (hideButtons) {
                 document.querySelectorAll('.btn-refresh:not(.tv-force-show), .btn-icon:not(.tv-force-show)').forEach(el => {
                     el.classList.add('tv-hidden');
@@ -1205,44 +1287,22 @@
                 document.querySelector('.page-title')?.parentElement?.classList.remove('tv-hidden');
             }
             
-            // Appliquer le mode qualité
-            if (qualityMode === 'low') {
-                const style = document.createElement('style');
-                style.id = 'qualityModeStyle';
-                style.textContent = `
-                    .card, .btn-icon, .btn-refresh { transition: none !important; }
-                    .card:hover { transform: none !important; }
-                    [data-aos] { opacity: 1 !important; transform: none !important; }
-                    .chart-container { transition: none !important; }
-                `;
-                const oldStyle = document.getElementById('qualityModeStyle');
-                if (oldStyle) oldStyle.remove();
-                document.head.appendChild(style);
-            } else {
-                const oldStyle = document.getElementById('qualityModeStyle');
-                if (oldStyle) oldStyle.remove();
-            }
-            
-            // Fermer le panneau
             document.getElementById('tvSettingsPanel').classList.remove('show');
             
-            // Afficher une notification
             const indicator = document.getElementById('fullscreenIndicator');
             indicator.textContent = '✓ Paramètres TV appliqués';
             indicator.classList.add('show');
             setTimeout(() => {
                 indicator.classList.remove('show');
-                indicator.textContent = '<i class="fas fa-expand me-1"></i> Mode plein écran activé';
+                indicator.textContent = '<i class="fas fa-expand me-1"></i> Plein écran';
             }, 2000);
         }
 
-        // Charger les paramètres sauvegardés
         function loadTVSettings() {
             const displayMode = localStorage.getItem('displayMode');
             const autoRefresh = localStorage.getItem('autoRefresh');
             const hideButtons = localStorage.getItem('hideButtons');
             const hideHeader = localStorage.getItem('hideHeader');
-            const qualityMode = localStorage.getItem('qualityMode');
             const tvMode = localStorage.getItem('tvMode');
             
             if (displayMode && document.getElementById('displayMode')) {
@@ -1257,9 +1317,6 @@
             if (hideHeader && document.getElementById('hideHeader')) {
                 document.getElementById('hideHeader').checked = hideHeader === 'true';
             }
-            if (qualityMode && document.getElementById('qualityMode')) {
-                document.getElementById('qualityMode').value = qualityMode;
-            }
             
             if (tvMode === 'true') {
                 applyTVSettings();
@@ -1268,14 +1325,12 @@
 
         function initCharts() {
             try {
-                // Récupération des données depuis les variables PHP/Livewire
                 const dataTickets = @json($monthlyTickets ?? []);
                 const dataIncidents = @json($monthlyIncidents ?? []);
                 const dataCheckouts = @json($monthlyCheckouts ?? []);
                 const dataEquip = @json($equipmentByType ?? []);
                 const dataSoft = @json($softwareByCategory ?? []);
                 const priorityData = @json($incidentsByPriority ?? []);
-                const incidentTrend = @json($incidentTrend ?? []);
 
                 for (let key in charts) {
                     if (charts[key] && typeof charts[key].destroy === 'function') {
@@ -1287,17 +1342,11 @@
                 const baseOptions = {
                     chart: {
                         toolbar: { show: false },
-                        animations: {
-                            enabled: document.getElementById('qualityMode')?.value !== 'low',
-                            easing: 'easeinout',
-                            speed: 800,
-                            animateGradually: { enabled: true, delay: 150 },
-                            dynamicAnimation: { enabled: true, speed: 350 }
-                        },
+                        animations: { enabled: true, speed: 600 },
                         background: 'transparent'
                     },
                     dataLabels: { enabled: false },
-                    stroke: { curve: 'smooth', width: 3 },
+                    stroke: { curve: 'smooth', width: 2 },
                     fill: { 
                         opacity: 1, 
                         type: 'gradient',
@@ -1315,8 +1364,7 @@
                     colors: ['#5BC4BF', '#94a3b8', '#3A9692', '#cbd5e1'],
                     grid: {
                         borderColor: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#374151' : '#e5e7eb',
-                        strokeDashArray: 4,
-                        padding: { left: 10, right: 10 }
+                        strokeDashArray: 3,
                     },
                     xaxis: {
                         axisBorder: { show: false },
@@ -1324,7 +1372,7 @@
                         labels: { 
                             style: { 
                                 colors: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#9ca3af' : '#6b7280',
-                                fontSize: '12px',
+                                fontSize: '9px',
                                 fontWeight: 500
                             }
                         }
@@ -1333,79 +1381,31 @@
                         labels: { 
                             style: { 
                                 colors: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#9ca3af' : '#6b7280',
-                                fontSize: '12px',
+                                fontSize: '9px',
                                 fontWeight: 500
                             }
                         }
                     },
                     tooltip: { 
                         theme: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light',
-                        style: { fontSize: '12px' },
-                        shared: true,
-                        intersect: false
+                        style: { fontSize: '10px' }
                     },
                     legend: {
-                        position: 'top',
-                        horizontalAlign: 'right',
-                        fontSize: '13px',
+                        position: 'bottom',
+                        horizontalAlign: 'center',
+                        fontSize: '9px',
                         fontWeight: 500,
+                        itemMargin: { horizontal: 5, vertical: 2 },
                         labels: {
                             colors: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#9ca3af' : '#6b7280'
-                        }
-                    },
-                    noData: {
-                        text: 'Aucune donnée disponible',
-                        align: 'center',
-                        verticalAlign: 'middle',
-                        style: {
-                            color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#9ca3af' : '#6b7280',
-                            fontSize: '14px'
                         }
                     }
                 };
 
-                const createSpark = (id, data, color = '#5BC4BF') => {
-                    const element = document.getElementById(id);
-                    if (!element) return;
-                    
-                    charts[id] = new ApexCharts(element, {
-                        chart: { 
-                            type: 'area', 
-                            height: 50, 
-                            sparkline: { enabled: true },
-                            animations: { enabled: document.getElementById('qualityMode')?.value !== 'low' }
-                        },
-                        stroke: { curve: 'smooth', width: 2 },
-                        colors: [color],
-                        fill: { 
-                            opacity: 0.3, 
-                            type: 'gradient',
-                            gradient: {
-                                shade: 'light',
-                                type: "vertical",
-                                shadeIntensity: 0.5,
-                                gradientToColors: [color],
-                                inverseColors: true,
-                                opacityFrom: 0.5,
-                                opacityTo: 0.1,
-                                stops: [0, 100]
-                            }
-                        },
-                        series: [{ data: Array.isArray(data) ? data : [] }],
-                        tooltip: { enabled: false }
-                    });
-                    charts[id].render();
-                };
-
-                // Sparklines
-                const incidentTrendArray = Array.isArray(incidentTrend) ? incidentTrend : Object.values(incidentTrend);
-                createSpark('sparkResolution', [85, 88, 90, 92, 91, 94, 93, 95, 94]);
-                createSpark('sparkIncidents', incidentTrendArray, '#ef4444');
-
-                // Graphique Tickets/Incidents
+                // Tickets/Incidents
                 if (document.getElementById('chartTicketsIncidents')) {
                     const ticketsData = Object.values(dataTickets);
-                    const incidentsData = Array.isArray(incidentTrend) && incidentTrend.length > 0 ? incidentTrend.slice(-12) : Object.values(dataIncidents);
+                    const incidentsData = Object.values(dataIncidents);
                     const categories = Object.keys(dataTickets).length > 0 ? Object.keys(dataTickets) : ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'];
                     
                     charts.ticketsIncidents = new ApexCharts(document.getElementById('chartTicketsIncidents'), {
@@ -1414,13 +1414,13 @@
                             { name: 'Tickets', data: ticketsData.length ? ticketsData : [12, 19, 15, 25, 30, 35] },
                             { name: 'Incidents', data: incidentsData.length ? incidentsData : [8, 12, 10, 18, 22, 25] }
                         ],
-                        chart: { ...baseOptions.chart, type: 'area', height: 300 },
-                        xaxis: { ...baseOptions.xaxis, categories: categories.length ? categories : ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'] }
+                        chart: { ...baseOptions.chart, type: 'area', height: 200 },
+                        xaxis: { ...baseOptions.xaxis, categories: categories }
                     });
                     charts.ticketsIncidents.render();
                 }
 
-                // Graphique Sorties
+                // Sorties
                 if (document.getElementById('chartCheckoutsReturns')) {
                     const checkoutsData = Object.values(dataCheckouts);
                     const categories = Object.keys(dataCheckouts).length > 0 ? Object.keys(dataCheckouts) : ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'];
@@ -1428,27 +1428,14 @@
                     charts.checkoutsReturns = new ApexCharts(document.getElementById('chartCheckoutsReturns'), {
                         ...baseOptions,
                         series: [{ name: 'Sorties', data: checkoutsData.length ? checkoutsData : [5, 8, 12, 15, 20, 25] }],
-                        chart: { ...baseOptions.chart, type: 'bar', height: 300 },
-                        plotOptions: { 
-                            bar: { 
-                                borderRadius: 8, 
-                                columnWidth: '60%',
-                                distributed: true,
-                                colors: {
-                                    ranges: [{
-                                        from: 0,
-                                        to: 100,
-                                        color: '#5BC4BF'
-                                    }]
-                                }
-                            } 
-                        },
+                        chart: { ...baseOptions.chart, type: 'bar', height: 200 },
+                        plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
                         xaxis: { ...baseOptions.xaxis, categories: categories }
                     });
                     charts.checkoutsReturns.render();
                 }
 
-                // Graphique Équipements par type (donut)
+                // Équipements
                 if (document.getElementById('chartEquipments') && Object.keys(dataEquip).length > 0) {
                     const values = Object.values(dataEquip).map(v => Number(v) || 0);
                     const sum = values.reduce((a, b) => a + b, 0);
@@ -1457,36 +1444,16 @@
                         ...baseOptions,
                         series: sum > 0 ? values : [1],
                         labels: Object.keys(dataEquip).length ? Object.keys(dataEquip) : ['Aucune donnée'],
-                        chart: { ...baseOptions.chart, type: 'donut', height: 300 },
+                        chart: { ...baseOptions.chart, type: 'donut', height: 200 },
                         colors: ['#5BC4BF', '#94a3b8', '#3A9692', '#cbd5e1', '#7ED6D3'],
-                        plotOptions: { 
-                            pie: { 
-                                donut: { 
-                                    size: '65%',
-                                    labels: {
-                                        show: true,
-                                        total: {
-                                            show: true,
-                                            label: 'Total',
-                                            fontSize: '14px',
-                                            fontWeight: 600,
-                                            color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#fff' : '#333'
-                                        }
-                                    }
-                                },
-                                expandOnClick: false
-                            } 
-                        },
-                        legend: { position: 'bottom', fontSize: '12px', itemMargin: { horizontal: 10, vertical: 5 } },
-                        stroke: { show: false },
+                        plotOptions: { pie: { donut: { size: '65%' } } },
+                        legend: { position: 'bottom', fontSize: '8px' },
                         dataLabels: { enabled: false }
                     });
                     charts.equipments.render();
-                } else if (document.getElementById('chartEquipments')) {
-                    document.getElementById('chartEquipments').innerHTML = '<div class="text-center text-muted py-5">Aucune donnée équipement</div>';
                 }
 
-                // Graphique Logiciels
+                // Logiciels
                 if (document.getElementById('chartSoftware') && Object.keys(dataSoft).length > 0) {
                     const values = Object.values(dataSoft).map(v => Number(v) || 0);
                     const sum = values.reduce((a, b) => a + b, 0);
@@ -1495,16 +1462,15 @@
                         ...baseOptions,
                         series: sum > 0 ? values : [1],
                         labels: Object.keys(dataSoft).length ? Object.keys(dataSoft) : ['Aucune donnée'],
-                        chart: { ...baseOptions.chart, type: 'pie', height: 300 },
-                        colors: ['#5BC4BF', '#94a3b8', '#3A9692', '#cbd5e1', '#7ED6D3', '#64748b'],
-                        legend: { position: 'bottom', fontSize: '12px', itemMargin: { horizontal: 10, vertical: 5 } },
-                        stroke: { show: false },
+                        chart: { ...baseOptions.chart, type: 'pie', height: 200 },
+                        colors: ['#5BC4BF', '#94a3b8', '#3A9692', '#cbd5e1', '#7ED6D3'],
+                        legend: { position: 'bottom', fontSize: '8px' },
                         dataLabels: { enabled: false }
                     });
                     charts.software.render();
                 }
 
-                // Graphique Incidents par priorité
+                // Incidents priorité
                 if (document.getElementById('chartIncidentsPriority') && Object.keys(priorityData).length > 0) {
                     const values = Object.values(priorityData).map(v => Number(v) || 0);
                     const sum = values.reduce((a, b) => a + b, 0);
@@ -1513,12 +1479,11 @@
                         ...baseOptions,
                         series: sum > 0 ? values : [1],
                         labels: Object.keys(priorityData).length ? Object.keys(priorityData) : ['Aucune donnée'],
-                        chart: { ...baseOptions.chart, type: 'polarArea', height: 300 },
+                        chart: { ...baseOptions.chart, type: 'polarArea', height: 200 },
                         colors: ['#dc2626', '#d97706', '#5BC4BF', '#2563eb', '#7c3aed'],
-                        stroke: { show: false },
-                        fill: { opacity: 0.8, type: 'solid' },
-                        legend: { position: 'bottom', fontSize: '12px', itemMargin: { horizontal: 10, vertical: 5 } },
-                        dataLabels: { enabled: true, style: { fontSize: '11px', fontWeight: 600 } }
+                        fill: { opacity: 0.8 },
+                        legend: { position: 'bottom', fontSize: '8px' },
+                        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 600 } }
                     });
                     charts.priority.render();
                 }
@@ -1527,7 +1492,7 @@
             }
         }
 
-        // Theme toggle avec animation
+        // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
             themeToggle.addEventListener('click', () => {
@@ -1558,13 +1523,13 @@
             });
         }
 
-        // Gestion du plein écran
+        // Fullscreen
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         if (fullscreenBtn) {
             fullscreenBtn.addEventListener('click', enterFullscreen);
         }
 
-        // Gestion du panneau des paramètres TV
+        // TV Settings
         const tvSettingsBtn = document.getElementById('tvSettingsBtn');
         const tvSettingsPanel = document.getElementById('tvSettingsPanel');
         const closeSettingsBtn = document.getElementById('closeSettingsBtn');
@@ -1591,7 +1556,6 @@
             exitTVModeBtn.addEventListener('click', exitTVMode);
         }
 
-        // Fermer le panneau en cliquant en dehors
         document.addEventListener('click', (e) => {
             if (tvSettingsPanel && tvSettingsPanel.classList.contains('show')) {
                 if (!tvSettingsPanel.contains(e.target) && !tvSettingsBtn.contains(e.target)) {
@@ -1600,7 +1564,7 @@
             }
         });
 
-        // Détection de la souris pour mode TV
+        // Mouse detection for TV mode
         let mouseTimeout;
         document.addEventListener('mousemove', () => {
             if (document.body.classList.contains('tv-mode')) {
@@ -1612,7 +1576,7 @@
             }
         });
 
-        // Initialisation
+        // Initialization
         document.addEventListener('DOMContentLoaded', () => {
             const saved = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-bs-theme', saved);
@@ -1625,12 +1589,7 @@
             initCharts();
         });
 
-        // Refresh charts via Livewire event
-        window.addEventListener('chartsRefreshed', () => {
-            initCharts();
-        });
-        
-        // Pour Livewire, on réinitialise les graphiques après chaque mise à jour
+        // Livewire hooks
         if (window.Livewire) {
             Livewire.hook('morph.updated', () => {
                 setTimeout(() => initCharts(), 100);

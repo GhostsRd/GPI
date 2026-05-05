@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
         // Partager $notificationCount avec toutes les vues
         View::composer('*', function ($view) {
             if (Auth::check()) {
-                $view->with('notificationCount', Auth::user()->unreadNotifications->count());
+                $view->with('notificationCount', Auth::user()->unreadNotifications()->count());
             } else {
                 $view->with('notificationCount', 0);
             }

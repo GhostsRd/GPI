@@ -568,9 +568,7 @@ body {
     transition: width 0.5s ease;
 }
 
-.page-title.animated::after {
-    width: 100%;
-}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

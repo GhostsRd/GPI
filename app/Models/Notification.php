@@ -9,5 +9,17 @@ class Notification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'message', 'read'];
+    protected $fillable = ['type', 'notifiable_type', 'notifiable_id', 'data', 'read_at'];
+
+    protected $casts = [
+        'data' => 'array',
+        'read_at' => 'datetime',
+    ];
+
+    public function markAsRead()
+    {
+        if (is_null($this->read_at)) {
+            $this->forceFill(['read_at' => $this->freshTimestamp()])->save();
+        }
+    }
 }
