@@ -198,12 +198,12 @@
         }
 
         .btn-two {
-            background-color: #e65e4b;
+            background-color: #5BC4BF;
             border: none;
         }
 
         .btn-two:hover {
-            background-color: #d45241;
+            background-color: #5BC4BF;
             color: #fff !important;
         }
 
