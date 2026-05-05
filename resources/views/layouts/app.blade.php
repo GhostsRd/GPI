@@ -125,7 +125,7 @@
     <nav class="navbar-modern navbar navbar-expand-lg shadow-sm">
         <div class="container-fluid">
             <!-- Logo and Brand -->
-            <a class="navbar-brand-modern text-muted" href="{{ url('/home') }}">
+            <a class="nav-link " href="{{ url('/home') }}">
                 <img class="shadow-sm rounded-pill" width="35" src="{{ asset('/images/logoPivot.png') }}" alt="">
                 GPI - Pivot
             </a>
@@ -239,20 +239,20 @@
     <!-- Modern Sidebar -->
     <aside class="sidebar-modern shadow border-0" style="z-index: 1000 !important" id="sidebarModern">
         <nav class="sidebar-nav-modern">
-            <div class="card border-0 m-0 mb-2 border-bottom rounded-0 border-secondary border-5">
+            {{-- <div class="card border-0 m-0 mb-2 rounded-0 border-secondary">
                 <label for="" class="fw-bold text-muted text-light">Gestion de Parc Informatique</label>
-            </div>
+            </div> --}}
 
             <!-- Dashboard -->
             <div class="nav-item-modern">
-                <a class="nav-link-modern" href="{{ url('/home') }}">
-                    <i class="nav-icon bi bi-speedometer2 fs-6 text-secondary"></i>
-                    <span>Tableau de bord</span>
+                <a class="nav-link-modern shadow-sm active" href="{{ url('/home') }}">
+                   <i class="bi bi-grid-1x2-fill"></i>
+                    <h6 class=" fw-bold mt-1">Tableau de bord</h6>
                 </a>
             </div>
 
             <!-- Parc Informatique -->
-            <div class="nav-item-modern">
+            <div class="nav-item-modern mt-2">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#parcCollapse">
                     <i class="nav-icon bi bi-pc-display fs-6 text-secondary"></i>
                     <span>Parc Informatique</span>
@@ -416,6 +416,7 @@
                 </div>
             </div>
 
+            
             <!-- Gerer -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#gestion">
@@ -471,7 +472,7 @@
                 </div>
             </div>
 
-            <h6 class="border-bottom rounded-0 border-secondary border-5"></h6>
+            {{-- <h6 class="border-bottom rounded-0 border-secondary border-5"></h6> --}}
 
             <!-- Paramètres -->
             <div class="nav-item-modern">

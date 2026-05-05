@@ -474,19 +474,19 @@
                 <ul class="navbar-nav mx-4">
                     <hr class="d-block d-lg-none">
                     <label for="" class="d-block d-lg-none fw-bold text-white">Menu</label>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('utilisateurService') }}">• Ticket</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('checkout') }}">• Checkout</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('utilisateur.incident') }}">• Incident</a>
+                    <li class="nav-item d-block d-lg-none"><a class="nav-link" href="{{ route('utilisateurService') }}">• Ticket</a></li>
+                    <li class="nav-item d-block d-lg-none"><a class="nav-link" href="{{ route('checkout') }}">• Checkout</a></li>
+                    <li class="nav-item d-block d-lg-none"><a class="nav-link" href="{{ route('utilisateur.incident') }}">• Incident</a>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="{{ route('mes.reservation') }}">• Reservation</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">• Contact</a></li>
+                    <li class="nav-item d-block d-lg-none"><a class="nav-link" href="{{ route('mes.reservation') }}">• Reservation</a></li>
+                    <li class="nav-item d-block d-lg-none"><a class="nav-link" href="/contact">• Contact</a></li>
 
                     <hr class="d-block d-lg-none">
                     <div class="navbar-actions-group">
                         <!-- Profile Dropdown -->
                         <div class="dropdown" id="userDropdown">
-                            <a href="#" class="profile-trigger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" class="profile-trigger dropdown-toggle border-0 shadow-sm py-0" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="profile-avatar-container">
                                     @if (empty(Auth::guard('utilisateur')->user()->photo))
                                         <img src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}&background=e65e4b&color=fff"
@@ -496,7 +496,7 @@
                                             alt="Profil" width="32" height="32">
                                     @endif
                                 </div>
-                                <span class="profile-name">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</span>
+                                <span class="profile-name ">{{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}</span>
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2"
@@ -505,23 +505,31 @@
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center px-3 py-2"
                                         href="{{ url('/utilisateur-profile') }}">
-                                        <i class="fas fa-user-circle me-2 text-primary"></i>
+                                       <div class="profile-avatar-container">
+                                    @if (empty(Auth::guard('utilisateur')->user()->photo))
+                                        <img src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}&background=e65e4b&color=fff"
+                                            alt="Profil" width="32" height="32">
+                                    @else
+                                        <img src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
+                                            alt="Profil" width="32" height="32">
+                                    @endif
+                                </div>
                                         <span>Mon profil</span>
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a class="dropdown-item d-flex align-items-center px-3 py-2"
                                         href="{{ url('/utilisateur-parametres') }}">
                                         <i class="fas fa-cog me-2 text-secondary"></i>
                                         <span>Paramètres</span>
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li><hr class="dropdown-divider my-1"></li>
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center px-3 py-2 text-danger"
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2 "
                                         href="{{ route('utilisateurLogout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="fas fa-sign-out-alt me-2"></i>
+                                        <i class="fas fa-sign-out-alt me-2 text-danger"></i>
                                         <span>Se déconnecter</span>
                                     </a>
                                     <form id="logout-form" action="{{ route('utilisateurLogout') }}" method="POST" class="d-none">
@@ -532,12 +540,12 @@
                         </div>
 
                         <!-- Separator -->
-                        <div class="nav-separator d-none d-lg-block"></div>
+                        {{-- <div class="nav-separator d-none d-lg-block"></div> --}}
 
                         <!-- Theme Toggle -->
-                        <div class="theme-toggle-wrapper">
+                        {{-- <div class="theme-toggle-wrapper p-0">
                             <div class="theme-switch theme-toggle-btn" title="Changer le thème"></div>
-                        </div>
+                        </div> --}}
                     </div>
                 </ul>
             </div>
