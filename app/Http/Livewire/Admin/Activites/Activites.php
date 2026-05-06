@@ -69,8 +69,11 @@ class Activites extends Component
                         'type' => 'Ticket',
                         'icon' => 'fas fa-ticket-alt',
                         'title' => $ticket->sujet ?? $ticket->titre ?? $ticket->title ?? 'Sans titre',
+                        'description' => $ticket->details ?? '',
                         'user' => $ticket->utilisateur->nom ?? 'Inconnu',
+                        'photo' => $ticket->utilisateur->photo  ?? 'Inconnu',
                         'assigned_to' => $ticket->responsable->name ?? '---',
+                        'resp_photo' => $ticket->responsable->photo ?? null,
                         'date' => $ticket->created_at,
                         'status' => $statusText,
                         'priority' => ucfirst($priority),
@@ -106,7 +109,11 @@ class Activites extends Component
                         'type' => 'Incident',
                         'icon' => 'fas fa-exclamation-triangle',
                         'title' => $incident->incident_sujet ?? 'Incident signalé',
+                        'description' => $incident->incident_description ?? '',
                         'user' => $incident->utilisateur->nom ?? 'Inconnu',
+                        'photo' => $incident->utilisateur->photo  ?? 'Inconnu',
+                        'resp_photo' => $ticket->responsable->photo ?? null,
+
                         'assigned_to' => $incident->technicien->name ?? '---',
                         'date' => $incident->created_at,
                         'status' => ucfirst(str_replace('_', ' ', $status)),
@@ -132,7 +139,15 @@ class Activites extends Component
                 $checkouts = $checkoutsQuery->latest()->get();
                 foreach ($checkouts as $checkout) {
                     $status = strtolower($checkout->statut ?? 'en_attente');
-                    
+                    $statusText = match((int)$state) {
+                        1 => 'Nouveau',
+                        2 => 'Assigné',
+                        3 => 'En cours',
+                        4 => 'Résolu',
+                        5 => 'Fermé',
+                        default => 'Inconnu'
+                    };
+
                     $color = 'info';
                     if (in_array($status, ['en_attente', 'pending'])) $color = 'warning';
                     elseif (in_array($status, ['approuvé', 'approved', 'en_cours', 'in_progress'])) $color = 'primary';
@@ -143,10 +158,14 @@ class Activites extends Component
                         'type' => 'Checkout',
                         'icon' => 'fas fa-exchange-alt',
                         'title' => 'Check-out : ' . ($checkout->materiel_type ?? 'Équipement'),
-                        'user' => $checkout->utilisateur->nom ?? 'Inconnu',
+                        'description' => $checkout->materiel_details?? '',
+                        'user' => $checkout->utilisateur->nom  ?? 'Inconnu',
+                        'photo' => $checkout->utilisateur->photo  ?? 'Inconnu',
                         'assigned_to' => $checkout->responsable->name ?? '---',
                         'date' => $checkout->created_at,
-                        'status' => ucfirst($status),
+                        'resp_photo' => $ticket->responsable->photo ?? null,
+
+                        'status' => $statusText,
                         'priority' => 'Info',
                         'color' => $color
                     ]);
