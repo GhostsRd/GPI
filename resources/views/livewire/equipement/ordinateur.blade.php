@@ -14,50 +14,52 @@
             --soft-green: #83AF4B;
         }
         
+        .container-fluid {
+            font-size: 0.75rem;
+        }
+
         .dashboard-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* neutre */
-    border: 1px solid rgba(0, 0, 0, 0.08);     /* neutre */
-    transition: all 0.2s ease;
-}
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: none !important;
+            transition: all 0.2s ease;
+        }
 
 .dashboard-card:hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
     border-color: var(--primary); /* ✅ primary gardé ici */
 }
 
-.stat-card {
-    padding: 16px;
-    border-left: 4px solid var(--primary); /* ✅ primary visible */
-}
+        .stat-card {
+            padding: 12px;
+            border: none !important;
+        }
 
-.stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            background: rgba(91, 196, 191, 0.12);
+            color: var(--primary);
+        }
 
-    background: rgba(91, 196, 191, 0.12); /* léger fond primary */
-    color: var(--primary);
-}
-
-.stat-icon-lg {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
-
-    background: rgba(91, 196, 191, 0.12);
-    color: var(--primary);
-}
+        .stat-icon-lg {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            background: rgba(91, 196, 191, 0.12);
+            color: var(--primary);
+        }
         
         .icon-primary { background: rgba(91, 196, 191, 0.15); color: var(--primary); }
         .icon-success { background: rgba(16, 185, 129, 0.15); color: #10b981; }
@@ -66,9 +68,10 @@
         .icon-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         
         .stat-number {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 700;
             margin-bottom: 0;
+            color: var(--gray-800);
         }
         
         .search-box {
@@ -101,15 +104,19 @@
         }
         
         .table th {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--primary-dark);
-            border-bottom: 2px solid rgba(91, 196, 191, 0.15);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-500);
+            border-bottom: 1px solid rgba(91, 196, 191, 0.1);
+            padding: 0.75rem 0.5rem;
         }
         
         .table td {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             vertical-align: middle;
+            padding: 0.75rem 0.5rem;
         }
         
         .table tbody tr:hover {
@@ -117,8 +124,10 @@
         }
         
         .btn {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 8px !important;
+            font-weight: 500;
         }
         
         .btn-primary {
@@ -423,10 +432,10 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
-                        <h1 class="h4 fw-semibold mb-0" style="color: var(--primary-dark);">
+                        <h1 class="fw-bold mb-0" style="color: var(--primary-dark); font-size: 1.25rem;">
                             <i class="bi bi-laptop me-2" style="color: var(--primary);"></i> Gestion des Ordinateurs
                         </h1>
-                        <p class="text-muted small">Gérez votre parc informatique efficacement</p>
+                        <p class="text-muted" style="font-size: 0.65rem;">Gérez votre parc informatique efficacement</p>
                     </div>
                     <div class="d-flex gap-2 flex-wrap">
                         @if(count($selectedOrdinateurs) > 0)
@@ -481,17 +490,19 @@
         <div class="row mb-4">
             <!-- Total -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="flex-grow-1">
-                            <h3 class="stat-number mb-1" style="color: var(--primary);">{{ $stats['total'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0 fw-medium">Total Ordinateurs</p>
-                            <div class="progress mt-2" style="height: 4px;">
-                                <div class="progress-bar bg-primary" style="width: 100%"></div>
+                <div class="card border-0 shadow-sm h-100" style="background: white; border-radius: 12px; border-left: 3px solid var(--primary) !important;">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted text-uppercase mb-0" style="font-size: 0.55rem; letter-spacing: 0.5px; font-weight: 600;">Total Ordinateurs</p>
+                                <h3 class="fw-bold mb-0 text-dark" style="font-size: 1rem;">{{ number_format($stats['total'] ?? 0) }}</h3>
+                            </div>
+                            <div class="rounded-circle" style="background: var(--primary-soft); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-laptop text-primary" style="font-size: 0.75rem;"></i>
                             </div>
                         </div>
-                        <div class="stat-icon-lg icon-primary ms-3">
-                            <i class="bi bi-laptop-fill"></i>
+                        <div class="mt-1">
+                            <span class="text-muted" style="font-size: 0.55rem;">Toutes entités</span>
                         </div>
                     </div>
                 </div>
@@ -499,18 +510,19 @@
 
             <!-- En service -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="flex-grow-1">
-                            <h3 class="stat-number text-success mb-1">{{ $stats['en_service'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0 fw-medium">En Service</p>
-                            <div class="progress mt-2" style="height: 4px;">
-                                <div class="progress-bar bg-success" 
-                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_service'] / $stats['total'] * 100) : 0 }}%"></div>
+                <div class="card border-0 shadow-sm h-100" style="background: white; border-radius: 12px; border-left: 3px solid #10b981 !important;">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted text-uppercase mb-0" style="font-size: 0.55rem; letter-spacing: 0.5px; font-weight: 600;">En Service</p>
+                                <h3 class="fw-bold mb-0 text-dark" style="font-size: 1rem;">{{ number_format($stats['en_service'] ?? 0) }}</h3>
+                            </div>
+                            <div class="rounded-circle" style="background: rgba(16, 185, 129, 0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-check-circle text-success" style="font-size: 0.75rem;"></i>
                             </div>
                         </div>
-                        <div class="stat-icon-lg icon-success ms-3">
-                            <i class="bi bi-check-circle-fill"></i>
+                        <div class="mt-1">
+                            <span class="text-muted" style="font-size: 0.55rem;">Opérationnels</span>
                         </div>
                     </div>
                 </div>
@@ -518,18 +530,19 @@
 
             <!-- En réparation -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="flex-grow-1">
-                            <h3 class="stat-number text-warning mb-1">{{ $stats['en_reparation'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0 fw-medium">En Réparation</p>
-                            <div class="progress mt-2" style="height: 4px;">
-                                <div class="progress-bar bg-warning" 
-                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_reparation'] / $stats['total'] * 100) : 0 }}%"></div>
+                <div class="card border-0 shadow-sm h-100" style="background: white; border-radius: 12px; border-left: 3px solid #f59e0b !important;">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted text-uppercase mb-0" style="font-size: 0.55rem; letter-spacing: 0.5px; font-weight: 600;">En Réparation</p>
+                                <h3 class="fw-bold mb-0 text-dark" style="font-size: 1rem;">{{ number_format($stats['en_reparation'] ?? 0) }}</h3>
+                            </div>
+                            <div class="rounded-circle" style="background: rgba(245, 158, 11, 0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-tools text-warning" style="font-size: 0.75rem;"></i>
                             </div>
                         </div>
-                        <div class="stat-icon-lg icon-warning ms-3">
-                            <i class="bi bi-tools"></i>
+                        <div class="mt-1">
+                            <span class="text-muted" style="font-size: 0.55rem;">En maintenance</span>
                         </div>
                     </div>
                 </div>
@@ -537,18 +550,19 @@
 
             <!-- En stock -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="flex-grow-1">
-                            <h3 class="stat-number text-info mb-1">{{ $stats['en_stock'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0 fw-medium">En Stock</p>
-                            <div class="progress mt-2" style="height: 4px;">
-                                <div class="progress-bar bg-info" 
-                                     style="width: {{ $stats['total'] > 0 ? ($stats['en_stock'] / $stats['total'] * 100) : 0 }}%"></div>
+                <div class="card border-0 shadow-sm h-100" style="background: white; border-radius: 12px; border-left: 3px solid #3b82f6 !important;">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted text-uppercase mb-0" style="font-size: 0.55rem; letter-spacing: 0.5px; font-weight: 600;">En Stock</p>
+                                <h3 class="fw-bold mb-0 text-dark" style="font-size: 1rem;">{{ number_format($stats['en_stock'] ?? 0) }}</h3>
+                            </div>
+                            <div class="rounded-circle" style="background: rgba(59, 130, 246, 0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-box-seam text-info" style="font-size: 0.75rem;"></i>
                             </div>
                         </div>
-                        <div class="stat-icon-lg icon-info ms-3">
-                            <i class="bi bi-box-seam"></i>
+                        <div class="mt-1">
+                            <span class="text-muted" style="font-size: 0.55rem;">Disponibles</span>
                         </div>
                     </div>
                 </div>
@@ -556,18 +570,19 @@
 
             <!-- Hors service -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="flex-grow-1">
-                            <h3 class="stat-number text-danger mb-1">{{ $stats['hors_service'] ?? 0 }}</h3>
-                            <p class="text-muted small mb-0 fw-medium">Hors Service</p>
-                            <div class="progress mt-2" style="height: 4px;">
-                                <div class="progress-bar bg-danger" 
-                                     style="width: {{ $stats['total'] > 0 ? ($stats['hors_service'] / $stats['total'] * 100) : 0 }}%"></div>
+                <div class="card border-0 shadow-sm h-100" style="background: white; border-radius: 12px; border-left: 3px solid #ef4444 !important;">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted text-uppercase mb-0" style="font-size: 0.55rem; letter-spacing: 0.5px; font-weight: 600;">Hors Service</p>
+                                <h3 class="fw-bold mb-0 text-dark" style="font-size: 1rem;">{{ number_format($stats['hors_service'] ?? 0) }}</h3>
+                            </div>
+                            <div class="rounded-circle" style="background: rgba(239, 68, 68, 0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-x-circle text-danger" style="font-size: 0.75rem;"></i>
                             </div>
                         </div>
-                        <div class="stat-icon-lg icon-danger ms-3">
-                            <i class="bi bi-x-circle-fill"></i>
+                        <div class="mt-1">
+                            <span class="text-muted" style="font-size: 0.55rem;">À réformer</span>
                         </div>
                     </div>
                 </div>
@@ -575,25 +590,26 @@
 
             <!-- Taux de disponibilité -->
             <div class="col-xl-2 col-md-4 mb-3">
-                <div class="dashboard-card stat-card h-100">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="flex-grow-1">
-                            @php
-                                $disponible = $stats['en_service'] ?? 0;
-                                $total = $stats['total'] ?? 1;
-                                $taux = $total > 0 ? round(($disponible / $total) * 100) : 0;
-                            @endphp
-                            <h3 class="stat-number mb-1 {{ $taux >= 80 ? 'text-success' : ($taux >= 60 ? 'text-warning' : 'text-danger') }}">
-                                {{ $taux }}%
-                            </h3>
-                            <p class="text-muted small mb-0 fw-medium">Disponibilité</p>
-                            <div class="progress mt-2" style="height: 6px;">
-                                <div class="progress-bar {{ $taux >= 80 ? 'bg-success' : ($taux >= 60 ? 'bg-warning' : 'bg-danger') }}" 
-                                     style="width: {{ $taux }}%"></div>
+                <div class="card border-0 shadow-sm h-100" style="background: white; border-radius: 12px; border-left: 3px solid #6366f1 !important;">
+                    <div class="card-body p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted text-uppercase mb-0" style="font-size: 0.55rem; letter-spacing: 0.5px; font-weight: 600;">Disponibilité</p>
+                                @php
+                                    $disponible = $stats['en_service'] ?? 0;
+                                    $total = $stats['total'] ?? 1;
+                                    $taux = $total > 0 ? round(($disponible / $total) * 100) : 0;
+                                @endphp
+                                <h3 class="fw-bold mb-0 text-dark" style="font-size: 1rem;">{{ $taux }}%</h3>
+                            </div>
+                            <div class="rounded-circle" style="background: rgba(99, 102, 241, 0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-speedometer2 text-primary" style="font-size: 0.75rem;"></i>
                             </div>
                         </div>
-                        <div class="stat-icon-lg {{ $taux >= 80 ? 'icon-success' : ($taux >= 60 ? 'icon-warning' : 'icon-danger') }} ms-3">
-                            <i class="bi bi-speedometer2"></i>
+                        <div class="mt-1">
+                            <div class="progress" style="height: 3px; background: #f1f5f9;">
+                                <div class="progress-bar" style="width: {{ $taux }}%; background: #6366f1;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

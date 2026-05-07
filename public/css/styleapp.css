@@ -561,12 +561,12 @@ h3 {
 .sidebar-modern {
     background: var(--sidebar-bg);
     border-right: 1px solid var(--border);
-    min-height: calc(100vh - 50px) !important;
-    /* Ajusté à la hauteur de la navbar */
+    min-height: 100vh !important;
+    /* Ajusté pour occuper tout l'écran car le navbar est supprimé */
     box-shadow: 4px 0 25px var(--shadow);
     position: fixed;
-    top: 50px !important;
-    /* Commence juste après la navbar */
+    top: 0 !important;
+    /* Commence en haut de l'écran */
     left: 0;
     width: min(260px, 90vw);
     z-index: 1100 !important;
@@ -870,10 +870,10 @@ h3 {
     margin-left: min(260px, 90vw);
     padding: clamp(1rem, 3vw, 2rem);
     background: var(--main-bg);
-    min-height: calc(100vh - 50px) !important;
-    /* Ajusté à la hauteur de la navbar */
-    margin-top: 50px !important;
-    /* Compense la navbar fixe */
+    min-height: 100vh !important;
+    /* Ajusté pour occuper tout l'écran */
+    margin-top: 0 !important;
+    /* Plus besoin de compenser le navbar */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
@@ -1021,14 +1021,14 @@ h3 {
 
     .sidebar-modern {
         width: 100vw;
-        top: 45px !important;
-        /* Ajusté à la hauteur réduite de la navbar */
-        min-height: calc(100vh - 45px) !important;
+        top: 0 !important;
+        /* Ajusté car le navbar est supprimé */
+        min-height: 100vh !important;
     }
 
     .main-content-modern {
-        min-height: calc(100vh - 45px) !important;
-        margin-top: 45px !important;
+        min-height: 100vh !important;
+        margin-top: 0 !important;
         padding: 0.5rem !important;
     }
 

@@ -93,161 +93,239 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-size: 0.75rem !important;
         }
 
-        /* Style pour le bouton de déconnexion */
-        .logout-btn {
-            transition: all 0.3s ease;
+        /* Réduction globale pour un aspect compact */
+        .sidebar-modern {
+            font-size: 0.7rem !important;
+        }
+
+        .nav-link-modern {
+            font-size: 0.68rem !important;
+            padding: 0.4rem 0.75rem !important;
+        }
+
+        .nav-link-modern h6 {
+            font-size: 0.68rem !important;
+            margin: 0 !important;
+            font-weight: 600 !important;
+        }
+
+        .nav-link-modern i {
+            font-size: 0.8rem !important;
+        }
+
+        .submenu-item {
+            font-size: 0.65rem !important;
+            padding: 0.25rem 0.75rem 0.25rem 1.8rem !important;
+        }
+
+        .sidebar-header-modern h6 {
+            font-size: 0.8rem !important;
+        }
+
+        .sidebar-header-modern small {
+            font-size: 0.65rem !important;
+        }
+
+        .nav-heading-modern {
+            font-size: 0.6rem !important;
+            padding: 1rem 1rem 0.3rem !important;
+        }
+
+        /* Sidebar User Menu Styles */
+        .sidebar-user-menu {
+            margin-top: auto;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            padding: 1rem 0.75rem;
+        }
+
+        [data-bs-theme="dark"] .sidebar-user-menu {
+            border-top-color: rgba(255,255,255,0.08);
+        }
+
+        .sidebar-user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
             border-radius: 12px;
-            margin: 4px 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .logout-btn:hover {
-            background-color: #fee2e2 !important;
-            color: #dc2626 !important;
-            transform: translateX(5px);
+
+        .sidebar-user-info:hover {
+            background: rgba(99, 102, 241, 0.1);
         }
-        .dropdown-item i {
-            transition: transform 0.2s;
+
+        .sidebar-user-details {
+            flex: 1;
+            min-width: 0;
         }
-        .dropdown-item:hover i {
-            transform: scale(1.1);
+
+        .sidebar-user-name {
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: var(--dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        /* Séparateur élégant */
-        .dropdown-divider {
-            margin: 8px 16px;
-            opacity: 0.6;
+
+        .sidebar-user-role {
+            font-size: 0.6rem;
+            color: var(--gray-500);
+        }
+
+        /* Dropdown menu in sidebar */
+        .sidebar-dropdown {
+            position: relative;
+        }
+
+        .sidebar-dropdown-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            padding: 0.75rem;
+            min-width: 280px;
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        [data-bs-theme="dark"] .sidebar-dropdown-menu {
+            background: #1e293b;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .sidebar-dropdown.show .sidebar-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .sidebar-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 12px;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.7rem;
+        }
+
+        .sidebar-dropdown-item:hover {
+            background: #eef2ff;
+            color: #6366f1;
+        }
+
+        [data-bs-theme="dark"] .sidebar-dropdown-item:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+
+        .sidebar-dropdown-item.logout:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .sidebar-dropdown-item i {
+            font-size: 1rem;
+            width: 24px;
+        }
+
+        .sidebar-dropdown-divider {
+            height: 1px;
+            background: rgba(0,0,0,0.08);
+            margin: 0.5rem 0;
+        }
+
+        [data-bs-theme="dark"] .sidebar-dropdown-divider {
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* Theme switch inline */
+        .theme-switch-inline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0.75rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-switch-inline:hover {
+            background: #eef2ff;
+        }
+
+        [data-bs-theme="dark"] .theme-switch-inline:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .theme-switch-inline .theme-toggle-icon {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Notification badge */
+        .notification-badge {
+            position: relative;
+            display: inline-flex;
+        }
+
+        .notification-badge .badge-count {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 20px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* Animation pour les notifications */
+        @keyframes bellShake {
+            0%, 100% { transform: rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(10deg); }
+            20%, 40%, 60%, 80% { transform: rotate(-10deg); }
+        }
+
+        .notification-bell-animate {
+            animation: bellShake 1s ease-in-out;
         }
     </style>
 </head>
 <body>
 <div id="app">
-    <!-- Modern Navbar -->
-    <nav class="navbar-modern navbar navbar-expand-lg shadow-sm">
-        <div class="container-fluid">
-            <!-- Logo and Brand -->
-            <a class="navbar-brand-modern text-muted" href="{{ url('/home') }}">
-                <img class="shadow-sm rounded-pill" width="35" src="{{ asset('/images/logoPivot.png') }}" alt="">
-                GPI - Pivot
-            </a>
+    <!-- Bouton Toggle Mobile (Visible uniquement sur mobile car le navbar a été supprimé) -->
+    <button class="sidebar-toggle d-lg-none shadow-sm" id="mobileSidebarToggle" style="position: fixed; top: 15px; left: 15px; z-index: 1200; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 10px; background: var(--primary); color: white;">
+        <i class="bi bi-list"></i>
+    </button>
 
-            <!-- Mobile Toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Theme Toggle -->
-                <div class="theme-switch theme-toggle-btn ms-auto" style="margin-right: 15px;" title="Toggle Theme"></div>
-
-                <!-- Notifications Menu -->
-                <ul class="navbar-nav me-3">
-                    <li class="nav-item">
-                        @livewire('notifications.notification-dropdown')
-                    </li>
-                </ul>
-
-                <!-- User Menu avec Déconnexion -->
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="user-dropdown nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none;">
-                            <div class="d-flex align-items-center">
-                                @if(Auth::check() && Auth::user()->photo)
-                                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="user-avatar rounded-circle" width="40" height="40" alt="Photo de profil" style="object-fit: cover; border: 2px solid #6366f1;">
-                                @else
-                                    <img src="{{ asset('images/avtar_1.png') }}" class="user-avatar rounded-circle" width="40" height="40" alt="Photo par défaut" style="object-fit: cover; border: 2px solid #6366f1;">
-                                @endif
-                                <span class="ms-2 fw-bold text-dark">
-                                    {{ Auth::check() ? Auth::user()->name : 'Invité' }}
-                                </span>
-                                <i class="bi bi-chevron-down ms-1" style="font-size: 0.8rem; color: #6b7280;"></i>
-                            </div>
-                        </a>
-
-                        <!-- Dropdown Menu avec Déconnexion -->
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="min-width: 280px; border-radius: 20px; border: none; box-shadow: 0 20px 40px rgba(0,0,0,0.15); padding: 1rem 0.5rem; background: white; z-index: 9999;">
-
-                            <!-- User Info Header -->
-                            <div class="px-4 py-3 text-center">
-                                <div class="position-relative d-inline-block">
-                                    @if(Auth::check() && Auth::user()->photo)
-                                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded-circle mb-2" width="72" height="72" alt="Photo" style="object-fit: cover; border: 4px solid #6366f1; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
-                                    @else
-                                        <img src="{{ asset('images/avtar_1.png') }}" class="rounded-circle mb-2" width="72" height="72" alt="Photo" style="object-fit: cover; border: 4px solid #6366f1; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
-                                    @endif
-                                    <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle p-1"></span>
-                                </div>
-                                <div class="fw-bold" style="font-size: 1.1rem;">{{ Auth::check() ? Auth::user()->name : 'Invité' }}</div>
-                                <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::check() ? Auth::user()->email : '' }}</div>
-                                @if(Auth::check() && Auth::user()->role)
-                                    <span class="badge bg-primary bg-opacity-10 text-primary mt-1 px-3 py-1 rounded-pill" style="font-size: 0.7rem; font-weight: 600;">
-                                        {{ Auth::user()->role }}
-                                    </span>
-                                @endif
-                            </div>
-
-                            <!-- Menu Items -->
-                            <div class="mt-2">
-                                <!-- Profile Link -->
-                                <a class="dropdown-item d-flex align-items-center px-4 py-2 rounded-3" href="{{ url('/profile') }}" style="font-size: 0.9rem; transition: all 0.2s;">
-                                    <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; background: #eef2ff; border-radius: 10px;">
-                                        <i class="bi bi-person-circle" style="color: #6366f1; font-size: 1.1rem;"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold">Mon Profil</div>
-                                        <small class="text-muted">Gérer vos informations</small>
-                                    </div>
-                                </a>
-
-                                <!-- Settings Link (Optionnel) -->
-                                <a class="dropdown-item d-flex align-items-center px-4 py-2 rounded-3" href="{{ url('/parametres') }}" style="font-size: 0.9rem; transition: all 0.2s;">
-                                    <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; background: #f3e8ff; border-radius: 10px;">
-                                        <i class="bi bi-gear-fill" style="color: #8b5cf6; font-size: 1.1rem;"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold">Paramètres</div>
-                                        <small class="text-muted">Préférences système</small>
-                                    </div>
-                                </a>
-
-                                <!-- Divider -->
-                                <div class="dropdown-divider my-2"></div>
-
-                                <!-- Disconnect Button -->
-                                <a class="dropdown-item d-flex align-items-center px-4 py-2 rounded-3 logout-btn" 
-                                   href="{{ route('logout') }}"
-                                   style="font-size: 0.9rem; color: #dc2626;">
-                                    <div class="d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; background: #fee2e2; border-radius: 10px;">
-                                        <i class="bi bi-box-arrow-right" style="color: #dc2626; font-size: 1.1rem;"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-semibold">Déconnexion</div>
-                                        <small class="text-muted">Quitter votre session</small>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <!-- Footer -->
-                            <div class="px-4 mt-3 pt-2 text-center border-top" style="border-color: #f3f4f6 !important;">
-                                <small class="text-muted" style="font-size: 0.7rem;">Version 2.0.0 • GPI Pivot</small>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <!-- Modern Sidebar -->
-    <aside class="sidebar-modern shadow border-0" style="z-index: 1000 !important" id="sidebarModern">
-        <nav class="sidebar-nav-modern">
-            {{-- <div class="card border-0 m-0 mb-2 rounded-0 border-secondary">
-                <label for="" class="fw-bold text-muted text-light">Gestion de Parc Informatique</label>
-            </div> --}}
-
+    <aside class="sidebar-modern shadow border-0 d-flex flex-column" style="z-index: 1000 !important; height: 100vh;" id="sidebarModern">
+        <nav class="sidebar-nav-modern flex-grow-1">
             <!-- Dashboard -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern shadow-sm active" href="{{ url('/home') }}">
                    <i class="bi bi-grid-1x2-fill"></i>
-                    <h6 class=" fw-bold mt-1">Tableau de bord</h6>
+                    <h6 class="fw-bold mt-1">Tableau de bord</h6>
                 </a>
             </div>
 
@@ -472,8 +550,6 @@
                 </div>
             </div>
 
-            {{-- <h6 class="border-bottom rounded-0 border-secondary border-5"></h6> --}}
-
             <!-- Paramètres -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#settingsCollapse">
@@ -495,6 +571,101 @@
                 </div>
             </div>
         </nav>
+
+        <!-- Sidebar User Menu - Tout est regroupé ici (Profil, Notifications, Theme, Déconnexion) -->
+        <div class="sidebar-user-menu">
+            <div class="sidebar-dropdown" id="sidebarUserDropdown">
+                <div class="sidebar-user-info" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="notification-badge">
+                        @if(Auth::check() && Auth::user()->photo)
+                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded-circle" width="36" height="36" alt="Photo" style="object-fit: cover; border: 2px solid #6366f1;">
+                        @else
+                            <img src="{{ asset('images/avtar_1.png') }}" class="rounded-circle" width="36" height="36" alt="Photo" style="object-fit: cover; border: 2px solid #6366f1;">
+                        @endif
+                        <!-- Badge pour les notifications non lues -->
+                        <span class="badge-count" id="sidebarNotificationBadge" style="display: none;">0</span>
+                    </div>
+                    <div class="sidebar-user-details">
+                        <div class="sidebar-user-name">{{ Auth::check() ? Auth::user()->name : 'Invité' }}</div>
+                        <div class="sidebar-user-role">{{ Auth::check() && Auth::user()->role ? Auth::user()->role : 'Utilisateur' }}</div>
+                    </div>
+                    <i class="bi bi-chevron-up ms-auto" style="font-size: 0.7rem; color: #94a3b8;"></i>
+                </div>
+
+                <!-- Dropdown Menu complet -->
+                <div class="sidebar-dropdown-menu">
+                    <!-- User Info Header -->
+                    <div class="text-center px-3 py-2">
+                        @if(Auth::check() && Auth::user()->photo)
+                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded-circle mb-2" width="56" height="56" alt="Photo" style="object-fit: cover; border: 3px solid #6366f1;">
+                        @else
+                            <img src="{{ asset('images/avtar_1.png') }}" class="rounded-circle mb-2" width="56" height="56" alt="Photo" style="object-fit: cover; border: 3px solid #6366f1;">
+                        @endif
+                        <div class="fw-bold" style="font-size: 0.85rem;">{{ Auth::check() ? Auth::user()->name : 'Invité' }}</div>
+                        <div class="text-muted" style="font-size: 0.65rem;">{{ Auth::check() ? Auth::user()->email : '' }}</div>
+                    </div>
+
+                    <div class="sidebar-dropdown-divider"></div>
+
+                    <!-- Profile Link -->
+                    <a class="sidebar-dropdown-item" href="{{ url('/profile') }}">
+                        <i class="bi bi-person-circle"></i>
+                        <div>
+                            <div class="fw-semibold">Mon Profil</div>
+                            <small class="text-muted">Gérer vos informations</small>
+                        </div>
+                    </a>
+
+                    <!-- Notifications Link avec Livewire -->
+                    <div class="sidebar-dropdown-item" style="cursor: pointer;" onclick="toggleNotificationsPanel()">
+                        <div class="notification-badge">
+                            <i class="bi bi-bell-fill"></i>
+                            <span class="badge-count" id="dropdownNotificationBadge" style="display: none;">0</span>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Notifications</div>
+                            <small class="text-muted">Voir vos alertes</small>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle Inline -->
+                    <div class="theme-switch-inline" id="sidebarThemeToggle" onclick="toggleTheme()">
+                        <div class="theme-toggle-icon">
+                            <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
+                            <span>Thème</span>
+                        </div>
+                        <span id="themeText">Sombre</span>
+                    </div>
+
+                    <div class="sidebar-dropdown-divider"></div>
+
+                    <!-- Settings Link -->
+                    <a class="sidebar-dropdown-item" href="{{ url('/parametres') }}">
+                        <i class="bi bi-gear-fill"></i>
+                        <div>
+                            <div class="fw-semibold">Paramètres</div>
+                            <small class="text-muted">Préférences système</small>
+                        </div>
+                    </a>
+
+                    <div class="sidebar-dropdown-divider"></div>
+
+                    <!-- Disconnect Button -->
+                    <a class="sidebar-dropdown-item logout" href="#" onclick="confirmLogout(event)" style="color: #dc2626;">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <div>
+                            <div class="fw-semibold">Déconnexion</div>
+                            <small class="text-muted">Quitter votre session</small>
+                        </div>
+                    </a>
+
+                    <!-- Footer -->
+                    <div class="text-center mt-2 pt-2">
+                        <small class="text-muted" style="font-size: 0.6rem;">Version 2.0.0 • GPI Pivot</small>
+                    </div>
+                </div>
+            </div>
+        </div>
     </aside>
 
     <!-- Main Content -->
@@ -506,138 +677,176 @@
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
+
+    <!-- Modal Notifications -->
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content rounded-4">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="notificationsModalLabel">
+                        <i class="bi bi-bell-fill me-2" style="color: #6366f1;"></i>
+                        Notifications
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2">
+                    @livewire('notifications.notification-dropdown')
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Styles supplémentaires pour les notifications -->
-<style>
-    /* Style pour la cloche de notification */
-    .notification-bell {
-        position: relative;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8fafc;
-        border-radius: 12px;
-        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        cursor: pointer;
-        border: 1px solid rgba(0,0,0,0.05);
+<script>
+    // Gestion du thème
+    function toggleTheme() {
+        const htmlElement = document.documentElement;
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Mettre à jour l'icône et le texte
+        updateThemeUI(newTheme);
+        
+        // Déclencher l'événement personnalisé
+        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
     }
     
-    [data-bs-theme="dark"] .notification-bell {
-        background: rgba(255,255,255,0.05);
-        border-color: rgba(255,255,255,0.1);
-    }
-
-    .notification-bell:hover {
-        background: #f1f5f9;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        border-color: #6366f1;
-    }
-    
-    .notification-bell i {
-        color: #64748b;
-        font-size: 1.25rem;
-        transition: all 0.3s ease;
-    }
-    
-    .notification-bell:hover i {
-        color: #6366f1;
-        transform: rotate(15deg);
-    }
-    
-    /* Indicateur de notification (Ping) */
-    .notification-bell.has-notifications::after {
-        content: '';
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 10px;
-        height: 10px;
-        background: #ef4444;
-        border-radius: 50%;
-        border: 2px solid white;
-        z-index: 2;
-        box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-    }
-
-    [data-bs-theme="dark"] .notification-bell.has-notifications::after {
-        border-color: #1e293b;
-    }
-
-    /* Animation pour la cloche */
-    @keyframes bellShake {
-        0% { transform: rotate(0); }
-        15% { transform: rotate(15deg); }
-        30% { transform: rotate(-15deg); }
-        45% { transform: rotate(10deg); }
-        60% { transform: rotate(-10deg); }
-        75% { transform: rotate(5deg); }
-        85% { transform: rotate(-5deg); }
-        100% { transform: rotate(0); }
-    }
-    
-    .notification-bell.has-notifications i {
-        animation: bellShake 1.5s ease-in-out infinite;
-        color: #f59e0b;
-    }
-    
-    /* Animation de pulsation (Ping) */
-    @keyframes pingEffect {
-        0% { transform: scale(1); opacity: 1; }
-        100% { transform: scale(2.5); opacity: 0; }
-    }
-
-    .notification-bell.has-notifications::before {
-        content: '';
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 10px;
-        height: 10px;
-        background: #ef4444;
-        border-radius: 50%;
-        z-index: 1;
-        animation: pingEffect 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-    }
-    
-    /* Scroll personnalisé pour la liste des notifications */
-    .notification-list::-webkit-scrollbar {
-        width: 6px;
-    }
-    
-    .notification-list::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    
-    .notification-list::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 10px;
-    }
-    
-    .notification-list::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-    /* Animation pour le dropdown des notifications */
-    .notification-dropdown {
-        transform-origin: top right;
-        animation: dropdownFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    @keyframes dropdownFadeIn {
-        from { 
-            opacity: 0; 
-            transform: translateY(15px) scale(0.95); 
-        }
-        to { 
-            opacity: 1; 
-            transform: translateY(0) scale(1); 
+    function updateThemeUI(theme) {
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        
+        if (theme === 'dark') {
+            themeIcon.className = 'bi bi-sun-fill';
+            themeText.textContent = 'Clair';
+        } else {
+            themeIcon.className = 'bi bi-moon-stars-fill';
+            themeText.textContent = 'Sombre';
         }
     }
-</style>
+    
+    // Initialiser le thème au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+        updateThemeUI(savedTheme);
+    });
+    
+    // Gestion des notifications
+    let notificationsModal;
+    
+    function toggleNotificationsPanel() {
+        if (!notificationsModal) {
+            notificationsModal = new bootstrap.Modal(document.getElementById('notificationsModal'));
+        }
+        notificationsModal.show();
+    }
+    
+    // Mettre à jour le badge des notifications
+    function updateNotificationBadge(count) {
+        const sidebarBadge = document.getElementById('sidebarNotificationBadge');
+        const dropdownBadge = document.getElementById('dropdownNotificationBadge');
+        
+        if (count > 0) {
+            if (sidebarBadge) {
+                sidebarBadge.textContent = count > 99 ? '99+' : count;
+                sidebarBadge.style.display = 'inline-block';
+            }
+            if (dropdownBadge) {
+                dropdownBadge.textContent = count > 99 ? '99+' : count;
+                dropdownBadge.style.display = 'inline-block';
+            }
+            // Animation sur la cloche
+            const bellIcon = document.querySelector('.sidebar-user-info .bi-bell-fill');
+            if (bellIcon) {
+                bellIcon.classList.add('notification-bell-animate');
+                setTimeout(() => {
+                    bellIcon.classList.remove('notification-bell-animate');
+                }, 1000);
+            }
+        } else {
+            if (sidebarBadge) sidebarBadge.style.display = 'none';
+            if (dropdownBadge) dropdownBadge.style.display = 'none';
+        }
+    }
+    
+    // Écouter les événements Livewire pour les notifications
+    document.addEventListener('DOMContentLoaded', function() {
+        // Écouter l'événement de mise à jour des notifications
+        Livewire.on('notificationsUpdated', (data) => {
+            updateNotificationBadge(data.unreadCount);
+        });
+        
+        // Initialiser le modal
+        notificationsModal = new bootstrap.Modal(document.getElementById('notificationsModal'), {
+            backdrop: 'static',
+            keyboard: true
+        });
+    });
+    
+    // Confirmation de déconnexion
+    function confirmLogout(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Déconnexion',
+            text: 'Êtes-vous sûr de vouloir vous déconnecter ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Oui, déconnecter',
+            cancelButtonText: 'Annuler',
+            customClass: {
+                popup: 'rounded-4',
+                confirmButton: 'rounded-3 px-4 py-2',
+                cancelButton: 'rounded-3 px-4 py-2'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+    
+    // Fermer le dropdown de la sidebar au clic ailleurs
+    document.addEventListener('click', function(e) {
+        const sidebarDropdown = document.getElementById('sidebarUserDropdown');
+        if (sidebarDropdown && !sidebarDropdown.contains(e.target)) {
+            sidebarDropdown.classList.remove('show');
+        }
+    });
+    
+    // Gestion du dropdown de la sidebar
+    const userInfo = document.querySelector('.sidebar-user-info');
+    const sidebarDropdown = document.getElementById('sidebarUserDropdown');
+    
+    if (userInfo && sidebarDropdown) {
+        userInfo.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sidebarDropdown.classList.toggle('show');
+        });
+    }
+
+    // Toggle Sidebar on Mobile
+    const mobileToggle = document.getElementById('mobileSidebarToggle');
+    const sidebarModern = document.getElementById('sidebarModern');
+    
+    if (mobileToggle && sidebarModern) {
+        mobileToggle.addEventListener('click', function() {
+            sidebarModern.classList.toggle('mobile-open');
+        });
+    }
+
+    // Fermer la sidebar mobile au clic en dehors
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 991 && sidebarModern && !sidebarModern.contains(e.target) && !mobileToggle.contains(e.target)) {
+            sidebarModern.classList.remove('mobile-open');
+        }
+    });
+</script>
+
 @livewireScripts
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -647,35 +856,6 @@
 
     Livewire.hook('message.processed', () => {
         AOS.refresh();
-    });
-
-    // Animation supplémentaire pour le bouton de déconnexion
-    document.addEventListener('DOMContentLoaded', function() {
-        const logoutBtn = document.querySelector('.logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Déconnexion',
-                    text: 'Êtes-vous sûr de vouloir vous déconnecter ?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#dc2626',
-                    cancelButtonColor: '#6b7280',
-                    confirmButtonText: 'Oui, déconnecter',
-                    cancelButtonText: 'Annuler',
-                    customClass: {
-                        popup: 'rounded-4',
-                        confirmButton: 'rounded-3 px-4 py-2',
-                        cancelButton: 'rounded-3 px-4 py-2'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById('logout-form').submit();
-                    }
-                });
-            });
-        }
     });
 </script>
 
@@ -694,83 +874,83 @@
 
 @stack('scripts')
 
-    <script>
-        // Script pour les notifications - Mis à jour pour Livewire
-        document.addEventListener('DOMContentLoaded', function() {
-            window.addEventListener('notificationsMarkedAsRead', event => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Succès',
-                    text: 'Toutes les notifications ont été marquées comme lues',
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
+<script>
+    // Script pour les notifications Livewire
+    document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('notificationsMarkedAsRead', event => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: 'Toutes les notifications ont été marquées comme lues',
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
             });
-
-            window.addEventListener('toast', event => {
-                const data = event.detail[0] || event.detail;
-                Swal.fire({
-                    icon: data.type || 'success',
-                    title: data.type == 'success' ? 'Réussi' : (data.type == 'error' ? 'Erreur' : 'Info'),
-                    text: data.message,
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
-            });
-
-            // Gestion des flash messages
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Succès',
-                    text: "{{ session('success') }}",
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
-            @endif
-
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erreur',
-                    text: "{{ session('error') }}",
-                    timer: 5000,
-                    showConfirmButton: true,
-                    toast: false,
-                    position: 'center'
-                });
-            @endif
-
-            @if(session('warning'))
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Attention',
-                    text: "{{ session('warning') }}",
-                    timer: 4000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
-            @endif
-
-            @if(session('info'))
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Information',
-                    text: "{{ session('info') }}",
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
-            @endif
         });
-    </script>
+
+        window.addEventListener('toast', event => {
+            const data = event.detail[0] || event.detail;
+            Swal.fire({
+                icon: data.type || 'success',
+                title: data.type == 'success' ? 'Réussi' : (data.type == 'error' ? 'Erreur' : 'Info'),
+                text: data.message,
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        });
+
+        // Gestion des flash messages
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: "{{ session('error') }}",
+                timer: 5000,
+                showConfirmButton: true,
+                toast: false,
+                position: 'center'
+            });
+        @endif
+
+        @if(session('warning'))
+            Swal.fire({
+                icon: 'warning',
+                title: 'Attention',
+                text: "{{ session('warning') }}",
+                timer: 4000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        @endif
+
+        @if(session('info'))
+            Swal.fire({
+                icon: 'info',
+                title: 'Information',
+                text: "{{ session('info') }}",
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        @endif
+    });
+</script>
 </body>
 </html>

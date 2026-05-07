@@ -1001,10 +1001,10 @@
 
 .dashboard-card {
     background: #fff;
-    border-radius: 8px;
+    border-radius: 16px;
     padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: none;
 }
 
 /* Icônes plus petites pour les statistiques */

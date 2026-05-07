@@ -937,24 +937,17 @@
 
         .dashboard-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 1.25rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             transition: all 0.3s ease;
-            border-left: 4px solid transparent;
+            border: none;
         }
 
         .dashboard-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
         }
-
-        .dashboard-card:nth-child(1):hover { border-left-color: #0d6efd; }
-        .dashboard-card:nth-child(2):hover { border-left-color: #198754; }
-        .dashboard-card:nth-child(3):hover { border-left-color: #ffc107; }
-        .dashboard-card:nth-child(4):hover { border-left-color: #0dcaf0; }
-        .dashboard-card:nth-child(5):hover { border-left-color: #dc3545; }
-        .dashboard-card:nth-child(6):hover { border-left-color: #198754; }
 
         .progress {
             background-color: #f8f9fa;

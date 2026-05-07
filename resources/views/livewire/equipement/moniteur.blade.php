@@ -25,21 +25,20 @@
         
         .dashboard-card {
             background: var(--white);
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
-            transition: all 0.2s ease;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: none;
+            transition: all 0.3s ease;
         }
         
         .dashboard-card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-light);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
         
         .stat-card {
             padding: 20px;
-            border-left: 4px solid var(--primary);
-            border-radius: 12px;
+            border: none;
+            border-radius: 16px;
         }
         
         .stat-icon-lg {

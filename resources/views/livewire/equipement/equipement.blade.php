@@ -293,10 +293,10 @@
 
     .stat-card {
         background: var(--card-bg);
-        border-radius: 10px;
+        border-radius: 16px;
         padding: 1.25rem;
-        box-shadow: 0 1px 3px var(--shadow);
-        border: 1px solid rgba(91, 196, 191, 0.15);
+        box-shadow: 0 4px 20px var(--shadow);
+        border: none;
         transition: all 0.3s ease;
         display: flex;
         align-items: center;
@@ -305,8 +305,7 @@
 
     .stat-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(91, 196, 191, 0.2);
-        border-color: var(--primary-light);
+        box-shadow: 0 8px 30px rgba(91, 196, 191, 0.2);
     }
 
     .stat-icon {
@@ -374,9 +373,9 @@
 
     .chart-card {
         background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 1px 3px var(--shadow);
-        border: 1px solid rgba(91, 196, 191, 0.15);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px var(--shadow);
+        border: none;
         overflow: hidden;
     }
 
@@ -401,9 +400,9 @@
     /* Tableau */
     .table-section {
         background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: 0 1px 3px var(--shadow);
-        border: 1px solid rgba(91, 196, 191, 0.15);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px var(--shadow);
+        border: none;
         overflow: hidden;
     }
 

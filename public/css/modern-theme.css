@@ -13,11 +13,11 @@
     --text-secondary:  #6B7280;
 
     /* Couleurs accent GPI */
-    --accent:          #48C9B0;
-    --accent-light:    #76D7C4;
-    --accent-dark:     #1ABC9C;
-    --accent-glow:     rgba(72, 201, 176, 0.20);
-    --accent-gradient: linear-gradient(135deg, #48C9B0, #8b5cf6);
+    --accent:          #5BC4BF;
+    --accent-light:    #7FD9D4;
+    --accent-dark:     #4AA39E;
+    --accent-glow:     rgba(91, 196, 191, 0.20);
+    --accent-gradient: linear-gradient(135deg, #5BC4BF, #E35E2F);
 
     --border-color:    rgba(0, 0, 0, 0.07);
     --glass-bg:        rgba(255, 255, 255, 0.85);
@@ -41,11 +41,11 @@
     --text-primary:    #E6EDF3;
     --text-secondary:  #8B949E;
 
-    --accent:          #3DD5C4;
-    --accent-light:    #5EEAD4;
-    --accent-dark:     #2DD4BF;
-    --accent-glow:     rgba(61, 213, 196, 0.15);
-    --accent-gradient: linear-gradient(135deg, #3DD5C4, #a78bfa);
+    --accent:          #4AA39E;
+    --accent-light:    #5BC4BF;
+    --accent-dark:     #3a8c85;
+    --accent-glow:     rgba(74, 163, 158, 0.15);
+    --accent-gradient: linear-gradient(135deg, #4AA39E, #a78bfa);
 
     --border-color:    rgba(255, 255, 255, 0.07);
     --glass-bg:        rgba(13, 17, 23, 0.80);
