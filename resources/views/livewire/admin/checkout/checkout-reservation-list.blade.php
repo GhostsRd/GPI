@@ -169,15 +169,15 @@
         </div>
 
         <!-- Tableau des réservations -->
-        <div class="table-wrapper p-0 border-0 w-100 compact-mode mx-3">
+        <div class=" p-0 border-0 w-100 mx-3">
             <table class="table table-hover border-0 shadow-sm text-center small">
                 <thead class="table-light">
                     <tr>
-                        <th class="py-2" style="width: 30px;">
+                        <th class="text-nowrap text-muted" style="width: 30px;">
                             <input type="checkbox" wire:model="selectAll" class="checkbox-modern">
                         </th>
-                        <th class="py-2" style="width: 60px;">Utilisateur</th>
-                        <th class="py-2 sortable" wire:click="sortBy('equipement_type')" style="width: 120px;">
+                        <th class="text-nowrap text-muted" style="width: 60px;">Utilisateur</th>
+                        <th class="text-nowrap text-muted" wire:click="sortBy('equipement_type')" style="width: 120px;">
                             Type matériel
                             @if($sortField === 'equipement_type')
                                 <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
@@ -185,7 +185,7 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('date_debut')" style="width: 100px;">
+                        <th class="text-nowrap text-muted" wire:click="sortBy('date_debut')" style="width: 100px;">
                             Date début
                             @if($sortField === 'date_debut')
                                 <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
@@ -193,7 +193,7 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('date_fin')" style="width: 100px;">
+                        <th class="text-nowrap text-muted" wire:click="sortBy('date_fin')" style="width: 100px;">
                             Date fin
                             @if($sortField === 'date_fin')
                                 <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
@@ -201,10 +201,10 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2" style="width: 80px;">
+                        <th class="text-nowrap text-muted" style="width: 80px;">
                             Quantité
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('created_at')" style="width: 120px;">
+                        <th class="text-nowrap text-muted" wire:click="sortBy('created_at')" style="width: 120px;">
                             Date création
                             @if($sortField === 'created_at')
                                 <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
@@ -212,7 +212,7 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2 sortable" wire:click="sortBy('updated_at')" style="width: 120px;">
+                        <th class="text-nowrap text-muted" wire:click="sortBy('updated_at')" style="width: 120px;">
                             Date modification
                             @if($sortField === 'updated_at')
                                 <i class="bi bi-arrow-{{ $sortDirection === 'asc' ? 'up' : 'down' }} ms-1"></i>
@@ -220,8 +220,8 @@
                                 <i class="bi bi-arrow-down-up ms-1"></i>
                             @endif
                         </th>
-                        <th class="py-2" style="width: 100px;">Statut</th>
-                        <th class="py-2" style="width: 80px;">Actions</th>
+                        <th class="text-nowrap text-muted" style="width: 100px;">Statut</th>
+                        <th class="text-nowrap text-muted" style="width: 80px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>

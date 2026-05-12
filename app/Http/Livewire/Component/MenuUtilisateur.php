@@ -12,6 +12,18 @@ use Livewire\Component;
 
 class MenuUtilisateur extends Component
 {
+    public $isCollapsed = false;
+    public $showNavbar = true;
+
+
+
+    public function toggleSidebar()
+    {
+        $this->isCollapsed = !$this->isCollapsed;
+        // On enregistre la nouvelle valeur en session
+        session(['sidebar_collapsed' => $this->isCollapsed]);
+    }
+
     public function Pageacceuil(){
         return redirect('/utilisateur');
     }
@@ -20,6 +32,13 @@ class MenuUtilisateur extends Component
             $this->dispatchBrowserEvent('toggleSidebarmodel');
    
     }
+    public function toggleNavbar()
+{
+    $this->showNavbar = !$this->showNavbar;
+        // On persiste le choix en session
+        session(['navbar_visible' => $this->showNavbar]);
+    }
+
     public $userConnected;
       public function redicrectlink($vals){
         if($vals == 1){
@@ -38,6 +57,8 @@ class MenuUtilisateur extends Component
     }
     public function mount(){
         $this->userConnected = Auth::guard('utilisateur')->user()->id;
+        $this->isCollapsed = session('sidebar_collapsed', false);
+        $this->showNavbar = session('navbar_visible', true);
     }
     public function render()
     {

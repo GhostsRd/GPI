@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\Document;
 use App\Models\DocumentCategory;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ticket;
 
 class DocumentationPage extends Component
 {
@@ -22,7 +23,30 @@ class DocumentationPage extends Component
         'activeCategory' => ['except' => 'all'],
         'showBookmarks' => ['except' => false],
     ];
-    
+     public function history(Request $request,ticket $ticket){
+            
+        $name = $request->name;
+
+        $ticket->sujet = "$request->name";
+        $ticket->details = "$request->name";
+        $ticket->utilisateur_id = 1;
+        $ticket->responsable_id = 1;
+        $ticket->equipement = "riuter";
+        $ticket->categorie = "trest";
+        $ticket->impact = "test";
+        $ticket->state = 2;
+        $ticket->status = "en attente";
+        $ticket->priorite = 1;
+        $ticket->save();
+
+        //$req = regisseur::all();
+        
+      
+        
+        return response()->json(["status"=> "200"]);
+
+        
+    }
     public function render()
     {
         $user = Auth::user();
@@ -107,5 +131,7 @@ class DocumentationPage extends Component
     {
         $this->activeCategory = $categorySlug;
         $this->resetPage();
-    }
+        }
+        
+       
 }

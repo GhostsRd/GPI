@@ -456,11 +456,21 @@
         color: #e63946;
         margin: 0;
     }
+    /* Style général pour tous les badges de votre application */
+.badge-pivot {
+    font-weight: 500;
+    border: 1px solid transparent;
+    padding: 0.4em 0.8em;
+    text-transform: capitalize;
+}
+
+
     </style>
     @livewireStyles
 </head>
 
 <body class="bg-light"   >
+  
     <nav class="navbar navbar-expand-lg fixed-top sh ">
         <div class="container">
             
@@ -551,8 +561,11 @@
             </div>
         </div>
     </nav>
+    @
     <div>
+
         <main>
+          
             {{ $slot }}
         </main>
     </div>

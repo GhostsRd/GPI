@@ -189,23 +189,23 @@
                 </div>
             </div>
 
-            <div class="table-wrapper p-0 border-0 w-100 compact-mode">
+            <div class=" p-0 border-0 w-100 compact-mode" style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
          
-                <table class="table border-0 shadow-sm" wire:poll.5s>
+                <table class="table border-0 shadow-sm" wire:poll.5s >
                     <thead>
                     <tr>
-                        <th>
+                        <th class="text-nowrap text-muted">
                             <input type="checkbox" wire:model="selectAll" class="checkbox-modern">
                         </th>
-                        <th wire:click="sortBy('reference')" class="sortable">
+                        {{-- <th class="text-nowrap text-muted" wire:click="sortBy('reference')" class="sortable">
                             Référence
                             @if($sortField === 'reference')
                                 <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                             @else
                                 <i class="fas fa-sort"></i>
                             @endif
-                        </th>
-                        <th wire:click="sortBy('sujet')" class="sortable">
+                        </th> --}}
+                        <th class="text-nowrap text-muted" wire:click="sortBy('sujet')" class="sortable">
                             Sujet
                             @if($sortField === 'sujet')
                                 <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
@@ -213,16 +213,12 @@
                                 <i class="fas fa-sort"></i>
                             @endif
                         </th>
-                        <th wire:click="sortBy('priorite')" class="sortable">
-                            Priorité
-                            @if($sortField === 'priorite')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @else
-                                <i class="fas fa-sort"></i>
-                            @endif
-                        </th>
-                        <th>Catégorie</th>
-                        <th wire:click="sortBy('status')" class="sortable">
+                        
+                        <th class="text-nowrap text-muted">Catégorie</th>
+                        <th class="text-nowrap text-muted">Équipement</th>
+                        <th class="text-nowrap text-muted">Créé par</th>
+                        <th class="text-nowrap text-muted">Assigné à</th>
+                        <th class="text-nowrap text-muted" wire:click="sortBy('status')" class="sortable">
                             Statut
                             @if($sortField === 'status')
                                 <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
@@ -230,10 +226,15 @@
                                 <i class="fas fa-sort"></i>
                             @endif
                         </th>
-                        <th>Créé par</th>
-                        <th>Assigné à</th>
-                        <th>Équipement</th>
-                        <th wire:click="sortBy('created_at')" class="sortable">
+                        <th class="text-nowrap text-muted" wire:click="sortBy('priorite')" class="sortable">
+                            Priorité
+                            @if($sortField === 'priorite')
+                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                            @else
+                                <i class="fas fa-sort"></i>
+                            @endif
+                        </th>
+                        <th class="text-nowrap text-muted" wire:click="sortBy('created_at')" class="sortable">
                             Date création
                             @if($sortField === 'created_at')
                                 <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
@@ -241,42 +242,39 @@
                                 <i class="fas fa-sort"></i>
                             @endif
                         </th>
-                        <th>Actions</th>
+                        {{-- <th class="text-nowrap text-muted">Actions</th> --}}
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($tickets as $ticket)
                         <tr class="priorite_{{$ticket->priorite}} bg-dark" style="cursor:pointer" >
-                            <td>
-                                <input type="checkbox"
+                            <td class="text-nowrap text-muted">
+                                <input wire:ignore type="checkbox"
+                                       value="{{ $ticket->id }}" 
                                        wire:model="selectedTickets"
-                                       value="{{ $ticket->id }}"
                                        class="checkbox-modern">
                             </td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->id }}</td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->sujet }}</td>
-                            <td wire:click="Visualiser({{ $ticket->id }})" class="priority-{{ $ticket->priorite }}">
-                                {{ ucfirst($ticket->priorite) }}
-                            </td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">
+                            {{-- <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->id }}</td> --}}
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->sujet }}</td>
+                            
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">
                                 {{ $ticket->categorie }}
                             </td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->equipement }}</td>
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->utilisateur->nom }}</td>
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->responsable->name }}</td>
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">
                                     <span class="status-badge status-{{ strtolower($ticket->status) }}">
                                         {{ $ticket->status }}
                                     </span>
                             </td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->utilisateur->nom }}</td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->responsable->name }}</td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->equipement }}</td>
-                            <td wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->created_at->format('d M Y H:i') }}</td>
-                            <td >
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})" class="priority-{{ $ticket->priorite }}">
+                                {{ ucfirst($ticket->priorite) }}
+                            </td>
+                            <td class="text-nowrap text-muted" wire:click="Visualiser({{ $ticket->id }})">{{ $ticket->created_at->format('d M Y H:i') }}</td>
+                            {{-- <td class="text-nowrap text-muted">
                                 <div class="action-buttons">
-                                    <button class="btn-action btn-view">
-                                        <a href="{{ url('/admin/ticket-view-'.$ticket->id) }}">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </button>
+                                    
                                     <button wire:click="$dispatch('editTicket', {id: {{ $ticket->id }}})"
                                             class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i>
@@ -286,7 +284,7 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                     </tbody>
@@ -295,7 +293,9 @@
 
             <!-- Pagination -->
             <div class="mt-4 container">
-                {{ $tickets->links() }}
+                <small>
+                    {{ $tickets->links() }}
+                </small>
             </div>
         </div>
     </div>

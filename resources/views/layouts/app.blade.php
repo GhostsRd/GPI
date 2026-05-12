@@ -92,24 +92,25 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Ubuntu, Noto Sans, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; !important";
             font-size: 0.75rem !important;
         }
+        
 
         /* Réduction globale pour un aspect compact */
         .sidebar-modern {
-            font-size: 0.7rem !important;
+            font-size: 1rem !important;
         }
 
         .nav-link-modern {
-            font-size: 0.68rem !important;
+            font-size: 0.8rem !important;
             padding: 0.4rem 0.75rem !important;
         }
 
         .nav-link-modern h6 {
-            font-size: 0.68rem !important;
+          
             margin: 0 !important;
-            font-weight: 600 !important;
+            
         }
 
         .nav-link-modern i {
@@ -117,13 +118,11 @@
         }
 
         .submenu-item {
-            font-size: 0.65rem !important;
+          
             padding: 0.25rem 0.75rem 0.25rem 1.8rem !important;
         }
 
-        .sidebar-header-modern h6 {
-            font-size: 0.8rem !important;
-        }
+      
 
         .sidebar-header-modern small {
             font-size: 0.65rem !important;
@@ -320,62 +319,74 @@
 
     <!-- Modern Sidebar -->
     <aside class="sidebar-modern shadow border-0 d-flex flex-column" style="z-index: 1000 !important; height: 100vh;" id="sidebarModern">
-        <nav class="sidebar-nav-modern flex-grow-1">
+        <nav class="sidebar-nav-modern py-2 flex-grow-1 ">
             <!-- Dashboard -->
             <div class="nav-item-modern">
                 <a class="nav-link-modern shadow-sm active" href="{{ url('/home') }}">
+                   {{-- <i class="bi bi-grid-1x2-fill"></i> --}}
+                   <img src="{{ url('images/bureau.png') }}" alt="Logo ONG Pivot" width="40" class="rounded-pill me-2">
+                    <h5 class="fw-bold mt-1"
+                    style="font-family: 'UnifrakturCook', cursive;font-size: 20px;color: #2d4052c5;
+                text-shadow: 2px 2px 5px rgba(128, 128, 128, 0.796);
+                letter-spacing: 2px;"
+                    >
+                    GPI</h5>
+                </a>
+            </div>
+            <div class="nav-item-modern mt-3">
+                <a class="nav-link-modern " href="{{ url('/home') }}">
                    <i class="bi bi-grid-1x2-fill"></i>
-                    <h6 class="fw-bold mt-1">Tableau de bord</h6>
+                    <h5 class="fw-bold mt-1 text-muted">Tableau de bord</h5>
                 </a>
             </div>
 
             <!-- Parc Informatique -->
-            <div class="nav-item-modern mt-2">
+            <div class="nav-item-modern mt-2 ">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#parcCollapse">
-                    <i class="nav-icon bi bi-pc-display fs-6 text-secondary"></i>
+                    <i class="nav-icon bi bi-pc-display fs-6 "></i>
                     <span>Parc Informatique</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
 
-                <div class="collapse" id="parcCollapse">
+                <div class="collapse mt-2" id="parcCollapse">
                     <div class="nav-submenu">
                         <!-- Sous-menu Équipements -->
-                        <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#equipementCollapse">
+                        <a class="nav-link-modern collapsed py-2   " data-bs-toggle="collapse" href="#equipementCollapse">
                             <i class="bi bi-laptop"></i>
                             <span>Équipements</span>
                             <i class="nav-chevron bi bi-chevron-down"></i>
                         </a>
-                        <div class="collapse" id="equipementCollapse">
-                            <div class="nav-submenu">
-                                <a href="{{ url('equipement') }}" class="submenu-item">
+                        <div class="collapse " id="equipementCollapse">
+                            <div class="nav-submenu py-2">
+                                <a href="{{ url('equipement') }}" class="submenu-item mt-2">
                                     <i class="bi bi-laptop"></i>
                                     Vue d'ensemble équipements
                                 </a>
-                                <a href="{{ url('ordinateur') }}" class="submenu-item">
+                                <a href="{{ url('ordinateur') }}" class="submenu-item mt-2">
                                     <i class="bi bi-laptop"></i>
                                     Ordinateurs
                                 </a>
-                                <a href="{{ url('moniteur') }}" class="submenu-item">
+                                <a href="{{ url('moniteur') }}" class="submenu-item mt-2">
                                     <i class="bi bi-display"></i>
                                     Moniteurs
                                 </a>
-                                <a href="{{ url('logiciel') }}" class="submenu-item">
+                                <a href="{{ url('logiciel') }}" class="submenu-item mt-2">
                                     <i class="bi bi-window"></i>
                                     Logiciels
                                 </a>
-                                <a href="{{ url('imprimante') }}" class="submenu-item">
+                                <a href="{{ url('imprimante') }}" class="submenu-item mt-2">
                                     <i class="bi bi-printer"></i>
                                     Imprimantes
                                 </a>
-                                <a href="{{ url('materiel-reseau') }}" class="submenu-item">
+                                <a href="{{ url('materiel-reseau') }}" class="submenu-item mt-2 ">
                                     <i class="bi bi-hdd-network"></i>
                                     Matériel Réseaux
                                 </a>
-                                <a href="{{ url('telephone') }}" class="submenu-item">
+                                <a href="{{ url('telephone') }}" class="submenu-item mt-2">
                                     <i class="bi bi-telephone"></i>
                                     Téléphones
                                 </a>
-                                <a href="{{ url('peripherique') }}" class="submenu-item">
+                                <a href="{{ url('peripherique') }}" class="submenu-item mt-2">
                                     <i class="bi bi-usb-symbol"></i>
                                     Périphériques
                                 </a>
@@ -386,19 +397,19 @@
             </div>
 
             <!-- Utilisateurs -->
-            <div class="nav-item-modern">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#usersCollapse">
+            <div class="nav-item-modern mt-2">
+                <a class="nav-link-modern mt-2 collapsed" data-bs-toggle="collapse" href="#usersCollapse">
                     <i class="nav-icon bi bi-people-fill fs-6 text-secondary"></i>
                     <span>Utilisateurs</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
                 <div class="collapse" id="usersCollapse">
                     <div class="nav-submenu">
-                        <a href="{{ route('utilisateurDashboard') }}" class="submenu-item">
+                        <a href="{{ route('utilisateurDashboard') }}" class="mt-2 submenu-item">
                             <i class="bi bi-person-fill fs-6 text-secondary"></i>
                             Administrateur
                         </a>
-                        <a href="{{ route('listeutilisateur') }}" class="submenu-item">
+                        <a href="{{ route('listeutilisateur') }}" class="submenu-item mt-2">
                             <i class="bi bi-person-fill fs-6 text-secondary"></i>
                             Utilisateurs
                         </a>
@@ -407,22 +418,19 @@
             </div>
 
             <!-- Tickets -->
-            <div class="nav-item-modern">
+            <div class="nav-item-modern mt-2">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#ticketsCollapse">
                     <i class="nav-icon bi bi-ticket-perforated-fill fs-6 text-secondary"></i>
                     <span>Ticket & Support</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
-                <div class="collapse" id="ticketsCollapse">
+                <div class="collapse " id="ticketsCollapse">
                     <div class="nav-submenu">
                         <a href="{{ url('/ticket') }}" class="submenu-item">
                             <i class="bi bi-circle"></i>
                             Gestion Tickets
                         </a>
-                        <a href="{{ url('/ticket/create') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
-                            Nouveau Ticket
-                        </a>
+                        
                     </div>
                 </div>
             </div>
@@ -436,15 +444,15 @@
                 </a>
                 <div class="collapse" id="checkoutcollaps">
                     <div class="nav-submenu">
-                        <a href="{{ route('checkoutadmin') }}" class="submenu-item">
+                        <a href="{{ route('checkoutadmin') }}" class="submenu-item mt-2">
                             <i class="bi bi-box-arrow-in-right"></i>
                             Out/In
                         </a>
-                        <a href="{{ route('checkout.reservation.list') }}" class="submenu-item">
+                        <a href="{{ route('checkout.reservation.list') }}" class="submenu-item mt-2">
                             <i class="bi bi-box-arrow-right"></i>
                             Reservation equipement
                         </a>
-                        <a href="{{ url('??') }}" class="submenu-item">
+                        <a href="{{ url('??') }}" class="submenu-item mt-2">
                             <i class="bi bi-box-arrow-right"></i>
                             Rapport et statistique
                         </a>
@@ -453,40 +461,37 @@
             </div>
 
             <!-- Incident -->
-            <div class="nav-item-modern">
+            <div class="nav-item-modern mt-2">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#incidentcollaps">
                     <i class="bi bi-exclamation-triangle-fill text-muted"></i>
                     <span>Incident</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
-                <div class="collapse" id="incidentcollaps">
+                <div class="collapse mt-2" id="incidentcollaps">
                     <div class="nav-submenu">
-                        <a href="#" class="submenu-item">
-                            <i class="bi bi-box-arrow-in-right"></i>
-                            Nouveau
-                        </a>
+                       
                         <a href="{{ route('admin.incident.list') }}" class="submenu-item">
                             <i class="bi bi-box-arrow-right"></i>
-                            Gerer
+                            Gestion Incidents
                         </a>
                     </div>
                 </div>
             </div>
 
             <!-- Documentation -->
-            <div class="nav-item-modern">
+            <div class="nav-item-modern mt-2">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#documentationCollapse">
                     <i class="bi bi-journal-text text-muted"></i>
                     <span>Documentation</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
-                <div class="collapse" id="documentationCollapse">
+                <div class="collapse mt-2" id="documentationCollapse">
                     <div class="nav-submenu">
-                        <a href="#" class="submenu-item">
+                        <a href="#" class="submenu-item mt-2">
                             <i class="bi bi-box-arrow-in-right"></i>
                             Nouveau
                         </a>
-                        <a href="{{ route('documentation.admin-doc') }}" class="submenu-item">
+                        <a href="{{ route('documentation.admin-doc') }}" class="submenu-item mt-2">
                             <i class="bi bi-box-arrow-right"></i>
                             Gerer
                         </a>
@@ -496,7 +501,7 @@
 
             
             <!-- Gerer -->
-            <div class="nav-item-modern">
+            <div class="nav-item-modern mt-2">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#gestion">
                     <i class="bi bi-folder-fill text-secondary fs-6"></i>
                     <span>Gerer</span>
@@ -504,15 +509,15 @@
                 </a>
                 <div class="collapse" id="gestion">
                     <div class="nav-submenu">
-                        <a href="{{ route('admin.notifications') }}" class="submenu-item">
+                        <a href="{{ route('admin.notifications') }}" class="submenu-item mt-2">
                             <i class="bi bi-bell-fill"></i>
                             Notifications
                         </a>
-                        <a href="#" class="submenu-item">
+                        <a href="#" class="submenu-item mt-2">
                             <i class="bi bi-chat-dots"></i>
                             Chat
                         </a>
-                        <a href="#" class="submenu-item">
+                        <a href="#" class="submenu-item mt-2">
                             <i class="bi bi-archive"></i>
                             Archive
                         </a>
@@ -521,27 +526,27 @@
             </div>
 
             <!-- Carte SIM -->
-            <div class="nav-item-modern">
+            <div class="nav-item-modern mt-2">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#simCollapse">
                     <i class="bi bi-sim text-secondary fs-6"></i>
-                    <span>Gestion SIM</span>
+                    <span> SIM</span>
                     <i class="nav-chevron bi bi-chevron-down"></i>
                 </a>
                 <div class="collapse" id="simCollapse">
                     <div class="nav-submenu">
                         @if(Auth::user()->isAdmin() || Auth::user()->isManager())
-                            <a href="{{ route('admin.sim.dashboard') }}" class="submenu-item">
+                            <a href="{{ route('admin.sim.dashboard') }}" class="submenu-item mt-2">
                                 <i class="bi bi-graph-up"></i>
-                                Dashboard
+                                Analyse
                             </a>
-                            <a href="{{ route('admin.sim.list') }}" class="submenu-item">
+                            <a href="{{ route('admin.sim.list') }}" class="submenu-item mt-2">
                                 <i class="bi bi-list-ul"></i>
                                 Flotte SIM
                             </a>
                         @endif
                         
                         @if(Auth::user()->isUser())
-                            <a href="{{ route('utilisateur.sim.my-sims') }}" class="submenu-item">
+                            <a href="{{ route('utilisateur.sim.my-sims') }}" class="submenu-item mt-2">
                                 <i class="bi bi-person-badge"></i>
                                 Mes SIMs
                             </a>
@@ -551,7 +556,7 @@
             </div>
 
             <!-- Paramètres -->
-            <div class="nav-item-modern">
+            <div class="nav-item-modern mt-2">
                 <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#settingsCollapse">
                     <i class="nav-icon bi bi-gear-fill fs-6 text-secondary"></i>
                     <span>Paramètres</span>
@@ -559,13 +564,9 @@
                 </a>
                 <div class="collapse" id="settingsCollapse">
                     <div class="nav-submenu">
-                        <a href="{{ url('/produit') }}" class="submenu-item">
+                        <a href="{{ url('/parametres') }}" class="submenu-item mt-2">
                             <i class="bi bi-circle"></i>
-                            Produits
-                        </a>
-                        <a href="{{ url('/parametres') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
-                            Configuration
+                            utilisateurs
                         </a>
                     </div>
                 </div>

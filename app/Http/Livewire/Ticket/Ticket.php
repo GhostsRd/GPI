@@ -21,7 +21,35 @@ class Ticket extends Component
     public $sortField = 'id';
     public $sortDirection = 'asc';
     public $archive = false;
+    public $selectAll = false;
 
+  
+    
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedTickets = TicketModel::where("responsable_id", Auth::user()->id)
+                ->where("categorie", "like", "%" . $this->categorie . "%")
+                ->where("archive", "like", "%" . $this->archive . "%")
+                ->when($this->recherche, function ($query) {
+                    $query->where(function ($q) {
+                        $q->where("reference", "like", "%" . $this->recherche . "%")
+                            ->orWhere("sujet", "like", "%" . $this->recherche . "%");
+                    });
+                })
+                ->pluck('id')
+                ->toArray();
+
+              
+        } else {
+            $this->selectedTickets = [];
+        }
+    }
+   
+    public function mount(){
+        $this->selectAll;
+        $this->selectedTickets;
+    }
 
     public function archiveActive(){
         $this->archive = !$this->archive;

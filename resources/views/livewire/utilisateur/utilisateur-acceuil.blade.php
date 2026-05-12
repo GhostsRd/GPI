@@ -6109,7 +6109,7 @@
             <div class="card-body">
               <h5 class="card-title">Ticket contenu</h5>
               <p class="card-text">Créez et gérez vos tickets de support.</p>
-              <a href="{{ url('/utilisateur-service') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Creer ticket </a>
+              <a href="{{ url('/utilisateur-service') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Créer un ticket </a>
             </div>
           </div>
         </div>
