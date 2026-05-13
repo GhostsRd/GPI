@@ -1,5 +1,10 @@
 <div class="container-fluid row " style="margin-top: 5% ;scrollbar-width: none; -ms-overflow-style: none;"
     style="height:40vh;">
+     <div wire:loading.flex
+        class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
+        style="z-index: 10;">
+        <div class="spinner-border text-secondary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+    </div>
     <div class="col-lg-2  d-none d-lg-block d-xl-block py-1 px-0 ">
 
         @livewire('component.menu-utilisateur')
@@ -7,11 +12,11 @@
        
     </div>
 
-    <div class="offset-1 col-lg-8 bg-white">
+    <div class="offset-sm-1 col-lg-7 bg-white">
         <div class=" m-2  m-lg-0 m-xl-0  row  mt-4 border-0 border-md-start"
         style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
         <div wire:ignore.self class="p-2 col-lg-12 ">
-            <h5 class="mt-2 pb-4 border-bottom fw-bold">Calendrier de vos reservation</h5>
+            <h5 class="mt-2 pb-4 border-bottom fw-bold">Calendrier de mes reservation</h5>
             <label class="text-muted  d-flex justify-content-between">Disponibilite /
                 Tous vos reservation </label>
             <div class="d-flex  justify-content-end">
@@ -25,13 +30,13 @@
 
             </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-9">
             <div id='calendar' wire:ignore
                 style="width: 100% !important ;max-height:500px;overflow-y:scroll; scrollbar-width: none; -ms-overflow-style: none;">
             </div>
 
         </div>
-        <div class="col-lg-4   mt-4">
+        <div class="col-lg-3   mt-4">
             <h5 class="py-2 border-bottom">Prochaine rendez-vous</h5>
 
             <div>

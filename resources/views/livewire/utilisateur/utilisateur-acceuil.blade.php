@@ -6137,7 +6137,7 @@
             <div class="card-body">
               <h5 class="card-title">Reservation</h5>
               <p class="card-text">Reservez vos équipements en ligne.</p>
-              <a href="{{ url('/utilisateur-reservation') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Faire une réservation</a>
+              <a href="{{ url('/utilisateur-calendrier') }}" class="btn btn-two text-white fw-bold btn-xs-sm btn-xs-sm rounded-pill shadow-sm">Faire une réservation</a>
             </div>
           </div>
         </div>

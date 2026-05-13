@@ -1,4 +1,9 @@
 <div style="margin-top: 5%" class=" bg-md-white-cust ">
+     <div wire:loading.flex
+        class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
+        style="z-index: 10;">
+        <div class="spinner-border text-secondary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+    </div>
     <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-light p-0  colg-lg-3 mt-4 " id="sidebar">
 
         <!-- Header -->
@@ -275,14 +280,14 @@
 
     </div>
 
-    <div class="container-fluid main-content">
+    <div class="container-fluid ">
         <div class="row col-lg-11  offset-xs-0 col-12">
             <div class="col-lg-2 bg-light py-1 px-0 d-md-block d-xl-block d-none ">
 
 
                 @livewire('component.menu-utilisateur')
 
-                
+
             </div>
             <div class="mt-2 offset-lg-1 p-xs-0 p-0 p-md-0 p-xl-2 py-5 bg-white  col-lg-8 rounded-2"
                 style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
@@ -408,36 +413,36 @@
 
                         </div>
 
-                        <strong href="#" class=" border-0 px-md-4 px-lg-4 " aria-current="true">
+                        <div
+                            class="d-flex flex-wrap align-items-center justify-content-between mb-3 mt-4 pb-2 border-bottom shadow-none">
 
-                            <div class="d-flex active w-100  justify-content-between border-top mt-md-2 ">
-                                <label class="mb-1 fw-bold py-1 mt-3 d-none d-md-block d-lg-block">Liste de vos
-                                    incident</label>
-                                <input type="text" name="" placeholder="Recheche"
-                                    class="form-control-sm mb-1 d-block d-md-none d-lg-none fw-bold  border-0 border-bottom-1  mt-3 "
-                                    id="">
 
-                                <small class="mt-3">
-                                    <div class="shadow-sm p-2 rounded-2">
+                            <div class="d-flex align-items-center gap-3 flex-grow-1 me-4">
 
-                                        Filtre par :
-                                        <span>
-                                            <select name="" id="" class="border-0 px-2" wire:model="filtrerticket">
-                                                <option value="">Tous</option>
-                                                <option value="1" class="border-0 ">En cours </option>
-                                                <option value="2" class="border-0 ">En traitement </option>
-                                                <option value="3" class="border-0  shadow-sm">Resolu</option>
-                                                <option value="4" class="border-0 ">Fermer</option>
+                                <div class="position-relative flex-grow-1" >
 
-                                            </select>
-                                        </span>
-                                    </div>
-                                    {{-- <input type="text" wire:model="recherche"
-                                        class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
-                                        placeholder="Recherche par sujet.."> --}}
-                                </small>
+                                    <input type="text" wire:model.live="Recheche"
+                                        class="form-control form-control-sm  border-0 bg-light rounded-2 ps-5 pe-3 shadow-none w-100 "
+                                        placeholder="Rechercher un sujet..."
+                                        style="min-width: 250px; font-size: 0.85rem; color: #475569;">
+                                </div>
+
+                                <div class="d-flex align-items-center  border-0 shadow-sm rounded-pill px-3 bg-white border"
+                                    style="height: 38px;">
+                                <label class=" text-subtle small fw-bold mb-0 me-2" style="white-space: nowrap;">Filtre
+                                    :</label>
+                                    <select wire:model.live="filtrerticket"
+                                        class="border-0  bg-transparent text-soft small fw-semibold outline-none"
+                                        style="cursor: pointer; width: auto; min-width: 100px;">
+                                        <option value="">Tous</option>
+                                        <option value="1">En cours</option>
+                                        <option value="2">En traitement</option>
+                                        <option value="3">Résolu</option>
+                                        <option value="4">Fermé</option>
+                                    </select>
+                                </div>
                             </div>
-                        </strong>
+                        </div>
                         <div class="list-group  mt-2 px-lg-4 px-md-4 px-2"
                             style="max-height:700px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
 
@@ -495,20 +500,22 @@
                                 </div>
                             </a>
                             @empty
-                            <p class="mt-4 text-center p-4">
+                            <div
+                                class="d-flex flex-column align-items-center justify-content-center p-5 mt-4 rounded-4 bg-light border border-dashed">
+                                <div class="bg-white shadow-sm rounded-circle d-flex align-items-center justify-content-center mb-3"
+                                    style="width: 80px; height: 80px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-warning opacity-75" width="40"
+                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                    </svg>
+                                </div>
 
-                                <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="80" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                </svg>
-                                <br>
-                                <br>
+                                <h6 class="fw-bold text-dark mb-1">Aucun incident trouvé</h6>
+                                <p class="text-muted small mb-0">Essayez de modifier vos filtres ou votre recherche.</p>
 
-                                <span class="my-4">Aucun Incident trouvé </span>
-                                <br>
-
-                            </p>
+                               
+                            </div>
                             @endforelse
 
                             <div class="mt-4 d-flex justify-content-center">

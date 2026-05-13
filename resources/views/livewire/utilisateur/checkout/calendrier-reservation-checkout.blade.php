@@ -1,30 +1,32 @@
 <div class="container-fluid row " style="margin-top: 5% ;scrollbar-width: none; -ms-overflow-style: none;"
     style="height:40vh;">
-    <div class="col-lg-2  bg-white d-none d-lg-block d-xl-block py-1 px-0 ">
-
-
+     <div wire:loading.flex
+        class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
+        style="z-index: 10;">
+        <div class="spinner-border text-secondary" role="status" style="width: 1.5rem; height: 1.5rem;"></div>
+    </div>
+    <div class="col-lg-2 d-none d-lg-block d-xl-block py-1 px-0 ">
         @livewire('component.menu-utilisateur')
-
-       
     </div>
 
-    <div class="col-lg-9 row offset-1  mt-4 border-start"
+    <div class="col-lg-7 row offset-1 bg-white mt-2 shadow-sm rounded-2"
         style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
         <div wire:ignore.self class="p-2 col-lg-12 ">
             <h5 class="mt-2 pb-4 border-bottom fw-bold">Disponibilite de ce materiel</h5>
             <div class="row">
                 <div class="col-lg-8 col-8">
-                    <label class="text-muted mt-1 mt-md-0 mt-lg-0 d-flex justify-content-between">Materiel /
-                        
+                    <label class="text-muted mt-1 mt-md-0 mt-lg-0 d-flex justify-content-between">
+                        Materiel /
+
                         @if($type_materiel == 'peripherique' )
-                            {{ $firsts?->type ?? 'Aucun equipement trouver' }}
-                            {{ $firsts?->nom ?? 'Aucun equipement trouver' }}
+                        {{ $firsts?->type ?? 'Aucun equipement trouver' }}
+                        {{ $firsts?->nom ?? 'Aucun equipement trouver' }}
 
                         @else
 
                         {{ $firsts?->nom ?? 'Aucun matériel trouvé' }} /
                         {{ $firsts?->os_version }} {{ $firsts?->marque }} </label>
-                        @endif
+                    @endif
 
                 </div>
                 <div class="col-lg-4 col-4">
@@ -39,74 +41,115 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-10">
+        <div class="col-lg-9">
             <div id='calendar' wire:ignore
                 style="width: 100% !important ;max-height:500px;overflow-y:scroll; scrollbar-width: none; -ms-overflow-style: none;">
             </div>
 
         </div>
-        <div class="col-lg-2   mt-4">
-            <h5 class="py-2">Dernier reservation</h5>
-
-            <div>
+        <div class="col-lg-3   mt-4">
+            <div class="mt-4 border-top pt-3">
+                <h6 class="small fw-bold text-uppercase text-muted mb-3" style="letter-spacing: 0.5px;">
+                    Dernière réservation
+                </h6>
 
                 @if ($lastEvent)
-                    Type de materiel :<label
-                        class="text-muted text-center py-1 text-capitalize"><small>
-                            
-                            {{ $lastEvent->equipement_type }}   
+                <div class="d-flex align-items-start p-2 rounded-3 border bg-white shadow-xs">
+                    <div class="me-2 text-primary bg-primary-subtle rounded p-2 d-flex align-items-center justify-content-center"
+                        style="width: 32px; height: 32px;">
+                        @switch($lastEvent->equipement_type)
+                        @case('ordinateur') <i class="fas fa-laptop fa-xs"></i> @break
+                        @case('telephone') <i class="fas fa-mobile-alt fa-xs"></i> @break
+                        @default <i class="fas fa-plug fa-xs"></i>
+                        @endswitch
+                    </div>
 
-                            @if($lastEvent->equipement_type == 'peripherique')
-                            {{ $lastEvent->peripherique->type  }}</small></label>
+                    <div class="flex-grow-1 min-w-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-dark small text-truncate">
+                                {{ $lastEvent->equipement_type == 'peripherique' ? ($lastEvent->peripherique->type ??
+                                'Périph.') : ucfirst($lastEvent->equipement_type) }}
+                            </span>
+                        </div>
 
-                            @endif
+                        <div class="text-muted" style="font-size: 0.75rem;">
+                            {{ \Carbon\Carbon::parse($lastEvent->date_debut)->translatedFormat('d/m') }}
+                            <i class="fas fa-long-arrow-alt-right mx-1 opacity-50"></i>
+                            {{ \Carbon\Carbon::parse($lastEvent->date_fin)->translatedFormat('d/m/y') }}
+                        </div>
 
-                            {{-- {{ $lastEvent->equipement_type == 'ordinateur' ? $lastEvent->ordinateur->nom : $lastEvent->TelephoneTablette->nom }}</small></label> --}}
-                    <br>
-                    Utilisateur :
-                    <label class="text-muted">
-                        <img class="dropdown-toggle p-1 m-0 rounded-pill" data-toggle="dropdown"
-                            src="https://ui-avatars.com/api/?name={{ $lastEvent->responsable->nom }}" alt="Profil"
-                            width="40" height="30">
-                        <small>{{ $lastEvent->responsable->nom }}</small>
-                    </label>
-                    <br>
-                    Date debut : <label class="text-muted text-center py-1 text-capitalize"><small>
-                            {{ \Carbon\Carbon::parse($lastEvent->date_debut)->translatedFormat('d M Y') }}
-                        </small></label>
-                    <br>
-                    Date fin : <label
-                        class="text-muted text-center py-1 text-capitalize"><small>{{ \Carbon\Carbon::parse($lastEvent->date_fin)->translatedFormat('d M Y') }}
-                        </small></label>
-                    <br>
+                        <div class="d-flex align-items-center mt-1 pt-1 border-top border-light">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($lastEvent->responsable->nom) }}&background=5BC4BF&color=fff"
+                                width="16" height="16" class="rounded-circle me-1">
+                            <span class="text-muted" style="font-size: 0.7rem;">{{ $lastEvent->responsable->nom
+                                }}</span>
+                        </div>
+                    </div>
+                </div>
                 @else
-                    <p class="">
-                        Aucun événement trouvé.</p>
+                <div class="text-center py-2 bg-light rounded small text-muted">
+                    Aucun historique
+                </div>
                 @endif
             </div>
 
-            <div class=" py-2 border-2 mt-2">
-                <label>Prochaine rendez-vous</label>
-                @forelse ($prochaines as $prochaine)
-                    <div class="py-2 ">
-                        • Le <small>
-                            {{ \Carbon\Carbon::parse($prochaine->date_debut)->translatedFormat('d M Y') }}
-                        </small> -
-                        <small>{{ $prochaine->equipement_type }}
-                            @if($prochaine->equipement_type == 'peripherique')
-                                {{ $prochaine->peripherique->type }} {{ $prochaine->peripherique->nom  }}
-                            @endif
-                        </small>
-                            {{-- {{ $prochaine->equipement_type == 'ordinateur' ? $prochaine->ordinateur->nom : $prochaine->TelephoneTablette->nom }}</small> --}}
 
+            <div class="mt-4 border-top pt-3">
+                <label class="text-uppercase text-muted small fw-bold mb-3 d-block" style="letter-spacing: 1px;">
+                    <i class="fas fa-calendar-check me-2 text-primary"></i>Prochains rendez-vous
+                </label>
+
+                <div class="list-group list-group-flush shadow-sm rounded-3 overflow-hidden">
+                    @forelse ($prochaines as $prochaine)
+                    <div class="list-group-item list-group-item-action border-start border-primary border-4 py-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="fw-bold text-dark mb-1">
+                                    {{ \Carbon\Carbon::parse($prochaine->date_debut)->translatedFormat('d F Y') }}
+                                </div>
+
+                                <div class="text-muted small d-flex align-items-center">
+                                    @switch($prochaine->equipement_type)
+                                    @case('ordinateur')
+                                    <i class="fas fa-laptop me-2"></i>
+                                    <span>Ordinateur : <strong>{{ $prochaine->ordinateur->nom ?? 'Inconnu'
+                                            }}</strong></span>
+                                    @break
+                                    @case('telephone')
+                                    <i class="fas fa-mobile-alt me-2"></i>
+                                    <span>Téléphone : <strong>{{ $prochaine->TelephoneTablette->nom ?? 'Inconnu'
+                                            }}</strong></span>
+                                    @break
+                                    @case('peripherique')
+                                    <i class="fas fa-plug me-2"></i>
+                                    <span>{{ $prochaine->peripherique->type ?? 'Périphérique' }} - <strong>{{
+                                            $prochaine->peripherique->nom ?? '' }}</strong></span>
+                                    @break
+                                    @default
+                                    <i class="fas fa-box me-2"></i>
+                                    <span>{{ $prochaine->equipement_type }}</span>
+                                    @endswitch
+                                </div>
+                            </div>
+
+                            @php
+                            $days = \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($prochaine->date_debut),
+                            false);
+                            @endphp
+                            <span
+                                class="badge {{ $days <= 2 ? 'bg-warning' : 'bg-light text-dark' }} rounded-pill border">
+                                {{ $days == 0 ? "Aujourd'hui" : ($days < 0 ? 'Passé' : "Dans $days j." ) }} </span>
+                        </div>
                     </div>
-
-                @empty
-                    <p class="">
-                        Aucun événement pour le moment.</p>
-                @endforelse
-
+                    @empty
+                    <div class="text-center py-4 bg-light rounded-3 border-dashed">
+                        <i class="fas fa-calendar-times text-muted mb-2 fa-2x"></i>
+                        <p class="text-muted mb-0">Aucun rendez-vous planifié.</p>
+                    </div>
+                    @endforelse
+                </div>
             </div>
+
         </div>
         <div class="border-top mt-2 col-lg-12">
             <h5 class="py-4">Historique de vos reservation</h5>
@@ -114,47 +157,77 @@
             <div class="list-group mt-2  bg-white "
                 style="max-height:400px;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
                 @foreach ($historiques as $event)
-                    <a href="#" style="--bs-bg-opacity: .5;"
-                        class="list-group-item list-group-item-action border-0 border-top  {{ $event->created_at->isToday() ? '' : '' }} "
-                        wire:click="visualiser({{ $event->id }})" data-bs-toggle="modal"
-                        data-bs-target="#lightModalview">
+                <a href="#"
+                    class="list-group-item list-group-item-action border-0 border-bottom py-3 px-3 transition-all hover-shadow"
+                    wire:click="visualiser({{ $event->id }})" data-bs-toggle="modal" data-bs-target="#lightModalview"
+                    style="border-left: 4px solid {{ $event->statut == 1 ? '#ffc107' : ($event->statut == 2 ? '#198754' : '#6c757d') }};">
 
-                        <div class="d-flex w-100 justify-content-between">
-                            <b class="mb-1 text-black-50"># {{ $event->id }} -
-                                {{ $event->equipement_type }} ({{ $event->equipement_nombre }})
-                            </b>
-                            <small class="text-body-secondary">
-                                {{ \Carbon\Carbon::parse($event->date_debut)->translatedFormat('d M Y') }} -
+                    <div class="d-flex w-100 justify-content-between align-items-start">
+                        <div>
+                            <h6 class="mb-1 fw-bold text-dark text-capitalize">
+                                {{ $event->equipement_type }}
+                                <span class="badge bg-light text-secondary border fw-normal ms-1">{{
+                                    $event->equipement_nombre }}</span>
+                            </h6>
+
+                            <p class="mb-2 text-muted small">
+                                <i class="far fa-hdd me-1"></i>
+                                @if($event->equipement_type == 'ordinateur')
+                                {{ $event->ordinateur->os_version ?? 'OS non spécifié' }}
+                                @elseif($event->equipement_type == 'telephone')
+                                {{ $event->TelephoneTablette->nom ?? '' }} {{ $event->TelephoneTablette->marque ?? '' }}
+                                @elseif($event->equipement_type == 'peripherique')
+                                {{ $event->peripherique->type ?? '' }} {{ $event->peripherique->nom ?? '' }}
+                                @else
+                                Aucun détail
+                                @endif
+                            </p>
+                        </div>
+
+                        <div class="text-end">
+                            <small class="text-body-secondary d-block mb-1">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                {{ \Carbon\Carbon::parse($event->date_debut)->translatedFormat('d M') }} -
                                 {{ \Carbon\Carbon::parse($event->date_fin)->translatedFormat('d M Y') }}
                             </small>
-                            </small>
+
+                            @php
+                            $statusClasses = [
+                            1 => 'bg-warning-subtle text-warning-emphasis border-warning',
+                            2 => 'bg-success-subtle text-success-emphasis border-success',
+                            3 => 'bg-secondary-subtle text-secondary-emphasis border-secondary'
+                            ];
+                            $statusLabels = [1 => 'En cours', 2 => 'Validé', 3 => 'Fermé'];
+                            @endphp
+                            <span
+                                class="badge border {{ $statusClasses[$event->statut] ?? $statusClasses[3] }} rounded-pill px-2">
+                                {{ $statusLabels[$event->statut] ?? 'Inconnu' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex w-100 justify-content-between align-items-center mt-2">
+                        <div class="d-flex align-items-center text-muted small">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($event->responsable->nom) }}&background=5BC4BF&color=fff"
+                                alt="Profil" width="24" height="24" class="rounded-circle me-2 shadow-sm">
+                            <span>{{ $event->responsable->nom }}</span>
                         </div>
 
-                        <div class="d-flex w-100 mt-2 justify-content-between">
-                            <p class="mb-1 text-capitalize">
-                                <small class="text-muted">
-                                    {{ $event->equipement_type == 'ordinateur'
-                                        ? $event->ordinateur->os_version
-                                        : ($event->equipement_type == 'telephone'
-                                            ? $event->TelephoneTablette->nom . ' ' . $event->TelephoneTablette->marque
-                                            : ($event->equipement_type == 'peripherique'
-                                            ? $event->peripherique->type . ' ' . $event->peripherique->nom
-                                            : 'aucun') ) }}
-                                </small>
-                            </p>
-                            {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
-                                                        {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
-                                                    </small> --}}
-                            <div class="d-flex justify-content-end">
-                                <small
-                                    class="text-muted mx-2">{{ $event->statut == 1 ? 'En cours' : ($event->statut == 2 ? 'Valider' : 'Fermer') }}</small>
-                                <img class="dropdown-toggle  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                    src="https://ui-avatars.com/api/?name={{ $event->responsable->nom }}"
-                                    alt="Profil" width="30" height="30" class="rounded-circle me-2">
-                            </div>
-                        </div>
+                        <i class="fas fa-chevron-right text-light" style="font-size: 0.8rem;"></i>
+                    </div>
+                </a>
 
-                    </a>
+                <style>
+                    .hover-shadow:hover {
+                        background-color: #f8f9fa !important;
+                        transform: translateX(5px);
+                        transition: all 0.2s ease-in-out;
+                    }
+
+                    .transition-all {
+                        transition: all 0.2s ease-in-out;
+                    }
+                </style>
                 @endforeach
                 <div class="mt-4 text-small d-flex justify-content-center">
                 </div>
@@ -166,34 +239,35 @@
     <div class="modal modal fade" wire:ignore.self id="centeredModalreservation" tabindex="-1"
         aria-labelledby="centeredModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content  border-0"> <!-- réduit l’ombre -->
+            <div class="modal-content  border-0">
+                <!-- réduit l’ombre -->
 
                 <h5 class="mx-2 mt-2 text-teal fw-bold">Réservation d'équipement</h5>
 
                 <div class="mt-1 p-2 border-top">
                     @if ($type_materiel == 'ordinateur' && $selectedEquipements)
-                        <label class="fw-bold mx-2">
-                            @foreach ($selectedEquipements as $materiel)
-                                {{ $materiel->nom }} {{ $materiel->os }}
-                            @endforeach
-                            / État /
-                        </label>
+                    <label class="fw-bold mx-2">
+                        @foreach ($selectedEquipements as $materiel)
+                        {{ $materiel->nom }} {{ $materiel->os }}
+                        @endforeach
+                        / État /
+                    </label>
                     @endif
                     @if ($type_materiel == 'telephone' && $selectedEquipements)
-                        <label class="fw-bold mx-2">
-                            @foreach ($selectedEquipements as $materiel)
-                                {{ $materiel->nom }} {{ $materiel->os }}
-                            @endforeach
-                            / État /
-                        </label>
+                    <label class="fw-bold mx-2">
+                        @foreach ($selectedEquipements as $materiel)
+                        {{ $materiel->nom }} {{ $materiel->os }}
+                        @endforeach
+                        / État /
+                    </label>
                     @endif
                     @if ($type_materiel == 'peripherique' && $selectedEquipements)
-                        <label class="fw-bold mx-2">
-                            @foreach ($selectedEquipements as $materiel)
-                              {{ $materiel->type }}  {{ $materiel->nom }} 
-                            @endforeach
-                            / État /
-                        </label>
+                    <label class="fw-bold mx-2">
+                        @foreach ($selectedEquipements as $materiel)
+                        {{ $materiel->type }} {{ $materiel->nom }}
+                        @endforeach
+                        / État /
+                    </label>
                     @endif
 
 
@@ -216,8 +290,8 @@
                     </div>
                     <label class="form-label mt-2 mx-1">Commentaire ( <span class="text-muted">Optionnel</span>
                         )</label> <br>
-                    <textarea type="text" placeholder="Commencer à écrire" class="input-recherche px-2 w-100 border rounded py-2"
-                        wire:model="commentaire"></textarea>
+                    <textarea type="text" placeholder="Commencer à écrire"
+                        class="input-recherche px-2 w-100 border rounded py-2" wire:model="commentaire"></textarea>
                 </div>
 
                 <div class="modal-footer">
@@ -235,53 +309,52 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             @foreach ($selectedMateriels as $item)
-                <div class="modal-content">
-                    <div class="modal-header border-0  pb-0">
-                        <label class="modal-title fw-bold  " id="lightModalLabel">
+            <div class="modal-content">
+                <div class="modal-header border-0  pb-0">
+                    <label class="modal-title fw-bold  " id="lightModalLabel">
 
-                            {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom : $item->TelephoneTablette->nom }}
-                            <small class="text-muted" style="font-size:0.8rem">cree le
-                                {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y H:m') }} </small>
+                        {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom :
+                        $item->TelephoneTablette->nom }}
+                        <small class="text-muted" style="font-size:0.8rem">cree le
+                            {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y H:m') }} </small>
 
-                        </label>
+                    </label>
 
-                        <button type="submt" data-bs-toggle="modal" data-bs-target="#lightModal"
-                            @if (
-                                ($item->date_debut > now() || $item->created_at->isToday()) &&
-                                    $item->responsable->id == $userConnected &&
-                                    $item->statut == 1) wire:click="ModifierView({{ $item->id }})"
-                            @else
-                            class="d-none" @endif
-                            wire:click="ModifierView({{ $item->id }})" class="btn btn-white">
-                            <i class="bi bi-pencil"></i>
-                        </button>
+                    <button type="submt" data-bs-toggle="modal" data-bs-target="#lightModal" @if ( ($item->date_debut >
+                        now() || $item->created_at->isToday()) &&
+                        $item->responsable->id == $userConnected &&
+                        $item->statut == 1) wire:click="ModifierView({{ $item->id }})"
+                        @else
+                        class="d-none" @endif
+                        wire:click="ModifierView({{ $item->id }})" class="btn btn-white">
+                        <i class="bi bi-pencil"></i>
+                    </button>
 
-                    </div>
-                    <div class="modal-body">
-                        <label class="form-label mt-2 mx-1">Date de début</label>
-                        <input class="form-control border-0 rounded-0 border-bottom" disabled
-                            value="{{ \Carbon\Carbon::parse($item->date_debut)->translatedFormat('d M Y') }}">
-
-                        <label class="form-label mt-2 mx-1">Date de retour</label>
-                        <input class="form-control border-0 rounded-0 border-bottom" disabled
-                            value="{{ \Carbon\Carbon::parse($item->date_fin)->translatedFormat('d M Y') }}">
-
-                        <label class="form-label mt-2 mx-1">Nombre</label>
-                        <input type="number" class="form-control border-0 rounded-0 border-bottom " disabled
-                            value="{{ $item->equipement_nombre }}" placeholder="Ex: 1">
-
-                        <label class="form-label mt-2 mx-1">Commentaire</label>
-                        <textarea placeholder="{{ $item->commentaire != null ? $item->commentaire : 'Aucun commentaire' }}" disabled
-                            rows="4" class="form-control" wire:model="commentaire">
-                    </textarea>
-                    </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-two text-white fw-bold"
-                            data-bs-dismiss="modal">Fermer</button>
-
-
-                    </div>
                 </div>
+                <div class="modal-body">
+                    <label class="form-label mt-2 mx-1">Date de début</label>
+                    <input class="form-control border-0 rounded-0 border-bottom" disabled
+                        value="{{ \Carbon\Carbon::parse($item->date_debut)->translatedFormat('d M Y') }}">
+
+                    <label class="form-label mt-2 mx-1">Date de retour</label>
+                    <input class="form-control border-0 rounded-0 border-bottom" disabled
+                        value="{{ \Carbon\Carbon::parse($item->date_fin)->translatedFormat('d M Y') }}">
+
+                    <label class="form-label mt-2 mx-1">Nombre</label>
+                    <input type="number" class="form-control border-0 rounded-0 border-bottom " disabled
+                        value="{{ $item->equipement_nombre }}" placeholder="Ex: 1">
+
+                    <label class="form-label mt-2 mx-1">Commentaire</label>
+                    <textarea placeholder="{{ $item->commentaire != null ? $item->commentaire : 'Aucun commentaire' }}"
+                        disabled rows="4" class="form-control" wire:model="commentaire">
+                    </textarea>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-two text-white fw-bold" data-bs-dismiss="modal">Fermer</button>
+
+
+                </div>
+            </div>
             @endforeach
         </div>
     </div>
@@ -292,47 +365,45 @@
 
             <div class="modal-content">
                 @foreach ($selectedMateriels as $item)
-                    <div class="modal-header border-0 pb-0 ">
-                        <label class="modal-title fw-bold" id="lightModalLabel">
+                <div class="modal-header border-0 pb-0 ">
+                    <label class="modal-title fw-bold" id="lightModalLabel">
 
-                            {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom : $item->TelephoneTablette->nom }}
+                        {{ $item->equipement_type == 'ordinateur' ? $item->ordinateur->nom :
+                        $item->TelephoneTablette->nom }}
 
-                        </label>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Fermer"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label class="form-label mt-2 mx-1">Date de début</label>
-                        <input type="date" style="z-index: 2600"
-                            class="form-control border-0 rounded-0 border-bottom" wire:model="datedeb"
-                            value="{{ $datedeb }}">
+                    </label>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label mt-2 mx-1">Date de début</label>
+                    <input type="date" style="z-index: 2600" class="form-control border-0 rounded-0 border-bottom"
+                        wire:model="datedeb" value="{{ $datedeb }}">
 
-                        <label class="form-label mt-2 mx-1">Date de retour</label>
-                        <input type="date" style="z-index: 2600"
-                            class="form-control border-0 rounded-0 border-bottom" required wire:model="datefin">
+                    <label class="form-label mt-2 mx-1">Date de retour</label>
+                    <input type="date" style="z-index: 2600" class="form-control border-0 rounded-0 border-bottom"
+                        required wire:model="datefin">
 
-                        <label class="form-label mt-2 mx-1">Nombre</label>
-                        <input type="number" style="z-index: 2600"
-                            class="form-control border-0 rounded-0 border-bottom" required wire:model="nbequipement"
-                            placeholder="Ex: 1">
+                    <label class="form-label mt-2 mx-1">Nombre</label>
+                    <input type="number" style="z-index: 2600" class="form-control border-0 rounded-0 border-bottom"
+                        required wire:model="nbequipement" placeholder="Ex: 1">
 
-                        <label class="form-label mt-2 mx-1">Commentaire</label>
-                        <textarea placeholder="Votre commentaire" style="z-index: 2600" rows="4" class="form-control"
-                            wire:model="commentaire">
+                    <label class="form-label mt-2 mx-1">Commentaire</label>
+                    <textarea placeholder="Votre commentaire" style="z-index: 2600" rows="4" class="form-control"
+                        wire:model="commentaire">
                     </textarea>
-                    </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button type="submit" wire:click="ModifierReservation"
-                            class="btn btn-two text-white fw-bold btn-sm">Enregistrer
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" wire:click="ModifierReservation"
+                        class="btn btn-two text-white fw-bold btn-sm">Enregistrer
 
-                        </button>
-                        <button type="submit" wire:click="AnnulerReservation({{ $item->id }})"
-                            data-bs-dismiss="modal" class="btn btn-danger text-white fw-bold btn-sm">Annuler
-                            reservation
-                            <div wire:loading wire:target="AnnulerReservation">...</div>
-                        </button>
-                    </div>
+                    </button>
+                    <button type="submit" wire:click="AnnulerReservation({{ $item->id }})" data-bs-dismiss="modal"
+                        class="btn btn-danger text-white fw-bold btn-sm">Annuler
+                        reservation
+                        <div wire:loading wire:target="AnnulerReservation">...</div>
+                    </button>
+                </div>
             </div>
             @endforeach
         </div>
@@ -351,15 +422,14 @@
 
             <div class="modal-body text-center">
                 @error('reservation_error')
-                    <div class="alert alert-danger">
-                        {{ $message }}
-                    </div>
+                <div class="alert alert-danger">
+                    {{ $message }}
+                </div>
                 @enderror
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-secondary position-relative" wire:click="clearErrorsFn"
-                    data-bs-dismiss="modal">
+                <button class="btn btn-secondary position-relative" wire:click="clearErrorsFn" data-bs-dismiss="modal">
 
                     <span wire:loading.remove wire:target="clearErrorsFn">
                         Fermer

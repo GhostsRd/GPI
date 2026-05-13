@@ -313,7 +313,7 @@
 
 
 
-    <div wire:ignore.self class="container-fluid main-content mt-md-3 mt-lg-3">
+    <div wire:ignore.self class="container-fluid  mt-md-3 mt-lg-3">
 
         <div class="row col-lg-11  offset-xs-0 offset-0  col-12">
             {{-- ici le menu --}}
@@ -321,25 +321,26 @@
 
 
                 @livewire('component.menu-utilisateur')
-                
+
             </div>
 
             {{-- ici le contente right --}}
 
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2 offset-lg-1  col-lg-8 bg-white rounded-2"
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2 offset-lg-1 shadow-sm  col-lg-8 bg-white rounded-2"
                 style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
-                 <div wire:loading.flex
-        class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
-        style="z-index: 10;">
-        <div class="text-center">
-            <div class="spinner-border text-secondary" role="status" style="width: 3rem; height: 3rem;"></div>
-            <p class="mt-2 fw-bold text-secondary">Chargement ...</p>
-        </div>
-    </div>
+                <div wire:loading.flex
+                    class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
+                    style="z-index: 10;">
+                    <div class="text-center">
+                        <div class="spinner-border text-secondary" role="status" style="width: 3rem; height: 3rem;">
+                        </div>
+                        <p class="mt-2 fw-bold text-secondary">Chargement ...</p>
+                    </div>
+                </div>
                 <div class="row align-items-end mb-4">
                     <div class="col-lg-8 col-7">
                         <div class="ms-lg-4 ms-2">
-                            <h4 class="fw-bold text-soft mb-1 d-none d-md-block">Checkout & In</h4>
+                            <h4 class="fw-bold text-soft mb-1 d-none d-md-block">Mes checkout & In</h4>
                             <h5 class="fw-bold text-soft mb-1 d-block d-md-none">Mes Checkouts</h5>
 
                             <span class="text-subtle small">Vue d'ensemble de vos demandes de matériel</span>
@@ -449,7 +450,7 @@
 
                         </div>
                     </div>
-                    <div class="mt-4  col-lg-11 p-0">
+                    <div class="mt-4  col-lg-12 ps-2 p-0">
                         {{-- <ul class="nav mx-2 nav-tabs  text-secondary" id="myTab" role="tablist">
                             <li class="nav-item text-dark" role="presentation">
                                 <button class="nav-link  active" style="color: rgb(53, 53, 53) !important"
@@ -476,41 +477,33 @@
 
                         </ul> --}}
 
-                        <div class="tab-content border-0 p-2  border-top-0" id="myTabContent">
+                        <div class="tab-content border-0  border-top-0" id="myTabContent">
                             <div class="tab-pane fade show active " id="active" role="tabpanel"
                                 aria-labelledby="active-tab">
 
-                                <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
-                                    <div class="py-2">
-                                        <label class="fw-bold text-soft mb-0 d-none d-md-block"
-                                            style="font-size: 0.9rem;">
-                                            Historique des checkouts
-                                        </label>
-                                        <label class="fw-bold text-soft mb-0 d-block d-md-none"
-                                            style="font-size: 0.85rem;">
-                                            Checkouts
-                                        </label>
-                                    </div>
+                                <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
 
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="position-relative d-none d-lg-block">
-                                            <span
-                                                class="position-absolute top-50 start-0 translate-middle-y ps-2 text-subtle">
-                                                {{-- <i class="fas fa-search" style="font-size: 0.75rem;"></i> --}}
-                                            </span>
+                                    <div class="d-flex align-items-center gap-3 flex-grow-1 me-4">
+
+                                        <div class="position-relative flex-grow-1">
+
+
                                             <input type="text" wire:model.live.debounce.300ms="rechercheCheckout"
-                                                class="form-control form-control-sm border-0 bg-light rounded-pill ps-4"
-                                                placeholder="Rechercher..." style="font-size: 0.75rem; width: 150px;">
+                                                class="form-control form-control-sm border-0 bg-light rounded-2 ps-5 pe-3 shadow-none w-100"
+                                                placeholder="Rechercher par sujet, équipement, responsable..."
+                                                style="height: 38px; font-size: 0.9rem;">
                                         </div>
 
-                                        <div
-                                            class="d-flex align-items-center shadow-sm rounded-pill px-3 py-1 bg-white">
-                                            <span class="text-subtle fw-bold me-1"
-                                                style="font-size: 0.7rem; text-transform: uppercase;">Filtre :</span>
+                                        <div class="d-flex align-items-center  border-0 shadow-sm rounded-2 px-3 bg-white border"
+                                            style="height: 38px;">
+                                            <label class="text-subtle fw-bold text-muted mb-0 me-2 d-none d-sm-inline"
+                                                style="font-size: 0.65rem; letter-spacing: 0.5px;">
+                                                Filtre :
+                                            </label>
                                             <select wire:model.live="filtrerCheckout"
-                                                class="border-0 bg-transparent text-soft fw-semibold small outline-none"
-                                                style="cursor: pointer;">
-                                                <option value="">Tous</option>
+                                                class="border-0  bg-transparent text-soft small fw-semibold outline-none"
+                                                style="cursor: pointer; width: auto; min-width: 100px;">
+                                                <option value="">Tous les statuts</option>
                                                 <option value="1">En cours</option>
                                                 <option value="2">Validé</option>
                                                 <option value="3">Résolu</option>
@@ -518,6 +511,7 @@
                                             </select>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="list-group mt-2  bg-white " style="max-height:700px;overflow-y: scroll">
                                     @if ($checkouts)
@@ -574,23 +568,24 @@
                                     @endforeach
 
                                     @else
-                                    <p class="mt-4 text-center p-4">
+                                    <div
+                                        class="d-flex flex-column align-items-center justify-content-center p-5 mt-4 rounded-4 bg-light border border-dashed">
+                                        <div class="bg-white shadow-sm rounded-circle d-flex align-items-center justify-content-center mb-3"
+                                            style="width: 80px; height: 80px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning opacity-75"
+                                                width="40" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                            </svg>
+                                        </div>
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="80"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                            class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                        </svg>
-                                        <br>
-                                        <br>
+                                        <h6 class="fw-bold text-dark mb-1">Aucun incident trouvé</h6>
+                                        <p class="text-muted small mb-0">Essayez de modifier vos filtres ou votre
+                                            recherche.</p>
 
-                                        <span class="my-4">Aucun checkout trouvé </span>
-                                        <br>
 
-                                        <br>
-                                        <button class="btn btn-light px-4">Nouveau chekout</button>
-                                    </p>
+                                    </div>
 
 
                                     @endif
