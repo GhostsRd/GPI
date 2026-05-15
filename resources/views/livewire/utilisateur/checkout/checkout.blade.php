@@ -450,7 +450,7 @@
 
                         </div>
                     </div>
-                    <div class="mt-4  col-lg-12 ps-2 p-0">
+                    <div class="mt-4  col-lg-11 p-0">
                         {{-- <ul class="nav mx-2 nav-tabs  text-secondary" id="myTab" role="tablist">
                             <li class="nav-item text-dark" role="presentation">
                                 <button class="nav-link  active" style="color: rgb(53, 53, 53) !important"
@@ -477,7 +477,7 @@
 
                         </ul> --}}
 
-                        <div class="tab-content border-0  border-top-0" id="myTabContent">
+                        <div class="tab-content border-0   border-top-0" id="myTabContent">
                             <div class="tab-pane fade show active " id="active" role="tabpanel"
                                 aria-labelledby="active-tab">
 

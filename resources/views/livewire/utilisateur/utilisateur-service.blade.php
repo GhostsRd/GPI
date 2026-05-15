@@ -1,6 +1,5 @@
 <div style="margin-top:5%" class=" bg-md-white-cust ">
 
-
     <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-light p-0  colg-lg-3 mt-4 " id="sidebar">
 
         <!-- Header -->
@@ -155,16 +154,10 @@
 
     </div>
 
-
-
     <div class="container-fluid  ">
         <div class="row col-lg-11  offset-xs-0 col-12">
             <div class="col-lg-2 bg-lg-light bg-md-light py-1 px-0 d-md-none   d-xl-block d-none">
-
-
                 @livewire('component.menu-utilisateur')
-
-
             </div>
             <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2 offset-lg-1 shadow-sm  py-5 col-lg-8 bg-white rounded-2"
                 style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
@@ -364,21 +357,21 @@
                         </a>
                         @empty
                         <div
-                                class="d-flex flex-column align-items-center justify-content-center p-5 mt-4 rounded-4 bg-light border border-dashed">
-                                <div class="bg-white shadow-sm rounded-circle d-flex align-items-center justify-content-center mb-3"
-                                    style="width: 80px; height: 80px;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-warning opacity-75" width="40"
-                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                    </svg>
-                                </div>
-
-                                <h6 class="fw-bold text-dark mb-1">Aucun ticket trouvé</h6>
-                                <p class="text-muted small mb-0">Essayez de modifier vos filtres ou votre recherche.</p>
-
-                               
+                            class="d-flex flex-column align-items-center justify-content-center p-5 mt-4 rounded-4 bg-light border border-dashed">
+                            <div class="bg-white shadow-sm rounded-circle d-flex align-items-center justify-content-center mb-3"
+                                style="width: 80px; height: 80px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="text-warning opacity-75" width="40"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg>
                             </div>
+
+                            <h6 class="fw-bold text-dark mb-1">Aucun ticket trouvé</h6>
+                            <p class="text-muted small mb-0">Essayez de modifier vos filtres ou votre recherche.</p>
+
+
+                        </div>
                         @endforelse
                         {{-- @if ($tickets->first()?->state > 4)
                         <span class="mx-3 py-1 fw-normal">RESOLU</span>
