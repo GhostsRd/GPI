@@ -1,161 +1,124 @@
 <div class="equipement-dashboard">
-    <!-- Header Principal -->
+    <!-- Header simplifié -->
     <header class="dashboard-header">
-        <div class="header-content">
-            <div class="header-left">
-                <h1 class="dashboard-title">📊 Tableau de Bord IT</h1>
-                <p class="dashboard-subtitle">Vue d'ensemble complète de votre infrastructure informatique</p>
-            </div>
-            <div class="header-right">
-                <div class="total-badge">
-                    <span class="total-number">{{ $this->totalEquipements }}</span>
-                    <span class="total-label">Équipements</span>
-                </div>
-            </div>
+        <div>
+            <h1 class="dashboard-title">Tableau de bord IT</h1>
+            <p class="dashboard-subtitle">Infrastructure informatique</p>
+        </div>
+        <div class="total-badge">
+            <span class="total-number">{{ $this->totalEquipements }}</span>
+            <span class="total-label">équipements</span>
         </div>
     </header>
 
-    <!-- Contenu Principal -->
     <main class="dashboard-main">
         @if($loading)
-            <!-- Loading State -->
-            <div class="loading-container">
-                <div class="loader-spinner"></div>
-                <p class="loading-text">Chargement des données...</p>
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Chargement...</p>
             </div>
         @else
-            <!-- Cartes Statistiques Principales - Version Simplifiée -->
-            <div class="stats-grid-simple">
-                <!-- Carte 1: Total Équipements -->
+            <!-- Grille stats simplifiée -->
+            <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon primary">
-                        <span>💻</span>
-                    </div>
-                    <div class="stat-content">
+                    <span class="stat-emoji">💻</span>
+                    <div>
                         <div class="stat-number">{{ $this->totalEquipements }}</div>
-                        <div class="stat-label">Total Équipements</div>
-                        <div class="stat-description">Toutes catégories</div>
+                        <div class="stat-label">Total équipements</div>
                     </div>
                 </div>
 
-                <!-- Carte 2: Catégorie Majoritaire -->
                 <div class="stat-card">
-                    <div class="stat-icon success">
-                        <span>👑</span>
-                    </div>
-                    <div class="stat-content">
+                    <span class="stat-emoji">👑</span>
+                    <div>
                         <div class="stat-number">{{ $this->categoryWithMostItems['title'] }}</div>
-                        <div class="stat-label">Catégorie Majoritaire</div>
-                        <div class="stat-description">{{ $this->categoryWithMostItems['count'] }} unités</div>
+                        <div class="stat-label">Catégorie majoritaire</div>
+                        <div class="stat-sub">{{ $this->categoryWithMostItems['count'] }} unités</div>
                     </div>
                 </div>
 
-                <!-- Carte 3: Moyenne par Catégorie -->
                 <div class="stat-card">
-                    <div class="stat-icon info">
-                        <span>📊</span>
-                    </div>
-                    <div class="stat-content">
+                    <span class="stat-emoji">📊</span>
+                    <div>
                         <div class="stat-number">{{ $this->averagePerCategory }}</div>
-                        <div class="stat-label">Moyenne/Catégorie</div>
-                        <div class="stat-description">Équipements moyens</div>
+                        <div class="stat-label">Moyenne par catégorie</div>
                     </div>
                 </div>
 
-                <!-- Carte 4: Part Majoritaire -->
                 <div class="stat-card">
-                    <div class="stat-icon warning">
-                        <span>🎯</span>
-                    </div>
-                    <div class="stat-content">
+                    <span class="stat-emoji">🎯</span>
+                    <div>
                         <div class="stat-number">
                             {{ $this->totalEquipements > 0 ? number_format(($this->categoryWithMostItems['count'] / $this->totalEquipements) * 100, 1) : 0 }}%
                         </div>
-                        <div class="stat-label">Part Majoritaire</div>
-                        <div class="stat-description">Pourcentage dominant</div>
+                        <div class="stat-label">Part majoritaire</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section Graphiques -->
-            <div class="charts-section">
+            <!-- Graphiques -->
+            <div class="charts-grid">
                 <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">📈 Répartition des Équipements</h3>
-                    </div>
-                    <div class="chart-body">
+                    <h3 class="chart-title">Répartition des équipements</h3>
+                    <div class="chart-container">
                         <canvas id="equipementChart"></canvas>
                     </div>
                 </div>
 
                 <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">🥧 Distribution par Type</h3>
-                    </div>
-                    <div class="chart-body">
+                    <h3 class="chart-title">Distribution par type</h3>
+                    <div class="chart-container">
                         <canvas id="equipementPieChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Tableau Récapitulatif -->
-            <div class="table-section">
-                <div class="table-header">
-                    <h3 class="table-title">📋 Récapitulatif des Équipements</h3>
-                    <div class="table-actions">
-                        <div class="search-box">
-                            <input type="text" placeholder="Rechercher..." class="search-input">
-                            <span class="search-icon">🔍</span>
-                        </div>
-                        <button class="btn-export">
-                            <span>📥 Exporter</span>
-                        </button>
+            <!-- Tableau -->
+            <div class="table-card">
+                <div class="table-toolbar">
+                    <h3 class="table-title">Récapitulatif</h3>
+                    <div class="toolbar-actions">
+                        <input type="text" placeholder="Rechercher..." class="search-input">
+                        <button class="btn-export">Exporter</button>
                     </div>
                 </div>
-                <div class="table-container">
+
+                <div class="table-responsive">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th class="sortable">Catégorie</th>
-                                <th class="sortable">Quantité</th>
-                                <th class="sortable">Pourcentage</th>
+                                <th>Catégorie</th>
+                                <th>Quantité</th>
+                                <th>Pourcentage</th>
                                 <th>Statut</th>
-                                <th>Actions</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($stats as $stat)
-                                <tr class="table-row">
+                                <tr>
+                                    <td class="category-cell">
+                                        <span class="category-badge">
+                                            <span>{{ $stat['icon'] }}</span>
+                                            <span>{{ $stat['title'] }}</span>
+                                        </span>
+                                    </td>
+                                    <td class="count-cell">{{ $stat['count'] }}</td>
                                     <td>
-                                        <div class="category-info">
-                                            <div class="category-badge {{ $stat['color'] }}">
-                                                <span class="category-icon">{{ $stat['icon'] }}</span>
-                                                <span>{{ $stat['title'] }}</span>
-                                            </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: {{ $this->getPercentage($stat['count']) }}%"></div>
+                                            <span class="percentage-text">{{ $this->getPercentage($stat['count']) }}%</span>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="table-count">{{ $stat['count'] }}</div>
+                                        <span class="status {{ $stat['count'] > 0 ? 'status-active' : 'status-inactive' }}">
+                                            {{ $stat['count'] > 0 ? 'Actif' : 'Vide' }}
+                                        </span>
                                     </td>
                                     <td>
-                                        <div class="table-percentage">{{ $this->getPercentage($stat['count']) }}%</div>
-                                    </td>
-                                    <td>
-                                        @if($stat['count'] > 0)
-                                            <span class="status-badge active">Actif</span>
-                                        @else
-                                            <span class="status-badge inactive">Vide</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="{{ route($stat['route']) }}" class="btn-action view" wire:navigate title="Voir détails">
-                                                <svg class="action-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                                </svg>
-                                            </a>
-                                        </div>
+                                        <a href="{{ route($stat['route']) }}" class="btn-link" wire:navigate>
+                                            Voir →
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -168,628 +131,472 @@
 </div>
 
 <style>
-    /* Variables CSS modernes avec #5BC4BF */
-    :root {
-        --primary: #5BC4BF !important;
-        --primary-light: #7FD9D4 !important;
-        --primary-dark: #4AA39E !important;
-        --primary-soft: rgba(91, 196, 191, 0.1) !important;
-        --primary-50: #E9F5F4 !important;
-        --primary-100: #D1EBE9 !important;
-        --gradient-primary: linear-gradient(135deg, #5BC4BF, #4AA39E) !important;
-        --gradient-primary-light: linear-gradient(135deg, #7FD9D4, #5BC4BF) !important;
-        --success: #10b981;
-        --warning: #f59e0b;
-        --info: #3b82f6;
-        --dark: #1e293b;
-        --light: #ffffff;
-        --gray-50: #f8fafc;
-        --gray-100: #f1f5f9;
-        --gray-200: #e2e8f0;
-        --gray-300: #cbd5e1;
-        --gray-400: #94a3b8;
-        --gray-500: #64748b;
-        --gray-600: #475569;
-        --border: #e2e8f0;
-        --card-bg: #ffffff;
-        --shadow: rgba(91, 196, 191, 0.08);
-        --shadow-lg: rgba(91, 196, 191, 0.15);
-    }
+/* Variables - Palette moderne */
+:root {
+    --primary: #5BC4BF;
+    --primary-dark: #3a9e99;
+    --primary-light: #e6f4f3;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-600: #6b7280;
+    --gray-900: #111827;
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --error-light: #fee2e2;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
 
-    [data-theme="dark"] {
-        --primary: #5BC4BF !important;
-        --primary-light: #7FD9D4 !important;
-        --primary-dark: #4AA39E !important;
-        --primary-50: #1A3A38 !important;
-        --primary-100: #1F4A47 !important;
-        --gradient-primary: linear-gradient(135deg, #5BC4BF, #4AA39E) !important;
-        --success: #34d399;
-        --warning: #fbbf24;
-        --info: #60a5fa;
-        --dark: #f1f5f9;
-        --light: #0f172a;
-        --gray-50: #1e293b;
-        --gray-100: #334155;
-        --gray-200: #475569;
-        --gray-300: #64748b;
-        --gray-400: #94a3b8;
-        --gray-500: #cbd5e1;
-        --gray-600: #e2e8f0;
-        --border: #334155;
-        --card-bg: #1e293b;
-        --shadow: rgba(91, 196, 191, 0.2);
-        --shadow-lg: rgba(91, 196, 191, 0.3);
-    }
+.dark {
+    --primary-light: #1a3a38;
+    --gray-50: #111827;
+    --gray-100: #1f2937;
+    --gray-200: #374151;
+    --gray-300: #4b5563;
+    --gray-600: #9ca3af;
+    --gray-900: #f9fafb;
+}
 
-    /* Reset et base */
+/* Base */
+.equipement-dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background: var(--gray-50);
+    min-height: 100vh;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.dashboard-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0 0 0.25rem 0;
+}
+
+.dashboard-subtitle {
+    color: var(--gray-600);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.total-badge {
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.total-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.total-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    border: 1px solid var(--gray-200);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-light);
+}
+
+.stat-emoji {
+    font-size: 2rem;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-sub {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    margin-top: 0.25rem;
+}
+
+/* Charts */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+}
+
+.chart-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0 0 1rem 0;
+}
+
+.chart-container {
+    height: 250px;
+    position: relative;
+}
+
+/* Table */
+.table-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+}
+
+.table-toolbar {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.table-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 0;
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.search-input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    background: white;
+    color: var(--gray-900);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.btn-export {
+    padding: 0.5rem 1rem;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-export:hover {
+    background: var(--gray-200);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table thead th {
+    text-align: left;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--gray-50);
+}
+
+.data-table tbody td {
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+    color: var(--gray-900);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.data-table tbody tr:hover {
+    background: var(--gray-50);
+}
+
+.category-cell {
+    font-weight: 500;
+}
+
+.category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--primary-light);
+    border-radius: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.count-cell {
+    font-weight: 600;
+}
+
+/* Progress bar */
+.progress-bar {
+    position: relative;
+    background: var(--gray-200);
+    border-radius: 1rem;
+    height: 1.5rem;
+    width: 100%;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--primary);
+    border-radius: 1rem;
+    transition: width 0.3s ease;
+}
+
+.percentage-text {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--gray-900);
+    z-index: 1;
+}
+
+/* Status */
+.status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.status-inactive {
+    background: var(--error-light);
+    color: #dc2626;
+}
+
+.btn-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.btn-link:hover {
+    color: var(--primary-dark);
+}
+
+/* Loading */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 1rem;
+    color: var(--gray-600);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--gray-200);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
     .equipement-dashboard {
-        background: linear-gradient(135deg, var(--gray-50), rgba(91, 196, 191, 0.05));
-        min-height: 100vh;
-        padding: 1.5rem;
-        font-family: 'Nunito', 'Inter', sans-serif;
-        font-size: 0.875rem;
-    }
-
-    /* Header */
-    .dashboard-header {
-        margin-bottom: 2rem;
-    }
-
-    .header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1.5rem;
-    }
-
-    .header-left {
-        flex: 1;
-    }
-
-    .dashboard-title {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        background: var(--gradient-primary);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .dashboard-subtitle {
-        color: var(--gray-600);
-        font-size: 0.9rem;
-    }
-
-    .total-badge {
-        background: var(--gradient-primary);
-        color: white;
-        padding: 0.75rem 1.25rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(91, 196, 191, 0.3);
-    }
-
-    .total-number {
-        display: block;
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1;
-    }
-
-    .total-label {
-        font-size: 0.75rem;
-        opacity: 0.9;
-        font-weight: 600;
-    }
-
-    /* Cartes Statistiques Simplifiées */
-    .stats-grid-simple {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .stat-card {
-        background: var(--card-bg);
-        border-radius: 16px;
-        padding: 1.25rem;
-        box-shadow: 0 4px 20px var(--shadow);
-        border: none;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(91, 196, 191, 0.2);
-    }
-
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-        flex-shrink: 0;
-    }
-
-    .stat-icon.primary {
-        background: rgba(91, 196, 191, 0.15);
-        color: var(--primary);
-    }
-
-    .stat-icon.success {
-        background: rgba(16, 185, 129, 0.1);
-        color: var(--success);
-    }
-
-    .stat-icon.info {
-        background: rgba(59, 130, 246, 0.1);
-        color: var(--info);
-    }
-
-    .stat-icon.warning {
-        background: rgba(245, 158, 11, 0.1);
-        color: var(--warning);
-    }
-
-    .stat-content {
-        flex: 1;
-    }
-
-    .stat-number {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--primary-dark);
-        line-height: 1;
-        margin-bottom: 0.25rem;
-    }
-
-    .stat-label {
-        color: var(--gray-600);
-        font-size: 0.8rem;
-        font-weight: 600;
-        margin-bottom: 0.125rem;
-    }
-
-    .stat-description {
-        color: var(--gray-500);
-        font-size: 0.75rem;
-    }
-
-    /* Section Graphiques */
-    .charts-section {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 1.25rem;
-        margin-bottom: 2rem;
-    }
-
-    .chart-card {
-        background: var(--card-bg);
-        border-radius: 16px;
-        box-shadow: 0 4px 20px var(--shadow);
-        border: none;
-        overflow: hidden;
-    }
-
-    .chart-header {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(91, 196, 191, 0.15);
-        background: linear-gradient(135deg, rgba(91, 196, 191, 0.02), transparent);
-    }
-
-    .chart-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--primary-dark);
-        margin: 0;
-    }
-
-    .chart-body {
         padding: 1rem;
-        height: 250px;
     }
-
-    /* Tableau */
-    .table-section {
-        background: var(--card-bg);
-        border-radius: 16px;
-        box-shadow: 0 4px 20px var(--shadow);
-        border: none;
-        overflow: hidden;
+    
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
     }
-
-    .table-header {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(91, 196, 191, 0.15);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-        background: linear-gradient(135deg, rgba(91, 196, 191, 0.02), transparent);
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
-
-    .table-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--primary-dark);
-        margin: 0;
+    
+    .table-toolbar {
+        flex-direction: column;
+        align-items: stretch;
     }
-
-    .table-actions {
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
+    
+    .toolbar-actions {
+        flex-direction: column;
     }
-
-    .search-box {
-        position: relative;
-        min-width: 200px;
-    }
-
+    
     .search-input {
         width: 100%;
-        padding: 0.5rem 2.5rem 0.5rem 1rem;
-        border: 1px solid rgba(91, 196, 191, 0.2);
-        border-radius: 8px;
-        font-size: 0.8rem;
-        background: var(--gray-50);
-        color: var(--dark);
-        transition: all 0.3s ease;
     }
-
-    .search-input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 2px rgba(91, 196, 191, 0.15);
+    
+    .progress-bar {
+        max-width: 100px;
     }
+}
 
-    .search-icon {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--primary);
+@media (max-width: 640px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
     }
-
-    .btn-export {
-        background: var(--gradient-primary);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
+    
+    .chart-container {
+        height: 200px;
     }
-
-    .btn-export:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 3px 10px rgba(91, 196, 191, 0.4);
-    }
-
-    .table-container {
-        overflow-x: auto;
-    }
-
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.8rem;
-    }
-
-    .data-table thead {
-        background: var(--gradient-primary);
-    }
-
+    
+    .data-table td, 
     .data-table th {
-        padding: 0.75rem 1rem;
-        color: white;
-        font-weight: 600;
-        text-align: left;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        padding: 0.75rem;
     }
-
-    .data-table th.sortable {
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    .data-table th.sortable:hover {
-        background: var(--primary-dark);
-    }
-
-    .data-table tbody tr {
-        border-bottom: 1px solid rgba(91, 196, 191, 0.15);
-        transition: all 0.2s ease;
-    }
-
-    .data-table tbody tr:hover {
-        background: rgba(91, 196, 191, 0.03);
-        transform: translateX(2px);
-    }
-
-    .data-table td {
-        padding: 0.75rem 1rem;
-        color: var(--dark);
-        font-weight: 500;
-    }
-
-    /* Badges de catégorie */
-    .category-badge {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.4rem 0.6rem;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 0.75rem;
-        width: fit-content;
-        border: 1px solid transparent;
-    }
-
-    .category-badge.blue { 
-        background: rgba(91, 196, 191, 0.15); 
-        color: var(--primary-dark);
-        border-color: rgba(91, 196, 191, 0.3);
-    }
-    
-    .category-badge.green { 
-        background: rgba(16, 185, 129, 0.15); 
-        color: #065f46;
-        border-color: rgba(16, 185, 129, 0.3);
-    }
-    
-    .category-badge.yellow { 
-        background: rgba(245, 158, 11, 0.15); 
-        color: #92400e;
-        border-color: rgba(245, 158, 11, 0.3);
-    }
-    
-    .category-badge.purple { 
-        background: rgba(139, 92, 246, 0.15); 
-        color: #5b21b6;
-        border-color: rgba(139, 92, 246, 0.3);
-    }
-
-    .category-icon {
-        font-size: 0.9rem;
-    }
-
-    /* Badges de statut */
-    .status-badge {
-        padding: 0.25rem 0.5rem;
-        border-radius: 8px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        display: inline-block;
-        text-align: center;
-        min-width: 60px;
-        border: 1px solid transparent;
-    }
-
-    .status-badge.active {
-        background: rgba(16, 185, 129, 0.15);
-        color: #065f46;
-        border-color: rgba(16, 185, 129, 0.3);
-    }
-
-    .status-badge.inactive {
-        background: rgba(100, 116, 139, 0.15);
-        color: #475569;
-        border-color: rgba(100, 116, 139, 0.3);
-    }
-
-    /* Actions */
-    .action-buttons {
-        display: flex;
-        gap: 0.3rem;
-    }
-
-    .btn-action {
-        width: 28px;
-        height: 28px;
-        border: none;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        background: rgba(91, 196, 191, 0.1);
-        color: var(--primary);
-    }
-
-    .btn-action:hover {
-        transform: scale(1.1);
-        background: var(--primary);
-        color: white;
-    }
-
-    .action-icon {
-        width: 14px;
-        height: 14px;
-    }
-
-    /* Loading State */
-    .loading-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 400px;
-        gap: 1rem;
-    }
-
-    .loader-spinner {
-        width: 48px;
-        height: 48px;
-        border: 3px solid rgba(91, 196, 191, 0.2);
-        border-top: 3px solid var(--primary);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    .loading-text {
-        color: var(--primary-dark);
-        font-size: 1rem;
-        font-weight: 600;
-    }
-
-    /* Animations */
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-        .charts-section {
-            grid-template-columns: 1fr;
-        }
-        
-        .stats-grid-simple {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .equipement-dashboard {
-            padding: 1rem;
-        }
-        
-        .header-content {
-            flex-direction: column;
-            text-align: center;
-        }
-        
-        .stats-grid-simple {
-            grid-template-columns: 1fr;
-        }
-        
-        .table-header {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        
-        .table-actions {
-            justify-content: space-between;
-            width: 100%;
-        }
-        
-        .search-box {
-            min-width: 100%;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .equipement-dashboard {
-            padding: 0.75rem;
-        }
-        
-        .stat-card {
-            padding: 1rem;
-        }
-        
-        .chart-body {
-            height: 200px;
-        }
-    }
-
-    /* Personnalisation Chart.js */
-    canvas {
-        max-height: 250px;
-        width: 100% !important;
-    }
+}
 </style>
 
 <script>
 document.addEventListener('livewire:load', function () {
     const chartData = @json($chartData);
-
-    // Graphique en barres
+    
+    // Bar chart
     const barCtx = document.getElementById('equipementChart');
-    if (barCtx) {
+    if (barCtx && window.Chart) {
         new Chart(barCtx, {
             type: 'bar',
             data: {
                 labels: chartData.labels,
                 datasets: [{
-                    label: 'Nombre d\'équipements',
+                    label: 'Équipements',
                     data: chartData.data,
-                    backgroundColor: chartData.colors || ['#5BC4BF', '#4AA39E', '#7FD9D4', '#2A8C87', '#3B7A76'],
-                    borderColor: chartData.colors || ['#5BC4BF', '#4AA39E', '#7FD9D4', '#2A8C87', '#3B7A76'],
-                    borderWidth: 1,
-                    borderRadius: 4,
+                    backgroundColor: '#5BC4BF',
+                    borderRadius: 6,
+                    barPercentage: 0.7
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        display: false
-                    }
+                    legend: { display: false },
+                    tooltip: { backgroundColor: '#111827' }
                 },
                 scales: {
-                    y: {
+                    y: { 
                         beginAtZero: true,
-                        grid: {
-                            color: 'rgba(91, 196, 191, 0.1)'
-                        }
+                        grid: { color: '#e5e7eb' }
                     },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
+                    x: { grid: { display: false } }
                 }
             }
         });
     }
-
-    // Graphique camembert
+    
+    // Pie chart
     const pieCtx = document.getElementById('equipementPieChart');
-    if (pieCtx) {
+    if (pieCtx && window.Chart) {
         new Chart(pieCtx, {
             type: 'doughnut',
             data: {
                 labels: chartData.labels,
                 datasets: [{
                     data: chartData.data,
-                    backgroundColor: chartData.colors || ['#5BC4BF', '#4AA39E', '#7FD9D4', '#2A8C87', '#3B7A76'],
-                    borderWidth: 2,
-                    borderColor: '#ffffff',
+                    backgroundColor: ['#5BC4BF', '#3a9e99', '#7ed4cf', '#2a7a76', '#1a5a57'],
+                    borderWidth: 0,
+                    cutout: '65%'
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '60%',
                 plugins: {
-                    legend: {
+                    legend: { 
                         position: 'bottom',
-                        labels: {
-                            padding: 15,
-                            usePointStyle: true,
-                            color: '#4AA39E'
-                        }
+                        labels: { usePointStyle: true, boxWidth: 8 }
                     }
                 }
             }
