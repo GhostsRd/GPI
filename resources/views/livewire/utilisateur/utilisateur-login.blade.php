@@ -154,23 +154,7 @@
                         </a>
                     </p>
 
-                    <div class="divider">
-                        <span>Ou continuer avec</span>
-                    </div>
-<div class="social-login">
-    <div class="social-btn">
-        <i class="fab fa-microsoft"></i>
-        <span>Microsoft</span>
-    </div>
-    <div class="social-btn">
-        <i class="fab fa-google"></i>
-        <span>Google</span>
-    </div>
-    <div class="social-btn">
-        <i class="fab fa-apple"></i>
-        <span>Apple</span>
-    </div>
-</div>
+                  
 
                     @if (Route::has('password.request'))
                         <a class="forgot-link" href="{{ route('password.request') }}">

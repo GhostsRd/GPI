@@ -1,14 +1,15 @@
-    
     /* pour les icon dans le champ */
-    
-      /* Supprimer le hover gris natif de Bootstrap */
+
+    /* Supprimer le hover gris natif de Bootstrap */
     #categorie option:hover {
-        background-color: #fff;
-        color: #000;
+      background-color: #fff;
+      color: #000;
     }
+
     .input-icon {
       position: relative;
     }
+
     .input-icon i {
       position: absolute;
       left: 12px;
@@ -16,15 +17,17 @@
       transform: translateY(-50%);
       color: #6c757d;
     }
+
     .input-icon input {
-      padding-left: 100px !important; /* espace pour l’icône */
+      padding-left: 100px !important;
+      /* espace pour l’icône */
     }
-    
+
     .content-flex {
       margin: 0;
       font-family: 'Poppins', sans-serif;
       overflow-x: hidden;
-     
+
       transition: all 0.6s ease;
       display: flex;
       flex-direction: row;
@@ -33,29 +36,30 @@
     /* === SIDEBAR FORM (LEFT 70%) === */
     .sidebar {
       position: fixed;
-    
+
       left: -70%;
       /*width: 50%;*/
       width: 40%;
       /* background: linear-gradient(135deg, rgb(5, 67, 54), rgb(5, 99, 57)); */
       color: white;
-      
+
       padding: 2rem;
       transition: left 0.6s ease;
       z-index: 100;
       overflow-y: auto;
       max-height: 700px;
 
-      
-       
-        
+
+
+
     }
 
     @media (max-width: 768px) {
       .sidebar {
         top: 10%;
       }
-      .sidebar.active{
+
+      .sidebar.active {
         top: 10%;
         height: auto;
         width: auto;
@@ -63,10 +67,10 @@
         margin-right: 20px;
       }
     }
-    
+
     .sidebar.active {
-      left: 20%;
-         box-shadow: 50px 12px 100px 5000px  rgba(0, 0, 0, 0.296) !important; 
+      left: 28%;
+      box-shadow: 50px 12px 100px 5000px rgba(0, 0, 0, 0.296) !important;
     }
 
 
@@ -85,31 +89,32 @@
       width: 60%;
       transform: translateX(50%);
       filter: blur(0px);
-      box-shadow: 5px 0 20px rgba(208, 208, 208, 0.3) !important; 
+      box-shadow: 5px 0 20px rgba(208, 208, 208, 0.3) !important;
     }
 
     @media (max-width: 991px) {
-  .sidebar {
-    width: 100%;
-    left: -100%;
-  }
-  .checkoutmenu{
-    width: 80% !important;
-  }
+      .sidebar {
+        width: 100%;
+        left: -100%;
+      }
 
-  .sidebar.active {
-    left: 0;
-    z-index: 1000;
-  }
+      .checkoutmenu {
+        width: 80% !important;
+      }
 
-  body.sidebar-open .main-content {
-    width: 100%;
-    transform: translateX(0);
-    filter: none;
-  }
+      .sidebar.active {
+        left: 0;
+        z-index: 1000;
+      }
+
+      body.sidebar-open .main-content {
+        width: 100%;
+        transform: translateX(0);
+        filter: none;
+      }
 
 
-}
+    }
 
     /* === BUTTON === */
 
@@ -124,103 +129,469 @@
 
 
     /* === Workflow Container === */
-.workflow-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
-}
+    .workflow-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
 
-/* === Step Elements === */
-.workflow-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #adb5bd;
-  font-size: 0.85rem;
-  text-align: center;
-  position: relative;
-  flex: 1;
-  transition: all 0.3s ease;
-}
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
 
-.workflow-step span {
-  margin-top: 0.4rem;
-  letter-spacing: 0.4px;
-}
+    /* === Step Elements === */
+    .workflow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #adb5bd;
+      font-size: 0.85rem;
+      text-align: center;
+      position: relative;
+      flex: 1;
+      transition: all 0.3s ease;
+    }
 
-/* === Active Step === */
-.workflow-step.active {
-  
-  font-weight: 600;
-}
+    .workflow-step span {
+      margin-top: 0.4rem;
+      letter-spacing: 0.4px;
+    }
 
-.workflow-step.active .icon-wrap {
+    /* === Active Step === */
+    .workflow-step.active {
 
-  color: rgb(255, 255, 255);
-background-color: rgb(29, 149, 73);
-  transform: scale(1.1);
-  
-}
+      font-weight: 600;
+    }
 
-/* === Icons === */
-.icon-wrap {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 2px solid #dee2e6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
-  color: #6c757d;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
+    .workflow-step.active .icon-wrap {
 
-/* === Connecting Lines === */
-.workflow-line {
-  flex: 0.5;
-  height: 3px;
-  background: linear-gradient(90deg, rgba(13,110,253,0.8), rgba(102,16,242,0.8));
-  border-radius: 3px;
-  opacity: 0.3;
-}
+      color: rgb(255, 255, 255);
+      background-color: rgb(29, 149, 73);
+      transform: scale(1.1);
 
-/* === Animation Neon Pulse Active Step === */
-.workflow-step.active .icon-wrap::after {
-  content: '';
-  position: absolute;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(rgba(13,110,253,0.3), transparent 70%);
-  animation: pulse 1.8s infinite ease-in-out;
-  z-index: -1;
-}
+    }
 
-/* @keyframes pulse {
+    /* === Icons === */
+    .icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid #dee2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      color: #6c757d;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    /* === Connecting Lines === */
+    .workflow-line {
+      flex: 0.5;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(13, 110, 253, 0.8), rgba(102, 16, 242, 0.8));
+      border-radius: 3px;
+      opacity: 0.3;
+    }
+
+    /* === Animation Neon Pulse Active Step === */
+    .workflow-step.active .icon-wrap::after {
+      content: '';
+      position: absolute;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(rgba(13, 110, 253, 0.3), transparent 70%);
+      animation: pulse 1.8s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    /* @keyframes pulse {
   0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
   100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
 } */
 
-/* === Hover Effect === */
-.workflow-step:hover .icon-wrap {
-  border-color: rgb(29, 149, 73);
-  color: rgb(29, 149, 73);
-  transform: scale(1.05);
-}
+    /* === Hover Effect === */
+    .workflow-step:hover .icon-wrap {
+      border-color: rgb(29, 149, 73);
+      color: rgb(29, 149, 73);
+      transform: scale(1.05);
+    }
+
+    /* === Responsive Adjustments === */
+    /* Couleurs douces adaptées au thème Pivot */
+    .status-1 {
+      background-color: #e3f2fd;
+      color: #1976d2;
+      border-color: #bbdefb;
+    }
+
+    /* En cours - Bleu doux */
+    .status-2 {
+      background-color: #fff3e0;
+      color: #e65100;
+      border-color: #ffe0b2;
+    }
+
+    /* En traitement - Orange doux */
+    .status-3 {
+      background-color: #f3e5f5;
+      color: #7b1fa2;
+      border-color: #e1bee7;
+    }
+
+    /* En résolution - Violet doux */
+    .status-4 {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border-color: #c8e6c9;
+    }
+
+    /* Résolu - Vert doux */
+    .status-5 {
+      background-color: #eceff1;
+      color: #455a64;
+      border-color: #cfd8dc;
+    }
+
+    /* Fermé - Gris doux */
+
+
+
+    /* Bouton Nouveau façon Pivot */
+    .btn-pivot-new {
+      background-color: #5BC4BF;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-pivot-new:hover {
+      background-color: #4aadab;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    /* Liens du menu */
+    .nav-link-pivot {
+      cursor: pointer;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #64748b;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link-pivot:hover {
+      background-color: rgba(91, 196, 191, 0.08);
+      color: #5BC4BF;
+    }
+
+    /* Badge de compteur discret */
+    .badge-count {
+      background-color: #f1f5f9;
+      color: #475569;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    .nav-link-pivot:hover .badge-count {
+      background-color: #5BC4BF;
+      color: white;
+    }
+
+    /* Animation au survol */
+    .hover-shadow:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+      background-color: #f8fbfa !important;
+    }
+
+    .transition-all {
+      transition: all 0.3s ease;
+    }
+
+    /* Badges Pivot Soft (complétant les suggestions précédentes) */
+    .badge-pivot-soft {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-1 {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    /* Bleu */
+    .status-2 {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    /* Jaune */
+    .status-4 {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    /* Vert */
+
+    /* Masquage scrollbar pour garder le design propre */
+    .text-truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pivot-list-item {
+      background-color: #ffffff;
+      transition: all 0.25s ease;
+      border: 1px solid rgba(0, 0, 0, 0.03) !important;
+      /* Bordure presque invisible pour structurer */
+    }
+
+    .pivot-list-item:hover {
+      background-color: #fcfcfc !important;
+      transform: translateY(-2px);
+      /* Effet de levée au lieu de la bordure */
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08) !important;
+      /* Ombre plus marquée au survol */
+      z-index: 2;
+    }
+
+    /* On garde les badges soft mais sans bordure vive */
+    .badge-pivot-soft {
+      padding: 6px 12px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 6px;
+      /* Carré légèrement arrondi pour un look plus "UI Pro" */
+      letter-spacing: 0.3px;
+    }
+
+    .status-1 {
+      background-color: #f0f9ff;
+      color: #0369a1;
+    }
+
+    .status-2 {
+      background-color: #fffbeb;
+      color: #b45309;
+    }
+
+    .status-4 {
+      background-color: #f0fdf4;
+      color: #15803d;
+    }
+
+
+    /* Tronquage sur une seule ligne avec points de suspension */
+    .text-truncate-single {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    /* Tronquage sur deux lignes maximum (très élégant pour les descriptions) */
+    .text-truncate-double {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Adoucir la couleur de base (on évite le noir pur) */
+    .text-soft {
+      color: #475569 !important;
+      /* Gris ardoise doux */
+    }
+
+    .text-subtle {
+      color: #94a3b8 !important;
+      /* Gris très léger pour le superflu */
+      font-size: 0.8rem;
+    }
+
+    /* Couleurs de texte pour Pivot */
+    .text-soft {
+      color: #334155 !important;
+    }
+
+    .text-subtle {
+      color: #94a3b8 !important;
+    }
+
+    /* Focus sur l'input de recherche */
+    .form-control:focus {
+      box-shadow: 0 0 0 3px rgba(91, 196, 191, 0.1) !important;
+      background-color: #ffffff !important;
+      border-color: #5BC4BF !important;
+    }
+
+    /* Supprimer le contour par défaut du select */
+    .outline-none:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* Conteneur de filtre */
+    .filter-box {
+      transition: all 0.2s ease;
+    }
+
+    .filter-box:hover {
+      border-color: #5BC4BF !important;
+    }
+
+    .sidebar-illustration {
+      opacity: 0.5;
+      /* Réduit à 50% pour plus de discrétion */
+      filter: grayscale(20%);
+      /* Optionnel : désature un peu pour moins de distraction */
+      transition: opacity 0.3s ease;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* On peut la rendre plus visible quand on survole la barre latérale */
+    .sidebar:hover .sidebar-illustration {
+      opacity: 0.7;
+    }
+
+    /*checkou*/
+
+    /* Couleurs spécifiques pour le Checkout */
+    .status-checkout-1 {
+      background-color: #fffbeb;
+      color: #b45309;
+    }
+
+    /* En cours (Ambre) */
+    .status-checkout-2 {
+      background-color: #f0fdf4;
+      color: #166534;
+    }
+
+    /* Validé (Vert) */
+    .status-checkout-3 {
+      background-color: #f8fafc;
+      color: #64748b;
+    }
+
+    /* Fermé (Gris) */
+    .status-checkout-4 {
+      background-color: #f0f9ff;
+      color: #0369a1;
+    }
+
+    /* Terminé (Bleu) */
+
+
+    /* Sécurité pour le texte long */
+    .text-truncate-single {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    /* details du checkout */
+    .text-primary-pivot {
+      color: #5BC4BF !important;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-soft {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background-color: rgba(91, 196, 191, 0.05);
+      /* Fond turquoise très léger */
+      border: 1px solid transparent;
+    }
+
+    .btn-action-soft:hover {
+      background-color: rgba(91, 196, 191, 0.1);
+      border-color: rgba(91, 196, 191, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Réutilise les classes status-checkout-X définies précédemment */
 
 
 
 
+    /* Titres de section (ex: Tickets) */
+    .text-header-main {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      /* Bleu très foncé, presque noir mais plus doux */
+      letter-spacing: -0.02em;
+      /* On resserre un peu pour le look moderne */
+    }
 
+    /* Titres de cartes (ex: Le sujet du ticket) */
+    .text-card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #334155;
+      line-height: 1.4;
+    }
+
+    /* Sous-titres et Labels (ex: Gestion de votre activité) */
+    .text-label-caps {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      /* On espace les lettres pour les labels */
+      color: #94a3b8;
+    }
+
+    /* Texte de description (ex: Les détails) */
+    .text-description {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* Pour un effet professionnel sur le "Aucun événement" */
+    .border-dashed {
+      border: 2px dashed #dee2e6 !important;
+    }
+
+    .list-group-item-action:hover {
+      background-color: #f8f9fa;
+      transform: scale(1.01);
+      transition: all 0.2s ease;
+    }
+
+    .shadow-xs {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .text-truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .min-w-0 {
+      min-width: 0;
+    }

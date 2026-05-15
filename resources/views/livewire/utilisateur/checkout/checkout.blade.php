@@ -1,6 +1,6 @@
 <div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section  bg-md-white-cust ">
     <div wire:ignore.self class="sidebar checkoutmenu  rounded-3 text-dark card bg-white p-0   mt-4" id="sidebar">
-        <div >
+        <div>
             <div>
                 <div>
                     <!-- Header -->
@@ -9,300 +9,303 @@
                     </div>
 
                     <!-- Formulaire Livewire -->
-               
-                        <div class="modal-body p-2 row" style="max-height:400px;overflow-y: scroll">
-                            <!-- Sujet -->
-                            {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
-                                obligatoires</p> --}}
 
-                            <div class="mb-3  position-relative">
+                    <div class="modal-body p-2 row" style="max-height:400px;overflow-y: scroll">
+                        <!-- Sujet -->
+                        {{-- <p class="text-dark mb-3">Les champs indiqués <span class="text-danger">*</span> sont
+                            obligatoires</p> --}}
 
-                                @error('sujet')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                        <div class="mb-3  position-relative">
+
+                            @error('sujet')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+
+                        <div class="etap_validation ">
+                            <label for="sujet" class="form-label text-dark">
+                                Choisir le matériel <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="etap {{ $etape[1] }} ">
+                                <a href="#" wire:click="$set('valeur1', 'ordinateur')" data-aos-duration="400"
+                                    class=" {{ $valeur1 == 'ordinateur' ? ' shadow-lg fw-bold' : 'shadow-sm' }} nav-link text-dark card   "
+                                    aria-current="true">
+
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <label class="text-dark"> Ordinateur </label>
+
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+                                </a>
+                                <a href="#" wire:click="$set('valeur1', 'Telephone')" data-aos-duration="400"
+                                    class=" {{ $valeur1 == 'Telephone' ? ' shadow-lg  fw-bold' : 'shadow-sm' }} nav-link text-dark card border-0 rounded-2 mb-1">
+
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <label class="text-dark"> Telephone </label>
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+
+                                </a>
+                                <a href="#" wire:click="$set('valeur1', 'Peripherique')" data-aos-duration="400"
+                                    class=" {{ $valeur1 == 'Peripherique' ? ' shadow-lg fw-bold' : 'shadow-sm' }} card text-dark border-0 rounded-2 mb-1 nav-link">
+
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <label class="text-dark"> Peripherique </label>
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+
+                                </a>
+
+                                <div class="mt-4 border-bottom py-1">
+                                    <button wire:click.prevent="next_form(2)"
+                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant
+                                    </button>
+                                </div>
                             </div>
 
+                            {{-- etape 2 page telephone --}}
 
-                            <div class="etap_validation ">
-                                <label for="sujet" class="form-label text-dark">
-                                    Choisir le matériel <span class="text-danger">*</span>
-                                </label>
+                            <div class="etap {{ $etape[2] }}">
+                                <a href="#" data-aos-duration="400" wire:click="$set('valeur2', 'Touche')"
+                                    class="nav-link {{ $valeur2 == 'Touche' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} card border rounded-2 mb-1">
 
-                                <div class="etap {{ $etape[1] }} ">
-                                    <a href="#" wire:click="$set('valeur1', 'ordinateur')" data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'ordinateur' ? ' shadow-lg fw-bold' : 'shadow-sm' }} nav-link text-dark card   "
-                                        aria-current="true">
-
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Ordinateur </label>
-                                           
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-                                    </a>
-                                    <a href="#" wire:click="$set('valeur1', 'Telephone')" data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'Telephone' ? ' shadow-lg  fw-bold' : 'shadow-sm' }} nav-link text-dark card border-0 rounded-2 mb-1">
-
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Telephone </label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-                                    <a href="#" wire:click="$set('valeur1', 'Peripherique')"
-                                        data-aos-duration="400"
-                                        class=" {{ $valeur1 == 'Peripherique' ? ' shadow-lg fw-bold' : 'shadow-sm' }} card text-dark border-0 rounded-2 mb-1 nav-link">
-
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Peripherique </label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-
-                                    <div class="mt-4 border-bottom py-1">
-                                        <button wire:click.prevent="next_form(2)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Suivant </button>
+                                    <div class=" d-flex w-100 justify-content-between">
+                                        <label class="text-dark"> Telephone Touche -</label>
+                                        <small class="text-body-secondary">En stock</small>
                                     </div>
+
+                                </a>
+
+                                <a data-aos-duration="400" wire:click="$set('valeur2', 'Android')" href="#"
+                                    class="nav-link {{ $valeur2 == 'Android' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} card border rounded-2 mb-1">
+
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <label class="text-dark"> Telephone Android -</label>
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+
+                                </a>
+
+                                <a wire:click="$set('valeur2', 'Tablette')" href="#"
+                                    class="nav-link {{ $valeur2 == 'Tablette' ? 'shadow-lg fw-bold text-white' : 'shadow-sm' }} card border rounded-2 mb-1">
+
+                                    <div class=" d-flex w-100 justify-content-between">
+                                        <label class="text-dark"> Telephone Tablette -</label>
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+
+                                </a>
+                                <div class="mt-4 border-bottom py-1">
+                                    <button wire:click="next_form(1)"
+                                        class="btn btn-outline-white  fw-bold border  px-3  btn-sm  shadow-sm">
+                                        Precedent</button>
+                                    <button wire:click="next_form(5)"
+                                        class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Suivant
+                                    </button>
                                 </div>
-
-                                {{-- etape 2 page telephone --}}
-
-                                <div class="etap {{ $etape[2] }}">
-                                    <a href="#" data-aos-duration="400" wire:click="$set('valeur2', 'Touche')"
-                                        class="nav-link {{ $valeur2 == 'Touche' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} card border rounded-2 mb-1">
-
-                                        <div class=" d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Telephone Touche -</label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-
-                                    <a data-aos-duration="400" wire:click="$set('valeur2', 'Android')" href="#"
-                                        class="nav-link {{ $valeur2 == 'Android' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} card border rounded-2 mb-1">
-
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Telephone Android -</label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-
-                                    <a wire:click="$set('valeur2', 'Tablette')" href="#"
-                                        class="nav-link {{ $valeur2 == 'Tablette' ? 'shadow-lg fw-bold text-white' : 'shadow-sm' }} card border rounded-2 mb-1">
-
-                                        <div class=" d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Telephone Tablette -</label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-                                    <div class="mt-4 border-bottom py-1">
-                                        <button wire:click="next_form(1)"
-                                            class="btn btn-outline-white  fw-bold border  px-3  btn-sm  shadow-sm"> Precedent</button>
-                                        <button wire:click="next_form(5)"
-                                            class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Suivant </button>
-                                    </div>
-                                </div>
-
-                                {{-- etape 4 peripherique --}}
-
-
-                                <div class="etap {{ $etape[4] }}">
-                                    <a wire:click="$set('valeur2', 'Regulateur')" href="#"
-                                        class="{{ $valeur2 == 'Regulateur' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <label class="text-dark"> Regulateur
-                                                </label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-
-                                    <div class="list-group">
-
-                                        <!-- Ordinateur -->
-                                      
-
-                                        <!-- Clavier -->
-                                        <a wire:click="$set('valeur2', 'Clavier')" href="#" 
-                                            class="{{ $valeur2 == 'Clavier' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Clavier </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Souris -->
-                                        <a wire:click="$set('valeur2', 'Souris')" href="#"
-                                            class="{{ $valeur2 == 'Souris' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Souris </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Webcam -->
-                                        <a wire:click="$set('valeur2', 'Webcam')" href="#"
-                                            class="{{ $valeur2 == 'Webcam' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Webcam </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Casque -->
-                                        <a wire:click="$set('valeur2', 'Casque')" href="#"
-                                            class="{{ $valeur2 == 'Casque' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Casque </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Scanner -->
-                                        <a wire:click="$set('valeur2', 'Scanner')" href="#"
-                                            class="{{ $valeur2 == 'Scanner' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Scanner </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Câble -->
-                                        <a wire:click="$set('valeur2', 'Cable')" href="#"
-                                            class="{{ $valeur2 == 'Cable' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Câble </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- USB -->
-                                        <a wire:click="$set('valeur2', 'USB')" href="#"
-                                            class="{{ $valeur2 == 'USB' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> USB </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Jabra -->
-                                        <a wire:click="$set('valeur2', 'Jabra')" href="#"
-                                            class="{{ $valeur2 == 'Jabra' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Jabra </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Powerbank -->
-                                        <a wire:click="$set('valeur2', 'Powerbank')" href="#"
-                                            class="{{ $valeur2 == 'Powerbank' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Powerbank </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Chargeur -->
-                                        <a wire:click="$set('valeur2', 'Chargeur')" href="#"
-                                            class="{{ $valeur2 == 'Chargeur' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Chargeur </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- APN -->
-                                        <a wire:click="$set('valeur2', 'APN')" href="#"
-                                            class="{{ $valeur2 == 'APN' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> APN </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                        <!-- Appareil Photo -->
-                                        
-                                        <a wire:click="$set('valeur2', 'Appareil Photo')" href="#"
-                                            class="{{ $valeur2 == 'Appareil Photo' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Appareil Photo </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-                                        <!-- Dominos -->
-                                        <a wire:click="$set('valeur2', 'Dominos')" href="#"
-                                            class="{{ $valeur2 == 'Dominos' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <label class="text-dark"> Dominos </label>
-                                                <small class="text-body-secondary">En stock</small>
-                                            </div>
-                                        </a>
-
-                                    </div>
-
-
-
-                                    <div class="">
-                                        <button wire:click="next_form(1)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
-                                        <button wire:click="next_form(5)" type="submit"
-                                            class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
-                                    </div>
-                                </div>
-
-                                {{-- validatation de l'etape --}}
-
-                                <div class="etap py-2 {{ $etape[5] }}">
-                                    <h5 class="text-dark">Vos selection</h5>
-                                    <a href="#" data-aos="fade-down" data-aos-duration="400" 
-                                        class="py-2 list-group-item list-group-item-action border rounded-2 mb-1">
-
-                                        <div class="d-flex py-2 px-1 w-100 justify-content-between">
-                                            <label class="text-dark"> 1 - {{ $valeur1 }} </label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-
-
-                                    <a href="#" data-aos="fade-down" data-aos-duration="400"
-                                        class="{{ $valeur2 ?? 'collapse' }} py-2 list-group-item list-group-item-action border rounded-2 mb-1">
-
-                                        <div class="d-flex py-2  px-1 w-100 justify-content-between">
-                                            <label class="text-dark"> 2 - {{ $valeur2 }} </label>
-                                            <small class="text-body-secondary">En stock</small>
-                                        </div>
-
-                                    </a>
-                                    <div class="">
-                                        <button wire:click="next_form(1)"
-                                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Retour</button>
-                                        <button type="submit" wire:click="EnvoyerCheckout"
-                                            class="btn btn-two btn-sm text-white   fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
-                                            Envoyer
-                                            
-
-                                        </button>
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <!-- Étape 1 -->
+                            {{-- etape 4 peripherique --}}
+
+
+                            <div class="etap {{ $etape[4] }}">
+                                <a wire:click="$set('valeur2', 'Regulateur')" href="#"
+                                    class="{{ $valeur2 == 'Regulateur' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <label class="text-dark"> Regulateur
+                                        </label>
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+
+                                </a>
+
+                                <div class="list-group">
+
+                                    <!-- Ordinateur -->
+
+
+                                    <!-- Clavier -->
+                                    <a wire:click="$set('valeur2', 'Clavier')" href="#"
+                                        class="{{ $valeur2 == 'Clavier' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Clavier </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Souris -->
+                                    <a wire:click="$set('valeur2', 'Souris')" href="#"
+                                        class="{{ $valeur2 == 'Souris' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Souris </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Webcam -->
+                                    <a wire:click="$set('valeur2', 'Webcam')" href="#"
+                                        class="{{ $valeur2 == 'Webcam' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Webcam </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Casque -->
+                                    <a wire:click="$set('valeur2', 'Casque')" href="#"
+                                        class="{{ $valeur2 == 'Casque' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Casque </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Scanner -->
+                                    <a wire:click="$set('valeur2', 'Scanner')" href="#"
+                                        class="{{ $valeur2 == 'Scanner' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Scanner </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Câble -->
+                                    <a wire:click="$set('valeur2', 'Cable')" href="#"
+                                        class="{{ $valeur2 == 'Cable' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Câble </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- USB -->
+                                    <a wire:click="$set('valeur2', 'USB')" href="#"
+                                        class="{{ $valeur2 == 'USB' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> USB </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Jabra -->
+                                    <a wire:click="$set('valeur2', 'Jabra')" href="#"
+                                        class="{{ $valeur2 == 'Jabra' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Jabra </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Powerbank -->
+                                    <a wire:click="$set('valeur2', 'Powerbank')" href="#"
+                                        class="{{ $valeur2 == 'Powerbank' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Powerbank </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Chargeur -->
+                                    <a wire:click="$set('valeur2', 'Chargeur')" href="#"
+                                        class="{{ $valeur2 == 'Chargeur' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Chargeur </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- APN -->
+                                    <a wire:click="$set('valeur2', 'APN')" href="#"
+                                        class="{{ $valeur2 == 'APN' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link  card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> APN </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Appareil Photo -->
+
+                                    <a wire:click="$set('valeur2', 'Appareil Photo')" href="#"
+                                        class="{{ $valeur2 == 'Appareil Photo' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Appareil Photo </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+                                    <!-- Dominos -->
+                                    <a wire:click="$set('valeur2', 'Dominos')" href="#"
+                                        class="{{ $valeur2 == 'Dominos' ? 'shadow-lg fw-bold ' : 'shadow-sm' }} nav-link card border rounded-2 mb-1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <label class="text-dark"> Dominos </label>
+                                            <small class="text-body-secondary">En stock</small>
+                                        </div>
+                                    </a>
+
+                                </div>
+
+
+
+                                <div class="">
+                                    <button wire:click="next_form(1)"
+                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Precedent</button>
+                                    <button wire:click="next_form(5)" type="submit"
+                                        class="btn btn-two btn-sm text-white fw-bold border  px-3  btn-sm  shadow-sm">Valider</button>
+                                </div>
+                            </div>
+
+                            {{-- validatation de l'etape --}}
+
+                            <div class="etap py-2 {{ $etape[5] }}">
+                                <h5 class="text-dark">Vos selection</h5>
+                                <a href="#" data-aos="fade-down" data-aos-duration="400"
+                                    class="py-2 list-group-item list-group-item-action border rounded-2 mb-1">
+
+                                    <div class="d-flex py-2 px-1 w-100 justify-content-between">
+                                        <label class="text-dark"> 1 - {{ $valeur1 }} </label>
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+
+                                </a>
+
+
+                                <a href="#" data-aos="fade-down" data-aos-duration="400"
+                                    class="{{ $valeur2 ?? 'collapse' }} py-2 list-group-item list-group-item-action border rounded-2 mb-1">
+
+                                    <div class="d-flex py-2  px-1 w-100 justify-content-between">
+                                        <label class="text-dark"> 2 - {{ $valeur2 }} </label>
+                                        <small class="text-body-secondary">En stock</small>
+                                    </div>
+
+                                </a>
+                                <div class="">
+                                    <button wire:click="next_form(1)"
+                                        class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Retour</button>
+                                    <button type="submit" wire:click="EnvoyerCheckout"
+                                        class="btn btn-two btn-sm text-white   fw-bold btn-xs-sm btn-xs-sm  shadow-sm ">
+                                        Envoyer
+
+
+                                    </button>
+                                </div>
+                            </div>
 
                         </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-one  text-white fw-bold text-sm rounded px-3"
-                                id="closeSidebar">Annuler</button>
-                            {{-- <button type="submit" wire:click="EnvoyerCheckout"
-                                class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button> --}}
-                        </div>
-               
+                        <!-- Étape 1 -->
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-one  text-white fw-bold text-sm rounded px-3"
+                            id="closeSidebar">Annuler</button>
+                        {{-- <button type="submit" wire:click="EnvoyerCheckout"
+                            class="btn btn-outline-success  fw-bold border  px-3  btn-sm  shadow-sm">Envoyer</button>
+                        --}}
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -310,362 +313,54 @@
 
 
 
-    <div wire:ignore.self class="container-fluid main-content mt-md-3 mt-lg-3">
+    <div wire:ignore.self class="container-fluid  mt-md-3 mt-lg-3">
 
-        <div class="row col-lg-11 offset-lg-1 offset-xs-0 offset-0  col-12">
+        <div class="row col-lg-11  offset-xs-0 offset-0  col-12">
             {{-- ici le menu --}}
             <div class="col-lg-2 bg-light py-1 px-0 d-md-block d-xl-block d-none">
 
 
-                 @livewire('component.menu-utilisateur')
-                <div class="justify-content-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                        x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;"
-                        xml:space="preserve">
-                        <g id="BACKGROUND">
-                            <rect x="-0.792" y="0.268" style="fill:#FFFFFF;" width="499.999" height="500.001" />
-                        </g>
-                        <g id="OBJECTS">
-                            <g>
-                                <g>
-                                    <g>
-                                        <g>
-                                            <g>
-                                                <polygon style="fill:#E9E9FF;"
-                                                    points="163.51,179.966 90.458,222.409 166.74,266.676 240.085,224.511       " />
-                                                <polygon style="fill:#B8B8D8;"
-                                                    points="240.085,224.511 240.085,305.51 166.74,348.436 166.74,266.676       " />
-                                                <polygon style="fill:#777793;"
-                                                    points="90.458,222.409 90.458,227.036 166.74,271.461 166.74,266.676       " />
-                                                <polygon style="fill:#777793;"
-                                                    points="162.771,264.37 162.771,346.146 166.74,348.436 166.74,266.676       " />
-                                            </g>
-                                        </g>
-                                        <polygon style="fill:#B8B8D8;"
-                                            points="162.285,361.774 90.458,320.018 90.458,227.036 164.756,270.027     " />
-                                    </g>
-                                    <g>
-                                        <g>
-                                            <polygon style="fill:#9B9BBA;"
-                                                points="218.608,394.35 306.53,343.502 305.729,190.251 218.037,228.657      " />
-                                            <polygon style="fill:#777793;"
-                                                points="218.608,235.834 162.348,202.88 162.348,361.868 218.608,394.35      " />
-                                        </g>
-                                        <g>
-                                            <polygon style="fill:#E9E9FF;"
-                                                points="231.634,153.749 159.615,194.929 222.212,231.068 293.455,189.441      " />
-                                            <g>
-                                                <g>
-                                                    <polygon style="fill:#47476D;"
-                                                        points="235.141,208.048 280.526,181.976 244.565,161.215 199.293,187.354        " />
-                                                    <polygon style="fill:#221F4F;"
-                                                        points="237.903,196.216 261.465,182.002 242.322,171.27 218.609,185.076        " />
-                                                </g>
-                                            </g>
-                                            <polygon style="fill:#9B9BBA;"
-                                                points="199.293,187.354 235.141,208.048 222.212,231.068 159.615,194.929      " />
-                                            <path style="fill:#ABABCE;"
-                                                d="M200.873,188.32c-9.107,5.294-9.137,13.878-0.052,19.158c9.107,5.291,23.972,5.291,33.134,0       c0.063-0.035,0.114-0.075,0.176-0.112L200.873,188.32z" />
-                                            <polygon style="fill:#47476D;"
-                                                points="201.813,195.303 221.149,206.45 223.312,205.237 204.022,194.067      " />
-                                            <polygon style="fill:#47476D;"
-                                                points="159.615,194.929 159.615,201.589 222.212,238.17 222.212,231.068      " />
-                                            <polygon style="fill:#777793;"
-                                                points="293.455,189.441 222.212,231.068 222.212,238.17 300.11,193.285      " />
-                                        </g>
-                                    </g>
-                                    <g>
-                                        <g>
-                                            <polygon style="fill:#B8B8D8;"
-                                                points="231.572,50.399 231.572,153.655 373.076,235.353 373.076,132.099      " />
-                                            <polygon style="fill:#D5D5EF;"
-                                                points="372.94,387.774 373.076,132.099 390.825,121.695 390.825,377.155      " />
-                                            <polygon style="fill:#E9E9FF;"
-                                                points="249.168,40.446 231.572,50.399 373.076,132.099 390.825,121.695      " />
-                                            <polygon style="fill:#B8B8D8;"
-                                                points="300.048,193.191 300.048,348.361 373.076,387.774 373.076,235.353      " />
-                                        </g>
-                                        <g>
-                                            <g>
-                                                <polygon style="fill:#777793;"
-                                                    points="361.049,186.124 361.049,205.515 336.561,191.376 336.561,172.198       " />
-                                                <polygon style="fill:#47476D;"
-                                                    points="357.855,192.9 357.855,195.507 339.111,185.005 339.111,182.206       " />
+                @livewire('component.menu-utilisateur')
 
-                                                <line
-                                                    style="fill:none;stroke:#221F4F;stroke-width:0.5;stroke-miterlimit:10;"
-                                                    x1="357.855" y1="194.371" x2="339.111" y2="183.893" />
-                                            </g>
-                                            <g>
-                                                <polygon style="fill:#777793;"
-                                                    points="361.049,163.412 361.049,182.803 336.561,168.663 336.561,149.485       " />
-                                                <polygon style="fill:#47476D;"
-                                                    points="357.855,170.188 357.855,172.795 339.111,162.292 339.111,159.493       " />
-
-                                                <line
-                                                    style="fill:none;stroke:#221F4F;stroke-width:0.5;stroke-miterlimit:10;"
-                                                    x1="357.855" y1="171.658" x2="339.111" y2="161.182" />
-                                            </g>
-                                            <g>
-                                                <polygon style="fill:#47476D;"
-                                                    points="314.311,179.882 298.304,170.735 314.915,160.909 330.238,170.288       " />
-                                                <g>
-                                                    <polygon style="fill:#221F4F;"
-                                                        points="314.227,142.754 314.632,161.104 298.304,170.735 298.219,158.88 306.761,147.063                 " />
-                                                    <polygon style="fill:#9B9BBA;"
-                                                        points="313.968,142.624 314.227,142.754 306.761,147.063 306.496,146.883        " />
-                                                    <polygon style="fill:#9B9BBA;"
-                                                        points="298.219,158.88 306.761,147.063 306.496,146.883 297.96,158.712        " />
-                                                    <polygon style="fill:#9B9BBA;"
-                                                        points="298.304,170.735 298.219,158.88 297.96,158.712 297.96,170.54        " />
-                                                </g>
-                                                <polygon style="fill:#D5D5EF;"
-                                                    points="310.397,147.518 314.314,145.341 328.508,152.899 324.138,155.421       " />
-                                                <g>
-                                                    <polygon style="fill:#B8B8D8;"
-                                                        points="302.361,169.799 315.702,177.501 324.34,155.537 310.397,147.518        " />
-                                                    <g>
-                                                        <polygon style="fill:#A8EB57;"
-                                                            points="321.191,156.06 310.876,150.178 308.71,155.764 318.505,161.35         " />
-                                                        <g>
-                                                            <polygon style="fill:#777793;"
-                                                                points="316.358,162.611 314.244,161.394 313.472,163.506 315.548,164.727          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="313.472,160.962 311.356,159.745 310.585,161.855 312.66,163.077          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="310.65,159.295 308.537,158.079 307.764,160.19 309.843,161.411          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="315.233,165.44 313.118,164.225 312.346,166.335 314.424,167.555          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="312.346,163.79 310.23,162.574 309.461,164.685 311.537,165.905          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="309.524,162.124 307.41,160.909 306.641,163.02 308.716,164.24          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="314.122,168.285 312.006,167.069 311.234,169.181 313.31,170.401          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="311.234,166.635 309.121,165.419 308.35,167.532 310.423,168.751          " />
-                                                            <polygon style="fill:#777793;"
-                                                                points="308.415,164.97 306.301,163.753 305.527,165.865 307.602,167.085          " />
-                                                            <polygon style="fill:#83CE17;"
-                                                                points="313.027,171.098 310.914,169.883 310.143,171.995 312.221,173.213          " />
-                                                            <polygon style="fill:#FFA500;"
-                                                                points="310.143,169.449 308.028,168.231 307.258,170.344 309.332,171.564          " />
-                                                            <polygon style="fill:#F05A00;"
-                                                                points="307.322,167.783 305.207,166.566 304.436,168.679 306.511,169.898          " />
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                                <g>
-                                                    <polygon style="fill:#47476D;"
-                                                        points="330.238,151.901 330.238,170.288 314.311,179.882 314.227,168.027 322.773,156.21                 " />
-                                                    <polygon style="fill:#E9E9FF;"
-                                                        points="329.978,151.77 330.238,151.901 322.773,156.21 322.507,156.03        " />
-                                                    <polygon style="fill:#E9E9FF;"
-                                                        points="314.227,168.027 322.773,156.21 322.507,156.03 313.97,167.86        " />
-                                                    <polygon style="fill:#9B9BBA;"
-                                                        points="314.311,179.882 314.227,168.027 313.97,167.86 313.97,179.686        " />
-                                                </g>
-                                            </g>
-                                            <g>
-                                                <g>
-                                                    <g>
-                                                        <polygon style="fill:#9B9BBA;"
-                                                            points="282.452,123.665 282.452,183.03 243.338,160.406 243.213,101.952         " />
-                                                        <polygon style="fill:#221F4F;"
-                                                            points="270.787,145.784 270.787,175.008 251.523,163.905 251.523,134.663         " />
-                                                        <polygon style="fill:#F05A00;"
-                                                            points="270.787,150.028 251.523,139.206 251.523,134.663 270.787,145.784         " />
-                                                        <polygon style="fill:#221F4F;"
-                                                            points="278.341,150.145 278.341,164.735 274.913,162.757 274.913,148.167         " />
-                                                    </g>
-                                                    <g>
-                                                        <path style="fill:#F05A00;"
-                                                            d="M259.22,159.448c0.24-0.112,0.278-0.541,0.084-0.958c-0.194-0.417-0.547-0.663-0.787-0.552          c-0.24,0.113-0.279,0.541-0.086,0.958C258.626,159.313,258.979,159.559,259.22,159.448z" />
-                                                        <path style="fill:#F05A00;"
-                                                            d="M259.779,157.613c0.241-0.112,0.278-0.54,0.084-0.958c-0.194-0.416-0.546-0.663-0.786-0.551          c-0.24,0.112-0.279,0.54-0.085,0.958C259.186,157.477,259.538,157.725,259.779,157.613z" />
-                                                        <path style="fill:#F05A00;"
-                                                            d="M260.897,159.653c0.241-0.113,0.279-0.542,0.084-0.958c-0.193-0.417-0.546-0.664-0.787-0.552          c-0.239,0.112-0.277,0.541-0.084,0.958C260.306,159.517,260.657,159.765,260.897,159.653z" />
-                                                        <path style="fill:#F05A00;"
-                                                            d="M261.604,157.885c0.24-0.111,0.278-0.541,0.084-0.958c-0.191-0.416-0.546-0.664-0.787-0.552          c-0.24,0.112-0.277,0.54-0.084,0.958C261.013,157.749,261.363,157.997,261.604,157.885z" />
-                                                        <path style="fill:#F05A00;"
-                                                            d="M262.724,160.23c0.24-0.112,0.277-0.541,0.084-0.958c-0.193-0.417-0.545-0.664-0.786-0.552          c-0.241,0.113-0.278,0.541-0.084,0.958C262.13,160.094,262.483,160.341,262.724,160.23z" />
-                                                        <path style="fill:#F05A00;"
-                                                            d="M260.059,161.491c0.24-0.112,0.278-0.542,0.085-0.958c-0.194-0.417-0.547-0.664-0.787-0.552          c-0.24,0.112-0.278,0.541-0.084,0.958C259.466,161.355,259.817,161.602,260.059,161.491z" />
-                                                        <path style="fill:#F05A00;"
-                                                            d="M261.796,161.793c0.24-0.112,0.277-0.542,0.085-0.958c-0.194-0.417-0.547-0.664-0.788-0.552          c-0.239,0.112-0.277,0.542-0.084,0.958C261.202,161.657,261.556,161.904,261.796,161.793z" />
-                                                    </g>
-                                                </g>
-                                                <g>
-                                                    <g>
-                                                        <polygon style="fill:#ABABCE;"
-                                                            points="296.059,94.888 296.059,153.246 232.883,116.771 232.883,58.413         " />
-                                                        <polygon style="fill:#221F4F;"
-                                                            points="291.7,96.341 291.7,146.648 237.243,115.206 237.243,64.902         " />
-                                                        <polygon style="fill:#D5D5EF;"
-                                                            points="299.218,151.421 296.059,153.246 296.059,94.888 299.216,93.065         " />
-                                                        <polygon style="fill:#E9E9FF;"
-                                                            points="236.005,56.557 299.216,93.065 296.059,94.888 232.883,58.413         " />
-                                                    </g>
-                                                    <polygon style="opacity:0.3;fill:#553098;"
-                                                        points="237.243,64.902 291.7,146.648 291.7,96.341        " />
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                    <g>
-                                        <polygon style="opacity:0.3;fill:#777793;"
-                                            points="218.726,308.458 254.335,373.341 300.03,346.768 299.896,262.901     " />
-                                        <g>
-                                            <polygon style="fill:#E9E9FF;"
-                                                points="300.066,256.373 218.726,303.336 326.052,365.617 407.957,318.531      " />
-                                            <polygon style="fill:#B8B8D8;"
-                                                points="407.957,318.531 407.957,408.986 326.052,456.924 326.052,365.617      " />
-                                            <polygon style="fill:#777793;"
-                                                points="218.726,303.336 218.726,308.458 326.052,370.963 326.052,365.617      " />
-                                            <polygon style="fill:#777793;"
-                                                points="321.62,363.045 321.62,454.364 326.052,456.924 326.052,365.617      " />
-                                        </g>
-                                    </g>
-                                    <g>
-                                        <g>
-                                            <polygon style="fill:#777793;"
-                                                points="310.098,88.588 310.098,62.173 303.059,57.795 303.059,84.522      " />
-                                            <polygon style="fill:#9B9BBA;"
-                                                points="310.067,88.533 315.862,85.31 315.862,58.598 310.095,62.215      " />
-                                        </g>
-                                        <g>
-                                            <polygon style="fill:#83CE17;"
-                                                points="310.344,54.167 310.344,78.348 289.246,66.256 289.246,42.174      " />
-                                            <polygon style="fill:#A8EB57;"
-                                                points="331.04,66.301 310.344,78.348 310.344,54.167 330.876,42.127      " />
-                                            <polygon style="fill:#C9FF7B;"
-                                                points="310.344,30.085 289.246,42.174 310.344,54.167 330.876,42.127      " />
-                                        </g>
-                                    </g>
-                                </g>
-                                <g>
-                                    <g>
-                                        <g>
-                                            <polygon style="fill:#F78028;"
-                                                points="331.484,329.892 336.571,243.135 284.625,213.414 278.73,300.971      " />
-                                            <polygon style="fill:#F05A00;"
-                                                points="359.868,314.097 352.373,233.767 342.729,235.906 336.571,243.135 331.484,329.892        347.68,315.959      " />
-                                            <polygon style="fill:#415C71;"
-                                                points="300.423,204.045 352.373,233.767 342.729,235.906 336.571,243.135 284.625,213.414        295.872,210.468      " />
-                                        </g>
-                                        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:#415C71;"
-                                            d="M326.693,241.083c0.808,6.67-0.854,12.282-5.009,14.685      c-6.93,3.998-18.103-2.395-24.959-14.28c-4.121-7.14-5.725-14.62-4.871-20.334l-1.827-1.046      c-0.85,6.254,0.957,14.376,5.426,22.115c7.555,13.093,19.861,20.133,27.49,15.729c4.511-2.604,6.369-8.626,5.577-15.818      L326.693,241.083z" />
-                                    </g>
-                                    <g>
-                                        <g>
-                                            <polygon style="fill:#A8EB57;"
-                                                points="343.226,349.613 338.585,270.495 385.958,243.391 391.334,323.239      " />
-                                            <polygon style="fill:#83CE17;"
-                                                points="317.342,335.206 324.179,261.95 332.97,263.903 338.585,270.495 343.226,349.613        328.456,336.907      " />
-                                            <polygon style="fill:#415C71;"
-                                                points="371.554,234.848 324.179,261.95 332.97,263.903 338.585,270.495 385.958,243.391        375.702,240.706      " />
-                                        </g>
-                                        <path style="fill:#415C71;"
-                                            d="M376.689,252.709l-0.942,0.543c0.422,0.783,0.826,1.592,1.212,2.422      c6.196,13.313,6.987,28.006-2.539,32.769c-7.581,3.793-20.281-5.913-26.476-19.23c-0.019-0.039-1.237,0.649-1.237,0.649      c0.204,0.478,0.417,0.952,0.638,1.428c6.989,15.027,19.69,23.924,28.363,19.893c8.665-4.036,10.027-19.487,3.037-34.507      C378.106,255.3,377.417,253.98,376.689,252.709z" />
-                                    </g>
-                                    <g>
-                                        <g>
-                                            <polygon style="fill:#83CE17;"
-                                                points="288.145,337.664 292.266,267.386 250.184,243.31 245.409,314.237      " />
-                                            <polygon style="fill:#A8EB57;"
-                                                points="311.135,325.623 305.063,260.554 297.254,262.286 292.266,268.142 288.145,338.42        301.263,327.134      " />
-                                            <polygon style="fill:#415C71;"
-                                                points="262.981,236.477 305.063,260.554 297.254,262.286 292.266,268.142 250.184,244.066        259.294,241.68      " />
-                                        </g>
-                                        <path style="fill-rule:evenodd;clip-rule:evenodd;fill:#415C71;"
-                                            d="M284.262,266.478c0.652,5.405-0.691,9.95-4.056,11.897      c-5.615,3.239-14.664-1.94-20.219-11.565c-3.341-5.784-4.64-11.845-3.948-16.473l-1.479-0.848      c-0.688,5.067,0.775,11.645,4.396,17.915c6.119,10.605,16.089,16.307,22.268,12.74c3.652-2.11,5.159-6.986,4.515-12.813      L284.262,266.478z" />
-                                    </g>
-                                </g>
-                                <g>
-                                    <g>
-                                        <path style="fill:#B27343;"
-                                            d="M231.759,215.283c0,0,5.101-3.872,8.598-5.297c3.523-1.413,6.793-3.009,10.417-5.951      c1.726-1.4,6.289-9.167,2.65-13.622c-1.547-1.895-5.01,2.495-7.596,4.29c-3.049,2.117-5.282,3.045-5.282,3.045      s0.351-1.338,0.351-4.019c0-2.323-1.584-3.781-6.092,5.915c-3.774,8.116-10.974,6.391-10.974,6.391L231.759,215.283z" />
-                                        <path style="opacity:0.2;fill:#FAC1AC;"
-                                            d="M252.465,198.064c-4.652,3.776-8.849,5.825-13.372,7.639      c-3.533,1.439-8.328,4.816-10.215,6.192l2.903,3.387c0,0,5.101-3.872,8.599-5.297c3.523-1.413,6.792-3.009,10.415-5.951      c1.211-0.982,3.808-5.095,4.001-9.002C253.938,196.48,253.066,197.575,252.465,198.064z" />
-                                    </g>
-                                    <g>
-                                        <g>
-                                            <g>
-                                                <g>
-                                                    <g>
-                                                        <path style="fill:#221F4F;"
-                                                            d="M135.968,447.253l1.511,1.01c0,0,3.54,0.496,7.576-0.507          c4.049-1.007,8.592-0.762,7.833,3.031c-0.76,3.784-7.323,6.816-10.101,8.088c-2.778,1.255-11.413,5.43-15.705,4.42          c-4.294-1.005-4.2-3.426-4.271-4.744c-0.213-3.908,0.082-12.565,0.082-12.565L135.968,447.253z" />
-                                                    </g>
-                                                    <path style="fill:#415C71;"
-                                                        d="M122.765,394.858c0.338-15.425,4.56-26.883,4.56-26.883s-0.79-59.225-2.504-74.201         c-1.718-14.98,1.513-25.147,2.763-29.679c0.223-4.787,3.205-5.714,3.205-5.714l40.408,7.493l-8.155,60.798         c-5.408,24.771-6.735,54.349-12.148,61.232c-9.289,11.814-10.136,54.001-11.486,65.08c0,0-6.119,3.965-11.159,3.308         c-7.067-0.922-6.952-3.577-6.952-8.157C121.296,448.136,122.422,410.286,122.765,394.858z" />
-                                                </g>
-                                                <path style="opacity:0.2;fill:#415C71;"
-                                                    d="M139.788,369.521c9.257-44.335-22.658-89.018-0.208-109.508l-8.792-1.631        c0,0-2.982,0.927-3.205,5.714c-1.25,4.532-4.133,18.486-2.415,33.466c1.714,14.976,2.156,70.414,2.156,70.414        s-4.222,11.458-4.56,26.883c-0.342,15.428-1.469,53.277-1.469,53.277c0,4.58-0.115,7.235,6.952,8.157        c3.88,0.506,8.388-1.723,10.263-2.777C122.068,421.403,132.232,405.702,139.788,369.521z" />
-                                            </g>
-                                            <g>
-                                                <g>
-                                                    <path style="fill:#221F4F;"
-                                                        d="M203.861,436.584l1.611,1.067c0,0,3.766,0.536,8.055-0.536         c4.311-1.074,9.147-0.803,8.342,3.222c-0.819,4.04-7.796,7.26-10.754,8.608c-2.954,1.337-8.441,3.261-14.818,3.357         c-5.864,0.089-6.434-1.271-6.752-2.709c-0.898-4.067,2.489-14.157,2.489-14.157L203.861,436.584z" />
-                                                </g>
-                                                <path style="fill:#415C71;"
-                                                    d="M137.576,260.684c0,0-5.964,16.684,1.917,32.095c6.364,12.447,57.839,75.114,57.839,75.114        s-6.292,27.114-7.388,39.011c-1.095,11.898,0.736,20.155-0.865,30.992c0,0-1.734,6.107,0.865,6.628        c4.184,0.839,12.015-0.506,14.715-2.105c2.701-1.598,11.406-58.697,17.297-66.219c5.79-7.388,3.653-12.627,0-24.293        c-3.652-11.664-34.521-85.808-34.521-85.808L137.576,260.684z" />
-                                                <path style="opacity:0.2;fill:#415C71;"
-                                                    d="M197.945,413.635c1.257-13.648,20.468-37.192,19.457-48.536        c-2.302-25.799-39.12-78.479-46.422-92.759c-3.461-6.764-29.05-5.153-29.131-11.192l-4.273-0.464        c0,0-5.964,16.684,1.917,32.095c6.364,12.447,57.839,75.114,57.839,75.114s-6.292,27.114-7.388,39.011        c-1.095,11.898,0.736,20.155-0.865,30.992c0,0-1.734,6.107,0.865,6.628c3.858,0.773,10.811-0.311,13.988-1.738        C204.762,432.495,196.85,425.544,197.945,413.635z" />
-                                            </g>
-                                        </g>
-                                        <g>
-                                            <g>
-                                                <path style="fill:#F78028;"
-                                                    d="M167.16,159.44c6.006,2.466,15.417,6.843,22.282,13.341c6.847,6.486,4.084,25.007,4.81,34.759        c0.725,9.736-3.911,63.769-3.911,63.769s-19.378,7.642-30.929,6.567c-11.547-1.088-28.264-7.708-33.677-17.447        c0,0,1.597-41.42,0.552-54.87c-1.343-17.278,0.534-35.074,2.452-41.92c1.477-5.278,12.613-15.237,24.518-9.456        C153.257,154.184,163.723,158.028,167.16,159.44z" />
-                                                <path style="opacity:0.4;fill:#F05A00;"
-                                                    d="M174.548,257.477c-23.211,4.441-40.558-33.836-42.854-69.195        c-0.985-15.171,0.739-25.021,7.729-34.599c-5.671,2.21-9.822,6.878-10.684,9.957c-1.918,6.847-3.795,24.642-2.452,41.92        c1.045,13.45-0.552,54.87-0.552,54.87c5.413,9.739,22.13,16.359,33.677,17.447c11.55,1.074,30.929-6.567,30.929-6.567        s0.653-6.87,1.694-21.068C186.616,255.862,184.148,255.641,174.548,257.477z" />
-                                            </g>
-                                            <g>
-                                                <path style="fill:#F78028;"
-                                                    d="M187.406,171.14c-6.448-0.862-9.528,5.235-11.38,8.635c-4.499,8.26-6.079,29.753-5.008,38.373        c1.295,10.427,2.876,18.621,10.102,25.852c4.231,4.234,6.661,4.227,14.363,0c7.701-4.229,40.198-29.046,40.198-29.046        s1.555-5.413-0.792-8.447c-2.347-3.035-5.029-3.963-5.029-3.963l-30.403,15.88c0,0-2.357-31.582-4.259-36.302        C193.296,177.402,190.742,171.586,187.406,171.14z" />
-                                                <path style="fill:#F05A00;"
-                                                    d="M201.949,233.343c-7.702,4.227-10.131,4.234-14.363,0c-7.226-7.231-8.807-15.425-10.102-25.852        c-0.928-7.468,0.135-24.595,3.361-34.41c-2.28,1.902-3.754,4.741-4.818,6.694c-4.5,8.26-6.078,29.753-5.008,38.373        c1.295,10.427,2.875,18.621,10.102,25.852c4.231,4.234,6.661,4.227,14.363,0c7.701-4.229,40.198-29.046,40.198-29.046        s0.898-3.139,0.29-5.976C226.161,216.381,207.536,230.276,201.949,233.343z" />
-                                            </g>
-                                        </g>
-                                    </g>
-                                    <g>
-                                        <g>
-                                            <path style="fill:#B27343;"
-                                                d="M184.61,111.938c1.765,15.622,2.695,15.737,1.037,24.838c-0.472,2.59-2.237,7.608-5.572,8.946       c-3.333,1.335-8.753-0.078-8.753-0.078v19.524c0,0-11.285,4.056-18.968-1.616v-7.673v-39.49       C152.354,116.39,165.479,101.835,184.61,111.938z" />
-                                            <polygon style="fill:#B27343;"
-                                                points="183.94,133.817 188.952,131.639 185.502,119.242      " />
-                                        </g>
-                                        <path style="fill:#5B3C29;"
-                                            d="M185.269,108.369c-2.329-12.932-51.686-17.792-43.333,17.593      c2.612,11.064,12.563,17.723,12.563,17.723s12.626-5.472,12.494-9.867c-0.438-14.583,2.353-18.303,5.315-18.942      C175.88,114.106,186.927,117.581,185.269,108.369z" />
-                                        <path style="fill:#B27343;"
-                                            d="M170.887,130.083c0,3.199-2.208,5.793-4.933,5.793c-2.724,0-4.933-2.594-4.933-5.793      c0-3.2,2.21-5.793,4.933-5.793C168.679,124.29,170.887,126.884,170.887,130.083z" />
-                                    </g>
-                                </g>
-                            </g>
-                        </g>
-                    </svg>
-                </div>
             </div>
 
             {{-- ici le contente right --}}
 
-            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2   col-lg-8 bg-white rounded-2"
-            style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
-                <div class="row">
-
-                    <div class="col-lg-6 col-8">
-                        <h5 class="fw-bold mx-lg-4 mx-2 d-none d-md-block d-lg-block">Checkout / Reservation</h5> 
-                        <h5 class="fw-bold mx-lg-4 mx-2 d-bloc d-md-none d-lg-none">Liste de checkout</h5> 
-
-                        <span class="text-muted mx-lg-4 mx-2 mt-2">Visualisation globale de chekout</span> <br>
+            <div class="mt-2 p-xs-0 p-0 p-md-0 p-xl-2 offset-lg-1 shadow-sm  col-lg-8 bg-white rounded-2"
+                style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                <div wire:loading.flex
+                    class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
+                    style="z-index: 10;">
+                    <div class="text-center">
+                        <div class="spinner-border text-secondary" role="status" style="width: 3rem; height: 3rem;">
+                        </div>
+                        <p class="mt-2 fw-bold text-secondary">Chargement ...</p>
                     </div>
-                    <div class="col-lg-6 col-4  d-none d-md-block d-lg-block">
+                </div>
+                <div class="row align-items-end mb-4">
+                    <div class="col-lg-8 col-7">
+                        <div class="ms-lg-4 ms-2">
+                            <h4 class="fw-bold text-soft mb-1 d-none d-md-block">Mes checkout & In</h4>
+                            <h5 class="fw-bold text-soft mb-1 d-block d-md-none">Mes Checkouts</h5>
 
-                            <span class="d-flex justify-content-end py-3 px-2 fw-bold" wire:click="disableRecente" style="color: #5BC4BF;cursor:pointer" >{{ $disabled ? 'Afficher Recente' : 'Masquer Recente' }}</span>
+                            <span class="text-subtle small">Vue d'ensemble de vos demandes de matériel</span>
+                        </div>
                     </div>
-                     <div class="col-lg-6 col-4 d-block d-md-none d-lg-none">
 
-                            <span class="d-flex justify-content-end py-3 px-2 fw-bold" style="color: #5BC4BF;cursor:pointer" id="toggleSidebar" >Nouveau</span>
+                    <div class="col-lg-4 col-5 text-end">
+                        <div class="me-lg-2">
+                            <div wire:click="disableRecente"
+                                class="d-none d-md-inline-flex align-items-center fw-bold text-primary-pivot btn-action-soft"
+                                style="cursor:pointer; font-size: 0.85rem;">
+                                <i class="fas {{ $disabled ? 'fa-eye' : 'fa-eye-slash' }} me-2"></i>
+                                {{ $disabled ? 'Afficher Récente' : 'Masquer Récente' }}
+                            </div>
+
+                            <span class="d-inline-block d-md-none fw-bold text-primary-pivot p-2"
+                                style="cursor:pointer; font-size: 0.9rem;" id="toggleSidebar">
+                                <i class="fas fa-plus-circle me-1"></i> Nouveau
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-12  mx-lg-4 mx-md-4  ">
@@ -673,93 +368,90 @@
 
                         <div class="row border-top mx-2 col-lg-11 mt-2">
                             <div class="col-lg-6 ">
-    
+
                                 <h5 class=" py-2 px-2 d-flex justify-content-between">Récente</h5>
                             </div>
-    
-                        
-    
+
+
+
                         </div>
                         <div class="row p-0 mx-3 ">
                             @foreach ($checkoutrecentes as $checkoutrecente)
-                            
-                            <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
-                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
-                                    Nom du ticket de las
-                                </div> --}}
-                                
-                                <div class="card-body m-0 p-0 ">
-                                     <div class="pb-2 fw-bold text-muted" >
-                                        Checkout 
-                                    </div>
-                                    <strong class="d-flex justify-content-between">
-                                        <div class="bg-light rounded-start-pill">
-                                            <img  class="dropdown-toggle border border-primary border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ $checkoutrecente->utilisateur->nom ?? 'none' }}"
-                                                alt="Profil" width="40" height="40"
-                                                class="rounded-circle me-2">
-                                                <span class="mx-2 ">{{ $checkoutrecente->materiel_type ?? 'Aucun' }}</span></div> 
-                                    </strong>
-                                     {{-- <div class="d-flex justify-content-end">
-                                            <small> 10 Nov 2025</small>
-                                    </div> --}}
-                                    <div class="mt-2 ">
-                                        <p>{{ $checkoutrecente->materiel_details ?? 'Aucun' }}</p>
-                                    </div>
-                                    <div>
-                                        
-                                        <div class="d-flex justify-content-end">
-                                            <span class="text-muted mx-2">
-                                                   {{ \Carbon\Carbon::parse($checkoutrecente->created_at)->translatedFormat('d M Y H:i') }}
-                                            </span>
-                                            <img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ $checkoutrecente->responsable->name ?? 'none' }}"
-                                                alt="Profil" width="20" height="20"
-                                                class="rounded-circle me-2"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-    
-                            @foreach ($reservationRecentes as $reservationRecent )
-                                 <div class="col-lg-3 mx-1 border p-0 m-0  rounded-3 ">
-                                {{-- <div class="card-title border-bottom bg-light py-2 px-2">
-                                    Nom du ticket de las
-                                </div> --}}
-                                <div class="card-body m-0 p-0 " title="Reservation de materiel">
-                                    <div class="pb-2 fw-bold text-muted" >
-                                        Reservation 
-                                    </div>
-                                     
-                                    <strong class="d-flex justify-content-between">
-                                        <div class="bg-light rounded-start-pill">
-                                            <img  class="dropdown-toggle border border-success border-2  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ $reservationRecent->responsable->nom ?? 'none' }}"
-                                                alt="Profil" width="40" height="40"
-                                                class="rounded-circle  me-2">
-                                                <span class="mx-2 text-capitalize ">{{ $reservationRecent->equipement_type?? 'Auccun' }}</span></div> 
-                                    </strong>
-                                     {{-- <div class="d-flex justify-content-end">
-                                            <small> 10 Nov 2025</small>
-                                    </div> --}}
-                                    <div class="mt-2">
-                                        <p>{{ \Carbon\Carbon::parse($reservationRecent->date_debut)->translatedFormat('d M Y') }} - {{ \Carbon\Carbon::parse($reservationRecent->date_fin)->translatedFormat('d M Y') }}</p>
-                                    </div>
-                                    <div>
-                                        
-                                        <div class="d-flex justify-content-end"><img class="dropdown-toggle bg-primary-light  p-0 m-0 rounded-pill" data-toggle="dropdown"
-                                                src="https://ui-avatars.com/api/?name={{ $ticket->responsable->name ?? 'none' }}"
-                                                alt="Profil" width="20" height="20"
-                                                class="rounded-circle me-2"></div>
+
+                            <div class="col-12 mb-3">
+                                <div class="card border-0 shadow-sm rounded-4 hover-shadow transition-all position-relative overflow-hidden"
+                                    style="background: #ffffff;">
+
+                                    <div class="position-absolute top-0 start-0 bottom-0"
+                                        style="width: 4px; opacity: 0.6; background-color: #0d6efd;"></div>
+
+                                    <div class="card-body p-3 ps-4">
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <div class="d-flex align-items-center flex-grow-1" style="min-width: 0;">
+                                                @php
+                                                // On utilise ici la photo de l'utilisateur qui a fait le checkout
+                                                $photoUser = optional($checkoutrecente->utilisateur)->photo;
+                                                @endphp
+
+                                                <div class="position-relative flex-shrink-0">
+                                                    <img src="{{ $photoUser ? asset('storage/' . $photoUser) : 'https://ui-avatars.com/api/?name='.urlencode($checkoutrecente->utilisateur->nom ?? 'none').'&background=0D6EFD&color=fff' }}"
+                                                        alt="Profil" width="46" height="46"
+                                                        class="rounded-circle border border-2 border-white shadow-sm object-fit-cover">
+                                                    <span
+                                                        class="position-absolute bottom-0 end-0 p-1 bg-primary border border-2 border-white rounded-circle shadow-sm"></span>
+                                                </div>
+
+                                                <div class="ms-3 text-truncate">
+                                                    <h6 class="mb-0  text-soft text-truncate"
+                                                        style="font-size: 0.95rem;">
+                                                        {{ $checkoutrecente->materiel_type ?? 'Matériel non spécifié' }}
+                                                    </h6>
+                                                    <p class="text-subtle mb-0 small text-truncate"
+                                                        style="max-width: 450px;">
+                                                        <span class="fw-medium text-dark">{{
+                                                            $checkoutrecente->utilisateur->nom ?? 'Inconnu' }}</span>
+                                                        • {{ $checkoutrecente->materiel_details ?? 'Aucun détail' }}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex align-items-center ms-4">
+                                                <div class="text-end me-3 d-none d-md-block border-end pe-3">
+                                                    <small class="text-subtle d-block mb-1"
+                                                        style="font-size: 0.7rem; font-weight: 500;">
+                                                        <i class="far fa-clock me-1 text-primary"></i>
+                                                        {{
+                                                        \Carbon\Carbon::parse($checkoutrecente->created_at)->diffForHumans()
+                                                        }}
+                                                    </small>
+                                                    <span
+                                                        class="badge rounded-pill bg-light text-primary border px-2 py-1"
+                                                        style="font-size: 0.7rem;">
+                                                        <i class="fas fa-sign-out-alt me-1"></i> Sortie
+                                                    </span>
+                                                </div>
+
+                                                <button
+                                                    class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                                                    style="width: 32px; height: 32px; transition: all 0.3s ease;">
+                                                    <i class="fas fa-chevron-right text-subtle"
+                                                        style="font-size: 0.8rem;"></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             @endforeach
-                           
+
+
+
                         </div>
                     </div>
                     <div class="mt-4  col-lg-11 p-0">
-                        <ul class="nav mx-2 nav-tabs  text-secondary" id="myTab" role="tablist">
+                        {{-- <ul class="nav mx-2 nav-tabs  text-secondary" id="myTab" role="tablist">
                             <li class="nav-item text-dark" role="presentation">
                                 <button class="nav-link  active" style="color: rgb(53, 53, 53) !important"
                                     id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"
@@ -769,117 +461,139 @@
                             </li>
                             <li class="nav-item  active text-dark" role="presentation">
                                 <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important"
-                                    id="link1-tab" data-bs-toggle="tab" data-bs-target="#link1" type="button"
-                                    role="tab" aria-controls="link1" aria-selected="false">
+                                    id="link1-tab" data-bs-toggle="tab" data-bs-target="#link1" type="button" role="tab"
+                                    aria-controls="link1" aria-selected="false">
                                     Reserver une equipement
                                 </button>
                             </li>
                             <li class="nav-item d-none d-md-block d-lg-block   text-dark" role="presentation">
                                 <button class="nav-link text-dark" style="color: rgb(53, 53, 53) !important"
-                                    id="link2-tab" data-bs-toggle="tab" data-bs-target="#link2" type="button"
-                                    role="tab" aria-controls="link1" aria-selected="false">
+                                    id="link2-tab" data-bs-toggle="tab" data-bs-target="#link2" type="button" role="tab"
+                                    aria-controls="link1" aria-selected="false">
                                     Historique de vos reservation
                                 </button>
                             </li>
 
 
-                        </ul>
+                        </ul> --}}
 
-                        <div class="tab-content border-0 p-2  border-top-0" id="myTabContent">
+                        <div class="tab-content border-0   border-top-0" id="myTabContent">
                             <div class="tab-pane fade show active " id="active" role="tabpanel"
                                 aria-labelledby="active-tab">
 
-                                <div class="d-flex justify-content-between">
-                                    <label class="d-none py-2 mt-3 d-md-block d-lg-block">Historique de votre checkout</label>
+                                <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
 
-                                    {{-- <input type="text" class="d-block form-control-sm d-md-none d-lg-none border-bottom-1 "  placeholder="Recherche"> --}}
-                                    <small class="mt-3">
-                                        <div class="shadow-sm p-2      rounded-2">
+                                    <div class="d-flex align-items-center gap-3 flex-grow-1 me-4">
 
-                                            Filtre par :
-                                            <span>
-                                                <select name="" id="" class="border-0 px-2"
-                                                    wire:model="filtrerCheckout">
-                                                    <option value="">Tous</option>
-                                                    <option value="1" class="border-0 ">En cours </option>
-                                                    <option value="2" class="border-0 ">En traitement </option>
-                                                    <option value="3" class="border-0  shadow-sm">Resolu</option>
-                                                    <option value="4" class="border-0 ">Fermer</option>
+                                        <div class="position-relative flex-grow-1">
 
-                                                </select>
-                                            </span>
+
+                                            <input type="text" wire:model.live.debounce.300ms="rechercheCheckout"
+                                                class="form-control form-control-sm border-0 bg-light rounded-2 ps-5 pe-3 shadow-none w-100"
+                                                placeholder="Rechercher par sujet, équipement, responsable..."
+                                                style="height: 38px; font-size: 0.9rem;">
                                         </div>
-                                        {{-- <input type="text" wire:model="recherche"
-                                            class="input-recherche    rounded-0 border-3 py-2 mt-2 py-2 px-5 rounded-2"
-                                            placeholder="Recherche par sujet.."> --}}
-                                    </small>
+
+                                        <div class="d-flex align-items-center  border-0 shadow-sm rounded-2 px-3 bg-white border"
+                                            style="height: 38px;">
+                                            <label class="text-subtle fw-bold text-muted mb-0 me-2 d-none d-sm-inline"
+                                                style="font-size: 0.65rem; letter-spacing: 0.5px;">
+                                                Filtre :
+                                            </label>
+                                            <select wire:model.live="filtrerCheckout"
+                                                class="border-0  bg-transparent text-soft small fw-semibold outline-none"
+                                                style="cursor: pointer; width: auto; min-width: 100px;">
+                                                <option value="">Tous les statuts</option>
+                                                <option value="1">En cours</option>
+                                                <option value="2">Validé</option>
+                                                <option value="3">Résolu</option>
+                                                <option value="4">Fermé</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="list-group mt-2  bg-white " style="max-height:700px;overflow-y: scroll">
                                     @if ($checkouts)
-                                         @foreach ($checkouts as $checkout)
-                                            <a  data-aos="fade-down" data-aos-duration="400"
-                                            wire:click="visualisercheckout({{ $checkout->id }})"
-                                                data-bs-toggle="modal" data-bs-target="#checkoutview"
-                                                data-aos-delay="{{ $loop->index * 200 }}"
-                                                class="list-group-item border mb-1  list-group-item-action rounded-2 ">
+                                    @foreach ($checkouts as $checkout)
+                                    <a wire:click="visualisercheckout({{ $checkout->id }})" data-bs-toggle="modal"
+                                        data-bs-target="#checkoutview" data-aos="fade-down" data-aos-duration="400"
+                                        data-aos-delay="{{ $loop->index * 100 }}"
+                                        class="list-group-item  list-group-item-action border-0 mb-2 shadow-sm rounded-3 p-3 transition-hover bg-white">
 
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <b class="mb-1 text-black-50"> {{ $checkout->id }} -
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <div class="flex-grow-1 me-3" style="min-width: 0;">
+                                                <div class="d-flex align-items-center mb-1">
+                                                    {{-- <span class="text-subtle me-2 fw-bold"
+                                                        style="font-size: 0.8rem;">#{{ $checkout->id }}</span> --}}
+                                                    <span class="text-soft text-capitalize text-truncate-single"
+                                                        style="font-size: 0.95rem;">
                                                         {{ $checkout->materiel_type }}
-                                                    </b>
-                                                    <small class="text-body-secondary">
-                                                        {{ \Carbon\Carbon::parse($checkout->created_at)->translatedFormat('d M Y H:i') }}
-                                                    </small>
+                                                    </span>
                                                 </div>
 
-                                                <div class="d-flex w-100 mt-2 justify-content-between">
-                                                    <p class="mb-1 text-capitalize">
-                                                        {{ $checkout->materiel_details }}</p>
-                                                    {{-- <small class=" px-2 m-0 fw-bold rounded-pill border {{ $checkout->statut == 'En cours' ? 'text-warning' : 'text-danger' }}">
-                                                        {{ $checkout->statut == 1 ? 'En cours' : ( $checkout->statut == 2 ? 'Valider' : 'Fermer' )}}
-                                                    </small> --}}
-                                                    <div class="d-flex justify-content-end">
-                                                        <small
-                                                            class="text-muted mx-2">{{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ? 'Valider' : 'Fermer') }}</small>
-                                                        <img class="dropdown-toggle  p-0 m-0 rounded-pill"
-                                                            data-toggle="dropdown"
-                                                            src="https://ui-avatars.com/api/?name={{ $checkout->utilisateur->nom }}"
-                                                            alt="Profil" width="20" height="20"
-                                                            class="rounded-circle me-2">
+                                                <div class="text-subtle text-truncate-single small"
+                                                    style="opacity: 0.8;">
+                                                    {{ $checkout->materiel_details }}
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex align-items-center shrink-0">
+                                                <span
+                                                    class="badge-pivot-soft status-checkout-{{ $checkout->statut }} me-3"
+                                                    style="font-size: 0.6rem;">
+                                                    {{ $checkout->statut == 1 ? 'En cours' : ($checkout->statut == 2 ?
+                                                    'Validé' : 'Fermé') }}
+                                                </span>
+
+                                                <div class="d-flex align-items-center  ps-3">
+                                                    <div class="text-end me-2 d-none d-lg-block">
+                                                        <div class="text-subtle" style="font-size: 0.65rem;">
+                                                            {{
+                                                            \Carbon\Carbon::parse($checkout->created_at)->diffForHumans()
+                                                            }}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="d-flex w-100 justify-content-between">
-                                                </div>
-                                            </a>
-                                        @endforeach
-                                        
-                                    @else
-                                        <p class="mt-4 text-center p-4">
 
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning"
-                                                width="80" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                stroke="currentColor" class="size-6">
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($checkout->utilisateur->nom) }}&background=f1f5f9&color=64748b"
+                                                        alt="Profil" width="26" height="26"
+                                                        class="rounded-circle border border-2 border-white shadow-sm"
+                                                        title="{{ $checkout->utilisateur->nom }}">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                    @endforeach
+
+                                    @else
+                                    <div
+                                        class="d-flex flex-column align-items-center justify-content-center p-5 mt-4 rounded-4 bg-light border border-dashed">
+                                        <div class="bg-white shadow-sm rounded-circle d-flex align-items-center justify-content-center mb-3"
+                                            style="width: 80px; height: 80px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning opacity-75"
+                                                width="40" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                             </svg>
-                                            <br>
-                                            <br>
+                                        </div>
 
-                                            <span class="my-4">Aucun checkout trouvé </span>
-                                            <br>
+                                        <h6 class="fw-bold text-dark mb-1">Aucun incident trouvé</h6>
+                                        <p class="text-muted small mb-0">Essayez de modifier vos filtres ou votre
+                                            recherche.</p>
 
-                                            <br>
-                                            <button class="btn btn-light px-4">Nouveau chekout</button>
-                                        </p>
-                                       
+
+                                    </div>
+
 
                                     @endif
                                     <div class="mt-4 text-small d-flex justify-content-center">
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade border-0 " id="link1" role="tabpanel"
-                                aria-labelledby="link1-tab">
+                            <div class="tab-pane fade border-0 " id="link1" role="tabpanel" aria-labelledby="link1-tab">
                                 <div class=" p-xs-0  mx-1  p-0 p-md-0 p-xl-2  ">
 
                                     <div class="">
@@ -889,42 +603,45 @@
 
                                     <div class="list-group mt-2 " style="max-height: 400px;overflow-y: scroll">
                                         @foreach ($ordinateurs as $ordinateur)
-                                            <a href="#" wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})" title="Voir la disonibilite" class="list-group-item list-group-item-action border-0 border-bottom ">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <b class="mb-1 text-black-50"> {{ $ordinateur->nom }}</b>
-                                                    <small class="text-body-secondary"></small>
-                                                </div>
+                                        <a href="#" wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
+                                            title="Voir la disonibilite"
+                                            class="list-group-item list-group-item-action border-0 border-bottom ">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <b class="mb-1 text-black-50"> {{ $ordinateur->nom }}</b>
+                                                <small class="text-body-secondary"></small>
+                                            </div>
 
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <p class="mb-1 text-capitalize"> </p>
-                                                    <small
-                                                        class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
-                                                    </small>
-                                                </div>
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <small class="text-body-secondary">
-                                                        <svg width="12" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor" class="size-6 text-success">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
-                                                        </svg>
-                                                        4 {{ $ordinateur->state }} {{ $ordinateur->os_version }}
-                                                    </small>
-                                                    <small class="text-body-secondary  ">
-{{-- 
-                                                        <button type="button"
-                                                            wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
-                                                            class="btn btn-sm border-0 btn-light"
-                                                            data-bs-toggle="modal" data-bs-target="#calendarModal">
-                                                            📅 Voir le disponibite
-                                                        </button> --}}
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <p class="mb-1 text-capitalize"> </p>
+                                                <small
+                                                    class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
+                                                </small>
+                                            </div>
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <small class="text-body-secondary">
+                                                    <svg width="12" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                        class="size-6 text-success">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                                    </svg>
+                                                    4 {{ $ordinateur->state }} {{ $ordinateur->os_version }}
+                                                </small>
+                                                <small class="text-body-secondary  ">
+                                                    {{--
+                                                    <button type="button"
+                                                        wire:click="openCalendrier('ordinateur',{{ $ordinateur->id }})"
+                                                        class="btn btn-sm border-0 btn-light" data-bs-toggle="modal"
+                                                        data-bs-target="#calendarModal">
+                                                        📅 Voir le disponibite
+                                                    </button> --}}
 
-                                                    </small>
-                                                </div>
+                                                </small>
+                                            </div>
 
-                                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
-                                            </a>
+                                            {{-- <small class="text-body-secondary">And some muted small print.</small>
+                                            --}}
+                                        </a>
                                         @endforeach
 
 
@@ -946,42 +663,51 @@
 
 
                                     <div class="list-group mt-2 " style="max-height: 400px;overflow-y: scroll">
-                                     @foreach ($matreservations as $materiel)
-                                            <a href="#" wire:click="visualiser( {{ $materiel->id }})" 
-                                                
-                                                title="Voir le details" class="list-group-item list-group-item-action border-0 border-bottom ">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <b class="mb-1 text-black-50 text-capitalize"> {{ $materiel->equipement_type }} </b>
-                                                    <span class="text-muted fw-6">{{ \Carbon\Carbon::parse($materiel->date_debut)->translatedFormat('d M Y ') }} - {{ \Carbon\Carbon::parse($materiel->date_fin)->translatedFormat('d M Y ') }}</span>
-                                                    <small class="text-body-secondary"></small>
-                                                </div>
+                                        @foreach ($matreservations as $materiel)
+                                        <a href="#" wire:click="visualiser( {{ $materiel->id }})"
+                                            title="Voir le details"
+                                            class="list-group-item list-group-item-action border-0 border-bottom ">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <b class="mb-1 text-black-50 text-capitalize"> {{
+                                                    $materiel->equipement_type }} </b>
+                                                <span class="text-muted fw-6">{{
+                                                    \Carbon\Carbon::parse($materiel->date_debut)->translatedFormat('d M
+                                                    Y ') }} - {{
+                                                    \Carbon\Carbon::parse($materiel->date_fin)->translatedFormat('d M Y
+                                                    ') }}</span>
+                                                <small class="text-body-secondary"></small>
+                                            </div>
 
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <p class="mb-1 text-capitalize"> </p>
-                                                    <small
-                                                        class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
-                                                    </small>
-                                                </div>
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <small class="text-body-secondary">
-                                                         Le  {{ \Carbon\Carbon::parse($materiel->created_at)->translatedFormat('d M Y H:i') }}
-                                                    </small>
-                                                    <small class=" {{ $materiel->statut == 0 ? 'text-danger' : 'text-body-secondary' }} justify-content-end  ">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <p class="mb-1 text-capitalize"> </p>
+                                                <small
+                                                    class="text-body-secondary border-0 border-top-generic px-2  rounded-pill">
+                                                </small>
+                                            </div>
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <small class="text-body-secondary">
+                                                    Le {{
+                                                    \Carbon\Carbon::parse($materiel->created_at)->translatedFormat('d M
+                                                    Y H:i') }}
+                                                </small>
+                                                <small
+                                                    class=" {{ $materiel->statut == 0 ? 'text-danger' : 'text-body-secondary' }} justify-content-end  ">
                                                     {{ match($materiel->statut) {
-                                                            0 => 'Demande d\'annulation en cours',
-                                                            1 => 'CREE',
-                                                            2 => 'VALIDER',
-                                                            3 => 'EN COURS',
-                                                            4 => 'RENDU',
-                                                            5 => 'ARCHIVER',
-                                                            default => 'CREE',
-                                                        } }}
+                                                    0 => 'Demande d\'annulation en cours',
+                                                    1 => 'CREE',
+                                                    2 => 'VALIDER',
+                                                    3 => 'EN COURS',
+                                                    4 => 'RENDU',
+                                                    5 => 'ARCHIVER',
+                                                    default => 'CREE',
+                                                    } }}
 
-                                                    </small>
-                                                </div>
+                                                </small>
+                                            </div>
 
-                                                {{-- <small class="text-body-secondary">And some muted small print.</small> --}}
-                                            </a>
+                                            {{-- <small class="text-body-secondary">And some muted small print.</small>
+                                            --}}
+                                        </a>
                                         @endforeach
 
 
@@ -1007,77 +733,77 @@
 
     <!-- Modal -->
 
-    <div wire:ignore.self class="modal fade" id="checkoutview" tabindex="-1"
-        aria-labelledby="checkoutviewLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
+    <div wire:ignore.self class="modal fade" id="checkoutview" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
 
-                <!-- Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="checkoutviewLabel">Détails de l'incident</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                <div class="modal-header border-0 py-3 px-4 bg-light">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-white p-2 rounded-3 shadow-sm me-3">
+                            <i class="fas fa-receipt text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="modal-title fw-bold text-soft mb-0">Détails de l'opération</h6>
+                            <small class="text-subtle">Référence #{{ $selectedCheckouts?->id }}</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <!-- Body -->
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-md-4 fw-bold text-muted">Type d'équipement :</div>
-                            <div class="col-md-8" id="equipement_type">{{ $selectedCheckouts?->materiel_type }}
-                            </div>
+                <div class="modal-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                        <div>
+                            <span class="text-subtle small d-block mb-1 text-uppercase fw-bold"
+                                style="font-size: 0.65rem; letter-spacing: 0.5px;">État actuel</span>
+                            <span class="badge-pivot-soft status-checkout-{{ $selectedCheckouts?->statut }}">
+                                {{ $selectedCheckouts?->statut == 1 ? 'EN COURS' : ($selectedCheckouts?->statut == 2 ?
+                                'VALIDÉ' : 'FERMÉ') }}
+                            </span>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4 fw-bold text-muted">Matériel :</div>
-                            <div class="col-md-8" id="equipement_id">
-                                {{-- @if ($selectedIncidents?->equipement_type == 'Ordinateur')
-                                    {{ $selectedIncidents?->ordinateur->nom }}
-                                    {{ $selectedIncidents?->ordinateur->os_version }}
-                                @endif  --}}
-                            </div>
+                        <div class="text-end">
+                            <span class="text-subtle small d-block mb-1 text-uppercase fw-bold"
+                                style="font-size: 0.65rem; letter-spacing: 0.5px;">Date d'émission</span>
+                            <span class="text-soft fw-bold" style="font-size: 0.85rem;">{{
+                                $selectedCheckouts?->created_at?->format('d/m/Y H:i') }}</span>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4 fw-bold text-muted">Responsable :</div>
-                            <div class="col-md-8" id="responsable">
-                            </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="text-subtle small fw-bold text-uppercase mb-2 d-block"
+                            style="font-size: 0.65rem;">Équipement sollicité</label>
+                        <div class="p-3 rounded-3 border bg-white">
+                            <p class="text-soft fw-bold mb-1">{{ $selectedCheckouts?->materiel_type }}</p>
+                            <p class="text-subtle small mb-0">{{ $selectedCheckouts?->materiel_details }}</p>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4 fw-bold text-muted">Date de creation :</div>
-                            <div class="col-md-8" id="date_debut">{{ $selectedCheckouts?->created_at }}</div>
+                    </div>
+
+                    <div class="p-3 rounded-4 d-flex align-items-center"
+                        style="background-color: #f8fafc; border: 1px solid #eef2f6;">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($selectedCheckouts?->utilisateur?->nom) }}&background=5BC4BF&color=fff"
+                            class="rounded-circle me-3 border border-2 border-white shadow-sm" width="40" height="40">
+                        <div class="overflow-hidden">
+                            <label class="text-subtle small fw-bold text-uppercase d-block"
+                                style="font-size: 0.6rem;">Demandeur</label>
+                            <span class="text-soft fw-bold d-block text-truncate">{{
+                                $selectedCheckouts?->utilisateur?->nom }}</span>
                         </div>
-                        {{-- <div class="row mb-2">
-                        <div class="col-md-4 fw-bold text-muted">Date de fin :</div>
-                        <div class="col-md-8" id="date_fin">2025-11-12</div>
-                    </div> --}}
-                        <div class="row mb-2">
-                            <div class="col-md-4 fw-bold text-muted">Statut :</div>
-                            <div class="col-md-8" id="statut">EN COURS</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4 fw-bold text-muted">Commentaire :</div>
-                            <div class="col-md-8" id="commentaire">
-                                Exemple de commentaire de l'incident...
-                            </div>
-                        </div>
-                       
-                        
                     </div>
                 </div>
 
-                <!-- Footer -->
-                <div class="modal-footer border-top py-2">
-                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Fermer</button>
-                    {{-- @if ($selectedIncidents?->statut == 1)
-                        <button type="button" wire:click="annulationDemande({{ $selectedIncidents?->id  }})" class="btn btn-danger px-4" data-bs-dismiss="modal">
-                            Annuller la
-                            demande</button>
-                    @endif --}}
-                </div>
+                <div class="modal-footer border-0 px-4 pb-4 pt-0">
+                    <button type="button" class="btn btn-link text-subtle text-decoration-none fw-bold me-auto"
+                        data-bs-dismiss="modal">Fermer</button>
 
+                    @if($selectedCheckouts?->statut == 1)
+                    <button type="button" wire:click="annulationDemande({{ $selectedCheckouts->id }})"
+                        class="btn btn-danger px-4 fw-bold shadow-sm rounded-3" style="font-size: 0.85rem;">
+                        Annuler la demande
+                    </button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
-
 
 
 
@@ -1096,7 +822,7 @@
     }
 
 
-    
+
     #wrap {
         width: 1100px;
         margin: 0 auto;

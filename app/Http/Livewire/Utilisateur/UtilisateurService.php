@@ -176,7 +176,7 @@ class UtilisateurService extends Component
                 ->where("state", "like", "%" . $this->filtrerticket . "%")
                 ->where("sujet", "like", "%" . $this->recherche . "%")
                 ->orderBy("created_at", "desc")
-                ->get(),
+                ->paginate(8),
             "ticketrecentes" => ticket::where("utilisateur_id", $user_ID)
                 ->orderBy("created_at", "desc")
                 ->limit(2)
