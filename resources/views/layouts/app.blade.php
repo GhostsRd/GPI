@@ -534,7 +534,7 @@
                 </a>
                 <div class="collapse" id="simCollapse">
                     <div class="nav-submenu">
-                        @if(Auth::user()->isAdmin() || Auth::user()->isManager())
+                        @if(Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isManager()))
                             <a href="{{ route('admin.sim.dashboard') }}" class="submenu-item mt-2">
                                 <i class="bi bi-graph-up"></i>
                                 Analyse
@@ -545,7 +545,7 @@
                             </a>
                         @endif
                         
-                        @if(Auth::user()->isUser())
+                        @if(Auth::check() && Auth::user()->isUser())
                             <a href="{{ route('utilisateur.sim.my-sims') }}" class="submenu-item mt-2">
                                 <i class="bi bi-person-badge"></i>
                                 Mes SIMs
@@ -570,6 +570,14 @@
                         </a>
                     </div>
                 </div>
+            </div>
+
+            <!-- Configuration -->
+            <div class="nav-item-modern mt-2">
+                <a class="nav-link-modern {{ request()->routeIs('configuration') ? 'active' : '' }}" href="{{ route('configuration') }}">
+                    <i class="nav-icon bi bi-sliders fs-6 text-secondary"></i>
+                    <span>Configuration</span>
+                </a>
             </div>
         </nav>
 
@@ -669,9 +677,9 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content-modern">
-        {{ $slot }}
+        {{ $slot ?? '' }}
+        @yield('content')
     </main>
 
     <!-- Formulaire caché pour la déconnexion -->

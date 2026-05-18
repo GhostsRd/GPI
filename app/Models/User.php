@@ -30,6 +30,17 @@ class User extends Authenticatable
     ];
 
     /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\ResetPasswordFR($token));
+    }
+
+    /**
      * Génère et enregistre un code 2FA pour l'utilisateur.
      */
     public function generateTwoFactorCode(): string

@@ -31,11 +31,13 @@ class utilisateur extends Authenticatable
         'two_factor_code',
         'two_factor_expires_at',
         'two_factor_enabled',
+        'is_active',
     ];
 
     protected $casts = [
         'two_factor_expires_at' => 'datetime',
         'two_factor_enabled' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -62,6 +64,17 @@ class utilisateur extends Authenticatable
             'two_factor_code' => null,
             'two_factor_expires_at' => null,
         ])->save();
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\ResetPasswordFR($token));
     }
 
     public function tickets()

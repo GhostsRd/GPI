@@ -13,6 +13,7 @@ class UtilisateurProfile extends Component
     use WithFileUploads;
 
     public $nom, $poste, $email, $telephone, $lieu_affectation, $adresse, $photo, $newPhoto;
+    public $two_factor_enabled;
     public $showEditModal = false;
     public $stats = [
         'checkout' => 0,
@@ -39,6 +40,7 @@ class UtilisateurProfile extends Component
         $this->lieu_affectation = $user->lieu_affectation;
         $this->adresse = $user->adresse;
         $this->photo = $user->photo;
+        $this->two_factor_enabled = (bool) $user->two_factor_enabled;
 
         // Fetch Real Stats
         $this->stats['tickets'] = $user->tickets()->count();
@@ -67,6 +69,25 @@ class UtilisateurProfile extends Component
     public function toggleEditModal()
     {
         $this->showEditModal = !$this->showEditModal;
+    }
+
+    public function toggleTwoFactor()
+    {
+        $user = Auth::guard('utilisateur')->user();
+        
+        $user->forceFill([
+            'two_factor_enabled' => $this->two_factor_enabled
+        ])->save();
+
+        $statusMessage = $this->two_factor_enabled 
+            ? 'La double authentification (2FA) a été activée sur votre compte.' 
+            : 'La double authentification (2FA) a été désactivée.';
+
+        $this->emit('toast', [
+            'type' => 'success',
+            'title' => 'Double Authentification',
+            'message' => $statusMessage
+        ]);
     }
 
     public function saveProfile()

@@ -20,6 +20,13 @@ class UtilisateurLogin extends Controller
             $user = \App\Models\utilisateur::where('email', $credentials['email'])->first();
 
             if ($user) {
+                // Vérifier si le compte est actif
+                if (!$user->is_active) {
+                    return back()->withErrors([
+                        'email' => 'Votre compte est désactivé. Veuillez contacter l\'administrateur.'
+                    ])->onlyInput('email');
+                }
+
                 // Si la double authentification (2FA) est activée pour cet utilisateur
                 if ($user->two_factor_enabled) {
                     $remember = $request->has('remember');
@@ -61,7 +68,7 @@ class UtilisateurLogin extends Controller
         Auth::guard('utilisateur')->logout();
         $request->session()->forget('utilisateur');
         $request->session()->regenerateToken();
-        return redirect('/utilisateur-login');
+        return redirect('/utilisateur');
     }
     public function index(){
         if (Auth::guard('utilisateur')->check()) {

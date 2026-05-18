@@ -205,6 +205,48 @@
                 background: white;
                 box-shadow: 0 0 0 4px rgba(91, 196, 191, 0.1);
             }
+
+            /* Custom Switch */
+            .switch-premium {
+                position: relative;
+                display: inline-block;
+                width: 50px;
+                height: 26px;
+            }
+            .switch-premium input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+            .slider-premium {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: var(--gray-200);
+                transition: .4s;
+                border-radius: 34px;
+            }
+            .slider-premium:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            input:checked + .slider-premium {
+                background-color: var(--primary);
+            }
+            input:checked + .slider-premium:before {
+                transform: translateX(24px);
+            }
         </style>
 
         <div class="row justify-content-center">
@@ -278,6 +320,23 @@
 
                                 <span class="info-label">Email</span>
                                 <span class="info-value">{{ $email }}</span>
+
+                                <!-- Sécurité & 2FA -->
+                                <div class="mt-4 p-4 rounded-4" style="background: var(--gray-100); border: 1px solid var(--gray-200);">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="info-label text-dark mb-1 d-flex align-items-center gap-2">
+                                                <i class="fas fa-shield-alt" style="color: var(--primary);"></i>
+                                                Double Authentification (2FA)
+                                            </span>
+                                            <small class="text-muted" style="font-size: 0.8rem;">Sécurisez avec un code par email.</small>
+                                        </div>
+                                        <label class="switch-premium">
+                                            <input type="checkbox" wire:model="two_factor_enabled" wire:change="toggleTwoFactor">
+                                            <span class="slider-premium"></span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row">

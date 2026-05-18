@@ -642,7 +642,7 @@
 <div class="container">
     <div class="hero-section">
         <div class="app-logo">
-            <i class="fas fa-chart-line"></i>
+            <img src="{{ asset('images/logoPivot.png') }}" alt="Logo Pivot" style="width: 60px; height: auto;">
             <h1>GPI</h1>
         </div>
 

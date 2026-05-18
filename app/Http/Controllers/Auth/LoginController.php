@@ -81,4 +81,19 @@ class LoginController extends Controller
         // 5. Rediriger vers la saisie du code 2FA
         return redirect()->route('verify.index');
     }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+  protected function loggedOut(Request $request)
+{
+    if (auth()->user() && auth()->user()->role == 'admin') {
+        return redirect()->route('login');
+    }
+
+    return redirect()->route('utilisateur');
+}
 }

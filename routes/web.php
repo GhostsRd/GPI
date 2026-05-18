@@ -148,6 +148,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/parametres', function () {
         return view('settings');
     })->name('parametres');
+
+    // Route Configuration / Gestion Utilisateurs
+    Route::get('/admin/configuration', \App\Http\Livewire\Admin\Configuration::class)->name('configuration');
 });
 // Route temporaire pour tester les téléchargements
 Route::get('/documents/{id}/download', function ($id) {
@@ -212,39 +215,15 @@ Route::get('/ticket/show/{id}', function ($id) {
     return redirect()->route('checkTicketview', $id);
 })->name('ticket.show');
 
-// Route temporaire pour mettre à jour la structure de la base de données
-Route::get('/update-db-2fa', function () {
-    try {
-        // 1. Mise à jour de la table users
-        if (!\Illuminate\Support\Facades\Schema::hasColumn('users', 'two_factor_enabled')) {
-            \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {
-                $table->boolean('two_factor_enabled')->default(false)->after('password');
-            });
-        }
-
-        // 2. Mise à jour de la table utilisateurs
-        \Illuminate\Support\Facades\Schema::table('utilisateurs', function (\Illuminate\Database\Schema\Blueprint $table) {
-            if (!\Illuminate\Support\Facades\Schema::hasColumn('utilisateurs', 'two_factor_enabled')) {
-                $table->boolean('two_factor_enabled')->default(false)->after('password');
-            }
-            if (!\Illuminate\Support\Facades\Schema::hasColumn('utilisateurs', 'two_factor_code')) {
-                $table->string('two_factor_code')->nullable()->after('two_factor_enabled');
-            }
-            if (!\Illuminate\Support\Facades\Schema::hasColumn('utilisateurs', 'two_factor_expires_at')) {
-                $table->dateTime('two_factor_expires_at')->nullable()->after('two_factor_code');
-            }
-        });
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Base de données mise à jour avec succès pour la 2FA (users et utilisateurs).'
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()
-        ], 500);
-    }
+// Route temporaire pour récupérer le code de validation 2FA
+Route::get('/get-user-2fa-code', function () {
+    $user = \App\Models\utilisateur::where('email', 'testuser@gpi.com')->first();
+    return response()->json([
+        'code' => $user ? $user->two_factor_code : null,
+        'expires_at' => $user ? $user->two_factor_expires_at : null
+    ]);
 });
+
+
 
 

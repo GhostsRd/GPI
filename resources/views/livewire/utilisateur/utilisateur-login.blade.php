@@ -63,7 +63,7 @@
 <div class="container">
     <div class="hero-section">
         <div class="app-logo">
-            <img src="images/logoPivot.png" alt="Logo IT Support Pivot" style="width: 60px; height: auto;">
+            <img src="{{ asset('images/logoPivot.png') }}" alt="Logo IT Support Pivot" style="width: 60px; height: auto;">
             <h1>IT Support Pivot</h1>
         </div>
 

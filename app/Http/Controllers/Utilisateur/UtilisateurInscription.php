@@ -30,10 +30,12 @@ class UtilisateurInscription extends Controller
             'date_naissance' => 'required|date',
             'date_embauche' => 'required|date',
             'adresse' => 'required|string|max:500',
-            'email' => 'required|string|email|max:255|unique:utilisateurs',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:utilisateurs', 'ends_with:@pivotworks.org'],
             'telephone' => 'required|string|max:20|unique:utilisateurs',
             'password' => 'required|string|min:8|confirmed',
             'terms' => 'required|accepted',
+        ], [
+            'email.ends_with' => 'L\'adresse e-mail doit obligatoirement se terminer par @pivotworks.org',
         ]);
 
         
@@ -63,6 +65,7 @@ class UtilisateurInscription extends Controller
                 'telephone' => $validatedData['telephone'],
                 'password' => Hash::make($validatedData['password']),
                 'role' => 'user',
+                'two_factor_enabled' => true,
             ]);
 
             // Envoi de l'email de bienvenue

@@ -19,4 +19,18 @@ class ForgotPasswordController extends Controller
     */
 
     use SendsPasswordResetEmails;
+
+    /**
+     * Get the broker to be used during password reset.
+     *
+     * @return \Illuminate\Contracts\Auth\PasswordBroker
+     */
+    public function broker()
+    {
+        $email = request()->input('email');
+        if ($email && \App\Models\utilisateur::where('email', $email)->exists()) {
+            return \Illuminate\Support\Facades\Password::broker('utilisateurs');
+        }
+        return \Illuminate\Support\Facades\Password::broker('users');
+    }
 }

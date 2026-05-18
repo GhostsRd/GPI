@@ -22,9 +22,44 @@ class ResetPasswordController extends Controller
     use ResetsPasswords;
 
     /**
+     * Get the broker to be used during password reset.
+     *
+     * @return \Illuminate\Contracts\Auth\PasswordBroker
+     */
+    public function broker()
+    {
+        $email = request()->input('email');
+        if ($email && \App\Models\utilisateur::where('email', $email)->exists()) {
+            return \Illuminate\Support\Facades\Password::broker('utilisateurs');
+        }
+        return \Illuminate\Support\Facades\Password::broker('users');
+    }
+
+    /**
+     * Get the guard to be used during password reset.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        $email = request()->input('email');
+        if ($email && \App\Models\utilisateur::where('email', $email)->exists()) {
+            return \Illuminate\Support\Facades\Auth::guard('utilisateur');
+        }
+        return \Illuminate\Support\Facades\Auth::guard('web');
+    }
+
+    /**
      * Where to redirect users after resetting their password.
      *
-     * @var string
+     * @return string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    public function redirectTo()
+    {
+        $email = request()->input('email');
+        if ($email && \App\Models\utilisateur::where('email', $email)->exists()) {
+            return '/utilisateur';
+        }
+        return RouteServiceProvider::HOME;
+    }
 }

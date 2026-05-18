@@ -26,7 +26,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'ends_with:@pivotworks.org'],
             'phone' => ['required', 'string', 'max:20'],
             'poste' => ['required', 'string', 'max:255'],
             'lieu_travail' => ['required', 'string', 'max:255'],
@@ -39,6 +39,7 @@ class RegisterController extends Controller
             'photo.max' => 'L\'image ne doit pas dépasser 5MB',
             'terms.required' => 'Vous devez accepter les conditions d\'utilisation',
             'terms.accepted' => 'Vous devez accepter les conditions d\'utilisation',
+            'email.ends_with' => 'L\'adresse e-mail doit obligatoirement se terminer par @pivotworks.org',
         ]);
     }
 
@@ -58,6 +59,7 @@ class RegisterController extends Controller
             'lieu_travail' => $data['lieu_travail'],
             'password' => Hash::make($data['password']),
             'photo' => $profileImagePath,
+            'two_factor_enabled' => true,
         ]);
     }
 
