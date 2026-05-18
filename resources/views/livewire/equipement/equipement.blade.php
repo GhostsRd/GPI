@@ -1,5 +1,5 @@
 <div class="equipement-dashboard">
-    <!-- Header simplifié -->
+    <!-- Header simplifié compact -->
     <header class="dashboard-header">
         <div>
             <h1 class="dashboard-title">Tableau de bord IT</h1>
@@ -18,7 +18,7 @@
                 <p>Chargement...</p>
             </div>
         @else
-            <!-- Grille stats simplifiée -->
+            <!-- Grille stats compacte -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-emoji">💻</span>
@@ -73,57 +73,70 @@
                 </div>
             </div>
 
-            <!-- Tableau -->
-            <div class="table-card">
-                <div class="table-toolbar">
-                    <h3 class="table-title">Récapitulatif</h3>
-                    <div class="toolbar-actions">
-                        <input type="text" placeholder="Rechercher..." class="search-input">
-                        <button class="btn-export">Exporter</button>
+            <!-- Tableau redesign simple et fluide -->
+            <div class="table-wrapper">
+                <div class="table-header-simple">
+                    <h3>Récapitulatif des équipements</h3>
+                    <div class="table-actions-simple">
+                        <div class="search-simple">
+                            <span>🔍</span>
+                            <input type="text" placeholder="Rechercher une catégorie...">
+                        </div>
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Catégorie</th>
-                                <th>Quantité</th>
-                                <th>Pourcentage</th>
-                                <th>Statut</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($stats as $stat)
-                                <tr>
-                                    <td class="category-cell">
-                                        <span class="category-badge">
-                                            <span>{{ $stat['icon'] }}</span>
-                                            <span>{{ $stat['title'] }}</span>
+                <!-- Liste style moderne - remplace le tableau classique -->
+                <div class="items-list">
+                    @foreach($stats as $stat)
+                        <div class="list-item">
+                            <div class="item-main">
+                                <div class="item-icon">
+                                    <span>{{ $stat['icon'] }}</span>
+                                </div>
+                                <div class="item-info">
+                                    <div class="item-name">{{ $stat['title'] }}</div>
+                                    <div class="item-stats">
+                                        <span class="stat-badge">
+                                            {{ $stat['count'] }} équipements
                                         </span>
-                                    </td>
-                                    <td class="count-cell">{{ $stat['count'] }}</td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill" style="width: {{ $this->getPercentage($stat['count']) }}%"></div>
-                                            <span class="percentage-text">{{ $this->getPercentage($stat['count']) }}%</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="status {{ $stat['count'] > 0 ? 'status-active' : 'status-inactive' }}">
-                                            {{ $stat['count'] > 0 ? 'Actif' : 'Vide' }}
+                                        <span class="stat-badge">
+                                            {{ $this->getPercentage($stat['count']) }}% du total
                                         </span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route($stat['route']) }}" class="btn-link" wire:navigate>
-                                            Voir →
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    </div>
+                                    <!-- Barre de progression fluide -->
+                                    <div class="progress-simple">
+                                        <div class="progress-simple-fill" style="width: {{ $this->getPercentage($stat['count']) }}%"></div>
+                                    </div>
+                                </div>
+                                <div class="item-action">
+                                    <a href="{{ route($stat['route']) }}" class="action-link" wire:navigate>
+                                        Voir les détails →
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="item-status">
+                                @if($stat['count'] > 0)
+                                    <span class="status-dot active"></span>
+                                    <span>Actif</span>
+                                @else
+                                    <span class="status-dot inactive"></span>
+                                    <span>Vide</span>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Pied de tableau simple -->
+                <div class="table-footer-simple">
+                    <div class="footer-info">
+                        {{ count($stats) }} catégories au total
+                    </div>
+                    <div class="footer-actions">
+                        <button class="btn-outline-simple">
+                            📥 Exporter les données
+                        </button>
+                    </div>
                 </div>
             </div>
         @endif
@@ -131,7 +144,7 @@
 </div>
 
 <style>
-/* Variables - Palette moderne */
+/* Variables */
 :root {
     --primary: #5BC4BF;
     --primary-dark: #3a9e99;
@@ -140,31 +153,20 @@
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
     --gray-300: #d1d5db;
-    --gray-600: #6b7280;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
     --gray-900: #111827;
     --success: #10b981;
     --success-light: #d1fae5;
     --error-light: #fee2e2;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-}
-
-.dark {
-    --primary-light: #1a3a38;
-    --gray-50: #111827;
-    --gray-100: #1f2937;
-    --gray-200: #374151;
-    --gray-300: #4b5563;
-    --gray-600: #9ca3af;
-    --gray-900: #f9fafb;
 }
 
 /* Base */
 .equipement-dashboard {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 1rem;
     background: var(--gray-50);
     min-height: 100vh;
 }
@@ -174,296 +176,338 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
 .dashboard-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
     color: var(--gray-900);
     margin: 0 0 0.25rem 0;
 }
 
 .dashboard-subtitle {
-    color: var(--gray-600);
-    font-size: 0.875rem;
+    color: var(--gray-500);
+    font-size: 0.75rem;
     margin: 0;
 }
 
 .total-badge {
     background: var(--primary);
     color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
     text-align: center;
-    box-shadow: var(--shadow);
 }
 
 .total-number {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     line-height: 1;
 }
 
 .total-label {
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     opacity: 0.9;
 }
 
 /* Stats Grid */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
 }
 
 .stat-card {
     background: white;
-    padding: 1.25rem;
-    border-radius: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+    gap: 0.75rem;
     border: 1px solid var(--gray-200);
+    transition: all 0.2s;
 }
 
 .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
     border-color: var(--primary-light);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .stat-emoji {
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .stat-number {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     font-weight: 700;
     color: var(--gray-900);
     line-height: 1.2;
 }
 
 .stat-label {
-    font-size: 0.75rem;
-    color: var(--gray-600);
+    font-size: 0.625rem;
+    color: var(--gray-500);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .stat-sub {
-    font-size: 0.75rem;
-    color: var(--gray-600);
-    margin-top: 0.25rem;
+    font-size: 0.625rem;
+    color: var(--gray-500);
+    margin-top: 0.125rem;
 }
 
 /* Charts */
 .charts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
     margin-bottom: 1.5rem;
 }
 
 .chart-card {
     background: white;
-    border-radius: 1rem;
-    padding: 1.25rem;
-    box-shadow: var(--shadow-sm);
+    border-radius: 0.75rem;
+    padding: 1rem;
     border: 1px solid var(--gray-200);
 }
 
 .chart-title {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    color: var(--gray-900);
-    margin: 0 0 1rem 0;
+    color: var(--gray-700);
+    margin: 0 0 0.75rem 0;
 }
 
 .chart-container {
-    height: 250px;
+    height: 200px;
     position: relative;
 }
 
-/* Table */
-.table-card {
+/* Tableau redesign simple */
+.table-wrapper {
     background: white;
-    border-radius: 1rem;
-    box-shadow: var(--shadow-sm);
+    border-radius: 0.75rem;
     border: 1px solid var(--gray-200);
     overflow: hidden;
 }
 
-.table-toolbar {
-    padding: 1rem 1.25rem;
+/* En-tête simplifié */
+.table-header-simple {
+    padding: 1rem;
     border-bottom: 1px solid var(--gray-200);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+    background: var(--gray-50);
 }
 
-.table-title {
+.table-header-simple h3 {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--gray-900);
     margin: 0;
 }
 
-.toolbar-actions {
+.table-actions-simple {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
-.search-input {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--gray-300);
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
+.search-simple {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     background: white;
-    color: var(--gray-900);
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-light);
-}
-
-.btn-export {
-    padding: 0.5rem 1rem;
-    background: var(--gray-100);
     border: 1px solid var(--gray-300);
     border-radius: 0.5rem;
+    padding: 0.375rem 0.75rem;
+}
+
+.search-simple span {
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+.search-simple input {
+    border: none;
+    outline: none;
+    font-size: 0.75rem;
+    background: transparent;
+    width: 180px;
+}
+
+.search-simple input::placeholder {
+    color: var(--gray-400);
+}
+
+/* Liste des items - remplace le tableau */
+.items-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--gray-200);
+    transition: all 0.2s ease;
+    gap: 1rem;
+}
+
+.list-item:hover {
+    background: var(--gray-50);
+    transform: translateX(2px);
+}
+
+.item-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.item-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: 600;
+    color: var(--gray-900);
     font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.item-stats {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-badge {
+    font-size: 0.688rem;
+    color: var(--gray-600);
+    background: var(--gray-100);
+    padding: 0.125rem 0.5rem;
+    border-radius: 1rem;
+}
+
+/* Barre de progression fluide */
+.progress-simple {
+    height: 4px;
+    background: var(--gray-200);
+    border-radius: 2px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 200px;
+}
+
+.progress-simple-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.item-action {
+    flex-shrink: 0;
+}
+
+.action-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.2s;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+}
+
+.action-link:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.item-status {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.688rem;
+    color: var(--gray-600);
+    flex-shrink: 0;
+    min-width: 70px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.active {
+    background: var(--success);
+    box-shadow: 0 0 0 2px var(--success-light);
+}
+
+.status-dot.inactive {
+    background: var(--gray-400);
+}
+
+/* Pied de tableau */
+.table-footer-simple {
+    padding: 0.875rem 1rem;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    background: var(--gray-50);
+}
+
+.footer-info {
+    font-size: 0.688rem;
+    color: var(--gray-600);
+}
+
+.btn-outline-simple {
+    background: transparent;
+    border: 1px solid var(--gray-300);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.688rem;
     font-weight: 500;
     color: var(--gray-700);
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.btn-export:hover {
-    background: var(--gray-200);
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
-
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.data-table thead th {
-    text-align: left;
-    padding: 0.75rem 1.25rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--gray-600);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--gray-200);
-    background: var(--gray-50);
-}
-
-.data-table tbody td {
-    padding: 1rem 1.25rem;
-    font-size: 0.875rem;
-    color: var(--gray-900);
-    border-bottom: 1px solid var(--gray-200);
-}
-
-.data-table tbody tr:hover {
-    background: var(--gray-50);
-}
-
-.category-cell {
-    font-weight: 500;
-}
-
-.category-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 0.75rem;
-    background: var(--primary-light);
-    border-radius: 1.5rem;
-    font-size: 0.875rem;
-}
-
-.count-cell {
-    font-weight: 600;
-}
-
-/* Progress bar */
-.progress-bar {
-    position: relative;
-    background: var(--gray-200);
-    border-radius: 1rem;
-    height: 1.5rem;
-    width: 100%;
-    max-width: 150px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    background: var(--primary);
-    border-radius: 1rem;
-    transition: width 0.3s ease;
-}
-
-.percentage-text {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--gray-900);
-    z-index: 1;
-}
-
-/* Status */
-.status {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.status-active {
-    background: var(--success-light);
-    color: var(--success);
-}
-
-.status-inactive {
-    background: var(--error-light);
-    color: #dc2626;
-}
-
-.btn-link {
-    color: var(--primary);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.btn-link:hover {
-    color: var(--primary-dark);
+.btn-outline-simple:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-400);
 }
 
 /* Loading */
@@ -472,15 +516,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
-    gap: 1rem;
-    color: var(--gray-600);
+    min-height: 300px;
+    gap: 0.75rem;
+    color: var(--gray-500);
 }
 
 .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--gray-200);
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--gray-200);
     border-top-color: var(--primary);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
@@ -493,33 +537,50 @@
 /* Responsive */
 @media (max-width: 768px) {
     .equipement-dashboard {
-        padding: 1rem;
-    }
-    
-    .dashboard-header {
-        flex-direction: column;
-        text-align: center;
+        padding: 0.75rem;
     }
     
     .stats-grid {
         grid-template-columns: 1fr;
     }
     
-    .table-toolbar {
+    .list-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .item-main {
+        width: 100%;
+    }
+    
+    .item-status {
+        width: 100%;
+        justify-content: flex-start;
+        padding-left: 3rem;
+    }
+    
+    .item-action {
+        width: 100%;
+    }
+    
+    .action-link {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .table-header-simple {
         flex-direction: column;
         align-items: stretch;
     }
     
-    .toolbar-actions {
-        flex-direction: column;
-    }
-    
-    .search-input {
+    .search-simple input {
         width: 100%;
     }
     
-    .progress-bar {
-        max-width: 100px;
+    .table-footer-simple {
+        flex-direction: column;
+        text-align: center;
     }
 }
 
@@ -529,12 +590,17 @@
     }
     
     .chart-container {
-        height: 200px;
+        height: 180px;
     }
     
-    .data-table td, 
-    .data-table th {
-        padding: 0.75rem;
+    .item-stats {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .stat-badge {
+        display: inline-block;
+        width: fit-content;
     }
 }
 </style>
@@ -543,7 +609,6 @@
 document.addEventListener('livewire:load', function () {
     const chartData = @json($chartData);
     
-    // Bar chart
     const barCtx = document.getElementById('equipementChart');
     if (barCtx && window.Chart) {
         new Chart(barCtx, {
@@ -554,7 +619,7 @@ document.addEventListener('livewire:load', function () {
                     label: 'Équipements',
                     data: chartData.data,
                     backgroundColor: '#5BC4BF',
-                    borderRadius: 6,
+                    borderRadius: 4,
                     barPercentage: 0.7
                 }]
             },
@@ -568,15 +633,18 @@ document.addEventListener('livewire:load', function () {
                 scales: {
                     y: { 
                         beginAtZero: true,
-                        grid: { color: '#e5e7eb' }
+                        grid: { color: '#e5e7eb' },
+                        ticks: { font: { size: 10 } }
                     },
-                    x: { grid: { display: false } }
+                    x: { 
+                        grid: { display: false },
+                        ticks: { font: { size: 10 } }
+                    }
                 }
             }
         });
     }
     
-    // Pie chart
     const pieCtx = document.getElementById('equipementPieChart');
     if (pieCtx && window.Chart) {
         new Chart(pieCtx, {
@@ -587,7 +655,7 @@ document.addEventListener('livewire:load', function () {
                     data: chartData.data,
                     backgroundColor: ['#5BC4BF', '#3a9e99', '#7ed4cf', '#2a7a76', '#1a5a57'],
                     borderWidth: 0,
-                    cutout: '65%'
+                    cutout: '60%'
                 }]
             },
             options: {
@@ -596,7 +664,11 @@ document.addEventListener('livewire:load', function () {
                 plugins: {
                     legend: { 
                         position: 'bottom',
-                        labels: { usePointStyle: true, boxWidth: 8 }
+                        labels: { 
+                            usePointStyle: true, 
+                            boxWidth: 6,
+                            font: { size: 10 }
+                        }
                     }
                 }
             }

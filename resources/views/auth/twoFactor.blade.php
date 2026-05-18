@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - GPI</title>
+    <title>Vérification 2FA - GPI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Pivot theme variables - Bleu/Vert inspiré de l'image */
+            /* Pivot theme variables - Bleu/Vert */
             --accent-light: #1a5f7a;
             --accent-secondary-light: #2a9d8f;
             --accent-hover-light: #21867a;
@@ -36,7 +36,7 @@
             --shadow-dark: rgba(0, 0, 0, 0.3);
             --card-shadow-dark: rgba(0, 0, 0, 0.4);
 
-            /* Current theme variables (default to light) */
+            /* Current theme variables */
             --bg-primary: var(--bg-primary-light);
             --bg-secondary: var(--bg-secondary-light);
             --text-primary: var(--text-primary-light);
@@ -115,17 +115,13 @@
             color: var(--accent);
             transform: translateY(-10px);
             opacity: 0;
-            animation: fadeInDown 0.6s ease 0.5s forwards;
+            animation: fadeIn 0.8s ease 0.5s forwards;
         }
 
         .app-logo i {
             font-size: 2rem;
             margin-right: 10px;
             transition: transform 0.5s ease;
-        }
-
-        .app-logo:hover i {
-            transform: rotate(15deg) scale(1.1);
         }
 
         .app-logo h1 {
@@ -139,7 +135,7 @@
             background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 800;
+            font-weight: 700;
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s ease 0.7s forwards;
@@ -150,6 +146,7 @@
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 0.8s ease 0.9s forwards;
+            color: var(--text-secondary);
         }
 
         .features {
@@ -164,15 +161,9 @@
             transform: translateX(-20px);
         }
 
-        .feature:nth-child(1) {
-            animation: slideInLeft 0.6s ease 1.1s forwards;
-        }
-        .feature:nth-child(2) {
-            animation: slideInLeft 0.6s ease 1.3s forwards;
-        }
-        .feature:nth-child(3) {
-            animation: slideInLeft 0.6s ease 1.5s forwards;
-        }
+        .feature:nth-child(1) { animation: slideInLeft 0.5s ease 1.1s forwards; }
+        .feature:nth-child(2) { animation: slideInLeft 0.5s ease 1.2s forwards; }
+        .feature:nth-child(3) { animation: slideInLeft 0.5s ease 1.3s forwards; }
 
         .feature-icon {
             width: 32px;
@@ -229,7 +220,8 @@
             cursor: pointer;
             box-shadow: 0 2px 10px var(--shadow);
             border: 1px solid var(--border);
-            z-index: 10;
+            z-index: 1000;
+            color: var(--text-primary);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 0;
             animation: fadeIn 0.8s ease 0.5s forwards;
@@ -281,10 +273,6 @@
             animation: fadeInUp 0.5s ease 0.9s forwards;
         }
 
-        .input-container ~ .input-container {
-            animation-delay: 1.0s;
-        }
-
         .input-container:focus-within {
             border-color: var(--accent);
             box-shadow: 0 0 0 2px rgba(26, 95, 122, 0.2);
@@ -315,40 +303,18 @@
             padding: 8px 0;
             width: 100%;
             color: var(--text-primary);
-            font-size: 0.85rem;
+            font-size: 1rem;
             outline: none;
+            letter-spacing: 4px;
+            text-align: center;
+            font-weight: bold;
         }
 
         .form-control::placeholder {
             color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
-
-        .form-check {
-            display: flex;
-            align-items: center;
-            margin-bottom: 14px;
-            opacity: 0;
-            animation: fadeIn 0.5s ease 1.1s forwards;
-        }
-
-        .form-check-input {
-            width: 14px;
-            height: 14px;
-            margin-right: 6px;
-            accent-color: var(--accent);
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .form-check-input:hover {
-            transform: scale(1.1);
-        }
-
-        .form-check-label {
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            letter-spacing: normal;
+            font-weight: normal;
         }
 
         .btn {
@@ -363,11 +329,13 @@
             transition: all 0.3s ease;
             display: inline-block;
             width: 100%;
+            text-align: center;
+            text-decoration: none;
             margin-bottom: 12px;
             position: relative;
             overflow: hidden;
             opacity: 0;
-            animation: fadeIn 0.5s ease 1.2s forwards;
+            animation: fadeInUp 0.5s ease 1.1s forwards;
         }
 
         .btn i {
@@ -375,32 +343,37 @@
             margin-right: 6px;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(26, 95, 122, 0.4);
+            background: linear-gradient(135deg, var(--accent-hover), var(--accent-secondary));
+            box-shadow: 0 5px 15px var(--shadow);
+            transform: translateY(-2px);
         }
 
         .btn:active {
             transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(26, 95, 122, 0.4);
         }
 
-        .forgot-link {
+        .status-alert {
+            background-color: rgba(42, 157, 143, 0.1);
+            border: 1px solid rgba(42, 157, 143, 0.2);
+            color: var(--accent-secondary);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.75rem;
+            margin-bottom: 14px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 0.8s forwards;
+        }
+
+        .invalid-feedback {
+            color: #e74c3c;
+            font-size: 0.7rem;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .resend-link {
             color: var(--accent);
             text-decoration: none;
             font-size: 0.75rem;
@@ -410,129 +383,15 @@
             transition: all 0.3s ease;
             opacity: 0;
             animation: fadeIn 0.5s ease 1.3s forwards;
+            background: none;
+            border: none;
+            width: 100%;
+            cursor: pointer;
         }
 
-        .forgot-link:hover {
+        .resend-link:hover {
+            color: var(--accent-secondary);
             text-decoration: underline;
-            transform: translateY(-2px);
-        }
-
-        .invalid-feedback {
-            color: #e74c3c;
-            font-size: 0.7rem;
-            margin-top: 4px;
-            margin-bottom: 8px;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 14px 0;
-            color: var(--text-secondary);
-            opacity: 0;
-            animation: fadeIn 0.5s ease 1.4s forwards;
-        }
-
-        .divider::before, .divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background-color: var(--border);
-        }
-
-        .divider span {
-            padding: 0 12px;
-            font-size: 0.7rem;
-        }
-
-        .social-login {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 14px;
-            opacity: 0;
-            animation: fadeIn 0.5s ease 1.5s forwards;
-        }
-
-        .social-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .social-btn i {
-            font-size: 0.9rem;
-        }
-
-        .social-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 50%;
-        }
-
-        .social-btn i {
-            position: relative;
-            z-index: 1;
-            transition: color 0.3s ease;
-        }
-
-        .social-btn:hover::before {
-            opacity: 1;
-        }
-
-        .social-btn:hover {
-            transform: translateY(-3px) scale(1.1);
-            box-shadow: 0 5px 15px var(--shadow);
-        }
-
-        .social-btn:hover i {
-            color: white;
-        }
-
-        .password-toggle {
-            cursor: pointer;
-            margin-left: 10px;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-            font-size: 0.85rem;
-        }
-
-        .password-toggle:hover {
-            color: var(--accent);
-        }
-
-        .floating-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite linear;
         }
 
         .footer-text {
@@ -544,24 +403,40 @@
             animation: fadeIn 0.5s ease 1.6s forwards;
         }
 
+        /* Floating particles with custom colors */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
         @keyframes float {
             0% {
                 transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.6;
             }
             100% {
                 transform: translateY(-100vh) rotate(360deg);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
                 opacity: 0;
             }
-            to {
-                opacity: 1;
-            }
         }
 
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -573,15 +448,9 @@
             }
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes slideInLeft {
@@ -606,6 +475,7 @@
             }
         }
 
+        /* Responsiveness */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -613,21 +483,20 @@
             }
 
             .hero-section {
-                min-width: auto;
-                max-width: 100%;
                 text-align: center;
+                max-width: 100%;
             }
 
             .app-logo {
                 justify-content: center;
             }
 
-            .card-header, .card-body {
-                padding: 15px 20px;
+            .feature {
+                text-align: left;
             }
 
-            .feature {
-                justify-content: center;
+            .card-header, .card-body {
+                padding: 15px 20px;
             }
         }
     </style>
@@ -647,27 +516,27 @@
         </div>
 
         <div class="hero-content">
-            <h2>Gestion de Parc & Support Utilisateur</h2>
-            <p>Connectez-vous à votre espace administrateur pour gérer votre parc informatique, suivre les demandes de support et superviser l'infrastructure IT.</p>
+            <h2>Double Authentification</h2>
+            <p>Pour assurer la sécurité de votre compte, un code de validation est requis.</p>
 
             <div class="features">
                 <div class="feature">
                     <div class="feature-icon">
-                        <i class="fas fa-desktop"></i>
+                        <i class="fas fa-envelope-open-text"></i>
                     </div>
                     <div>
-                        <h3>Gestion centralisée</h3>
-                        <p>Supervisez l'ensemble de votre parc informatique</p>
+                        <h3>Code par e-mail</h3>
+                        <p>Un e-mail contenant un code à 6 chiffres vous a été envoyé.</p>
                     </div>
                 </div>
 
                 <div class="feature">
                     <div class="feature-icon">
-                        <i class="fas fa-tools"></i>
+                        <i class="fas fa-clock"></i>
                     </div>
                     <div>
-                        <h3>Support technique</h3>
-                        <p>Gérez les demandes d'assistance utilisateur</p>
+                        <h3>Validité temporaire</h3>
+                        <p>Le code expire après 10 minutes par mesure de sécurité.</p>
                     </div>
                 </div>
 
@@ -676,8 +545,8 @@
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <div>
-                        <h3>Sécurité avancée</h3>
-                        <p>Protégez vos données et votre infrastructure</p>
+                        <h3>Protection renforcée</h3>
+                        <p>Empêche les accès non autorisés à votre tableau de bord.</p>
                     </div>
                 </div>
             </div>
@@ -686,73 +555,42 @@
 
     <div class="login-container">
         <div class="card">
-            <div class="card-header">Connexion</div>
+            <div class="card-header">Validation 2FA</div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('login') }}">
+                @if (session('status'))
+                    <div class="status-alert" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('verify.store') }}">
                     @csrf
 
                     <div class="input-container">
-                        <i class="fas fa-envelope"></i>
-                        <input id="email" type="email" placeholder="Adresse e-mail professionnelle" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                        <i class="fas fa-key"></i>
+                        <input id="code" type="text" placeholder="Code à 6 chiffres" 
+                               class="form-control @error('code') is-invalid @enderror" 
+                               name="code" required autocomplete="off" autofocus maxlength="6">
                     </div>
-                    @error('email')
+                    @error('code')
                     <div class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </div>
                     @enderror
-
-                <div class="input-container">
-                    <i class="fas fa-lock"></i>
-                    <input id="password" type="password" placeholder="Mot de passe" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                    <i class="fas fa-eye-slash password-toggle" id="togglePassword"></i>
-                </div>
-                    @error('password')
-                    <div class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </div>
-                    @enderror
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="remember">
-                            {{ __('Se souvenir de moi') }}
-                        </label>
-                    </div>
 
                     <button type="submit" class="btn">
-                        <i class="fas fa-sign-in-alt"></i> {{ __('Se connecter') }}
+                        <i class="fas fa-check-circle"></i> Vérifier le code
                     </button>
-
-                    <p style="text-align: center; margin-top: 10px; font-size: 0.75rem; opacity: 0; animation: fadeIn 0.5s ease 1.3s forwards;">
-                        Pas encore de compte ?
-                        <a href="{{ route('register') }}" style="color: var(--accent); font-weight: 600; text-decoration: none;">
-                            Créez un compte
-                        </a>
-                    </p>
-
-                    <div class="divider">
-                        <span>Ou continuer avec</span>
-                    </div>
-
-                    <div class="social-login">
-                        <div class="social-btn">
-                            <i class="fab fa-microsoft"></i>
-                        </div>
-                        <div class="social-btn">
-                            <i class="fab fa-google"></i>
-                        </div>
-                        <div class="social-btn">
-                            <i class="fab fa-apple"></i>
-                        </div>
-                    </div>
-
-                    @if (Route::has('password.request'))
-                        <a class="forgot-link" href="{{ route('password.request') }}">
-                            {{ __('Mot de passe oublié ?') }}
-                        </a>
-                    @endif
                 </form>
+
+                <form id="resend-form" method="POST" action="{{ route('verify.resend') }}" style="display: none;">
+                    @csrf
+                </form>
+
+                <button type="button" class="resend-link" onclick="event.preventDefault(); document.getElementById('resend-form').submit();">
+                    <i class="fas fa-redo-alt me-1"></i> Renvoyer un nouveau code
+                </button>
             </div>
         </div>
 
@@ -824,52 +662,6 @@
             themeIcon.className = 'fas fa-moon';
         }
     }
-
-    // Toggle password visibility
-    const togglePassword = document.getElementById('togglePassword');
-    const password = document.getElementById('password');
-
-    togglePassword.addEventListener('click', function () {
-        // Toggle the type attribute
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-
-        // Toggle the icon
-        this.classList.toggle('fa-eye');
-        this.classList.toggle('fa-eye-slash');
-
-        // Add animation
-        this.style.transform = 'scale(1.2)';
-        setTimeout(() => {
-            this.style.transform = '';
-        }, 200);
-    });
-
-    // Add hover effect to input containers
-    const inputs = document.querySelectorAll('.form-control');
-    inputs.forEach(input => {
-        input.addEventListener('focus', () => {
-            input.parentElement.style.transform = 'translateY(-2px)';
-            input.parentElement.style.boxShadow = '0 5px 15px var(--shadow)';
-        });
-
-        input.addEventListener('blur', () => {
-            input.parentElement.style.transform = '';
-            input.parentElement.style.boxShadow = '';
-        });
-    });
-
-    // Add animation to social buttons on hover
-    const socialBtns = document.querySelectorAll('.social-btn');
-    socialBtns.forEach(btn => {
-        btn.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-3px) scale(1.1)';
-        });
-
-        btn.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-        });
-    });
 
     // Set current year in footer
     document.getElementById("year").textContent = new Date().getFullYear();

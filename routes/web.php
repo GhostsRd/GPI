@@ -24,6 +24,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Routes pour la Double Authentification (2FA)
+Route::get('/verify', [App\Http\Controllers\Auth\TwoFactorController::class, 'index'])->name('verify.index');
+Route::post('/verify', [App\Http\Controllers\Auth\TwoFactorController::class, 'store'])->name('verify.store');
+Route::post('/verify/resend', [App\Http\Controllers\Auth\TwoFactorController::class, 'resend'])->name('verify.resend');
+
 // Route de secours pour le stockage (si le lien symbolique public/storage est absent ou cassé)
 Route::get('/storage/{path}', function ($path) {
     // Nettoyage du chemin pour éviter les traversées de répertoire
@@ -198,3 +203,4 @@ Route::get('/ticket/show/{id}', function ($id) {
     }
     return redirect()->route('checkTicketview', $id);
 })->name('ticket.show');
+
