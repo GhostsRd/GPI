@@ -15,7 +15,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'phone', 'poste', 'photo', 'lieu_travail', 
         'password', 'role', 'status', 'last_login_at',
-        'two_factor_code', 'two_factor_expires_at'
+        'two_factor_code', 'two_factor_expires_at', 'two_factor_enabled'
     ];
 
     protected $hidden = [
@@ -26,6 +26,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
         'two_factor_expires_at' => 'datetime',
+        'two_factor_enabled' => 'boolean',
     ];
 
     /**

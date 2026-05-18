@@ -51,6 +51,11 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        // Si la double authentification n'est pas activée pour cet utilisateur, on continue normalement
+        if (!$user->two_factor_enabled) {
+            return redirect()->intended($this->redirectPath());
+        }
+
         // 1. Sauvegarder les infos nécessaires dans la session invité
         $userId = $user->id;
         $remember = $request->has('remember');

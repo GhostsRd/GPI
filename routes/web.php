@@ -74,6 +74,9 @@ Route::middleware(['LoginUser'])->group(function () {
     Route::get('/utilisateur-checkout-{id}-{type}', [App\Http\Controllers\Utilisateur\checkout\CalendrierReservationCheckout::class, 'index'])->name('checkout.calendrier');
     Route::get('/utilisateur-calendrier', [App\Http\Controllers\Utilisateur\checkout\MesReservationCalendrier::class, 'index'])->name('mes.reservation');
     Route::get('/utilisateur/sim/mes-sims', App\Http\Livewire\Utilisateur\Sim\MySims::class)->name('utilisateur.sim.my-sims');
+    Route::get('/utilisateur-parametres', function () {
+        return view('Utilisateur.settings');
+    })->name('utilisateur.parametres');
 });
 Route::post('/utilisateur-logout', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'logout'])->name('utilisateurLogout');
 Route::get('/utilisateur-login', [App\Http\Controllers\Utilisateur\UtilisateurLogin::class, 'index'])->name('LoginUser');
@@ -140,6 +143,11 @@ Route::middleware(['auth'])->group(function () {
     
     // Nouvelles routes de prévisualisation sécurisée
     Route::get('/admin/documents/{id}/stream', [App\Http\Controllers\Documentation\DocumentPreviewController::class, 'stream'])->name('admin.documents.stream');
+
+    // Route des paramètres admin
+    Route::get('/parametres', function () {
+        return view('settings');
+    })->name('parametres');
 });
 // Route temporaire pour tester les téléchargements
 Route::get('/documents/{id}/download', function ($id) {
@@ -203,4 +211,40 @@ Route::get('/ticket/show/{id}', function ($id) {
     }
     return redirect()->route('checkTicketview', $id);
 })->name('ticket.show');
+
+// Route temporaire pour mettre à jour la structure de la base de données
+Route::get('/update-db-2fa', function () {
+    try {
+        // 1. Mise à jour de la table users
+        if (!\Illuminate\Support\Facades\Schema::hasColumn('users', 'two_factor_enabled')) {
+            \Illuminate\Support\Facades\Schema::table('users', function (\Illuminate\Database\Schema\Blueprint $table) {
+                $table->boolean('two_factor_enabled')->default(false)->after('password');
+            });
+        }
+
+        // 2. Mise à jour de la table utilisateurs
+        \Illuminate\Support\Facades\Schema::table('utilisateurs', function (\Illuminate\Database\Schema\Blueprint $table) {
+            if (!\Illuminate\Support\Facades\Schema::hasColumn('utilisateurs', 'two_factor_enabled')) {
+                $table->boolean('two_factor_enabled')->default(false)->after('password');
+            }
+            if (!\Illuminate\Support\Facades\Schema::hasColumn('utilisateurs', 'two_factor_code')) {
+                $table->string('two_factor_code')->nullable()->after('two_factor_enabled');
+            }
+            if (!\Illuminate\Support\Facades\Schema::hasColumn('utilisateurs', 'two_factor_expires_at')) {
+                $table->dateTime('two_factor_expires_at')->nullable()->after('two_factor_code');
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Base de données mise à jour avec succès pour la 2FA (users et utilisateurs).'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()
+        ], 500);
+    }
+});
+
 

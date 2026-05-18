@@ -28,7 +28,41 @@ class utilisateur extends Authenticatable
         'telephone',
         'password',
         'role',
+        'two_factor_code',
+        'two_factor_expires_at',
+        'two_factor_enabled',
     ];
+
+    protected $casts = [
+        'two_factor_expires_at' => 'datetime',
+        'two_factor_enabled' => 'boolean',
+    ];
+
+    /**
+     * Génère et enregistre un code 2FA pour l'utilisateur.
+     */
+    public function generateTwoFactorCode(): string
+    {
+        $code = str_pad(random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
+        
+        $this->forceFill([
+            'two_factor_code' => $code,
+            'two_factor_expires_at' => now()->addMinutes(10),
+        ])->save();
+
+        return $code;
+    }
+
+    /**
+     * Réinitialise le code 2FA après validation réussie.
+     */
+    public function resetTwoFactorCode(): void
+    {
+        $this->forceFill([
+            'two_factor_code' => null,
+            'two_factor_expires_at' => null,
+        ])->save();
+    }
 
     public function tickets()
     {

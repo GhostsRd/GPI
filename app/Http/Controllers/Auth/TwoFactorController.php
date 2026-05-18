@@ -25,7 +25,9 @@ class TwoFactorController extends Controller
     public function index()
     {
         if (!session()->has('login.id')) {
-            return redirect()->route('login');
+            $guard = session('login.guard', 'web');
+            $loginRoute = $guard === 'utilisateur' ? 'LoginUser' : 'login';
+            return redirect()->route($loginRoute);
         }
 
         return view('auth.twoFactor');
@@ -45,14 +47,20 @@ class TwoFactorController extends Controller
         ]);
 
         if (!session()->has('login.id')) {
-            return redirect()->route('login');
+            $guard = session('login.guard', 'web');
+            $loginRoute = $guard === 'utilisateur' ? 'LoginUser' : 'login';
+            return redirect()->route($loginRoute);
         }
 
         $userId = session('login.id');
-        $user = User::find($userId);
+        $guard = session('login.guard', 'web');
+        
+        $userModel = $guard === 'utilisateur' ? \App\Models\utilisateur::class : \App\Models\User::class;
+        $user = $userModel::find($userId);
 
         if (!$user) {
-            return redirect()->route('login')->withErrors(['email' => 'Utilisateur introuvable.']);
+            $loginRoute = $guard === 'utilisateur' ? 'LoginUser' : 'login';
+            return redirect()->route($loginRoute)->withErrors(['email' => 'Utilisateur introuvable.']);
         }
 
         // Vérifier si le code est correct et s'il n'est pas expiré
@@ -71,13 +79,14 @@ class TwoFactorController extends Controller
         // Tout est bon : réinitialiser le code 2FA et connecter l'utilisateur
         $user->resetTwoFactorCode();
 
-        // Connexion formelle
-        Auth::login($user, session('login.remember', false));
+        // Connexion formelle avec le bon guard
+        Auth::guard($guard)->login($user, session('login.remember', false));
 
         // Nettoyer la session
-        session()->forget(['login.id', 'login.remember']);
+        session()->forget(['login.id', 'login.remember', 'login.guard']);
 
-        return redirect()->intended(route('home'));
+        $redirectUrl = $guard === 'utilisateur' ? '/utilisateur' : route('home');
+        return redirect()->intended($redirectUrl);
     }
 
     /**
@@ -86,14 +95,20 @@ class TwoFactorController extends Controller
     public function resend()
     {
         if (!session()->has('login.id')) {
-            return redirect()->route('login');
+            $guard = session('login.guard', 'web');
+            $loginRoute = $guard === 'utilisateur' ? 'LoginUser' : 'login';
+            return redirect()->route($loginRoute);
         }
 
         $userId = session('login.id');
-        $user = User::find($userId);
+        $guard = session('login.guard', 'web');
+
+        $userModel = $guard === 'utilisateur' ? \App\Models\utilisateur::class : \App\Models\User::class;
+        $user = $userModel::find($userId);
 
         if (!$user) {
-            return redirect()->route('login');
+            $loginRoute = $guard === 'utilisateur' ? 'LoginUser' : 'login';
+            return redirect()->route($loginRoute);
         }
 
         // Générer et envoyer le nouveau code
