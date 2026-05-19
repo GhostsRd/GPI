@@ -29,6 +29,7 @@ class CreateUtilisateursTable extends Migration
             $table->string('telephone')->unique();
             $table->string('password');
             $table->string('role')->default('user');
+             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -289,7 +289,7 @@
 
 
             </div>
-            <div class="mt-2 offset-lg-1 p-xs-0 p-0 p-md-0 p-xl-2 py-5 bg-white  col-lg-8 rounded-2"
+            <div class="mt-2 offset-lg-1 p-xs-0 shadow-sm p-0 p-md-0 p-xl-2 py-5 bg-white  col-lg-8 rounded-2"
                 style="max-height:100vh;overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
                 <div class="row align-items-end mb-4">
                     <div class="col-8 col-lg-6">

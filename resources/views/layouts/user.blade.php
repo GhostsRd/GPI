@@ -512,21 +512,7 @@
                             <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2"
                                 aria-labelledby="userDropdown">
                                 <!-- Profil -->
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center px-3 py-2"
-                                        href="{{ url('/utilisateur-profile') }}">
-                                       <div class="profile-avatar-container">
-                                    @if (empty(Auth::guard('utilisateur')->user()->photo))
-                                        <img src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}&background=e65e4b&color=fff"
-                                            alt="Profil" width="32" height="32">
-                                    @else
-                                        <img src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
-                                            alt="Profil" width="32" height="32">
-                                    @endif
-                                </div>
-                                        <span>Mon profil</span>
-                                    </a>
-                                </li>
+                               
                                 {{-- <li>
                                     <a class="dropdown-item d-flex align-items-center px-3 py-2"
                                         href="{{ url('/utilisateur-parametres') }}">
@@ -534,7 +520,7 @@
                                         <span>Paramètres</span>
                                     </a>
                                 </li> --}}
-                                <li><hr class="dropdown-divider my-1"></li>
+                                {{-- <li><hr class="dropdown-divider my-1"></li> --}}
                                 <li>
                                     <a class="dropdown-item d-flex align-items-center px-3 py-2 "
                                         href="{{ route('utilisateurLogout') }}"
