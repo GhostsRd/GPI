@@ -410,8 +410,7 @@
                     <div>
                         <label style="margin:0 0 8px" class="fw-bold">Actions rapides</label>
                         <div style="display:flex;flex-direction:column;gap:8px">
-                            <button class="btn-ghost" id="markResolved"
-                                wire:click="RenouvelerCheckout({{ $checkouts->id }})">Renouveler</button>
+                          
                             <button class="btn-ghost" id="markResolved" wire:click="markResolved">Marquer comme
                                 Rendu</button>
                             <button class="btn-ghost" id="markResolved" wire:click="markResolvedetabime">
