@@ -8,6 +8,7 @@ use App\Models\utilisateur;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\Momemail;
 
 class UtilisateurInscription extends Controller
@@ -50,7 +51,7 @@ class UtilisateurInscription extends Controller
             }
 
             // Création de l'utilisateur
-            utilisateur::create([
+            $newUser = utilisateur::create([
                 'matricule' => $matricule,
                 'nom' => $validatedData['nom'],
                 'poste' => $validatedData['poste'],
@@ -65,23 +66,24 @@ class UtilisateurInscription extends Controller
                 'telephone' => $validatedData['telephone'],
                 'password' => Hash::make($validatedData['password']),
                 'role' => 'user',
-                'two_factor_enabled' => true,
             ]);
+
+            // Connexion automatique après inscription
+            Auth::guard('utilisateur')->login($newUser);
 
             // Envoi de l'email de bienvenue
             try {
                 $details = [
                     'title' => 'Bienvenue chez ' . config('app.name'),
-                    'message' => 'Votre inscription a été réussie. Vous pouvez maintenant vous connecter à votre espace personnel.'
+                    'message' => 'Votre inscription a été réussie. Vous pouvez maintenant accéder à votre espace personnel.'
                 ];
                 Mail::to($validatedData['email'])->send(new Momemail($details));
             } catch (\Exception $e) {
                 \Log::error('Mail error: ' . $e->getMessage());
-                // On ne bloque pas l'utilisateur si l'email échoue
             }
-        
-            return redirect()->route('LoginUser')
-    ->with('success', 'Inscription réussie ! Vous pouvez maintenant vous connecter.');
+
+            return redirect()->route('utilisateur')
+                ->with('success', 'Inscription réussie ! Bienvenue sur votre espace personnel.');
 
         } catch (\Exception $e) {
             \Log::error('Registration error: ' . $e->getMessage());

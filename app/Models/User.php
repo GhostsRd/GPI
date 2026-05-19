@@ -15,7 +15,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'phone', 'poste', 'photo', 'lieu_travail', 
         'password', 'role', 'status', 'last_login_at',
-        'two_factor_code', 'two_factor_expires_at', 'two_factor_enabled'
+        'two_factor_code', 'two_factor_expires_at'
+        // 'two_factor_enabled'  // COMMENTÉ - La colonne n'existe pas dans la DB
     ];
 
     protected $hidden = [
@@ -26,7 +27,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
         'two_factor_expires_at' => 'datetime',
-        'two_factor_enabled' => 'boolean',
+        // 'two_factor_enabled' => 'boolean',  // COMMENTÉ - La colonne n'existe pas
     ];
 
     /**
@@ -64,6 +65,16 @@ class User extends Authenticatable
             'two_factor_code' => null,
             'two_factor_expires_at' => null,
         ])->save();
+    }
+
+    /**
+     * Vérifie si le 2FA est activé (simulé sans colonne DB)
+     */
+    public function isTwoFactorEnabled(): bool
+    {
+        // Retourne false par défaut car la colonne n'existe pas
+        // Vous pouvez personnaliser cette logique selon vos besoins
+        return false;
     }
 
     // Constantes pour les rôles

@@ -41,6 +41,14 @@ class utilisateur extends Authenticatable
     ];
 
     /**
+     * Désactive la colonne remember_token (non présente dans la table utilisateurs).
+     */
+    public function getRememberTokenName()
+    {
+        return null;
+    }
+
+    /**
      * Génère et enregistre un code 2FA pour l'utilisateur.
      */
     public function generateTwoFactorCode(): string

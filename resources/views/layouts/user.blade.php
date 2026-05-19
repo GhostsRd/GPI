@@ -498,11 +498,11 @@
                         <div class="dropdown" id="userDropdown">
                             <a href="#" class="profile-trigger dropdown-toggle border-0 shadow-sm py-0" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="profile-avatar-container">
-                                    @if (empty(Auth::guard('utilisateur')->user()->photo))
-                                        <img src="https://ui-avatars.com/api/?name={{ Auth::guard('utilisateur')->user()->nom ?? 'Guest' }}&background=e65e4b&color=fff"
-                                            alt="Profil" width="32" height="32">
-                                    @else
+                                    @if(Auth::guard('utilisateur')->check() && !empty(Auth::guard('utilisateur')->user()->photo))
                                         <img src="{{ asset('storage/' . Auth::guard('utilisateur')->user()->photo) }}"
+                                            alt="Profil" width="32" height="32" style="object-fit:cover;border-radius:50%;">
+                                    @else
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::guard('utilisateur')->user()->nom ?? 'Guest') }}&background=e65e4b&color=fff"
                                             alt="Profil" width="32" height="32">
                                     @endif
                                 </div>
@@ -511,18 +511,21 @@
 
                             <ul class="dropdown-menu dropdown-menu-end bg-white border-0 shadow-lg rounded-3 py-2"
                                 aria-labelledby="userDropdown">
-                                <!-- Profil -->
-                               
-                                {{-- <li>
-                                    <a class="dropdown-item d-flex align-items-center px-3 py-2"
-                                        href="{{ url('/utilisateur-parametres') }}">
-                                        <i class="fas fa-cog me-2 text-secondary"></i>
-                                        <span>Paramètres</span>
-                                    </a>
-                                </li> --}}
-                                {{-- <li><hr class="dropdown-divider my-1"></li> --}}
+                                
+                                {{-- Profil --}}
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center px-3 py-2 "
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2"
+                                        href="{{ route('utilisateurProfile') }}">
+                                        <i class="fas fa-user-circle me-2" style="color:#5BC4BF;"></i>
+                                        <span>Mon Profil</span>
+                                    </a>
+                                </li>
+
+                                <li><hr class="dropdown-divider my-1"></li>
+
+                                {{-- Déconnexion --}}
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-center px-3 py-2"
                                         href="{{ route('utilisateurLogout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="fas fa-sign-out-alt me-2 text-danger"></i>
