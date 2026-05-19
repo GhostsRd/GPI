@@ -1,4 +1,4 @@
-<div style="margin-top:5%" class=" bg-md-white-cust ">
+<div class=" bg-md-white-cust ">
 
     <div wire:ignore.self class="sidebar  rounded-3 text-dark card bg-light p-0  colg-lg-3 mt-4 " id="sidebar">
 

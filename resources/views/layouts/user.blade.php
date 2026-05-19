@@ -471,7 +471,8 @@
 
 <body class="bg-light"   >
   
-    <nav class="navbar navbar-expand-lg fixed-top sh ">
+    @if(route('home') == url()->current() or route('utilisateur') == url()->current())
+        <nav class="navbar navbar-expand-lg fixed-top sh ">
         <div class="container">
             
              @livewire('component.routing')  
@@ -550,6 +551,7 @@
             </div>
         </div>
     </nav>
+    @endif
     
     <div>
 
