@@ -1,742 +1,494 @@
 <div>
-    <!-- Styles CSS -->
     <style>
         :root {
-            --primary: #5BC4BF !important;
-            --primary-dark: #4AA39E !important;
-            --primary-light: #7FD9D4 !important;
-            --primary-soft: rgba(91, 196, 191, 0.1) !important;
-            --primary-50: #F0FAF9 !important;
-            --white: #FFFFFF !important;
-            --gray-50: #F8FAFC !important;
-            --gray-100: #F1F5F9 !important;
-            --gray-200: #E2E8F0 !important;
-            --gray-300: #CBD5E1 !important;
-            --gray-400: #94A3B8 !important;
-            --gray-500: #64748B !important;
-            --gray-600: #475569 !important;
-            --gray-700: #334155 !important;
-            --shadow-sm: 0 1px 3px rgba(91, 196, 191, 0.08);
-            --shadow-md: 0 4px 6px rgba(91, 196, 191, 0.1);
-            --shadow-lg: 0 10px 15px rgba(91, 196, 191, 0.15);
-            --border-light: rgba(91, 196, 191, 0.15);
-            --border-medium: rgba(91, 196, 191, 0.25);
+            --primary: #5BC4BF;
+            --primary-dark: #4AA39E;
+            --primary-light: #7FD9D4;
+            --primary-soft: rgba(91, 196, 191, 0.1);
+            --primary-50: #F0FAF9;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-400: #94A3B8;
+            --gray-600: #475569;
+            --gray-800: #1E293B;
         }
-        
+
+        /* Animations */
+        .fade-in-up {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard Card */
         .dashboard-card {
-            background: var(--white);
+            background: white;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 3px rgba(91, 196, 191, 0.08);
             border: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
-        
+
         .dashboard-card:hover {
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
         }
-        
+
+        /* Stat Cards */
         .stat-card {
-            padding: 20px;
+            padding: 1rem;
             border: none;
             border-radius: 16px;
+            transition: all 0.2s ease;
         }
-        
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(91, 196, 191, 0.12);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
         .stat-icon-lg {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
+            font-size: 1.25rem;
             background: var(--primary-soft);
-            color: var(--primary);
-            box-shadow: 0 2px 8px var(--primary-soft);
             transition: all 0.2s ease;
         }
-        
-        .stat-icon-lg:hover {
-            transform: scale(1.05);
+
+        /* Table moderne */
+        .table-modern th {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray-600);
+            background: var(--gray-50);
+            padding: 0.75rem 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .table-modern td {
+            padding: 0.7rem 0.75rem;
+            font-size: 0.75rem;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: middle;
+        }
+
+        .table-modern tbody tr {
+            transition: all 0.15s ease;
+        }
+
+        .table-modern tbody tr:hover {
+            background: var(--primary-soft);
+        }
+
+        /* Badges modernes */
+        .badge-modern {
+            padding: 0.25rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .badge-success { background: rgba(16, 185, 129, 0.12); color: #0b7e5a; }
+        .badge-warning { background: rgba(245, 158, 11, 0.12); color: #b45309; }
+        .badge-info { background: rgba(59, 130, 246, 0.12); color: #1e40af; }
+        .badge-danger { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
+        .badge-secondary { background: rgba(100, 116, 139, 0.12); color: #475569; }
+
+        /* Boutons modernes */
+        .btn-modern {
+            padding: 0.35rem 0.85rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-modern-primary {
             background: var(--primary);
-            color: var(--white);
+            color: white;
+            border: none;
         }
-        
-        .icon-primary, .icon-success, .icon-warning, .icon-danger, .icon-info {
-            background: var(--primary-soft) !important;
-            color: var(--primary) !important;
+
+        .btn-modern-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(91, 196, 191, 0.3);
         }
-        
-        .stat-number {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0;
-            color: var(--primary-dark);
+
+        .btn-modern-outline {
+            background: transparent;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
         }
-        
+
+        .btn-modern-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-soft);
+        }
+
+        /* Formulaires */
+        .form-modern {
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 0.45rem 0.7rem;
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-modern:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+            outline: none;
+        }
+
         .search-box {
             position: relative;
         }
-        
+
         .search-box i {
             position: absolute;
-            left: 12px;
+            left: 10px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--primary);
-            font-size: 0.9rem;
-            z-index: 10;
-        }
-        
-        .search-box .form-control {
-            padding-left: 35px;
-            font-size: 0.875rem;
-            border-color: var(--border-light) !important;
-        }
-        
-        .search-box .form-control:focus {
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 0 3px var(--primary-soft) !important;
-        }
-        
-        .badge-sm {
             font-size: 0.7rem;
-            padding: 0.4em 0.8em;
-            border-radius: 30px;
         }
-        
-        .table th {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--primary-dark);
-            border-bottom: 2px solid var(--border-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+
+        .search-box .form-control {
+            padding-left: 28px;
         }
-        
-        .table td {
-            font-size: 0.8rem;
-            vertical-align: middle;
+
+        /* Pagination */
+        .pagination-modern .page-link {
+            border: none;
+            margin: 0 2px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            padding: 0.35rem 0.65rem;
             color: var(--gray-600);
         }
-        
-        .table tbody tr:hover {
-            background: var(--primary-50);
-        }
-        
-        .btn {
-            font-size: 0.8rem;
-            border-radius: 8px !important;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-primary {
-            background: var(--primary) !important;
-            border-color: var(--primary) !important;
-            color: var(--white) !important;
-            box-shadow: 0 2px 8px var(--primary-soft);
-        }
-        
-        .btn-primary:hover {
-            background: var(--primary-dark) !important;
-            border-color: var(--primary-dark) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--primary-soft);
-        }
-        
-        .btn-outline-primary {
-            color: var(--primary) !important;
-            border-color: var(--border-medium) !important;
-            background: var(--white) !important;
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--primary) !important;
-            color: var(--white) !important;
-            border-color: var(--primary) !important;
-            transform: translateY(-2px);
-        }
-        
-        .btn-outline-info, .btn-outline-success, .btn-outline-secondary {
-            color: var(--primary) !important;
-            border-color: var(--border-light) !important;
-            background: var(--white) !important;
-        }
-        
-        .btn-outline-info:hover, .btn-outline-success:hover, .btn-outline-secondary:hover {
-            background: var(--primary-soft) !important;
-            color: var(--primary) !important;
-            border-color: var(--primary) !important;
-        }
-        
-        .btn-danger {
-            background: #EF4444 !important;
-            border-color: #EF4444 !important;
-            color: var(--white) !important;
-        }
-        
-        .btn-danger:hover {
-            background: #DC2626 !important;
-            border-color: #DC2626 !important;
-        }
-        
-        .btn-outline-danger {
-            color: #EF4444 !important;
-            border-color: rgba(239, 68, 68, 0.3) !important;
-        }
-        
-        .btn-outline-danger:hover {
-            background: #EF4444 !important;
-            color: var(--white) !important;
-            border-color: #EF4444 !important;
-        }
-        
-        .btn-outline-warning {
-            color: #F59E0B !important;
-            border-color: rgba(245, 158, 11, 0.3) !important;
-        }
-        
-        .btn-outline-warning:hover {
-            background: #F59E0B !important;
-            color: var(--white) !important;
-        }
-        
-        .form-label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--gray-600);
-            margin-bottom: 0.25rem;
-        }
-        
-        .form-control, .form-select {
-            border-radius: 8px !important;
-            border: 1px solid var(--border-light) !important;
-            font-size: 0.875rem !important;
-            color: var(--gray-700) !important;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 0 3px var(--primary-soft) !important;
-            outline: none !important;
-        }
-        
-        .input-group-text {
-            background: var(--primary-50) !important;
-            border: 1px solid var(--border-light) !important;
-            color: var(--primary) !important;
-            border-radius: 8px 0 0 8px !important;
-        }
-        
-        .modal-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--primary-dark);
-        }
-        
-        .detail-item {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-        
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-        
-        .detail-item strong {
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.25rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .modal-backdrop {
-            z-index: 1040;
-        }
-        
-        .modal {
-            z-index: 1050;
-        }
-        
-        .modal-content {
-            border-radius: 16px;
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .modal-header {
-            background: var(--primary-50);
-            border-bottom: 1px solid var(--border-light);
-            border-radius: 16px 16px 0 0;
-            padding: 1rem 1.5rem;
-        }
-        
-        .modal-header.bg-danger {
-            background: linear-gradient(135deg, #EF4444, #DC2626) !important;
-            color: var(--white);
-        }
-        
-        .modal-footer {
-            border-top: 1px solid var(--border-light);
-            background: var(--primary-50);
-            border-radius: 0 0 16px 16px;
-            padding: 1rem 1.5rem;
-        }
-        
-        .progress {
-            background-color: var(--primary-50);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        
-        .progress-bar.bg-primary { background: var(--primary) !important; }
-        .progress-bar.bg-success { background: #10B981 !important; }
-        .progress-bar.bg-warning { background: #F59E0B !important; }
-        .progress-bar.bg-info { background: #3B82F6 !important; }
-        .progress-bar.bg-danger { background: #EF4444 !important; }
 
-        .badge {
-            font-weight: 500;
-            border-radius: 30px;
-            border: 1px solid transparent;
+        .pagination-modern .page-link:hover {
+            background: var(--primary);
+            color: white;
         }
-        
-        .badge.bg-success { background: rgba(16, 185, 129, 0.15) !important; color: #065F46 !important; border-color: rgba(16, 185, 129, 0.3); }
-        .badge.bg-info { background: rgba(91, 196, 191, 0.15) !important; color: var(--primary-dark) !important; border-color: var(--border-medium); }
-        .badge.bg-warning { background: rgba(245, 158, 11, 0.15) !important; color: #92400E !important; border-color: rgba(245, 158, 11, 0.3); }
-        .badge.bg-danger { background: rgba(239, 68, 68, 0.15) !important; color: #B91C1C !important; border-color: rgba(239, 68, 68, 0.3); }
-        .badge.bg-secondary { background: rgba(100, 116, 139, 0.15) !important; color: #475569 !important; border-color: rgba(100, 116, 139, 0.3); }
-        .badge.bg-light { background: var(--white) !important; color: var(--primary) !important; border-color: var(--border-medium); }
 
-        .text-primary { color: var(--primary) !important; }
-        .text-success { color: #10B981 !important; }
-        .text-warning { color: #F59E0B !important; }
-        .text-info { color: #3B82F6 !important; }
-        .text-danger { color: #EF4444 !important; }
+        .pagination-modern .active .page-link {
+            background: var(--primary);
+            color: white;
+        }
 
-        .bg-light { background-color: var(--primary-50) !important; }
-        .border-top { border-top-color: var(--border-light) !important; }
-        .border-bottom { border-bottom-color: var(--border-light) !important; }
-
+        /* Checkbox modern */
         .checkbox-modern {
-            width: 18px;
-            height: 18px;
-            border-radius: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
             accent-color: var(--primary);
             cursor: pointer;
         }
 
-        .font-mono {
-            font-family: 'Courier New', monospace;
+        /* Modals */
+        .modal-content {
+            border-radius: 16px;
+            border: none;
+            overflow: hidden;
         }
 
-        /* Pagination */
-        .pagination .page-link {
-            color: var(--primary);
-            border-color: var(--border-light);
-            border-radius: 8px;
-            margin: 0 2px;
+        .modal-header {
+            background: var(--primary-50);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0.75rem 1.25rem;
         }
 
-        .pagination .page-link:hover {
-            background: var(--primary-soft);
-            color: var(--primary);
-            border-color: var(--primary);
+        .modal-footer {
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+            padding: 0.75rem 1.25rem;
         }
 
-        .pagination .active .page-link {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: var(--white);
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
         }
 
-        /* Alertes */
-        .alert-success {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.3);
-            color: #065F46;
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
         }
 
-        .alert-danger {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.3);
-            color: #B91C1C;
-        }
-
-        .alert-warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: rgba(245, 158, 11, 0.3);
-            color: #92400E;
-        }
-
-        .alert-info {
-            background: var(--primary-soft);
-            border-color: var(--border-medium);
-            color: var(--primary-dark);
-        }
-
-        /* Animation pour les badges de filtre */
-        .badge {
-            transition: all 0.2s ease;
-        }
-
-        .badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 8px var(--primary-soft);
-        }
-
-        /* Bouton de fermeture */
-        .btn-close:hover {
-            background-color: var(--primary-soft);
-            opacity: 1;
-        }
-
-        /* Form check */
-        .form-check-input:checked {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .form-check-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 0.2rem var(--primary-soft);
-        }
-
-        @media (max-width: 768px) {
-            #filters-container .col-md-3,
-            #filters-container .col-md-2 {
-                margin-bottom: 1rem;
-            }
-            
-            .btn span.d-none.d-sm-inline {
-                display: inline !important;
-            }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-400);
+            border-radius: 10px;
         }
     </style>
 
-    <!-- Contenu principal -->
-    <div class="container-fluid py-3">
+    <div class="container-fluid px-3 px-md-4 py-3 fade-in-up">
         <!-- Header -->
-        <div class="row mb-3">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <div>
-                        <h1 class="h4 fw-semibold mb-0" style="color: var(--primary-dark);">
-                            <i class="bi bi-display me-2" style="color: var(--primary);"></i> Gestion des Moniteurs
-                        </h1>
-                        <p class="text-muted small">Inventaire complet des écrans et moniteurs</p>
-                    </div>
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-outline-primary btn-sm d-flex align-items-center" wire:click="toggleStats">
-                            <i class="fas fa-chart-bar me-1"></i>
-                            {{ $showStats ? 'Masquer' : 'Afficher' }} stats
-                        </button>
-                    </div>
-                </div>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h1 class="fw-bold mb-1" style="color: var(--gray-800); font-size: 1.3rem;">
+                    <i class="bi bi-display me-2" style="color: var(--primary);"></i>
+                    Gestion des Moniteurs
+                </h1>
+                <p class="text-muted small mb-0">Inventaire complet des écrans et moniteurs</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button wire:click="toggleStats" class="btn btn-modern-outline btn-modern">
+                    <i class="bi bi-{{ $showStats ? 'eye-slash' : 'eye' }} me-1"></i>
+                    {{ $showStats ? 'Masquer stats' : 'Afficher stats' }}
+                </button>
+                <button wire:click="create" class="btn btn-modern-primary btn-modern">
+                    <i class="bi bi-plus-lg me-1"></i> Ajouter
+                </button>
             </div>
         </div>
 
-        <!-- Messages flash -->
-        @if (session()->has('message'))
-            <div class="alert alert-success alert-dismissible fade show small" role="alert">
-                <i class="fas fa-check-circle me-2"></i> {{ session('message') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+        <!-- Flash Messages -->
+        @if(session()->has('message') || session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show small mb-3 rounded-3" style="background: rgba(16, 185, 129, 0.1); border: none; color: #0b7e5a;">
+                <i class="bi bi-check-circle-fill me-2"></i> {{ session('message') ?? session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
 
-        @if (session()->has('success'))
-            <div class="alert alert-success alert-dismissible fade show small" role="alert">
-                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+        @if(session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show small mb-3 rounded-3" style="background: rgba(239, 68, 68, 0.1); border: none; color: #b91c1c;">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
 
-        @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show small" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-            </div>
-        @endif
-
-        @if (session()->has('warning'))
-            <div class="alert alert-warning alert-dismissible fade show small" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> {{ session('warning') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-            </div>
-        @endif
-
-        <!-- Statistiques -->
-       @if($showStats)
-<div class="row mb-4">
-    <!-- Total -->
-    <div class="col-xl-2 col-md-4 mb-3">
-        <div class="dashboard-card stat-card h-100">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="flex-grow-1">
-                    <h3 class="stat-number mb-1" style="color: var(--primary);">{{ $stats['total'] ?? 0 }}</h3>
-                    <p class="text-muted small mb-0 fw-medium">Total Moniteurs</p>
-                    <div class="progress mt-2" style="height: 4px;">
+        <!-- Statistics Cards -->
+        @if($showStats)
+        <div class="row g-3 mb-4">
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small text-uppercase fw-semibold">Total</span>
+                            <div class="stat-number" style="color: var(--primary);">{{ $stats['total'] ?? 0 }}</div>
+                            <small class="text-muted">Moniteurs</small>
+                        </div>
+                        <div class="stat-icon-lg" style="background: var(--primary-soft); color: var(--primary);">
+                            <i class="bi bi-display"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-2" style="height: 3px;">
                         <div class="progress-bar bg-primary" style="width: 100%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg ms-3">
-                    <i class="bi bi-display"></i>
-                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- En service -->
-    <div class="col-xl-2 col-md-4 mb-3">
-        <div class="dashboard-card stat-card h-100">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="flex-grow-1">
-                    <h3 class="stat-number text-success mb-1">{{ $stats['en_service'] ?? 0 }}</h3>
-                    <p class="text-muted small mb-0 fw-medium">En Service</p>
-                    <div class="progress mt-2" style="height: 4px;">
-                        <div class="progress-bar bg-success" 
-                             style="width: {{ $stats['total'] > 0 ? ($stats['en_service'] / $stats['total'] * 100) : 0 }}%"></div>
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small text-uppercase fw-semibold">En service</span>
+                            <div class="stat-number text-success">{{ $stats['en_service'] ?? 0 }}</div>
+                            <small class="text-muted">Opérationnels</small>
+                        </div>
+                        <div class="stat-icon-lg" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-2" style="height: 3px;">
+                        <div class="progress-bar bg-success" style="width: {{ ($stats['total'] ?? 1) > 0 ? (($stats['en_service'] ?? 0) / ($stats['total'] ?? 1) * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg ms-3" style="color: #10B981;">
-                    <i class="bi bi-check-circle-fill"></i>
-                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- En réparation -->
-    <div class="col-xl-2 col-md-4 mb-3">
-        <div class="dashboard-card stat-card h-100">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="flex-grow-1">
-                    <h3 class="stat-number text-warning mb-1">{{ $stats['en_reparation'] ?? 0 }}</h3>
-                    <p class="text-muted small mb-0 fw-medium">En Réparation</p>
-                    <div class="progress mt-2" style="height: 4px;">
-                        <div class="progress-bar bg-warning" 
-                             style="width: {{ $stats['total'] > 0 ? ($stats['en_reparation'] / $stats['total'] * 100) : 0 }}%"></div>
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small text-uppercase fw-semibold">En réparation</span>
+                            <div class="stat-number text-warning">{{ $stats['en_reparation'] ?? 0 }}</div>
+                            <small class="text-muted">Maintenance</small>
+                        </div>
+                        <div class="stat-icon-lg" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-2" style="height: 3px;">
+                        <div class="progress-bar bg-warning" style="width: {{ ($stats['total'] ?? 1) > 0 ? (($stats['en_reparation'] ?? 0) / ($stats['total'] ?? 1) * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg ms-3" style="color: #F59E0B;">
-                    <i class="bi bi-tools"></i>
-                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- En stock -->
-    <div class="col-xl-2 col-md-4 mb-3">
-        <div class="dashboard-card stat-card h-100">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="flex-grow-1">
-                    <h3 class="stat-number text-info mb-1">{{ $stats['en_stock'] ?? 0 }}</h3>
-                    <p class="text-muted small mb-0 fw-medium">En Stock</p>
-                    <div class="progress mt-2" style="height: 4px;">
-                        <div class="progress-bar bg-info" 
-                             style="width: {{ $stats['total'] > 0 ? ($stats['en_stock'] / $stats['total'] * 100) : 0 }}%"></div>
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small text-uppercase fw-semibold">En stock</span>
+                            <div class="stat-number text-info">{{ $stats['en_stock'] ?? 0 }}</div>
+                            <small class="text-muted">Disponibles</small>
+                        </div>
+                        <div class="stat-icon-lg" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-2" style="height: 3px;">
+                        <div class="progress-bar bg-info" style="width: {{ ($stats['total'] ?? 1) > 0 ? (($stats['en_stock'] ?? 0) / ($stats['total'] ?? 1) * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg ms-3" style="color: #3B82F6;">
-                    <i class="bi bi-box-seam"></i>
-                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Hors service -->
-    <div class="col-xl-2 col-md-4 mb-3">
-        <div class="dashboard-card stat-card h-100">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="flex-grow-1">
-                    <h3 class="stat-number text-danger mb-1">{{ $stats['hors_service'] ?? 0 }}</h3>
-                    <p class="text-muted small mb-0 fw-medium">Hors Service</p>
-                    <div class="progress mt-2" style="height: 4px;">
-                        <div class="progress-bar bg-danger" 
-                             style="width: {{ $stats['total'] > 0 ? ($stats['hors_service'] / $stats['total'] * 100) : 0 }}%"></div>
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small text-uppercase fw-semibold">Hors service</span>
+                            <div class="stat-number text-danger">{{ $stats['hors_service'] ?? 0 }}</div>
+                            <small class="text-muted">À réformer</small>
+                        </div>
+                        <div class="stat-icon-lg" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-2" style="height: 3px;">
+                        <div class="progress-bar bg-danger" style="width: {{ ($stats['total'] ?? 1) > 0 ? (($stats['hors_service'] ?? 0) / ($stats['total'] ?? 1) * 100) : 0 }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg ms-3" style="color: #EF4444;">
-                    <i class="bi bi-x-circle-fill"></i>
-                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Taux de disponibilité -->
-    <div class="col-xl-2 col-md-4 mb-3">
-        <div class="dashboard-card stat-card h-100">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="flex-grow-1">
-                    @php
-                        $disponible = $stats['en_service'] ?? 0;
-                        $total = $stats['total'] ?? 1;
-                        $taux = $total > 0 ? round(($disponible / $total) * 100) : 0;
-                    @endphp
-                    <h3 class="stat-number mb-1 {{ $taux >= 80 ? 'text-success' : ($taux >= 60 ? 'text-warning' : 'text-danger') }}">
-                        {{ $taux }}%
-                    </h3>
-                    <p class="text-muted small mb-0 fw-medium">Disponibilité</p>
-                    <div class="progress mt-2" style="height: 6px;">
-                        <div class="progress-bar {{ $taux >= 80 ? 'bg-success' : ($taux >= 60 ? 'bg-warning' : 'bg-danger') }}" 
-                             style="width: {{ $taux }}%"></div>
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="dashboard-card stat-card h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <span class="text-muted small text-uppercase fw-semibold">Disponibilité</span>
+                            @php
+                                $taux = ($stats['total'] ?? 1) > 0 ? round((($stats['en_service'] ?? 0) / ($stats['total'] ?? 1)) * 100) : 0;
+                            @endphp
+                            <div class="stat-number {{ $taux >= 80 ? 'text-success' : ($taux >= 60 ? 'text-warning' : 'text-danger') }}">{{ $taux }}%</div>
+                            <small class="text-muted">Taux global</small>
+                        </div>
+                        <div class="stat-icon-lg" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;">
+                            <i class="bi bi-speedometer2"></i>
+                        </div>
+                    </div>
+                    <div class="progress mt-2" style="height: 3px;">
+                        <div class="progress-bar {{ $taux >= 80 ? 'bg-success' : ($taux >= 60 ? 'bg-warning' : 'bg-danger') }}" style="width: {{ $taux }}%"></div>
                     </div>
                 </div>
-                <div class="stat-icon-lg ms-3 {{ $taux >= 80 ? 'text-success' : ($taux >= 60 ? 'text-warning' : 'text-danger') }}">
-                    <i class="bi bi-speedometer2"></i>
-                </div>
             </div>
         </div>
-    </div>
-</div>
-@endif
+        @endif
 
-        <!-- Filtres avec boutons Import/Export -->
-        <div class="dashboard-card p-3 mb-3">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-semibold mb-0 small" style="color: var(--primary-dark);">Filtres et Actions</h6>
-                <div class="d-flex gap-2">
-                    <button wire:click="resetFilters" class="btn btn-outline-secondary btn-sm" title="Réinitialiser les filtres">
-                        <i class="bi bi-arrow-clockwise"></i>
-                    </button>
-                    <button wire:click="toggleFilters" class="btn btn-outline-secondary btn-sm d-md-none" title="Afficher/Masquer les filtres">
-                        <i class="bi bi-funnel"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="row g-3 align-items-end" id="filters-container">
-                <!-- Recherche -->
+        <!-- Filters -->
+        <div class="dashboard-card p-3 mb-4">
+            <div class="row g-2 align-items-end">
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium">Recherche</label>
-                    <div class="search-box position-relative">
-                        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-2 small"></i>
+                    <label class="small fw-semibold text-muted mb-1 d-block" style="font-size: 0.7rem;">Recherche</label>
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
                         <input type="text" wire:model.live.debounce.300ms="search"
-                               class="form-control form-control-sm ps-4 border-0 bg-light rounded-2"
-                               placeholder="Nom, n° série, fabricant...">
+                               class="form-control form-modern" placeholder="Nom, série, fabricant...">
                     </div>
                 </div>
-
-                <!-- Statut -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium">Statut</label>
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text border-0">
-                            <i class="fas fa-circle"></i>
-                        </span>
-                        <select wire:model.live="statut" class="form-select border-0 bg-light rounded-2">
-                            <option value="">Tous les statuts</option>
-                            @foreach(['En service', 'En stock', 'Hors service', 'En réparation'] as $statutOption)
-                                <option value="{{ $statutOption }}">{{ $statutOption }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label class="small fw-semibold text-muted mb-1 d-block" style="font-size: 0.7rem;">Statut</label>
+                    <select wire:model.live="statut" class="form-select form-modern">
+                        <option value="">Tous</option>
+                        @foreach(['En service', 'En stock', 'Hors service', 'En réparation'] as $s)
+                            <option value="{{ $s }}">{{ $s }}</option>
+                        @endforeach
+                    </select>
                 </div>
-
-                <!-- Entité -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium">Entité</label>
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text border-0">
-                            <i class="fas fa-building"></i>
-                        </span>
-                        <select wire:model.live="entite" class="form-select border-0 bg-light rounded-2">
-                            <option value="">Toutes les entités</option>
-                            @foreach($entitesList as $entiteOption)
-                                <option value="{{ $entiteOption }}">{{ $entiteOption }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label class="small fw-semibold text-muted mb-1 d-block" style="font-size: 0.7rem;">Entité</label>
+                    <select wire:model.live="entite" class="form-select form-modern">
+                        <option value="">Toutes</option>
+                        @foreach($entitesList as $e)
+                            <option value="{{ $e }}">{{ $e }}</option>
+                        @endforeach
+                    </select>
                 </div>
-
-                <!-- Fabricant -->
                 <div class="col-md-2 col-sm-6">
-                    <label class="form-label small fw-medium">Fabricant</label>
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text border-0">
-                            <i class="fas fa-industry"></i>
-                        </span>
-                        <select wire:model.live="fabricant" class="form-select border-0 bg-light rounded-2">
-                            <option value="">Tous les fabricants</option>
-                            @foreach($fabricantsList as $fabricantOption)
-                                <option value="{{ $fabricantOption }}">{{ $fabricantOption }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <label class="small fw-semibold text-muted mb-1 d-block" style="font-size: 0.7rem;">Fabricant</label>
+                    <select wire:model.live="fabricant" class="form-select form-modern">
+                        <option value="">Tous</option>
+                        @foreach($fabricantsList as $f)
+                            <option value="{{ $f }}">{{ $f }}</option>
+                        @endforeach
+                    </select>
                 </div>
-
-                <!-- Boutons d'action -->
-                <div class="col-md-4">
-                    <div class="d-flex gap-2 flex-wrap justify-content-end">
-                        <button wire:click="openImportModal" class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                            <i class="fas fa-file-import me-1"></i>
-                            <span class="d-none d-sm-inline">Importer</span>
+                <div class="col-md-2 col-sm-6">
+                    <label class="small fw-semibold text-muted mb-1 d-block" style="font-size: 0.7rem;">Affichage</label>
+                    <select wire:model.live="perPage" class="form-select form-modern">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <div class="d-flex gap-2">
+                        <button wire:click="openImportModal" class="btn btn-modern-outline btn-modern flex-grow-1">
+                            <i class="bi bi-upload me-1"></i> Import
                         </button>
                         <div class="dropdown">
-                            <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-file-export me-1"></i>
-                                <span class="d-none d-sm-inline">Exporter</span>
+                            <button class="btn btn-modern-outline btn-modern dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="bi bi-download me-1"></i> Export
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="exportDropdown">
-                                <li>
-                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('xlsx')">
-                                        <i class="bi bi-file-earmark-excel me-2 text-success"></i> Excel (.xlsx)
-                                    </button>
-                                </li>
-                                <li>
-                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('csv')">
-                                        <i class="bi bi-file-earmark-text me-2 text-primary"></i> CSV
-                                    </button>
-                                </li>
-                                <li>
-                                    <button class="dropdown-item d-flex align-items-center py-2" wire:click="export('pdf')">
-                                        <i class="bi bi-file-earmark-pdf me-2 text-danger"></i> PDF
-                                    </button>
-                                </li>
+                            <ul class="dropdown-menu shadow-sm border-0 rounded-2">
+                                <li><a class="dropdown-item small" href="#" wire:click.prevent="export('xlsx')"><i class="bi bi-file-earmark-excel text-success me-2"></i>Excel</a></li>
+                                <li><a class="dropdown-item small" href="#" wire:click.prevent="export('csv')"><i class="bi bi-file-earmark-text text-info me-2"></i>CSV</a></li>
+                                <li><a class="dropdown-item small" href="#" wire:click.prevent="export('pdf')"><i class="bi bi-file-earmark-pdf text-danger me-2"></i>PDF</a></li>
                             </ul>
                         </div>
-                        <button wire:click="create" class="btn btn-primary btn-sm d-flex align-items-center">
-                            <i class="fas fa-plus me-1"></i>
-                            <span class="d-none d-sm-inline">Ajouter</span>
+                        <button wire:click="resetFilters" class="btn btn-modern-outline btn-modern" title="Réinitialiser">
+                            <i class="bi bi-arrow-repeat"></i>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Résultats du filtre -->
+            <!-- Active Filters -->
             @if($search || $statut || $entite || $fabricant)
             <div class="mt-3 pt-2 border-top">
-                <div class="d-flex align-items-center gap-2 flex-wrap">
-                    <span class="text-muted small">Filtres actifs :</span>
+                <div class="d-flex gap-2 flex-wrap">
+                    <span class="small text-muted">Filtres actifs :</span>
                     @if($search)
-                    <span class="badge bg-light d-flex align-items-center">
-                        Recherche: "{{ $search }}"
-                        <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                    <span class="badge bg-light text-dark rounded-pill d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.6rem;">
+                        Recherche: {{ $search }}
+                        <button wire:click="$set('search', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.4rem;"></button>
                     </span>
                     @endif
                     @if($statut)
-                    <span class="badge bg-light d-flex align-items-center">
+                    <span class="badge bg-light text-dark rounded-pill d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.6rem;">
                         Statut: {{ $statut }}
-                        <button wire:click="$set('statut', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                        <button wire:click="$set('statut', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.4rem;"></button>
                     </span>
                     @endif
                     @if($entite)
-                    <span class="badge bg-light d-flex align-items-center">
+                    <span class="badge bg-light text-dark rounded-pill d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.6rem;">
                         Entité: {{ $entite }}
-                        <button wire:click="$set('entite', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                        <button wire:click="$set('entite', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.4rem;"></button>
                     </span>
                     @endif
                     @if($fabricant)
-                    <span class="badge bg-light d-flex align-items-center">
+                    <span class="badge bg-light text-dark rounded-pill d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.6rem;">
                         Fabricant: {{ $fabricant }}
-                        <button wire:click="$set('fabricant', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"></button>
+                        <button wire:click="$set('fabricant', '')" class="btn-close btn-close-sm ms-1" style="font-size: 0.4rem;"></button>
                     </span>
                     @endif
                 </div>
@@ -744,347 +496,208 @@
             @endif
         </div>
 
-        <!-- Tableau -->
-        <div class="dashboard-card p-3">
-            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                <h5 class="fw-semibold mb-0" style="color: var(--primary-dark);">Liste des Moniteurs ({{ $moniteurs->total() }})</h5>
+        <!-- Table -->
+        <div class="dashboard-card overflow-hidden">
+            <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                <h6 class="fw-semibold mb-0" style="color: var(--gray-800);">Liste des moniteurs</h6>
                 @if(!empty($selectedMoniteurs))
-                <button wire:click="confirmBulkDelete" class="btn btn-danger btn-sm" title="Supprimer les moniteurs sélectionnés">
-                    <i class="fas fa-trash me-1"></i>
-                    Supprimer ({{ count($selectedMoniteurs) }})
+                <button wire:click="confirmBulkDelete" class="btn btn-modern-danger btn-modern">
+                    <i class="bi bi-trash3 me-1"></i> Supprimer ({{ count($selectedMoniteurs) }})
                 </button>
                 @endif
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-sm table-hover">
+            <div class="table-responsive" style="max-height: 60vh;">
+                <table class="table table-modern mb-0">
                     <thead>
                         <tr>
-                            <th>
-                                <input type="checkbox" wire:model="selectAll" class="checkbox-modern">
+                            <th style="width: 35px;">
+                                <input type="checkbox" wire:model.live="selectAll" class="checkbox-modern">
                             </th>
-                            <th wire:click="sortBy('nom')" style="cursor: pointer;">
-                                Nom
-                                @if ($sortField === 'nom')
-                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
-                                @else
-                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
-                                @endif
-                            </th>
-                            <th wire:click="sortBy('entite')" style="cursor: pointer;">
-                                Entité
-                                @if ($sortField === 'entite')
-                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
-                                @else
-                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
-                                @endif
-                            </th>
-                            <th wire:click="sortBy('statut')" style="cursor: pointer;">
-                                Statut
-                                @if ($sortField === 'statut')
-                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
-                                @else
-                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
-                                @endif
-                            </th>
+                            <th wire:click="sortBy('nom')" style="cursor: pointer;">Nom <i class="bi bi-arrow-down-up ms-1 small"></i></th>
+                            <th wire:click="sortBy('entite')" style="cursor: pointer;">Entité <i class="bi bi-arrow-down-up ms-1 small"></i></th>
+                            <th wire:click="sortBy('statut')" style="cursor: pointer;">Statut <i class="bi bi-arrow-down-up ms-1 small"></i></th>
                             <th>Fabricant</th>
                             <th>Modèle</th>
                             <th>N° Série</th>
                             <th>Utilisateur</th>
-                            <th>Usager</th>
                             <th>Lieu</th>
                             <th>Type</th>
-                            <th wire:click="sortBy('updated_at')" style="cursor: pointer;">
-                                Dernière modif.
-                                @if ($sortField === 'updated_at')
-                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} small"></i>
-                                @else
-                                    <i class="fas fa-sort small" style="color: var(--border-medium);"></i>
-                                @endif
-                            </th>
-                            <th>Actions</th>
+                            <th wire:click="sortBy('updated_at')" style="cursor: pointer;">Modifié <i class="bi bi-arrow-down-up ms-1 small"></i></th>
+                            <th style="width: 100px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($moniteurs as $moniteur)
-                        <tr>
-                            <td>
-                                <input type="checkbox"
-                                       wire:model="selectedMoniteurs"
-                                       value="{{ $moniteur->id }}"
-                                       class="checkbox-modern">
-                            </td>
-                            <td class="fw-medium small">
-                                <div class="d-flex align-items-center">
-                                    <span style="color: var(--primary-dark);">{{ $moniteur->nom }}</span>
-                                    @if($moniteur->commentaires)
-                                        <i class="fas fa-sticky-note ms-1" style="color: #F59E0B;" title="{{ $moniteur->commentaires }}"></i>
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="small">{{ $moniteur->entite ?? 'N/A' }}</td>
+                        @forelse($moniteurs as $moniteur)
+                        <tr wire:key="mon-{{ $moniteur->id }}">
+                            <td><input type="checkbox" wire:model.live="selectedMoniteurs" value="{{ $moniteur->id }}" class="checkbox-modern"></td>
+                            <td class="fw-medium">{{ $moniteur->name ?? $moniteur->nom }}</td>
+                            <td>{{ $moniteur->entite ?? '-' }}</td>
                             <td>
                                 @php
-                                    $statusClasses = [
-                                        'En service' => 'badge bg-success badge-sm',
-                                        'En stock' => 'badge bg-info badge-sm',
-                                        'Hors service' => 'badge bg-danger badge-sm',
-                                        'En réparation' => 'badge bg-warning badge-sm'
+                                    $statusMap = [
+                                        'En service' => 'success',
+                                        'En stock' => 'info',
+                                        'En réparation' => 'warning',
+                                        'Hors service' => 'danger'
                                     ];
+                                    $color = $statusMap[$moniteur->statut] ?? 'secondary';
+                                    $iconMap = [
+                                        'En service' => 'check-circle',
+                                        'En stock' => 'box',
+                                        'En réparation' => 'tools',
+                                        'Hors service' => 'x-circle'
+                                    ];
+                                    $icon = $iconMap[$moniteur->statut] ?? 'question-circle';
                                 @endphp
-                                <span class="{{ $statusClasses[$moniteur->statut] ?? 'badge bg-secondary badge-sm' }}">
-                                    {{ $moniteur->statut }}
+                                <span class="badge-modern badge-{{ $color }}">
+                                    <i class="bi bi-{{ $icon }}"></i> {{ $moniteur->statut }}
                                 </span>
                             </td>
-                            <td class="small">{{ $moniteur->fabricant ?? 'N/A' }}</td>
-                            <td class="small">{{ $moniteur->modele ?? 'N/A' }}</td>
-                            <td class="small font-mono">{{ $moniteur->numero_serie ?? 'N/A' }}</td>
-                            <td class="small">
-                                @if($moniteur->utilisateur)
-                                    <span class="badge bg-light">{{ $moniteur->utilisateur->nom }}</span>
-                                @else
-                                    <span class="text-muted small">Non attribué</span>
-                                @endif
-                            </td>
-                            <td class="small">
-                                @if($moniteur->usager)
-                                    <span class="badge bg-light">{{ $moniteur->usager->nom }}</span>
-                                @else
-                                    <span class="text-muted small">N/A</span>
-                                @endif
-                            </td>
-                            <td class="small">{{ $moniteur->lieu ?? 'N/A' }}</td>
-                            <td class="small">
-                                @if($moniteur->type)
-                                    <span class="badge bg-light">{{ $moniteur->type }}</span>
-                                @else
-                                    <span class="text-muted small">N/A</span>
-                                @endif
-                            </td>
-                            <td class="small">{{ $moniteur->updated_at->format('d/m/Y H:i') }}</td>
+                            <td>{{ $moniteur->fabricant ?? '-' }}</td>
+                            <td>{{ $moniteur->modele ?? '-' }}</td>
+                            <td class="font-monospace">{{ $moniteur->numero_serie ?? '-' }}</td>
                             <td>
-    <div class="d-flex gap-1">
-        <!-- Bouton Voir Détails -->
-        <button wire:click="showDetails({{ $moniteur->id }})"
-                class="btn btn-sm border-0"
-                style="color: var(--primary); background: var(--primary-soft); border-radius: 6px;"
-                onmouseover="this.style.background='var(--primary)'; this.style.color='white';"
-                onmouseout="this.style.background='var(--primary-soft)'; this.style.color='var(--primary)';"
-                title="Voir détails">
-            <i class="bi bi-eye"></i>
-        </button>
-        <!-- Bouton Modifier -->
-        <button wire:click="edit({{ $moniteur->id }})"
-                class="btn btn-sm border-0"
-                style="color: #F59E0B; background: rgba(245, 158, 11, 0.1); border-radius: 6px;"
-                onmouseover="this.style.background='#F59E0B'; this.style.color='white';"
-                onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.color='#F59E0B';"
-                title="Modifier">
-            <i class="bi bi-pencil"></i>
-        </button>
-        <!-- Bouton Supprimer -->
-        <button wire:click="confirmDelete({{ $moniteur->id }})"
-                class="btn btn-sm border-0"
-                style="color: #EF4444; background: rgba(239, 68, 68, 0.1); border-radius: 6px;"
-                onmouseover="this.style.background='#EF4444'; this.style.color='white';"
-                onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.color='#EF4444';"
-                title="Supprimer">
-            <i class="bi bi-trash"></i>
-        </button>
-        <!-- Bouton Fichiers -->
-        <button wire:click="openFileModal({{ $moniteur->id }})"
-                class="btn btn-sm border-0"
-                style="color: #3B82F6; background: rgba(59, 130, 246, 0.1); border-radius: 6px;"
-                onmouseover="this.style.background='#3B82F6'; this.style.color='white';"
-                onmouseout="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.color='#3B82F6';"
-                title="Gérer les fichiers">
-            <i class="bi bi-paperclip"></i>
-        </button>
-    </div>
-</td>
+                                @if($moniteur->utilisateur)
+                                    <span class="d-inline-flex align-items-center gap-1">
+                                        <i class="bi bi-person-circle small" style="color: var(--primary);"></i>
+                                        {{ $moniteur->utilisateur->nom ?? $moniteur->utilisateur->name }}
+                                    </span>
+                                @else
+                                    <span class="text-muted">Non attribué</span>
+                                @endif
+                            </td>
+                            <td>{{ $moniteur->lieu ?? '-' }}</td>
+                            <td><span class="badge bg-light text-dark">{{ $moniteur->type ?? '-' }}</span></td>
+                            <td class="text-muted">{{ $moniteur->updated_at->format('d/m/Y') }}</td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <button wire:click="showDetails({{ $moniteur->id }})" class="btn btn-sm p-0" style="color: var(--primary); width: 26px; height: 26px;" title="Voir">
+                                        <i class="bi bi-eye fs-6"></i>
+                                    </button>
+                                    <button wire:click="edit({{ $moniteur->id }})" class="btn btn-sm p-0" style="color: #f59e0b; width: 26px; height: 26px;" title="Modifier">
+                                        <i class="bi bi-pencil fs-6"></i>
+                                    </button>
+                                    <button wire:click="confirmDelete({{ $moniteur->id }})" class="btn btn-sm p-0" style="color: #ef4444; width: 26px; height: 26px;" title="Supprimer">
+                                        <i class="bi bi-trash3 fs-6"></i>
+                                    </button>
+                                    <button wire:click="openFileModal({{ $moniteur->id }})" class="btn btn-sm p-0" style="color: #3b82f6; width: 26px; height: 26px;" title="Fichiers">
+                                        <i class="bi bi-paperclip fs-6"></i>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
-                    @empty
+                        @empty
                         <tr>
-                            <td colspan="14" class="text-center py-3">
-                                <i class="fas fa-desktop display-6 d-block mb-2" style="color: var(--border-medium);"></i>
-                                <p class="text-muted mb-0 small">Aucun moniteur trouvé</p>
+                            <td colspan="12" class="text-center py-4">
+                                <i class="bi bi-display display-6 text-muted opacity-25 d-block mb-2"></i>
+                                <p class="text-muted small mb-0">Aucun moniteur trouvé</p>
                                 @if($search || $statut || $entite || $fabricant)
-                                    <button wire:click="resetFilters" class="btn btn-outline-primary btn-sm mt-2">
-                                        <i class="fas fa-redo me-1"></i>
-                                        Réinitialiser les filtres
+                                    <button wire:click="resetFilters" class="btn btn-modern-outline btn-modern mt-2">
+                                        <i class="bi bi-arrow-repeat me-1"></i> Réinitialiser
                                     </button>
                                 @endif
                             </td>
                         </tr>
-                    @endforelse
+                        @endforelse
                     </tbody>
                 </table>
             </div>
 
             <!-- Pagination -->
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="text-muted small">
-                    @if($moniteurs->count() > 0)
-                        Affichage de {{ $moniteurs->firstItem() }} à {{ $moniteurs->lastItem() }} sur {{ $moniteurs->total() }} moniteurs
-                    @else
-                        Aucun moniteur
-                    @endif
+            @if($moniteurs->hasPages())
+            <div class="card-footer bg-white border-0 py-2">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <span class="small text-muted">
+                        {{ $moniteurs->firstItem() ?? 0 }} - {{ $moniteurs->lastItem() ?? 0 }} sur {{ $moniteurs->total() }}
+                    </span>
+                    {{ $moniteurs->links('pagination::bootstrap-4') }}
                 </div>
-                {{ $moniteurs->links() }}
             </div>
+            @endif
         </div>
     </div>
 
-    <!-- Modal pour créer/modifier un moniteur -->
+    <!-- Create/Edit Modal -->
     @if($showModal)
-    <div class="modal-backdrop fade show"></div>
     <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header py-2">
-                    <h5 class="modal-title small fw-semibold">
-                        <i class="fas {{ $isEditing ? 'fa-edit' : 'fa-plus' }} me-1" style="color: var(--primary);"></i>
-                        {{ $isEditing ? 'Modifier le moniteur' : 'Nouveau Moniteur' }}
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold" style="font-size: 0.95rem;">
+                        <i class="bi bi-{{ $isEditing ? 'pencil' : 'plus-circle' }} me-2" style="color: var(--primary);"></i>
+                        {{ $isEditing ? 'Modifier le moniteur' : 'Nouveau moniteur' }}
                     </h5>
-                    <button type="button" class="btn-close btn-close-sm" wire:click="closeModal"></button>
+                    <button type="button" class="btn-close" wire:click="closeModal"></button>
                 </div>
-                <form wire:submit.prevent="save" style="max-height:500px;overflow-y: scroll;  -ms-overflow-style: none;">
+                <form wire:submit.prevent="save">
                     <div class="modal-body p-3">
                         <div class="row g-2">
-                            <!-- Informations de base -->
-                            <div class="col-12 mb-2">
-                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
-                                    <i class="fas fa-info-circle me-1" style="color: var(--primary);"></i>Informations de base
-                                </h6>
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Nom <span class="text-danger">*</span></label>
+                                <input type="text" wire:model="nom" class="form-control form-modern @error('nom') is-invalid @enderror" placeholder="Ex: Moniteur Salle 101">
+                                @error('nom') <small class="text-danger" style="font-size: 0.6rem;">{{ $message }}</small> @enderror
                             </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Nom <span class="text-danger">*</span></label>
-                                <input type="text" wire:model="nom"
-                                       class="form-control form-control-sm @error('nom') is-invalid @enderror"
-                                       placeholder="Nom du moniteur">
-                                @error('nom') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Statut <span class="text-danger">*</span></label>
-                                <select wire:model="statut_form"
-                                        class="form-select form-select-sm @error('statut_form') is-invalid @enderror">
-                                    <option value="">Sélectionner un statut</option>
-                                    @foreach($statuts as $statut)
-                                        <option value="{{ $statut }}">{{ $statut }}</option>
-                                    @endforeach
-                                </select>
-                                @error('statut_form') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                            </div>
-
-                            <!-- Spécifications techniques -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
-                                    <i class="fas fa-desktop me-1" style="color: var(--primary);"></i>Spécifications techniques
-                                </h6>
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Fabricant</label>
-                                <input type="text" wire:model="fabricant_form"
-                                       class="form-control form-control-sm"
-                                       placeholder="Dell, HP, Samsung...">
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Modèle</label>
-                                <input type="text" wire:model="modele"
-                                       class="form-control form-control-sm"
-                                       placeholder="Modèle du moniteur">
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Numéro de série</label>
-                                <input type="text" wire:model="numero_serie"
-                                       class="form-control form-control-sm"
-                                       placeholder="Numéro de série">
-                            </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Type</label>
-                                <select wire:model="type" class="form-select form-select-sm">
-                                    <option value="">Sélectionner un type</option>
-                                    @foreach($types as $typeItem)
-                                        <option value="{{ $typeItem }}">{{ $typeItem }}</option>
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Statut</label>
+                                <select wire:model="statut_form" class="form-select form-modern">
+                                    <option value="">Sélectionner</option>
+                                    @foreach(['En service', 'En stock', 'En réparation', 'Hors service'] as $s)
+                                        <option value="{{ $s }}">{{ $s }}</option>
                                     @endforeach
                                 </select>
                             </div>
-
-                            <!-- Organisation -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
-                                    <i class="fas fa-building me-1" style="color: var(--primary);"></i>Organisation
-                                </h6>
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Fabricant</label>
+                                <input type="text" wire:model="fabricant" class="form-control form-modern" placeholder="Dell, HP, Samsung...">
                             </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Entité</label>
-                                <input type="text" wire:model="entite_form"
-                                       class="form-control form-control-sm"
-                                       placeholder="Entité organisationnelle">
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Modèle</label>
+                                <input type="text" wire:model="modele" class="form-control form-modern" placeholder="Modèle du moniteur">
                             </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Lieu</label>
-                                <input type="text" wire:model="lieu"
-                                       class="form-control form-control-sm"
-                                       placeholder="Emplacement physique">
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Numéro de série</label>
+                                <input type="text" wire:model="numero_serie" class="form-control form-modern" placeholder="SN-12345...">
                             </div>
-
-                            <!-- Attribution utilisateurs -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
-                                    <i class="fas fa-users me-1" style="color: var(--primary);"></i>Attribution utilisateurs
-                                </h6>
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Type</label>
+                                <select wire:model="type" class="form-select form-modern">
+                                    <option value="">Sélectionner</option>
+                                    @foreach($types as $t)
+                                        <option value="{{ $t }}">{{ $t }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Utilisateur principal</label>
-                                <select wire:model="utilisateur_id" class="form-select form-select-sm">
-                                    <option value="">Sélectionner un utilisateur</option>
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Entité</label>
+                                <input type="text" wire:model="entite_form" class="form-control form-modern" placeholder="Direction...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Lieu</label>
+                                <input type="text" wire:model="lieu" class="form-control form-modern" placeholder="Bâtiment, bureau...">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Utilisateur principal</label>
+                                <select wire:model="utilisateur_id" class="form-select form-modern">
+                                    <option value="">-- Non attribué --</option>
                                     @foreach($utilisateurs as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                     @endforeach
                                 </select>
                             </div>
-
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label small fw-medium">Usager secondaire</label>
-                                <select wire:model="usager_id" class="form-select form-select-sm">
-                                    <option value="">Sélectionner un usager</option>
-                                    @foreach($utilisateurs as $user)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Notes -->
-                            <div class="col-12 mt-2 mb-2">
-                                <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">
-                                    <i class="fas fa-sticky-note me-1" style="color: var(--primary);"></i>Notes et informations
-                                </h6>
-                                <textarea wire:model="commentaires" class="form-control form-control-sm" rows="3"
-                                          placeholder="Commentaires supplémentaires..."></textarea>
+                            <div class="col-12">
+                                <label class="small fw-semibold text-muted mb-1 d-block">Commentaires</label>
+                                <textarea wire:model="commentaires" rows="2" class="form-control form-modern" placeholder="Informations supplémentaires..."></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer py-2">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeModal">Annuler</button>
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <span wire:loading.remove>
-                                <i class="fas {{ $isEditing ? 'fa-check' : 'fa-plus' }} me-1"></i>
-                                {{ $isEditing ? 'Modifier' : 'Créer' }}
-                            </span>
-                            <span wire:loading>
-                                <i class="fas fa-spinner fa-spin me-1"></i>
-                                {{ $isEditing ? 'Modification...' : 'Création...' }}
-                            </span>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-modern-outline btn-modern" wire:click="closeModal">
+                            <i class="bi bi-x me-1"></i> Annuler
+                        </button>
+                        <button type="submit" class="btn btn-modern-primary btn-modern">
+                            <span wire:loading.remove><i class="bi bi-{{ $isEditing ? 'check' : 'plus' }} me-1"></i> {{ $isEditing ? 'Modifier' : 'Créer' }}</span>
+                            <span wire:loading><i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Chargement...</span>
                         </button>
                     </div>
                 </form>
@@ -1093,503 +706,174 @@
     </div>
     @endif
 
-    <!-- Modal de détails du moniteur -->
-    @if($showDetailsModal && $selectedMoniteur)
-    <div class="modal-backdrop fade show"></div>
+    <!-- Delete Confirmation Modal -->
+    @if($confirmingDelete)
     <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content text-center">
+                <div class="modal-body p-4">
+                    <i class="bi bi-trash3 text-danger" style="font-size: 2rem;"></i>
+                    <h6 class="mt-2 fw-semibold">Confirmer la suppression</h6>
+                    <p class="small text-muted mb-3">
+                        @if($isBulkDelete)
+                            Supprimer {{ count($selectedMoniteurs) }} moniteur(s) ?
+                        @else
+                            Supprimer "{{ $selectedMoniteurName }}" ?
+                        @endif
+                    </p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-modern-outline btn-modern" wire:click="closeDeleteModal">
+                            <i class="bi bi-x me-1"></i> Annuler
+                        </button>
+                        <button class="btn btn-modern-danger btn-modern" wire:click="deleteConfirmed">
+                            <i class="bi bi-trash3 me-1"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Details Modal -->
+    @if($showDetailsModal && $selectedMoniteur)
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-desktop me-2" style="color: var(--primary);"></i>Détails du Moniteur
+                    <h5 class="modal-title fw-semibold" style="font-size: 0.95rem;">
+                        <i class="bi bi-info-circle me-2" style="color: var(--primary);"></i> Détails du moniteur
                     </h5>
                     <button type="button" class="btn-close" wire:click="closeDetailsModal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-desktop me-1" style="color: var(--primary);"></i>Nom</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->nom }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-building me-1" style="color: var(--primary);"></i>Entité</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->entite ?? 'Non spécifiée' }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-circle me-1" style="color: var(--primary);"></i>Statut</strong>
-                                <p class="mb-0">
-                                    @php
-                                        $statusClasses = [
-                                            'En service' => 'badge bg-success badge-sm',
-                                            'En stock' => 'badge bg-info badge-sm',
-                                            'Hors service' => 'badge bg-danger badge-sm',
-                                            'En réparation' => 'badge bg-warning badge-sm'
-                                        ];
-                                    @endphp
-                                    <span class="{{ $statusClasses[$selectedMoniteur->statut] ?? 'badge bg-secondary badge-sm' }}">
-                                        {{ $selectedMoniteur->statut }}
-                                    </span>
-                                </p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-industry me-1" style="color: var(--primary);"></i>Fabricant</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->fabricant ?? 'Non spécifié' }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-barcode me-1" style="color: var(--primary);"></i>Numéro de série</strong>
-                                <p class="mb-0 small font-mono">{{ $selectedMoniteur->numero_serie ?? 'Non renseigné' }}</p>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-cube me-1" style="color: var(--primary);"></i>Modèle</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->modele ?? 'Non spécifié' }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-map-marker-alt me-1" style="color: var(--primary);"></i>Lieu</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->lieu ?? 'Non spécifié' }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-tag me-1" style="color: var(--primary);"></i>Type</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->type ?? 'Non spécifié' }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-users me-1" style="color: var(--primary);"></i>Utilisateur principal</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->utilisateur->nom ?? 'Non attribué' }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-user me-1" style="color: var(--primary);"></i>Usager secondaire</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->usager->nom ?? 'Non attribué' }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-calendar-plus me-1" style="color: var(--primary);"></i>Date de création</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->created_at->format('d/m/Y à H:i') }}</p>
-                            </div>
-
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-calendar-check me-1" style="color: var(--primary);"></i>Dernière modification</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->updated_at->format('d/m/Y à H:i') }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    @if($selectedMoniteur->commentaires)
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <div class="detail-item mb-2">
-                                <strong class="small"><i class="fas fa-sticky-note me-1" style="color: var(--primary);"></i>Commentaires</strong>
-                                <p class="mb-0 small">{{ $selectedMoniteur->commentaires }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeDetailsModal">Fermer</button>
-                    @if($selectedMoniteur)
-                        <button type="button" class="btn btn-primary btn-sm" wire:click="edit({{ $selectedMoniteur->id }})">
-                            <i class="fas fa-edit me-1"></i>Modifier
-                        </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Modal de confirmation de suppression -->
-    @if($confirmingDelete)
-    <div class="modal fade show" 
-         style="display: block; background: rgba(0,0,0,0.5);"
-         tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header bg-danger text-white border-0">
-                    <h5 class="modal-title fw-bold">
-                        <i class="bi bi-exclamation-triangle me-2"></i> Confirmation de suppression
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" wire:click="$set('confirmingDelete', false)"></button>
-                </div>
-                <div class="modal-body p-4 text-center">
-                    <div class="mb-3">
-                        <i class="bi bi-trash3" style="color: #EF4444; font-size: 3rem;"></i>
-                    </div>
-                    @if($isBulkDelete)
-                        <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer les <strong>{{ count($selectedMoniteurs) }}</strong> moniteurs sélectionnés ?</p>
-                    @else
-                        <p class="fs-5 mb-1">Êtes-vous sûr de vouloir supprimer le moniteur <strong>{{ $selectedMoniteurName }}</strong> ?</p>
-                    @endif
-                    <p class="text-muted small">Cette action est irréversible et toutes les données associées seront définitivement perdues.</p>
-                </div>
-                <div class="modal-footer bg-light border-0 justify-content-center p-3">
-                    <button type="button" class="btn btn-outline-secondary px-4" wire:click="$set('confirmingDelete', false)">
-                        <i class="bi bi-x-lg me-1"></i> Annuler
-                    </button>
-                    <button type="button" class="btn btn-danger px-4" wire:click="deleteConfirmed">
-                        <i class="bi bi-trash-fill me-1"></i> Confirmer la suppression
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Modal d'import simplifié -->
-    @if($showImportModal)
-    <div class="modal-backdrop fade show"></div>
-    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header py-2">
-                    <h5 class="modal-title small fw-semibold">
-                        <i class="fas fa-file-import me-1" style="color: var(--primary);"></i>
-                        Importer des Moniteurs
-                    </h5>
-                    <button type="button" class="btn-close btn-close-sm" wire:click="closeImportModal"></button>
-                </div>
                 <div class="modal-body p-3">
-                    <!-- Étape 1 : Upload du fichier -->
-                    @if(!$showMappingModal && !$showImportedData)
-                    <div class="text-center mb-3">
-                        <i class="fas fa-file-csv display-6 mb-3" style="color: var(--primary);"></i>
-                        <h6 class="fw-semibold" style="color: var(--primary-dark);">Importer depuis un fichier CSV</h6>
-                        <p class="text-muted small">Téléchargez le template ou importez votre fichier CSV</p>
-                    </div>
-
-                    <div class="alert alert-info small">
-                        <i class="fas fa-info-circle me-2"></i>
-                        Formats supportés: CSV, TXT. Taille max: 10MB
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label small fw-medium">Fichier CSV</label>
-                        <input type="file" wire:model="importFile" 
-                               class="form-control form-control-sm @error('importFile') is-invalid @enderror" 
-                               accept=".csv,.txt">
-                        @error('importFile') <div class="invalid-feedback small">{{ $message }}</div> @enderror
-                    </div>
-
-                    <div class="mb-3">
-                        <button type="button" wire:click="downloadImportTemplate" 
-                                class="btn btn-outline-primary btn-sm w-100">
-                            <i class="fas fa-download me-1"></i>
-                            Télécharger le template
-                        </button>
-                    </div>
-
-                    @if($importErrors && count($importErrors) > 0)
-                    <div class="alert alert-danger small">
-                        <h6 class="alert-heading small">Erreurs détectées</h6>
-                        <ul class="mb-0 small">
-                            @foreach($importErrors as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-                    @endif
-
-                    <!-- Étape 2 : Mapping simplifié -->
-                    @if($showMappingModal)
-                    <div class="text-center mb-3">
-                        <i class="fas fa-map-marked-alt display-6 mb-3" style="color: #F59E0B;"></i>
-                        <h6 class="fw-semibold" style="color: var(--primary-dark);">Association des colonnes</h6>
-                        <p class="text-muted small">Associez les colonnes de votre fichier aux champs du système</p>
-                    </div>
-
-                    <div class="alert alert-warning small">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        Seul le champ <strong>Nom</strong> est obligatoire. Les autres champs sont optionnels.
-                    </div>
-
-                    <!-- Aperçu des données -->
-                    @if(count($csvPreview) > 0)
-                    <div class="mb-3">
-                        <h6 class="small fw-semibold" style="color: var(--primary-dark);">Aperçu de vos données :</h6>
-                        <div class="table-responsive">
-                            <table class="table table-sm table-bordered small">
-                                <thead class="table-light">
-                                    <tr>
-                                        @foreach($csvHeaders as $header)
-                                        <th>{{ $header }}</th>
-                                        @endforeach
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($csvPreview as $row)
-                                    <tr>
-                                        @foreach($csvHeaders as $header)
-                                        <td>{{ $row[$header] ?? '' }}</td>
-                                        @endforeach
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    @endif
-
-                    <!-- Mapping simplifié -->
                     <div class="row g-2">
-                        @foreach(['nom' => 'Nom*', 'entite' => 'Entité', 'statut' => 'Statut', 'fabricant' => 'Fabricant'] as $field => $label)
                         <div class="col-md-6">
-                            <label class="form-label small fw-medium">{{ $label }}</label>
-                            <select wire:model="fieldMapping.{{ $field }}" 
-                                    class="form-select form-select-sm @if($field === 'nom' && empty($fieldMapping['nom'])) is-invalid @endif">
-                                <option value="">-- Sélectionner une colonne --</option>
-                                @foreach($csvHeaders as $header)
-                                <option value="{{ $header }}">{{ $header }}</option>
-                                @endforeach
-                            </select>
-                            @if($field === 'nom' && empty($fieldMapping['nom']))
-                            <div class="invalid-feedback small">Le champ nom est obligatoire</div>
-                            @endif
-                        </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Champs optionnels groupés -->
-                    <div class="mt-3">
-                        <h6 class="small fw-semibold" style="color: var(--primary-dark);">Champs optionnels :</h6>
-                        <div class="row g-2">
-                            @foreach(['numero_serie' => 'N° Série', 'lieu' => 'Lieu', 'type' => 'Type', 'modele' => 'Modèle'] as $field => $label)
-                            <div class="col-md-6">
-                                <label class="form-label small text-muted">{{ $label }}</label>
-                                <select wire:model="fieldMapping.{{ $field }}" class="form-select form-select-sm">
-                                    <option value="">-- Optionnel --</option>
-                                    @foreach($csvHeaders as $header)
-                                    <option value="{{ $header }}">{{ $header }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Nom</small>
+                                <span class="fw-medium" style="font-size: 0.75rem;">{{ $selectedMoniteur->nom }}</span>
                             </div>
-                            @endforeach
                         </div>
-                    </div>
-
-                    @if($importErrors && count($importErrors) > 0)
-                    <div class="alert alert-danger small mt-3">
-                        <h6 class="alert-heading small">Erreurs de mapping</h6>
-                        <ul class="mb-0 small">
-                            @foreach($importErrors as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-                    @endif
-
-                    <!-- Étape 3 : Aperçu et confirmation -->
-                    @if($showImportedData)
-                    <div class="text-center mb-3">
-                        <i class="fas fa-check-circle display-6 mb-3" style="color: #10B981;"></i>
-                        <h6 class="fw-semibold" style="color: var(--primary-dark);">Confirmation d'import</h6>
-                        <p class="text-muted small">Vérifiez les données avant l'import final</p>
-                    </div>
-
-                    <div class="alert alert-success small">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <strong>{{ $importSuccessCount }}</strong> moniteur(s) prêt(s) à être importé(s)
-                        @if(count($importErrors) > 0)
-                        - <strong>{{ count($importErrors) }}</strong> erreur(s)
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Statut</small>
+                                <span style="font-size: 0.75rem;">{{ $selectedMoniteur->statut }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Fabricant / Modèle</small>
+                                <span style="font-size: 0.75rem;">{{ $selectedMoniteur->fabricant ?? '-' }} {{ $selectedMoniteur->modele ?? '' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">N° Série</small>
+                                <span class="font-monospace" style="font-size: 0.7rem;">{{ $selectedMoniteur->numero_serie ?? '-' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Type</small>
+                                <span style="font-size: 0.75rem;">{{ $selectedMoniteur->type ?? '-' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Lieu</small>
+                                <span style="font-size: 0.75rem;">{{ $selectedMoniteur->lieu ?? '-' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Entité</small>
+                                <span style="font-size: 0.75rem;">{{ $selectedMoniteur->entite ?? '-' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Utilisateur</small>
+                                <span style="font-size: 0.75rem;">{{ $selectedMoniteur->utilisateur->nom ?? $selectedMoniteur->utilisateur->name ?? 'Non attribué' }}</span>
+                            </div>
+                        </div>
+                        @if($selectedMoniteur->commentaires)
+                        <div class="col-12">
+                            <div class="bg-light rounded-2 p-2">
+                                <small class="text-muted d-block" style="font-size: 0.6rem;">Commentaires</small>
+                                <span style="font-size: 0.75rem;">{{ $selectedMoniteur->commentaires }}</span>
+                            </div>
+                        </div>
                         @endif
                     </div>
-
-                    @if(count($importErrors) > 0)
-                    <div class="alert alert-danger small">
-                        <h6 class="alert-heading small">Erreurs :</h6>
-                        <ul class="mb-0 small">
-                            @foreach($importErrors as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
-
-                    @if(count($importedData) > 0)
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered small">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Entité</th>
-                                    <th>Statut</th>
-                                    <th>Fabricant</th>
-                                    <th>N° Série</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach(array_slice($importedData, 0, 5) as $data)
-                                <tr>
-                                    <td>{{ $data['nom'] }}</td>
-                                    <td>{{ $data['entite'] ?? 'N/A' }}</td>
-                                    <td>
-                                        <span class="badge badge-sm" style="background: {{ $this->getBadgeColor($data['statut'] ?? 'En stock') }}; color: white;">
-                                            {{ $data['statut'] ?? 'En stock' }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $data['fabricant'] ?? 'N/A' }}</td>
-                                    <td class="font-mono">{{ $data['numero_serie'] ?? 'N/A' }}</td>
-                                </tr>
-                                @endforeach
-                                @if(count($importedData) > 5)
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted">
-                                        ... et {{ count($importedData) - 5 }} autre(s) moniteur(s)
-                                    </td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    @endif
                 </div>
-            @endif
-            <div class="modal-footer py-2">
-                    @if(!$showMappingModal && !$showImportedData)
-                    <!-- Boutons étape 1 -->
-                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeImportModal">
-                        <i class="fas fa-times me-1"></i>
-                        Annuler
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-modern-outline btn-modern" wire:click="closeDetailsModal">
+                        <i class="bi bi-x me-1"></i> Fermer
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" 
-                            wire:click="storeImportFile" 
-                            wire:loading.attr="disabled"
-                            {{ !$importFile ? 'disabled' : '' }}>
-                        <i class="fas fa-arrow-right me-1"></i>
-                        <span wire:loading.remove>Suivant</span>
-                        <span wire:loading>
-                            <i class="fas fa-spinner fa-spin me-1"></i>
-                            Chargement...
-                        </span>
+                    <button type="button" class="btn btn-modern-primary btn-modern" wire:click="edit({{ $selectedMoniteur->id }})">
+                        <i class="bi bi-pencil me-1"></i> Modifier
                     </button>
-                    @endif
-
-                    @if($showMappingModal)
-                    <!-- Boutons étape 2 -->
-                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="cancelImport">
-                        <i class="fas fa-arrow-left me-1"></i>
-                        Retour
-                    </button>
-                    <button type="button" wire:click="processMappedData" class="btn btn-primary btn-sm" 
-                            wire:loading.attr="disabled" {{ empty($fieldMapping['nom']) ? 'disabled' : '' }}>
-                        <i class="fas fa-gear me-1"></i>
-                        <span wire:loading.remove>Traiter les données</span>
-                        <span wire:loading>Traitement en cours...</span>
-                    </button>
-                    @endif
-
-                    @if($showImportedData)
-                    <!-- Boutons étape 3 -->
-                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="cancelImport">
-                        <i class="fas fa-times me-1"></i>
-                        Annuler
-                    </button>
-                    <button type="button" class="btn btn-success btn-sm" 
-                            wire:click="saveImportedData"
-                            wire:loading.attr="disabled"
-                            {{ count($importedData) === 0 ? 'disabled' : '' }}>
-                        <i class="fas fa-save me-1"></i>
-                        <span wire:loading.remove>Importer ({{ count($importedData) }})</span>
-                        <span wire:loading>
-                            <i class="fas fa-spinner fa-spin me-1"></i>
-                            Import...
-                        </span>
-                    </button>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
     @endif
 
-    <!-- Modal de gestion des fichiers -->
+    <!-- File Management Modal -->
     @if($showFileModal && $selectedMoniteurForFiles)
-    <div class="modal-backdrop fade show"></div>
     <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header py-2">
-                    <h5 class="modal-title small fw-semibold">
-                        <i class="fas fa-paperclip me-1" style="color: var(--primary);"></i>
-                        Fichiers attachés - {{ $selectedMoniteurForFiles->nom }}
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold" style="font-size: 0.95rem;">
+                        <i class="bi bi-paperclip me-2" style="color: var(--primary);"></i>
+                        Fichiers - {{ $selectedMoniteurForFiles->nom }}
                     </h5>
-                    <button type="button" class="btn-close btn-close-sm" wire:click="closeFileModal"></button>
+                    <button type="button" class="btn-close" wire:click="closeFileModal"></button>
                 </div>
                 <div class="modal-body p-3">
-                    <!-- Upload de fichiers -->
                     <div class="mb-3">
-                        <label class="form-label small fw-medium">Ajouter des fichiers</label>
-                        <input type="file" wire:model="uploadedFiles" multiple class="form-control form-control-sm">
-                        <div class="form-text small">Formats supportés: JPG, PNG, PDF, DOC, XLS, TXT (max 10MB)</div>
-                        @error('uploadedFiles.*') <span class="text-danger small">{{ $message }}</span> @enderror
+                        <label class="small fw-semibold text-muted mb-1 d-block">Ajouter des fichiers</label>
+                        <input type="file" wire:model="uploadedFiles" multiple class="form-control form-modern">
+                        <div class="form-text small">Formats: JPG, PNG, PDF, DOC, XLS (max 10MB)</div>
                     </div>
 
                     @if(count($uploadedFiles) > 0)
                     <div class="mb-3">
-                        <button type="button" wire:click="uploadFiles" class="btn btn-primary btn-sm">
-                            <i class="fas fa-upload me-1"></i>
-                            Uploader les fichiers ({{ count($uploadedFiles) }})
+                        <button type="button" wire:click="uploadFiles" class="btn btn-modern-primary btn-modern w-100">
+                            <i class="bi bi-upload me-1"></i> Uploader ({{ count($uploadedFiles) }})
                         </button>
                     </div>
                     @endif
 
-                    <!-- Liste des fichiers -->
-                    <h6 class="fw-medium mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">Fichiers attachés</h6>
+                    <h6 class="fw-semibold mb-2 small border-bottom pb-1" style="color: var(--primary-dark);">Fichiers attachés</h6>
                     @if(count($attachedFiles) > 0)
-                        <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th class="small">Nom</th>
-                                        <th class="small">Taille</th>
-                                        <th class="small">Date</th>
-                                        <th class="small">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($attachedFiles as $file)
-                                    <tr>
-                                        <td class="small">{{ $file['name'] }}</td>
-                                        <td class="small">{{ $file['size'] }}</td>
-                                        <td class="small">{{ $file['date'] }}</td>
-                                        <td>
-                                            <button wire:click="downloadFile('{{ $file['path'] }}')" 
-                                                    class="btn btn-sm btn-outline-primary" title="Télécharger">
-                                                <i class="fas fa-download"></i>
-                                            </button>
-                                            <button wire:click="deleteFile('{{ $file['path'] }}')" 
-                                                    class="btn btn-sm btn-outline-danger" title="Supprimer">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="list-group">
+                            @foreach($attachedFiles as $file)
+                            <div class="list-group-item d-flex justify-content-between align-items-center p-2 border-0 bg-light mb-1 rounded-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-file-earmark-text text-primary"></i>
+                                    <span class="small">{{ $file['name'] }}</span>
+                                    <small class="text-muted">{{ $file['size'] }}</small>
+                                </div>
+                                <div class="d-flex gap-1">
+                                    <button wire:click="downloadFile('{{ $file['path'] }}')" class="btn btn-sm p-1 text-primary" title="Télécharger">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                    <button wire:click="deleteFile('{{ $file['path'] }}')" class="btn btn-sm p-1 text-danger" title="Supprimer">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
                     @else
                         <p class="text-muted text-center py-3 small">Aucun fichier attaché</p>
                     @endif
                 </div>
-                <div class="modal-footer py-2">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" wire:click="closeFileModal">
-                        <i class="fas fa-times me-1"></i>
-                        Fermer
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-modern-outline btn-modern" wire:click="closeFileModal">
+                        <i class="bi bi-x me-1"></i> Fermer
                     </button>
                 </div>
             </div>
@@ -1597,30 +881,41 @@
     </div>
     @endif
 
-    <!-- Scripts JavaScript -->
-    <script>
-        // Fonction pour basculer l'affichage des filtres sur mobile
-        function toggleFilters() {
-            const container = document.getElementById('filters-container');
-            container.classList.toggle('d-none');
-        }
-
-        // Fermer les modales avec la touche Echap
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                @this.call('closeModal');
-                @this.call('closeDetailsModal');
-                @this.call('closeDeleteModal');
-                @this.call('closeImportModal');
-                @this.call('closeFileModal');
-                @this.call('cancelImport');
-            }
-        });
-        
-    </script>
-
-    <!-- Liens CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Import Modal -->
+    @if($showImportModal)
+    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold" style="font-size: 0.95rem;">
+                        <i class="bi bi-upload me-2" style="color: var(--primary);"></i> Importer des moniteurs
+                    </h5>
+                    <button type="button" class="btn-close" wire:click="closeImportModal"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="alert alert-info small rounded-2 mb-3" style="background: var(--primary-soft); border: none;">
+                        <i class="bi bi-info-circle me-2"></i> Formats supportés: CSV, XLSX. Taille max: 10MB
+                    </div>
+                    <div class="mb-3">
+                        <label class="small fw-semibold text-muted mb-1 d-block">Fichier à importer</label>
+                        <input type="file" wire:model="importFile" class="form-control form-modern" accept=".csv,.xlsx">
+                        @error('importFile') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                    <button type="button" wire:click="downloadImportTemplate" class="btn btn-modern-outline btn-modern w-100">
+                        <i class="bi bi-download me-1"></i> Télécharger le template
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-modern-outline btn-modern" wire:click="closeImportModal">
+                        <i class="bi bi-x me-1"></i> Annuler
+                    </button>
+                    <button class="btn btn-modern-primary btn-modern" wire:click="storeImportFile" wire:loading.attr="disabled" {{ !$importFile ? 'disabled' : '' }}>
+                        <span wire:loading.remove><i class="bi bi-upload me-1"></i> Importer</span>
+                        <span wire:loading><i class="bi bi-arrow-repeat spinner-border spinner-border-sm me-1"></i> Import...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
-    <!-- Dans votre layout principal ou header -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

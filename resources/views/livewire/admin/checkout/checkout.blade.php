@@ -1,796 +1,365 @@
-<div>
-    <div class="table-container border-0 shadow-sm fade-in-up">
-        <!-- En-tête avec boutons de contrôle -->
-        <div class="table-header p-3 rounded-top d-flex justify-content-between align-items-center"
-            style="background: linear-gradient(135deg, rgba(91, 196, 191, 0.05), transparent); border-bottom: 1px solid rgba(91, 196, 191, 0.15);">
-            <div class="table-title fw-bold" style="color: #4AA39E;">
-                <i class="bi bi-cart-check me-2" style="color: #5BC4BF;"></i>
-                Liste des Checkouts
-            </div>
-            <div class="d-flex gap-2">
-                <!-- Bouton Masquer les cartes -->
-                <button class="btn btn-sm" id="toggleCardsBtn" title="Masquer/Afficher les statistiques"
-                    style="background: white; border: 1px solid rgba(91, 196, 191, 0.2); color: #5BC4BF; border-radius: 10px; padding: 0.4rem 1rem; transition: all 0.3s ease;"
-                    onmouseover="this.style.background='#5BC4BF'; this.style.color='white';"
-                    onmouseout="this.style.background='white'; this.style.color='#5BC4BF';">
-                    <i class="fas fa-chart-simple me-1"></i>
-                    <span id="toggleCardsText">Masquer les cartes</span>
-                </button>
-                <!-- Bouton Filtres -->
-                <button class="btn btn-sm" id="toggleFiltersBtn" title="Masquer/Afficher les filtres"
-                    style="background: white; border: 1px solid rgba(91, 196, 191, 0.2); color: #5BC4BF; border-radius: 10px; padding: 0.4rem 1rem; transition: all 0.3s ease;"
-                    onmouseover="this.style.background='#5BC4BF'; this.style.color='white';"
-                    onmouseout="this.style.background='white'; this.style.color='#5BC4BF';">
-                    <i class="fas fa-sliders me-1"></i>
-                    <span id="toggleFiltersText">Masquer les filtres</span>
-                </button>
-                <!-- Bouton Nouveau -->
-                <button class="btn btn-sm" wire:click="nouveauCheckout" title="Nouveau Checkout"
-                    style="background: #5BC4BF; border: none; color: white; border-radius: 10px; padding: 0.4rem 1rem; transition: all 0.3s ease;"
-                    onmouseover="this.style.background='#4AA39E'; this.style.transform='translateY(-2px)';"
-                    onmouseout="this.style.background='#5BC4BF'; this.style.transform='translateY(0)';">
-                    <i class="fas fa-plus me-1"></i>
-                    <span>Nouveau</span>
-                </button>
-            </div>
-        </div>
+<div class="dashboard-container p-3 p-md-4">
+    <div class="row g-3 g-md-4">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-2 col-md-3">
+            <div class="sidebar-card rounded-4 shadow-sm bg-white p-3 sticky-top" style="top: 20px;">
+                <!-- Logo -->
+                <div class="text-center mb-4 pb-2 border-bottom">
+                    <div class="logo-wrapper mb-2">
+                        <div class="logo-icon mx-auto bg-gradient-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="bi bi-gem fs-3 text-white"></i>
+                        </div>
+                    </div>
+                    <h6 class="fw-bold mb-0" style="color: #1e293b;">ONG Pivot</h6>
+                    <small class="text-muted">GPI</small>
+                </div>
 
-        <!-- Statistiques des checkouts (masquable) -->
-        <div id="statsCards" class="row p-3">
-            <div class="col-xl-3 col-md-6 mb-3">
-                <div class="card stats-widget border-0 shadow-sm"
-                    style="border-left: 4px solid #5BC4BF !important; border-radius: 16px; transition: all 0.3s ease;">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number"
-                                    style="background: linear-gradient(135deg, #5BC4BF, #4AA39E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                                    {{ $this->stats['total'] }}</h3>
-                                <p class="stats-label mb-0" style="color: #4AA39E;">Total checkouts</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle d-flex align-items-center justify-content-center"
-                                    style="background: rgba(91, 196, 191, 0.15); color: #5BC4BF;">
-                                    <i class="fas fa-shopping-cart fa-lg"></i>
-                                </div>
-                            </div>
+                <!-- Navigation Menu -->
+                <div class="nav-menu">
+                    <div class="nav-item active mb-1">
+                        <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none" style="background: rgba(79, 187, 178, 0.1); color: #4fbbb2;">
+                            <i class="bi bi-speedometer2"></i>
+                            <span class="small fw-medium">Tableau de bord</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                            <i class="bi bi-pc-display"></i>
+                            <span class="small">Parc Informatique</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                            <i class="bi bi-people"></i>
+                            <span class="small">Utilisateurs</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                            <i class="bi bi-ticket"></i>
+                            <span class="small">Ticket & Support</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                            <i class="bi bi-arrow-left-right"></i>
+                            <span class="small">Check-in/Check-out</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <span class="small">Incident</span>
+                        </a>
+                    </div>
+                    <div class="nav-item mb-1">
+                        <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                            <i class="bi bi-file-text"></i>
+                            <span class="small">Documentation</span>
+                        </a>
+                    </div>
+                    
+                    <div class="mt-3 pt-2 border-top">
+                        <div class="nav-item mb-1">
+                            <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                                <i class="bi bi-gear"></i>
+                                <span class="small">Paramètres</span>
+                            </a>
+                        </div>
+                        <div class="nav-item mb-1">
+                            <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                                <i class="bi bi-sim"></i>
+                                <span class="small">SIM</span>
+                            </a>
+                        </div>
+                        <div class="nav-item mb-1">
+                            <a href="#" class="nav-link d-flex align-items-center gap-2 rounded-3 p-2 text-decoration-none text-secondary">
+                                <i class="bi bi-camera"></i>
+                                <span class="small">Photo</span>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-xl-3 col-md-6 mb-3">
-                <div class="card stats-widget border-0 shadow-sm"
-                    style="border-left: 4px solid #F59E0B !important; border-radius: 16px;">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number" style="color: #F59E0B;">{{ $this->stats['en_cours'] }}</h3>
-                                <p class="stats-label mb-0" style="color: #F59E0B;">En cours</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle d-flex align-items-center justify-content-center"
-                                    style="background: rgba(245, 158, 11, 0.15); color: #F59E0B;">
-                                    <i class="fas fa-clock fa-lg"></i>
-                                </div>
-                            </div>
+                <!-- User Profile -->
+                <div class="user-profile mt-3 pt-3 border-top">
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="https://ui-avatars.com/api/?name=Hasina+Ralison&background=4fbbb2&color=fff&rounded=true&size=32" class="rounded-circle" width="36" height="36">
+                        <div class="flex-grow-1">
+                            <div class="small fw-semibold">Hasina Ralison</div>
+                            <div class="small text-muted">Admin</div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-3">
-                <div class="card stats-widget border-0 shadow-sm"
-                    style="border-left: 4px solid #10B981 !important; border-radius: 16px;">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number" style="color: #10B981;">{{ $this->stats['termine'] }}</h3>
-                                <p class="stats-label mb-0" style="color: #10B981;">Terminés</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle d-flex align-items-center justify-content-center"
-                                    style="background: rgba(16, 185, 129, 0.15); color: #10B981;">
-                                    <i class="fas fa-check-circle fa-lg"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-3">
-                <div class="card stats-widget border-0 shadow-sm"
-                    style="border-left: 4px solid #EF4444 !important; border-radius: 16px;">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <h3 class="stats-number" style="color: #EF4444;">{{ $this->stats['en_retard'] }}</h3>
-                                <p class="stats-label mb-0" style="color: #EF4444;">En retard</p>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <div class="avatar-sm rounded-circle d-flex align-items-center justify-content-center"
-                                    style="background: rgba(239, 68, 68, 0.15); color: #EF4444;">
-                                    <i class="fas fa-exclamation-triangle fa-lg"></i>
-                                </div>
-                            </div>
-                        </div>
+                        <i class="bi bi-chevron-down text-muted small"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Barre de recherche et filtres (masquable) -->
-        <div id="filtersSection" class="card border-0 shadow-sm mb-4 mx-3"
-            style="border-radius: 16px; border: 1px solid rgba(91, 196, 191, 0.15) !important;">
-            <div class="card-body py-2">
-                <div class="row g-2 align-items-end">
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold" style="color: #4AA39E;">Recherche</label>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text"
-                                style="background: transparent; border-color: rgba(91, 196, 191, 0.2); color: #5BC4BF;">
-                                <i class="fas fa-search"></i>
-                            </span>
-                            <input type="text" wire:model.live="search" class="form-control form-control-sm"
-                                placeholder="ID, Utilisateur..."
-                                style="border-color: rgba(91, 196, 191, 0.2); border-left: none; border-radius: 0 8px 8px 0;">
+        <!-- Main Content -->
+        <div class="col-lg-10 col-md-9">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <div>
+                    <h5 class="fw-bold mb-1" style="color: #1e293b;">Tableau de bord IT</h5>
+                    <p class="text-muted small mb-0">Infrastructure informatique</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-light rounded-3">
+                        <i class="bi bi-bell"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light rounded-3">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card bg-white rounded-4 p-3 shadow-sm border-0 text-center">
+                        <div class="stat-icon mx-auto mb-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(79, 187, 178, 0.1);">
+                            <i class="bi bi-hdd-stack fs-4" style="color: #4fbbb2;"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" style="color: #1e293b;">1</h3>
+                        <p class="small text-muted mb-0">Total équipements</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card bg-white rounded-4 p-3 shadow-sm border-0 text-center">
+                        <div class="stat-icon mx-auto mb-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(79, 187, 178, 0.1);">
+                            <i class="bi bi-crown fs-4" style="color: #f59e0b;"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" style="color: #1e293b;">Ordinateurs</h3>
+                        <p class="small text-muted mb-0">Catégorie majoritaire</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card bg-white rounded-4 p-3 shadow-sm border-0 text-center">
+                        <div class="stat-icon mx-auto mb-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(79, 187, 178, 0.1);">
+                            <i class="bi bi-bar-chart fs-4" style="color: #10b981;"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" style="color: #1e293b;">1 unités</h3>
+                        <p class="small text-muted mb-0">Moyenne par catégorie</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card bg-white rounded-4 p-3 shadow-sm border-0 text-center">
+                        <div class="stat-icon mx-auto mb-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(79, 187, 178, 0.1);">
+                            <i class="bi bi-pie-chart fs-4" style="color: #8b5cf6;"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" style="color: #1e293b;">100.0%</h3>
+                        <p class="small text-muted mb-0">Part majoritaire</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="chart-card bg-white rounded-4 p-4 shadow-sm border-0 h-100">
+                        <h6 class="fw-semibold mb-3" style="color: #1e293b;">Répartition des équipements</h6>
+                        <div class="chart-placeholder d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 16px;">
+                            <div class="text-center">
+                                <i class="bi bi-pie-chart fs-1 text-muted opacity-25"></i>
+                                <p class="small text-muted mt-2">100% Ordinateurs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="chart-card bg-white rounded-4 p-4 shadow-sm border-0 h-100">
+                        <h6 class="fw-semibold mb-3" style="color: #1e293b;">Distribution par type</h6>
+                        <div class="distribution-list">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="small text-muted">💻 Ordinateurs</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                                    <div class="progress-bar" style="width: 100%; background: #4fbbb2;"></div>
+                                </div>
+                                <span class="small fw-semibold" style="color: #1e293b;">100%</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="small text-muted">🖨️ Imprimantes</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                                    <div class="progress-bar" style="width: 0%; background: #cbd5e1;"></div>
+                                </div>
+                                <span class="small text-muted">0%</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="small text-muted">📱 Téléphones</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 6px;">
+                                    <div class="progress-bar" style="width: 0%; background: #cbd5e1;"></div>
+                                </div>
+                                <span class="small text-muted">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equipment List -->
+            <div class="bg-white rounded-4 shadow-sm border-0 overflow-hidden">
+                <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <h6 class="fw-semibold mb-0" style="color: #1e293b;">Récapitulatif des équipements</h6>
+                    <div class="search-box position-relative">
+                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted small"></i>
+                        <input type="text" class="form-control form-control-sm ps-5 rounded-3 border-0 bg-light" placeholder="Rechercher une catégorie..." style="width: 220px;">
+                    </div>
+                </div>
+                
+                <div class="equipment-list p-3">
+                    <!-- Ordinateurs -->
+                    <div class="equipment-item d-flex justify-content-between align-items-center p-3 rounded-3 mb-2 transition-all" style="border: 1px solid #e2e8f0;">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="equipment-icon rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(79, 187, 178, 0.1);">
+                                <i class="bi bi-laptop fs-4" style="color: #4fbbb2;"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-semibold mb-0" style="color: #1e293b;">Ordinateurs</h6>
+                                <p class="small text-muted mb-0">1 équipements · 100.0% du total</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-1">Actif</span>
+                            <a href="#" class="text-decoration-none small" style="color: #4fbbb2;">Voir les détails →</a>
                         </div>
                     </div>
 
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold" style="color: #4AA39E;">Statut</label>
-                        <select wire:model.live="statutFilter" class="form-select form-select-sm"
-                            style="border-color: rgba(91, 196, 191, 0.2); border-radius: 8px;">
-                            <option value="">Tous les statuts</option>
-                            <option value="en_cours">En cours</option>
-                            <option value="termine">Terminé</option>
-                            <option value="annule">Annulé</option>
-                            <option value="en_retard">En retard</option>
-                        </select>
+                    <!-- Autres catégories (vides) -->
+                    @foreach(['Imprimantes' => 'bi-printer', 'Téléphones' => 'bi-phone', 'Logiciels' => 'bi-window-stack', 'Périphériques' => 'bi-keyboard', 'Moniteurs' => 'bi-display', 'Réseau' => 'bi-hdd-network'] as $name => $icon)
+                    <div class="equipment-item d-flex justify-content-between align-items-center p-3 rounded-3 mb-2 transition-all opacity-50" style="border: 1px solid #e2e8f0; background: #fafbfc;">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="equipment-icon rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(100, 116, 139, 0.05);">
+                                <i class="bi {{ $icon }} fs-4 text-muted"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-semibold mb-0" style="color: #475569;">{{ $name }}</h6>
+                                <p class="small text-muted mb-0">0 équipements · 0.0% du total</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-1">Vide</span>
+                            <a href="#" class="text-decoration-none small text-muted">Voir les détails →</a>
+                        </div>
                     </div>
+                    @endforeach
 
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold" style="color: #4AA39E;">Type matériel</label>
-                        <select wire:model.live="typeMateriel" class="form-select form-select-sm"
-                            style="border-color: rgba(91, 196, 191, 0.2); border-radius: 8px;">
-                            <option value="">Tous les types</option>
-                            @foreach($this->typesMateriel as $type)
-                            <option value="{{ $type }}">{{ $type }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold" style="color: #4AA39E;">Tri par</label>
-                        <select wire:model.live="sortField" class="form-select form-select-sm"
-                            style="border-color: rgba(91, 196, 191, 0.2); border-radius: 8px;">
-                            <option value="created_at">Date création</option>
-                            <option value="id">Référence</option>
-                            <option value="statut">Statut</option>
-                            <option value="date_debut">Date début</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-1">
-                        <label class="form-label small fw-bold" style="color: #4AA39E;">Ordre</label>
-                        <select wire:model.live="sortDirection" class="form-select form-select-sm"
-                            style="border-color: rgba(91, 196, 191, 0.2); border-radius: 8px;">
-                            <option value="desc">Décroissant</option>
-                            <option value="asc">Croissant</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-1">
-                        <button type="button" wire:click="resetFilters" class="btn btn-sm w-100 mt-3"
-                            title="Réinitialiser les filtres"
-                            style="background: white; border: 1px solid rgba(91, 196, 191, 0.2); color: #5BC4BF; border-radius: 8px; transition: all 0.3s ease;"
-                            onmouseover="this.style.background='#5BC4BF'; this.style.color='white';"
-                            onmouseout="this.style.background='white'; this.style.color='#5BC4BF';">
-                            <i class="fas fa-redo"></i>
+                    <!-- Footer stats -->
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                        <div class="small text-muted">7 catégories au total</div>
+                        <button class="btn btn-sm btn-outline-secondary rounded-3">
+                            <i class="bi bi-download me-1"></i> Exporter les données
                         </button>
                     </div>
-
-                    <div class="col-md-1">
-                        <button wire:click="deleteSelected" class="btn btn-sm w-100 mt-3"
-                            title="Supprimer les checkouts sélectionnés" {{ empty($selectedTickets) ? 'disabled' : '' }}
-                            style="background: #EF4444; border: none; color: white; border-radius: 8px; opacity: {{ empty($selectedTickets) ? '0.5' : '1' }};">
-                            <i class="fas fa-trash"></i>
-                            ({{ count($selectedTickets) }})
-                        </button>
-                    </div>
-
-                    <div class="col-md-1">
-                        <div class="dropdown w-100 mt-3">
-                            <button class="btn btn-sm w-100 dropdown-toggle" type="button" id="exportDropdown"
-                                data-bs-toggle="dropdown" aria-expanded="false"
-                                style="background: #10B981; border: none; color: white; border-radius: 8px;">
-                                <i class="fas fa-download me-1"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="exportDropdown"
-                                style="border-radius: 12px; font-size: 0.8rem;">
-                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportExcel">
-                                        <i class="fas fa-file-excel me-2 text-success"></i> Excel (.xlsx)
-                                    </a></li>
-                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportCSV">
-                                        <i class="fas fa-file-csv me-2 text-info"></i> CSV (.csv)
-                                    </a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item py-2" href="#" wire:click.prevent="exportPDF">
-                                        <i class="fas fa-file-pdf me-2 text-danger"></i> PDF (.pdf)
-                                    </a></li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tableau des checkouts -->
-        <div class=" p-0 border-0 w-100  mx-3"
-            style="max-height: 100vh; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
-            <table class="table table-hover border-0 shadow-sm text-center small" wire:poll.5s
-                style="border-radius: 16px; overflow: hidden;">
-                <thead style="background: rgba(59, 130, 246, 0.05);">
-                    <tr>
-                        <th class="text-nowrap text-muted" style="width: 30px; color: #1d4ed8;">
-                            <input type="checkbox" wire:model="selectAll" class="checkbox-modern"
-                                style="accent-color: #3b82f6;">
-                        </th>
-                        <th class="text-nowrap text-muted" wire:click="sortBy('id')"
-                            style="width: 80px; color: #1d4ed8;">
-                            Référence
-                            <i class="bi bi-arrow-down-up ms-1"></i>
-                        </th>
-                        <th class="text-nowrap text-muted" wire:click="sortBy('utilisateur_id')"
-                            style="width: 120px; color: #1d4ed8;">
-                            Utilisateur
-                            <i class="bi bi-arrow-down-up ms-1"></i>
-                        </th>
-                        <th class="text-nowrap text-muted" wire:click="sortBy('materiel_type')"
-                            style="width: 120px; color: #1d4ed8;">
-                            Type matériel
-                            <i class="bi bi-arrow-down-up ms-1"></i>
-                        </th>
-                        <th class="text-nowrap text-muted" style="width: 150px; color: #1d4ed8;">
-                            Détails matériel
-                        </th>
-                        <th class="text-nowrap text-muted" wire:click="sortBy('date_debut')"
-                            style="width: 100px; color: #1d4ed8;">
-                            Date début
-                            <i class="bi bi-arrow-down-up ms-1"></i>
-                        </th>
-                        <th class="text-nowrap text-muted" wire:click="sortBy('date_fin')"
-                            style="width: 100px; color: #1d4ed8;">
-                            Date fin
-                            <i class="bi bi-arrow-down-up ms-1"></i>
-                        </th>
-                        <th class="text-nowrap text-muted" wire:click="sortBy('statut')"
-                            style="width: 120px; color: #1d4ed8;">
-                            Statut
-                            <i class="bi bi-arrow-down-up ms-1"></i>
-                        </th>
-
-                        <th class="text-nowrap text-muted" wire:click="sortBy('created_at')"
-                            style="width: 120px; color: #1d4ed8;">
-                            Date création
-                            <i class="bi bi-arrow-down-up ms-1"></i>
-                        </th>
-                        <th class="text-nowrap text-muted" style="width: 80px; color: #1d4ed8;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($checkouts as $checkout)
-                    <tr class="hover-row" style="cursor:pointer; transition: all 0.2s ease;">
-                        <td class="py-2 text-nowrap text-muted">
-                            <input type="checkbox" wire:model="selectedTickets" value="{{ $checkout->id }}"
-                                class="checkbox-modern" style="accent-color: #3b82f6;">
-                        </td>
-                        <td class="py-2 text-nowrap text-muted fw-bold" wire:click="Visualiser({{ $checkout->id }})"
-                            style="color: #3b82f6;">
-                            #{{ $checkout->id }}
-                        </td>
-                        <td class="py-2  text-nowrap text-muted" wire:click="Visualiser({{ $checkout->id }})">
-                            <div class="d-flex align-items-center justify-content-center">
-                                @if (!empty($checkout->utilisateur->photo ))
-                                <img width="30" height="30" class="rounded-pill my-0 py-0 m-1"
-                                    src="{{ asset('storage/' . $checkout->utilisateur->photo ) }}" alt="">
-                                <span class="text-muted small text-capitalize">{{ $checkout->utilisateur->nom ?? 'N/A'
-                                    }}</span>
-
-                                @else
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($checkout->utilisateur->nom ?? 'Utilisateur') }}&size=24&background=3b82f6&color=fff"
-                                    class="rounded-circle me-2" width="20" height="20">
-                                <span class="text-muted small">{{ $checkout->utilisateur->nom ?? 'N/A' }}</span>
-                                @endif
-                            </div>
-                        </td>
-                        <td class="py-2 text-nowrap text-muted" wire:click="Visualiser({{ $checkout->id }})">
-                            <span class="badge small"
-                                style="background: rgba(59, 130, 246, 0.15); color: #1d4ed8; border: 1px solid rgba(59, 130, 246, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
-                                {{ $checkout->materiel_type }}
-                            </span>
-                        </td>
-                        <td class="py-2 text-nowrap text-muted" wire:click="Visualiser({{ $checkout->id }})">
-                            <small class="text-muted">
-                                @if ($checkout->materiel_type == 'ordinateur' )
-                                {{ $checkout->ordinateur->nom ?? null }} {{ $checkout->ordinateur->os_version ?? null }}
-                                @endif
-                                @if ($checkout->materiel_type == 'telephone')
-                                {{ $checkout->telephone->nom ?? null }} {{ $checkout->telephone->marque }}
-                                @endif
-                                @if ($checkout->materiel_type == 'peripherique')
-                                @foreach ($Peripheriques as $peripherique)
-                                @if ($checkout->materiel_details == $peripherique->type )
-                                {{ $peripherique->nom ?? null}} {{ $peripherique->fabricant ?? null }}
-
-
-                                @endif
-                                @endforeach
-                                @endif
-                                @if (!empty($checkout->materiel_details ))
-                                {{ $checkout->materiel_details }}
-                                @endif
-                            </small>
-                        </td>
-
-
-                        <td class="py-2 text-muted small" wire:click="Visualiser({{ $checkout->id }})">
-                            {{ $checkout->date_debut?->format('d M Y') ?? 'N/A' }}
-                        </td>
-                        <td class="py-2 text-muted small" wire:click="Visualiser({{ $checkout->id }})">
-                            {{ $checkout->date_fin?->format('d M Y') ?? 'N/A' }}
-                        </td>
-                        <td class="py-2 text-nowrap text-muted" wire:click="Visualiser({{ $checkout->id }})">
-                            @if($checkout->statut == 'en_cours')
-                            <span class="badge small"
-                                style="background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
-                                <i class="bi bi-clock me-1"></i>En cours
-                            </span>
-                            @elseif($checkout->statut == 'termine')
-                            <span class="badge small"
-                                style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
-                                <i class="bi bi-check-circle me-1"></i>Terminé
-                            </span>
-                            @elseif($checkout->statut == 'annule')
-                            <span class="badge small"
-                                style="background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
-                                <i class="bi bi-x-circle me-1"></i>Annulé
-                            </span>
-                            @elseif($checkout->statut == 'en_retard')
-                            <span class="badge small"
-                                style="background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
-                                <i class="bi bi-exclamation-triangle me-1"></i>En retard
-                            </span>
-                            @else
-                            <span class="badge small"
-                                style="background: rgba(108, 117, 125, 0.15); color: #6c757d; border: 1px solid rgba(108, 117, 125, 0.3); padding: 0.35rem 0.65rem; border-radius: 20px;">
-                                {{ $checkout->statut }}
-                            </span>
-                            @endif
-                        </td>
-                        <td class="py-2 text-nowrap text-muted small" wire:click="Visualiser({{ $checkout->id }})">
-                            {{ $checkout->created_at->format('d M Y') }}
-                            <br>
-                            <small class="text-muted">{{ $checkout->created_at->format('H:i') }}</small>
-                        </td>
-                        <td class="py-2 text-nowrap text-muted">
-                            <div class="action-buttons d-flex justify-content-center gap-1">
-
-
-                                <button wire:click="confirmDelete({{ $checkout->id }})"
-                                    class="btn-action btn-delete btn-sm " title="Refuser le checkout"
-                                    style="width: 24px; height: 24px; border-radius: 6px; border: none; background: transparent; color: #EF4444; transition: all 0.2s ease;"
-                                    onmouseover="this.style.background='rgba(239, 68, 68, 0.1)'; this.style.transform='scale(1.1)';"
-                                    onmouseout="this.style.background='transparent'; this.style.transform='scale(1)';">
-
-                                    Refuser
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="11" class="py-4 text-center" style="color: #6c757d;">
-                            <i class="bi bi-cart me-2" style="color: #5BC4BF;"></i>Aucun checkout trouvé
-                        </td>
-                    </tr>
-                    @endforelse
-                    @if($checkouts->count() > 0)
-                    <tr>
-                        <td colspan="11" class="py-2 small"
-                            style="background: rgba(91, 196, 191, 0.03); color: #4AA39E;">
-                            Affichage de {{ $checkouts->count() }} checkout(s) sur cette page
-                        </td>
-                    </tr>
-                    @endif
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Pagination -->
-        @if($checkouts->hasPages())
-        <div class="table-footer p-3 rounded-bottom mx-3"
-            style="background: rgba(91, 196, 191, 0.03); border-top: 1px solid rgba(91, 196, 191, 0.15);">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="small" style="color: #4AA39E;">
-                    @if($checkouts->total() > 0)
-                    Affichage de {{ $checkouts->firstItem() }} à {{ $checkouts->lastItem() }} sur {{ $checkouts->total()
-                    }} checkouts
-                    @else
-                    Aucun checkout
-                    @endif
-                </div>
-                <div class="pagination-container">
-                    {{ $checkouts->links() }}
-                </div>
-            </div>
-        </div>
-        @endif
-    </div>
-
-    <!-- Modal Nouveau Checkout -->
-    @if($showModal)
-    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
-    <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;" wire:click.self="fermerModal">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 shadow" style="border-radius: 20px; overflow: hidden;">
-                <!-- Header -->
-                <div class="modal-header border-0 py-3 px-4"
-                    style="background: linear-gradient(135deg, #5BC4BF, #4AA39E);">
-                    <h5 class="modal-title text-white fw-bold">
-                        <i class="fas fa-plus-circle me-2"></i>Nouveau Checkout
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" wire:click="fermerModal"></button>
-                </div>
-
-                <!-- Body -->
-                <div class="modal-body p-4">
-                    <form wire:submit.prevent="saveCheckout">
-                        <div class="row g-3">
-                            <!-- Utilisateur -->
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold" style="color: #4AA39E;">
-                                    <i class="fas fa-user me-1"></i>Utilisateur <span class="text-danger">*</span>
-                                </label>
-                                <select wire:model.defer="newUtilisateurId" class="form-select"
-                                    style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
-                                    <option value="">-- Sélectionner un utilisateur --</option>
-                                    @foreach($utilisateursList as $user)
-                                    <option value="{{ $user->id }}">{{ $user->nom }} {{ $user->email ?
-                                        '('.$user->email.')' : '' }}</option>
-                                    @endforeach
-                                </select>
-                                @error('newUtilisateurId')
-                                <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <!-- Type matériel -->
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold" style="color: #4AA39E;">
-                                    <i class="fas fa-laptop me-1"></i>Type de matériel <span
-                                        class="text-danger">*</span>
-                                </label>
-                                <select wire:model.defer="newMaterielType" class="form-select"
-                                    style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
-                                    <option value="">-- Sélectionner un type --</option>
-                                    <option value="ordinateur">Ordinateur</option>
-                                    <option value="telephone">Téléphone / Tablette</option>
-                                    <option value="peripherique">Périphérique</option>
-                                    <option value="imprimante">Imprimante</option>
-                                    <option value="moniteur">Moniteur</option>
-                                </select>
-                                @error('newMaterielType')
-                                <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <!-- Détails matériel -->
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold" style="color: #4AA39E;">
-                                    <i class="fas fa-info-circle me-1"></i>Détails du matériel
-                                </label>
-                                <input type="text" wire:model.defer="newMaterielDetails" class="form-control"
-                                    placeholder="Ex: Dell Latitude 5520, Samsung Galaxy..."
-                                    style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
-                                @error('newMaterielDetails')
-                                <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <!-- Date de rendu -->
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold" style="color: #4AA39E;">
-                                    <i class="fas fa-calendar-alt me-1"></i>Date de retour prévue
-                                </label>
-                                <input type="date" wire:model.defer="newDateRendu" class="form-control"
-                                    style="border-color: rgba(91, 196, 191, 0.3); border-radius: 10px; padding: 0.6rem 0.75rem;">
-                                @error('newDateRendu')
-                                <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Footer Buttons -->
-                        <div class="d-flex justify-content-end gap-2 mt-4 pt-3"
-                            style="border-top: 1px solid rgba(91, 196, 191, 0.15);">
-                            <button type="button" wire:click="fermerModal" class="btn px-4"
-                                style="background: white; border: 1px solid rgba(91, 196, 191, 0.3); color: #4AA39E; border-radius: 10px; padding: 0.5rem 1.5rem; transition: all 0.3s ease;"
-                                onmouseover="this.style.background='#f8f9fa';"
-                                onmouseout="this.style.background='white';">
-                                <i class="fas fa-times me-1"></i>Annuler
-                            </button>
-                            <button type="submit" class="btn px-4"
-                                style="background: linear-gradient(135deg, #5BC4BF, #4AA39E); border: none; color: white; border-radius: 10px; padding: 0.5rem 1.5rem; transition: all 0.3s ease;"
-                                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(91, 196, 191, 0.4)';"
-                                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                <i class="fas fa-save me-1"></i>Créer le checkout
-                                <span wire:loading wire:target="saveCheckout"
-                                    class="spinner-border spinner-border-sm ms-1"></span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+            <!-- Welcome Banner -->
+            <div class="alert bg-white rounded-4 shadow-sm border-0 mt-4 p-3 d-flex align-items-center gap-2">
+                <i class="bi bi-emoji-smile fs-5" style="color: #4fbbb2;"></i>
+                <span class="small text-muted">Bienvenue · Le tableau de bord a été chargé avec succès.</span>
             </div>
         </div>
     </div>
-    @endif
 </div>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
     :root {
-        --primary: #5BC4BF;
-        --primary-dark: #4AA39E;
-        --primary-light: #7FD9D4;
-        --primary-soft: rgba(91, 196, 191, 0.1);
-        --primary-glow: rgba(91, 196, 191, 0.2);
+        --primary: #4fbbb2;
+        --primary-dark: #3a8c85;
+        --primary-light: #7fd9d4;
     }
 
-    .small {
-        font-size: 0.75rem;
+    .dashboard-container {
+        background: #f8fafc;
+        min-height: 100vh;
     }
 
-    .table th,
-    .table td {
-        font-size: 0.75rem;
-        padding: 0.5rem;
-    }
-
-    .compact-mode .table td,
-    .compact-mode .table th {
-        padding: 0.4rem 0.5rem;
-    }
-
-    .hover-row:hover {
-        background: rgba(91, 196, 191, 0.03) !important;
-        transition: all 0.2s ease;
-        transform: scale(1.01);
-        box-shadow: 0 4px 12px rgba(91, 196, 191, 0.1);
-    }
-
-    .badge {
-        font-size: 0.7rem;
-        font-weight: 500;
-    }
-
-    .btn-xs {
-        padding: 0.15rem 0.4rem;
-        font-size: 0.7rem;
-        border-radius: 0.2rem;
-    }
-
-    .action-buttons .btn-action {
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        border-radius: 0.2rem;
-        background: transparent;
+    .sidebar-card {
+        position: sticky;
+        top: 20px;
         transition: all 0.2s ease;
     }
 
-    .action-buttons .btn-action:hover {
-        background-color: rgba(91, 196, 191, 0.1);
-        transform: scale(1.1);
-    }
-
-    .sortable {
-        cursor: pointer;
-        transition: color 0.2s ease;
-    }
-
-    .sortable:hover {
-        color: #5BC4BF !important;
-    }
-
-    .table-header {
-        border-bottom: 1px solid rgba(91, 196, 191, 0.15);
-    }
-
-    .table-footer {
-        border-top: 1px solid rgba(91, 196, 191, 0.15);
-    }
-
-    .stats-widget {
-        transition: transform 0.2s ease;
-        border-radius: 16px !important;
-    }
-
-    .stats-widget:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(91, 196, 191, 0.15) !important;
-    }
-
-    .stats-number {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 0.2rem;
-    }
-
-    .stats-label {
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
-
-    .avatar-sm {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px !important;
-    }
-
-    .form-control-sm,
-    .form-select-sm {
-        font-size: 0.75rem;
-        border-color: rgba(59, 130, 246, 0.2) !important;
-        border-radius: 8px !important;
-    }
-
-    .form-control-sm:focus,
-    .form-select-sm:focus {
-        border-color: #3b82f6 !important;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
-        outline: none !important;
-    }
-
-    .checkbox-modern {
-        width: 16px;
-        height: 16px;
-        accent-color: #3b82f6;
-    }
-
-    /* Animations pour le masquage/affichage */
-    #statsCards,
-    #filtersSection {
-        transition: all 0.3s ease-in-out;
-        overflow: hidden;
-    }
-
-    #statsCards.hidden,
-    #filtersSection.hidden {
-        display: none !important;
-    }
-
-    .btn-outline-primary,
-    .btn-outline-secondary {
+    .nav-link {
         transition: all 0.2s ease;
     }
 
-    .btn-outline-primary:hover,
-    .btn-outline-secondary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(59, 130, 246, 0.15);
+    .nav-link:hover:not(.active) {
+        background: #f8fafc;
+        color: #4fbbb2 !important;
     }
 
-    .btn-outline-primary i,
-    .btn-outline-secondary i {
-        transition: transform 0.2s ease;
+    .stat-card {
+        transition: all 0.2s ease;
     }
 
-    .btn-outline-primary:hover i,
-    .btn-outline-secondary:hover i {
-        transform: rotate(5deg);
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
     }
 
-    /* Personnalisation de la pagination */
-    .pagination .page-link {
-        color: #3b82f6;
-        border-color: rgba(59, 130, 246, 0.2);
-        border-radius: 8px;
-        margin: 0 2px;
+    .equipment-item {
+        transition: all 0.2s ease;
     }
 
-    .pagination .page-link:hover {
-        background: #3b82f6;
-        color: white;
-        border-color: #3b82f6;
+    .equipment-item:hover {
+        transform: translateX(4px);
+        border-color: #4fbbb2 !important;
+        box-shadow: 0 4px 12px rgba(79, 187, 178, 0.08);
     }
 
-    .pagination .active .page-link {
-        background: #3b82f6;
-        border-color: #3b82f6;
-        color: white;
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #4fbbb2, #3a8c85);
     }
 
-    /* Animation fade-in */
-    .fade-in-up {
-        animation: fadeInUp 0.6s ease forwards;
+    .transition-all {
+        transition: all 0.2s ease;
     }
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+    .progress-bar {
+        transition: width 0.3s ease;
+    }
+
+    /* Scrollbar moderne */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .sidebar-card {
+            position: relative;
+            margin-bottom: 20px;
         }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        
+        .dashboard-container {
+            padding: 12px;
+        }
+        
+        .equipment-item {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 12px;
+        }
+        
+        .equipment-item .d-flex:last-child {
+            width: 100%;
+            justify-content: space-between;
         }
     }
 </style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    // Gestionnaire pour masquer/afficher les cartes statistiques
-    const toggleCardsBtn = document.getElementById('toggleCardsBtn');
-    const statsCards = document.getElementById('statsCards');
-    const toggleCardsText = document.getElementById('toggleCardsText');
-    
-    if (toggleCardsBtn && statsCards) {
-        // Vérifier l'état sauvegardé dans localStorage
-        const cardsHidden = localStorage.getItem('statsCardsHidden') === 'true';
-        if (cardsHidden) {
-            statsCards.classList.add('hidden');
-            toggleCardsText.textContent = 'Afficher les cartes';
-            toggleCardsBtn.innerHTML = '<i class="fas fa-chart-simple me-1"></i><span id="toggleCardsText">Afficher les cartes</span>';
-        }
-        
-        toggleCardsBtn.addEventListener('click', function() {
-            statsCards.classList.toggle('hidden');
-            const isHidden = statsCards.classList.contains('hidden');
-            localStorage.setItem('statsCardsHidden', isHidden);
-            
-            if (isHidden) {
-                toggleCardsText.textContent = 'Afficher les cartes';
-            } else {
-                toggleCardsText.textContent = 'Masquer les cartes';
-            }
-        });
-    }
-    
-    // Gestionnaire pour masquer/afficher les filtres
-    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
-    const filtersSection = document.getElementById('filtersSection');
-    const toggleFiltersText = document.getElementById('toggleFiltersText');
-    
-    if (toggleFiltersBtn && filtersSection) {
-        // Vérifier l'état sauvegardé dans localStorage
-        const filtersHidden = localStorage.getItem('filtersSectionHidden') === 'true';
-        if (filtersHidden) {
-            filtersSection.classList.add('hidden');
-            toggleFiltersText.textContent = 'Afficher les filtres';
-            toggleFiltersBtn.innerHTML = '<i class="fas fa-sliders me-1"></i><span id="toggleFiltersText">Afficher les filtres</span>';
-        }
-        
-        toggleFiltersBtn.addEventListener('click', function() {
-            filtersSection.classList.toggle('hidden');
-            const isHidden = filtersSection.classList.contains('hidden');
-            localStorage.setItem('filtersSectionHidden', isHidden);
-            
-            if (isHidden) {
-                toggleFiltersText.textContent = 'Afficher les filtres';
-            } else {
-                toggleFiltersText.textContent = 'Masquer les filtres';
-            }
-        });
-    }
-});
-</script>
