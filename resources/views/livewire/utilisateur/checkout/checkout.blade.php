@@ -1,5 +1,5 @@
-<div style="margin-top:5% " class=" border container-fluid mt-5   parallax-section  bg-md-white-cust ">
-    <div wire:ignore.self class="sidebar checkoutmenu  rounded-3 text-dark card bg-white p-0   mt-4" id="sidebar">
+<div class=" border container-fluid parallax-section  bg-md-white-cust ">
+    <div wire:ignore.self class="sidebar checkoutmenu  rounded-3 text-dark card bg-white p-0 " id="sidebar">
         <div>
             <div>
                 <div>
@@ -318,10 +318,7 @@
         <div class="row col-lg-11  offset-xs-0 offset-0  col-12">
             {{-- ici le menu --}}
             <div class="col-lg-2 bg-light py-1 px-0 d-md-block d-xl-block d-none">
-
-
                 @livewire('component.menu-utilisateur')
-
             </div>
 
             {{-- ici le contente right --}}

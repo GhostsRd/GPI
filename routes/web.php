@@ -20,7 +20,7 @@ use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return redirect('utilisateur');
-});
+})->name('home');
 
 Auth::routes();
 

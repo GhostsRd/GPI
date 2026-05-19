@@ -1,100 +1,34 @@
-<div>
-    <div class="table-container border-0 shadow-sm rounded-4 overflow-hidden fade-in-up bg-white">
-        <!-- En-tête simplifié -->
-        <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center flex-wrap gap-3">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-cart-check fs-4" style="color: #5BC4BF;"></i>
-                <h5 class="fw-semibold mb-0" style="color: #1e293b;">Checkouts</h5>
-                <span class="badge bg-light text-dark rounded-pill ms-2">{{ $checkouts->total() }}</span>
-            </div>
-            <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-light rounded-3" id="toggleCardsBtn">
-                    <i class="bi bi-grid me-1"></i>
-                    <span id="toggleCardsText">Masquer stats</span>
-                </button>
-                <button class="btn btn-sm btn-light rounded-3" id="toggleFiltersBtn">
-                    <i class="bi bi-funnel me-1"></i>
-                    <span id="toggleFiltersText">Masquer filtres</span>
-                </button>
-                <button class="btn btn-sm text-white rounded-3" wire:click="nouveauCheckout" style="background: #5BC4BF;">
-                    <i class="bi bi-plus-lg me-1"></i> Nouveau
-                </button>
-            </div>
-        </div>
+<div class="dashboard-container p-3 p-md-4">
+    <div class="row g-3 g-md-4">
+      
 
-        <!-- Cartes stats simplifiées -->
-        <div id="statsCards" class="row g-3 p-4 pb-0">
-            <div class="col-xl-3 col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 hover-card">
-                    <div class="card-body p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted small mb-1">Total</p>
-                                <h4 class="fw-bold mb-0" style="color: #5BC4BF;">{{ $this->stats['total'] }}</h4>
-                            </div>
-                            <div class="rounded-3 p-2" style="background: rgba(91, 196, 191, 0.1);">
-                                <i class="bi bi-cart fs-5" style="color: #5BC4BF;"></i>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Main Content -->
+        <div class="col-lg-12 col-md-12">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <div>
+                    <h5 class="fw-bold mb-1" style="color: #1e293b;">Tableau de bord IT</h5>
+                    <p class="text-muted small mb-0">Infrastructure informatique</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-light rounded-3">
+                        <i class="bi bi-bell"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light rounded-3">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </button>
                 </div>
             </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 hover-card">
-                    <div class="card-body p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted small mb-1">En cours</p>
-                                <h4 class="fw-bold mb-0" style="color: #F59E0B;">{{ $this->stats['en_cours'] }}</h4>
-                            </div>
-                            <div class="rounded-3 p-2" style="background: rgba(245, 158, 11, 0.1);">
-                                <i class="bi bi-clock fs-5" style="color: #F59E0B;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 hover-card">
-                    <div class="card-body p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted small mb-1">Terminés</p>
-                                <h4 class="fw-bold mb-0" style="color: #10B981;">{{ $this->stats['termine'] }}</h4>
-                            </div>
-                            <div class="rounded-3 p-2" style="background: rgba(16, 185, 129, 0.1);">
-                                <i class="bi bi-check-circle fs-5" style="color: #10B981;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card border-0 shadow-sm rounded-3 hover-card">
-                    <div class="card-body p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted small mb-1">En retard</p>
-                                <h4 class="fw-bold mb-0" style="color: #EF4444;">{{ $this->stats['en_retard'] }}</h4>
-                            </div>
-                            <div class="rounded-3 p-2" style="background: rgba(239, 68, 68, 0.1);">
-                                <i class="bi bi-exclamation-triangle fs-5" style="color: #EF4444;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Filtres simplifiés -->
-        <div id="filtersSection" class="p-4 border-bottom bg-white">
-            <div class="row g-2 align-items-center">
-                <div class="col-md-3">
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-light border-0 rounded-3 me-1">
-                            <i class="bi bi-search text-muted"></i>
-                        </span>
-                        <input type="text" wire:model.live="search" class="form-control form-control-sm bg-light border-0 rounded-3" placeholder="Rechercher...">
+            <!-- Stats Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card bg-white rounded-4 p-3 shadow-sm border-0 text-center">
+                        <div class="stat-icon mx-auto mb-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: rgba(79, 187, 178, 0.1);">
+                            <i class="bi bi-hdd-stack fs-4" style="color: #4fbbb2;"></i>
+                        </div>
+                        <h3 class="fw-bold mb-0" style="color: #1e293b;">1</h3>
+                        <p class="small text-muted mb-0">Total équipements</p>
                     </div>
                 </div>
                 <div class="col-md-2">

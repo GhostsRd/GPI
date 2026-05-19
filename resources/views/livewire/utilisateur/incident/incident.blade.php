@@ -1,4 +1,4 @@
-<div style="margin-top: 5%" class=" bg-md-white-cust ">
+<div  class=" bg-md-white-cust ">
      <div wire:loading.flex
         class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
         style="z-index: 10;">

@@ -17,12 +17,23 @@
     ];
     @endphp
 
-    <div class="d-flex align-items-center {{ $isCollapsed ? 'justify-content-center' : 'justify-content-end' }} p-3">
+    <div class="d-flex align-items-center p-3 {{ $isCollapsed ? 'flex-column gap-3 justify-content-center' : 'justify-content-between' }}" style="transition: all 0.3s;">
+    
+    <a class="d-flex align-items-center text-decoration-none" href="{{ url('/utilisateur') }}">
+        <img src="{{ url('images/bureau.png') }}" alt="Logo" width="32" class="rounded-pill">
+        @if(!$isCollapsed)
+            <span class="fw-bold sidebar-text ms-2 font-logo text-dark">GPI</span>
+        @endif
+    </a>
 
-        <button wire:click="toggleSidebar" class="btn btn-sm btn-light rounded-circle shadow-sm border-0">
-            <i class="fas {{ $isCollapsed ? 'fa-bars' : 'fa-times' }} text-secondary"></i>
-        </button>
-    </div>
+    <button wire:click="toggleSidebar" 
+            class="btn btn-sm btn-light rounded-circle shadow-sm border-0 d-flex align-items-center justify-content-center" 
+            style="width: 28px; height: 28px;"
+            title="{{ $isCollapsed ? 'Ouvrir' : 'Fermer' }}">
+        <i class="fas {{ $isCollapsed ? 'fa-bars' : 'fa-times' }} text-secondary" style="font-size: 0.85rem;"></i>
+    </button>
+
+</div>
 
     <ul class="nav flex-column px-2">
 

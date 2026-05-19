@@ -1,4 +1,4 @@
-<div class="container-fluid row " style="margin-top: 5% ;scrollbar-width: none; -ms-overflow-style: none;"
+<div class="container-fluid row " style="scrollbar-width: none; -ms-overflow-style: none;"
     style="height:40vh;">
      <div wire:loading.flex
         class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 justify-content-center align-items-center"
