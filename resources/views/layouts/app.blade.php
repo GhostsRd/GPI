@@ -308,7 +308,99 @@
         .notification-bell-animate {
             animation: bellShake 1s ease-in-out;
         }
+    /* --- CONFIGURATION BASE SIDEBAR --- */
+#sidebarModern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 65px; /* Largeur repliée (icônes seules) */
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #ffffff;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+/* Cache le texte et les chevrons par défaut */
+#sidebarModern .sidebar-text,
+#sidebarModern .chevron-icon {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Élargissement de la sidebar au survol */
+#sidebarModern:hover {
+    width: 240px; /* Largeur dépliée */
+}
+
+#sidebarModern:hover .sidebar-text,
+#sidebarModern:hover .chevron-icon {
+    opacity: 1;
+}
+
+
+/* --- CONFIGURATION DU MAIN CONTENT (EFFET DE POUSSE) --- */
+.main-content-modern {
+    /* Marge initiale équivalente à la largeur de la sidebar repliée */
+    margin-left: 65px; 
+    
+    /* Transition identique à la sidebar pour éviter les décalages visuels saccadés */
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Optionnel : Rembourrage interne pour espacer votre contenu */
+    padding: 20px; 
+    min-height: 100vh;
+    background-color: #f8fafc; /* Un fond gris très léger moderne */
+}
+
+/* MAGIE CSS : Quand la sidebar est survolée, on POUSSE le contenu principal */
+#sidebarModern:hover + .main-content-modern {
+    margin-left: 240px; /* Ajusté exactement sur la largeur de la sidebar ouverte */
+}
+        /* Style de base pour la Sidebar en mode Icône Unique (Fermée) */
+#sidebarModern {
+    width: 65px; /* Largeur quand seules les icônes sont visibles */
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #ffffff;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+/* Cache le texte et les chevrons par défaut */
+#sidebarModern .sidebar-text,
+#sidebarModern .chevron-icon {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    display: inline-block;
+}
+
+/* --- AU SURVOL (HOVER) : La barre s'ouvre proprement --- */
+
+
+/* Affiche le texte et les chevrons dès que la barre s'ouvre */
+#sidebarModern:hover .sidebar-text,
+#sidebarModern:hover .chevron-icon {
+    opacity: 1;
+     transition: 0.5s;
+}
+
+/* Ajustements graphiques pour les liens */
+.nav-link-modern {
+    color: #4b5563;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.5s;
+}
+.nav-link-modern:hover, .nav-link-modern.active {
+    background-color: #f3f4f6;
+    transition: 0.5s;
+    color: #111827;
+}
+.submenu-item:hover {
+    color: #666572 !important; /* Couleur d'accentuation au choix */
+     transition: 0.5s;
+}
     </style>
+    
 </head>
 <body>
 <div id="app">
@@ -317,365 +409,133 @@
         <i class="bi bi-list"></i>
     </button>
 
-    <!-- Modern Sidebar -->
-    <aside class="sidebar-modern shadow border-0 d-flex flex-column" style="z-index: 1000 !important; height: 100vh;" id="sidebarModern">
-        <nav class="sidebar-nav-modern py-2 flex-grow-1 ">
-            <!-- Dashboard -->
-            <div class="nav-item-modern">
-                <a class="nav-link-modern shadow-sm active" href="{{ url('/home') }}">
-                   {{-- <i class="bi bi-grid-1x2-fill"></i> --}}
-                   <img src="{{ url('images/bureau.png') }}" alt="Logo ONG Pivot" width="40" class="rounded-pill me-2">
-                    <h5 class="fw-bold mt-1"
-                    style="font-family: 'UnifrakturCook', cursive;font-size: 20px;color: #2d4052c5;
-                text-shadow: 2px 2px 5px rgba(128, 128, 128, 0.796);
-                letter-spacing: 2px;"
-                    >
-                    GPI</h5>
-                </a>
-            </div>
-            <div class="nav-item-modern mt-3">
-                <a class="nav-link-modern " href="{{ url('/home') }}">
-                   <i class="bi bi-grid-1x2-fill"></i>
-                    <h5 class="fw-bold mt-1 text-muted">Tableau de bord</h5>
-                </a>
-            </div>
+   <aside class="sidebar-modern shadow border-0 d-flex flex-column sidebar-collapsed" style="z-index: 1000 !important; height: 100vh;" id="sidebarModern">
+    
+    <div class="sidebar-header-toggle px-3 py-3 d-flex align-items-center justify-content-between">
+        <a class="d-flex align-items-center text-decoration-none" href="{{ url('/home') }}">
+           <img src="{{ url('images/bureau.png') }}" alt="Logo" width="32" class="rounded-pill">
+           <span class="fw-bold sidebar-text ms-2 font-logo">GPI</span>
+        </a>
+    </div>
 
-            <!-- Parc Informatique -->
-            <div class="nav-item-modern mt-2 ">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#parcCollapse">
-                    <i class="nav-icon bi bi-pc-display fs-6 "></i>
-                    <span>Parc Informatique</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
+    <nav class="sidebar-nav-modern py-2 flex-grow-1 overflow-y-auto" id="sidebarAccordion">
+        
+        <div class="nav-item-modern">
+            <a class="nav-link-modern active d-flex align-items-center px-3 py-2" href="{{ url('/home') }}" title="Tableau de bord">
+               <i class="bi bi-grid-1x2-fill fs-5"></i>
+               <span class="sidebar-text ms-3 fw-medium">Tableau de bord</span>
+            </a>
+        </div>
 
-                <div class="collapse mt-2" id="parcCollapse">
-                    <div class="nav-submenu">
-                        <!-- Sous-menu Équipements -->
-                        <a class="nav-link-modern collapsed py-2   " data-bs-toggle="collapse" href="#equipementCollapse">
-                            <i class="bi bi-laptop"></i>
-                            <span>Équipements</span>
-                            <i class="nav-chevron bi bi-chevron-down"></i>
-                        </a>
-                        <div class="collapse " id="equipementCollapse">
-                            <div class="nav-submenu py-2">
-                                <a href="{{ url('equipement') }}" class="submenu-item mt-2">
-                                    <i class="bi bi-laptop"></i>
-                                    Vue d'ensemble équipements
-                                </a>
-                                <a href="{{ url('ordinateur') }}" class="submenu-item mt-2">
-                                    <i class="bi bi-laptop"></i>
-                                    Ordinateurs
-                                </a>
-                                <a href="{{ url('moniteur') }}" class="submenu-item mt-2">
-                                    <i class="bi bi-display"></i>
-                                    Moniteurs
-                                </a>
-                                <a href="{{ url('logiciel') }}" class="submenu-item mt-2">
-                                    <i class="bi bi-window"></i>
-                                    Logiciels
-                                </a>
-                                <a href="{{ url('imprimante') }}" class="submenu-item mt-2">
-                                    <i class="bi bi-printer"></i>
-                                    Imprimantes
-                                </a>
-                                <a href="{{ url('materiel-reseau') }}" class="submenu-item mt-2 ">
-                                    <i class="bi bi-hdd-network"></i>
-                                    Matériel Réseaux
-                                </a>
-                                <a href="{{ url('telephone') }}" class="submenu-item mt-2">
-                                    <i class="bi bi-telephone"></i>
-                                    Téléphones
-                                </a>
-                                <a href="{{ url('peripherique') }}" class="submenu-item mt-2">
-                                    <i class="bi bi-usb-symbol"></i>
-                                    Périphériques
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="sidebar-divider my-2 mx-3 border-top opacity-25"></div>
 
-            <!-- Utilisateurs -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern mt-2 collapsed" data-bs-toggle="collapse" href="#usersCollapse">
-                    <i class="nav-icon bi bi-people-fill fs-6 text-secondary"></i>
-                    <span>Utilisateurs</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse" id="usersCollapse">
-                    <div class="nav-submenu">
-                        <a href="{{ route('utilisateurDashboard') }}" class="mt-2 submenu-item">
-                            <i class="bi bi-person-fill fs-6 text-secondary"></i>
-                            Administrateur
-                        </a>
-                        <a href="{{ route('listeutilisateur') }}" class="submenu-item mt-2">
-                            <i class="bi bi-person-fill fs-6 text-secondary"></i>
-                            Utilisateurs
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tickets -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#ticketsCollapse">
-                    <i class="nav-icon bi bi-ticket-perforated-fill fs-6 text-secondary"></i>
-                    <span>Ticket & Support</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse " id="ticketsCollapse">
-                    <div class="nav-submenu">
-                        <a href="{{ url('/ticket') }}" class="submenu-item">
-                            <i class="bi bi-circle"></i>
-                            Gestion Tickets
-                        </a>
-                        
-                    </div>
-                </div>
-            </div>
-
-            <!-- Check-in / Check-out -->
-            <div class="nav-item-modern">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#checkoutcollaps">
-                    <i class="nav-icon bi bi-arrow-left-right"></i>
-                    <span>Check-in / Check-out</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse" id="checkoutcollaps">
-                    <div class="nav-submenu">
-                        <a href="{{ route('checkoutadmin') }}" class="submenu-item mt-2">
-                            <i class="bi bi-box-arrow-in-right"></i>
-                            Out/In
-                        </a>
-                        <a href="{{ route('checkout.reservation.list') }}" class="submenu-item mt-2">
-                            <i class="bi bi-box-arrow-right"></i>
-                            Reservation equipement
-                        </a>
-                        <a href="{{ url('??') }}" class="submenu-item mt-2">
-                            <i class="bi bi-box-arrow-right"></i>
-                            Rapport et statistique
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Incident -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#incidentcollaps">
-                    <i class="bi bi-exclamation-triangle-fill text-muted"></i>
-                    <span>Incident</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse mt-2" id="incidentcollaps">
-                    <div class="nav-submenu">
-                       
-                        <a href="{{ route('admin.incident.list') }}" class="submenu-item">
-                            <i class="bi bi-box-arrow-right"></i>
-                            Gestion Incidents
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Documentation -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#documentationCollapse">
-                    <i class="bi bi-journal-text text-muted"></i>
-                    <span>Documentation</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse mt-2" id="documentationCollapse">
-                    <div class="nav-submenu">
-                        <a href="#" class="submenu-item mt-2">
-                            <i class="bi bi-box-arrow-in-right"></i>
-                            Nouveau
-                        </a>
-                        <a href="{{ route('documentation.admin-doc') }}" class="submenu-item mt-2">
-                            <i class="bi bi-box-arrow-right"></i>
-                            Gerer
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            
-            <!-- Gerer -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#gestion">
-                    <i class="bi bi-folder-fill text-secondary fs-6"></i>
-                    <span>Gerer</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse" id="gestion">
-                    <div class="nav-submenu">
-                        <a href="{{ route('admin.notifications') }}" class="submenu-item mt-2">
-                            <i class="bi bi-bell-fill"></i>
-                            Notifications
-                        </a>
-                        <a href="#" class="submenu-item mt-2">
-                            <i class="bi bi-chat-dots"></i>
-                            Chat
-                        </a>
-                        <a href="#" class="submenu-item mt-2">
-                            <i class="bi bi-archive"></i>
-                            Archive
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Carte SIM -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#simCollapse">
-                    <i class="bi bi-sim text-secondary fs-6"></i>
-                    <span> SIM</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse" id="simCollapse">
-                    <div class="nav-submenu">
-                        @if(Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isManager()))
-                            <a href="{{ route('admin.sim.dashboard') }}" class="submenu-item mt-2">
-                                <i class="bi bi-graph-up"></i>
-                                Analyse
-                            </a>
-                            <a href="{{ route('admin.sim.list') }}" class="submenu-item mt-2">
-                                <i class="bi bi-list-ul"></i>
-                                Flotte SIM
-                            </a>
-                        @endif
-                        
-                        @if(Auth::check() && Auth::user()->isUser())
-                            <a href="{{ route('utilisateur.sim.my-sims') }}" class="submenu-item mt-2">
-                                <i class="bi bi-person-badge"></i>
-                                Mes SIMs
-                            </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
-            <!-- Paramètres -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern collapsed" data-bs-toggle="collapse" href="#settingsCollapse">
-                    <i class="nav-icon bi bi-gear-fill fs-6 text-secondary"></i>
-                    <span>Paramètres</span>
-                    <i class="nav-chevron bi bi-chevron-down"></i>
-                </a>
-                <div class="collapse" id="settingsCollapse">
-                    <div class="nav-submenu">
-                        <a href="{{ url('/parametres') }}" class="submenu-item mt-2">
-                            <i class="bi bi-circle"></i>
-                            utilisateurs
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Configuration -->
-            <div class="nav-item-modern mt-2">
-                <a class="nav-link-modern {{ request()->routeIs('configuration') ? 'active' : '' }}" href="{{ route('configuration') }}">
-                    <i class="nav-icon bi bi-sliders fs-6 text-secondary"></i>
-                    <span>Configuration</span>
-                </a>
-            </div>
-        </nav>
-
-        <!-- Sidebar User Menu - Tout est regroupé ici (Profil, Notifications, Theme, Déconnexion) -->
-        <div class="sidebar-user-menu">
-            <div class="sidebar-dropdown" id="sidebarUserDropdown">
-                <div class="sidebar-user-info" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="notification-badge">
-                        @if(Auth::check() && Auth::user()->photo)
-                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded-circle" width="36" height="36" alt="Photo" style="object-fit: cover; border: 2px solid #6366f1;">
-                        @else
-                            <img src="{{ asset('images/avtar_1.png') }}" class="rounded-circle" width="36" height="36" alt="Photo" style="object-fit: cover; border: 2px solid #6366f1;">
-                        @endif
-                        <!-- Badge pour les notifications non lues -->
-                        <span class="badge-count" id="sidebarNotificationBadge" style="display: none;">0</span>
-                    </div>
-                    <div class="sidebar-user-details">
-                        <div class="sidebar-user-name">{{ Auth::check() ? Auth::user()->name : 'Invité' }}</div>
-                        <div class="sidebar-user-role">{{ Auth::check() && Auth::user()->role ? Auth::user()->role : 'Utilisateur' }}</div>
-                    </div>
-                    <i class="bi bi-chevron-up ms-auto" style="font-size: 0.7rem; color: #94a3b8;"></i>
-                </div>
-
-                <!-- Dropdown Menu complet -->
-                <div class="sidebar-dropdown-menu">
-                    <!-- User Info Header -->
-                    <div class="text-center px-3 py-2">
-                        @if(Auth::check() && Auth::user()->photo)
-                            <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded-circle mb-2" width="56" height="56" alt="Photo" style="object-fit: cover; border: 3px solid #6366f1;">
-                        @else
-                            <img src="{{ asset('images/avtar_1.png') }}" class="rounded-circle mb-2" width="56" height="56" alt="Photo" style="object-fit: cover; border: 3px solid #6366f1;">
-                        @endif
-                        <div class="fw-bold" style="font-size: 0.85rem;">{{ Auth::check() ? Auth::user()->name : 'Invité' }}</div>
-                        <div class="text-muted" style="font-size: 0.65rem;">{{ Auth::check() ? Auth::user()->email : '' }}</div>
-                    </div>
-
-                    <div class="sidebar-dropdown-divider"></div>
-
-                    <!-- Profile Link -->
-                    <a class="sidebar-dropdown-item" href="{{ url('/profile') }}">
-                        <i class="bi bi-person-circle"></i>
-                        <div>
-                            <div class="fw-semibold">Mon Profil</div>
-                            <small class="text-muted">Gérer vos informations</small>
-                        </div>
-                    </a>
-
-                    <!-- Notifications Link avec Livewire -->
-                    <div class="sidebar-dropdown-item" style="cursor: pointer;" onclick="toggleNotificationsPanel()">
-                        <div class="notification-badge">
-                            <i class="bi bi-bell-fill"></i>
-                            <span class="badge-count" id="dropdownNotificationBadge" style="display: none;">0</span>
-                        </div>
-                        <div>
-                            <div class="fw-semibold">Notifications</div>
-                            <small class="text-muted">Voir vos alertes</small>
-                        </div>
-                    </div>
-
-                    <!-- Theme Toggle Inline -->
-                    <div class="theme-switch-inline" id="sidebarThemeToggle" onclick="toggleTheme()">
-                        <div class="theme-toggle-icon">
-                            <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
-                            <span>Thème</span>
-                        </div>
-                        <span id="themeText">Sombre</span>
-                    </div>
-
-                    <div class="sidebar-dropdown-divider"></div>
-
-                    <!-- Settings Link -->
-                    <a class="sidebar-dropdown-item" href="{{ url('/parametres') }}">
-                        <i class="bi bi-gear-fill"></i>
-                        <div>
-                            <div class="fw-semibold">Paramètres</div>
-                            <small class="text-muted">Préférences système</small>
-                        </div>
-                    </a>
-
-                    <div class="sidebar-dropdown-divider"></div>
-
-                    <!-- Disconnect Button -->
-                    <a class="sidebar-dropdown-item logout" href="#" onclick="confirmLogout(event)" style="color: #dc2626;">
-                        <i class="bi bi-box-arrow-right"></i>
-                        <div>
-                            <div class="fw-semibold">Déconnexion</div>
-                            <small class="text-muted">Quitter votre session</small>
-                        </div>
-                    </a>
-
-                    <!-- Footer -->
-                    <div class="text-center mt-2 pt-2">
-                        <small class="text-muted" style="font-size: 0.6rem;">Version 2.0.0 • GPI Pivot</small>
-                    </div>
+        <div class="nav-item-modern">
+            <a class="nav-link-modern collapsed d-flex align-items-center px-3 py-2" data-bs-toggle="collapse" data-bs-parent="#sidebarAccordion" href="#parcCollapse" title="Parc Informatique">
+                <i class="bi bi-pc-display fs-5"></i>
+                <span class="sidebar-text ms-3 fw-medium">Parc Info</span>
+                <i class="bi bi-chevron-down ms-auto sidebar-text chevron-icon"></i>
+            </a>
+            <div class="collapse" id="parcCollapse">
+                <div class="nav-submenu ps-4 py-1 small">
+                    <a href="{{ url('equipement') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-laptop me-2"></i> <span class="sidebar-text">Vue d'ensemble</span></a>
+                    <a href="{{ url('ordinateur') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-cpu me-2"></i> <span class="sidebar-text">Ordinateurs</span></a>
+                    <a href="{{ url('moniteur') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-display me-2"></i> <span class="sidebar-text">Moniteurs</span></a>
+                    <a href="{{ url('logiciel') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-window me-2"></i> <span class="sidebar-text">Logiciels</span></a>
+                    <a href="{{ url('imprimante') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-printer me-2"></i> <span class="sidebar-text">Imprimantes</span></a>
+                    <a href="{{ url('materiel-reseau') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-hdd-network me-2"></i> <span class="sidebar-text">Réseaux</span></a>
+                    <a href="{{ url('telephone') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-telephone me-2"></i> <span class="sidebar-text">Téléphones</span></a>
+                    <a href="{{ url('peripherique') }}" class="submenu-item d-flex align-items-center py-2 text-decoration-none text-muted"><i class="bi bi-usb-symbol me-2"></i> <span class="sidebar-text">Périphériques</span></a>
                 </div>
             </div>
         </div>
-    </aside>
+
+        <div class="nav-item-modern">
+            <a class="nav-link-modern collapsed d-flex align-items-center px-3 py-2" data-bs-toggle="collapse" data-bs-parent="#sidebarAccordion" href="#simCollapse" title="Cartes SIM">
+                <i class="bi bi-sim fs-5"></i>
+                <span class="sidebar-text ms-3 fw-medium">Cartes SIM</span>
+                <i class="bi bi-chevron-down ms-auto sidebar-text chevron-icon"></i>
+            </a>
+            <div class="collapse" id="simCollapse">
+                <div class="nav-submenu ps-4 py-1 small">
+                    @if(Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isManager()))
+                        <a href="{{ route('admin.sim.dashboard') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-graph-up me-2"></i> <span class="sidebar-text">Analyse</span></a>
+                        <a href="{{ route('admin.sim.list') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-list-ul me-2"></i> <span class="sidebar-text">Flotte SIM</span></a>
+                    @endif
+                    @if(Auth::check() && Auth::user()->isUser())
+                        <a href="{{ route('utilisateur.sim.my-sims') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-person-badge me-2"></i> <span class="sidebar-text">Mes SIMs</span></a>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-divider my-2 mx-3 border-top opacity-25"></div>
+
+        <div class="nav-item-modern">
+            <a class="nav-link-modern collapsed d-flex align-items-center px-3 py-2" data-bs-toggle="collapse" data-bs-parent="#sidebarAccordion" href="#checkoutcollaps" title="Mouvements & Réservations">
+                <i class="bi bi-arrow-left-right fs-5"></i>
+                <span class="sidebar-text ms-3 fw-medium">Mouvements</span>
+                <i class="bi bi-chevron-down ms-auto sidebar-text chevron-icon"></i>
+            </a>
+            <div class="collapse" id="checkoutcollaps">
+                <div class="nav-submenu ps-4 py-1 small">
+                    <a href="{{ route('checkoutadmin') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-box-arrow-in-right me-2"></i> <span class="sidebar-text">Out / In</span></a>
+                    <a href="{{ route('checkout.reservation.list') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-calendar-check me-2"></i> <span class="sidebar-text">Réservations</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-item-modern">
+            <a class="nav-link-modern collapsed d-flex align-items-center px-3 py-2" data-bs-toggle="collapse" data-bs-parent="#sidebarAccordion" href="#ticketsCollapse" title="Tickets & Support">
+                <i class="bi bi-ticket-perforated-fill fs-5"></i>
+                <span class="sidebar-text ms-3 fw-medium">Tickets</span>
+                <i class="bi bi-chevron-down ms-auto sidebar-text chevron-icon"></i>
+            </a>
+            <div class="collapse" id="ticketsCollapse">
+                <div class="nav-submenu ps-4 py-1 small">
+                    <a href="{{ url('/ticket') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-circle me-2"></i> <span class="sidebar-text">Gestion Tickets</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-divider my-2 mx-3 border-top opacity-25"></div>
+
+        <div class="nav-item-modern">
+            <a class="nav-link-modern collapsed d-flex align-items-center px-3 py-2" data-bs-toggle="collapse" data-bs-parent="#sidebarAccordion" href="#usersCollapse" title="Utilisateurs">
+                <i class="bi bi-people-fill fs-5"></i>
+                <span class="sidebar-text ms-3 fw-medium">Utilisateurs</span>
+                <i class="bi bi-chevron-down ms-auto sidebar-text chevron-icon"></i>
+            </a>
+            <div class="collapse" id="usersCollapse">
+                <div class="nav-submenu ps-4 py-1 small">
+                    <a href="{{ route('utilisateurDashboard') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-person-workspace me-2"></i> <span class="sidebar-text">Admin</span></a>
+                    <a href="{{ route('listeutilisateur') }}" class="submenu-item d-block py-2 text-decoration-none text-muted"><i class="bi bi-person-lines-fill me-2"></i> <span class="sidebar-text">Liste</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-item-modern">
+            <a class="nav-link-modern {{ request()->routeIs('configuration') ? 'active' : '' }} d-flex align-items-center px-3 py-2" href="{{ route('configuration') }}" title="Configuration">
+                <i class="bi bi-sliders fs-5"></i>
+                <span class="sidebar-text ms-3 fw-medium">Configuration</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="sidebar-user-compact border-top py-2 px-3">
+        <div class="dropdown">
+            <div class="d-flex align-items-center" data-bs-toggle="dropdown" style="cursor: pointer;">
+                @if(Auth::check() && Auth::user()->photo)
+                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded-circle" width="32" height="32" style="object-fit: cover;">
+                @else
+                    <img src="{{ asset('images/avtar_1.png') }}" class="rounded-circle" width="32" height="32" style="object-fit: cover;">
+                @endif
+                <div class="sidebar-text ms-3 overflow-hidden">
+                    <div class="fw-bold small text-truncate" style="max-width: 130px;">{{ Auth::check() ? Auth::user()->name : 'Invité' }}</div>
+                </div>
+            </div>
+            </div>
+    </div>
+</aside>
 
     <main class="main-content-modern">
         {{ $slot ?? '' }}

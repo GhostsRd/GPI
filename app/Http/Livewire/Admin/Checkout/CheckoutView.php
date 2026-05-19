@@ -82,10 +82,10 @@ class CheckoutView extends Component
     public function RefuserCheckout($id)
     {
         $checkout = CheckoutModel::find($id);
-        $checkout->statut = 4;
+        $checkout->statut = 5;
         $checkout->save();
         $this->reset(['currentStep']);
-        $this->currentStep = 4;
+        $this->currentStep = 5;
         $this->emitSelf('refreshComponent');
         $this->emitSelf('refreshComponent');
         return redirect()->back()->with('success', 'Vous ete sur!');
@@ -97,6 +97,8 @@ class CheckoutView extends Component
         2 => 'future',
         3 => 'future',
         4 => 'future',
+        5 => 'future',
+
 
     ];
 
@@ -217,7 +219,7 @@ class CheckoutView extends Component
     {
 
         $checkouts = CheckoutModel::find($this->checkoutId);
-        $checkouts->statut = 3;
+        $checkouts->statut = 4;
         $checkouts->save();
         $this->modelstep(CheckoutModel::find($this->checkoutId));
         if ($checkouts->materiel_type == 'ordinateur') {
